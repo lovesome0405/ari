@@ -713,8 +713,22 @@ function renderImageFrame({ src, alt, notice, className = '' }) {
   `;
 }
 
+function getSeoulHour(date = new Date()) {
+  try {
+    const hourPart = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Seoul',
+      hour: '2-digit',
+      hourCycle: 'h23'
+    }).formatToParts(date).find((part) => part.type === 'hour');
+
+    return Number(hourPart?.value ?? date.getHours());
+  } catch (error) {
+    return (date.getUTCHours() + 9) % 24;
+  }
+}
+
 function getTimePeriod(date = new Date()) {
-  const hour = date.getHours();
+  const hour = getSeoulHour(date);
   if (hour >= 5 && hour <= 10) return 'morning';
   if (hour >= 11 && hour <= 15) return 'noon';
   if (hour >= 16 && hour <= 20) return 'evening';
@@ -739,7 +753,7 @@ function renderHomeTimeHero(periodOverride) {
         className: 'home-time-image'
       })}
       <div class="home-time-copy">
-        <span>현재 시간대 추천 · ${escapeHtml(config.label)}</span>
+        <span>서울 시간대 추천 · ${escapeHtml(config.label)}</span>
         <h1>${escapeHtml(config.title)}</h1>
         <p>${escapeHtml(config.description)}</p>
       </div>

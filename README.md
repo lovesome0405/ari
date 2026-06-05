@@ -151,7 +151,7 @@ assets/images/themes/
 - Place images: 1000x750
 - Format: webp preferred
 
-홈 화면은 사용자 로컬 시간을 기준으로 이미지를 자동 선택합니다.
+홈 화면은 서울 표준시(`Asia/Seoul`)를 기준으로 이미지를 자동 선택합니다.
 
 ```text
 morning.webp  # 05:00 ~ 10:59
