@@ -151,13 +151,21 @@ assets/images/themes/
 - Place images: 1000x750
 - Format: webp preferred
 
-홈 화면은 서울 표준시(`Asia/Seoul`)를 기준으로 이미지를 자동 선택합니다.
+홈 화면은 서울 표준시(`Asia/Seoul`)를 기준으로 시간대와 4장 이미지 중 하나를 자동 선택합니다. 아침과 점심은 같은 낮 이미지 세트를 공유합니다.
 
 ```text
-morning.webp  # 05:00 ~ 10:59
-noon.webp     # 11:00 ~ 15:59
-evening.webp  # 16:00 ~ 20:59
-night.webp    # 21:00 ~ 04:59
+day-1.webp      # 아침/점심 1번
+day-2.webp      # 아침/점심 2번
+day-3.webp      # 아침/점심 3번
+day-4.webp      # 아침/점심 4번
+evening-1.webp  # 저녁 1번
+evening-2.webp  # 저녁 2번
+evening-3.webp  # 저녁 3번
+evening-4.webp  # 저녁 4번
+night-1.webp    # 밤 1번
+night-2.webp    # 밤 2번
+night-3.webp    # 밤 3번
+night-4.webp    # 밤 4번
 ```
 
 추천 코스 이미지는 다음 파일명을 사용합니다.

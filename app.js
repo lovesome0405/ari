@@ -4,25 +4,45 @@
 const HOME_TIME_IMAGES = {
   morning: {
     label: '아침',
-    imageUrl: 'assets/images/home/morning.webp',
+    imageUrls: [
+      'assets/images/home/day-1.webp',
+      'assets/images/home/day-2.webp',
+      'assets/images/home/day-3.webp',
+      'assets/images/home/day-4.webp'
+    ],
     title: '아침에 걷기 좋은 전통문화 코스',
     description: '맑은 아침에는 궁궐과 정원 산책 코스를 추천합니다.'
   },
   noon: {
     label: '점심',
-    imageUrl: 'assets/images/home/noon.webp',
+    imageUrls: [
+      'assets/images/home/day-1.webp',
+      'assets/images/home/day-2.webp',
+      'assets/images/home/day-3.webp',
+      'assets/images/home/day-4.webp'
+    ],
     title: '낮에 보기 좋은 궁궐과 한옥',
     description: '밝은 낮에는 궁궐 건축과 한옥 골목을 선명하게 보기 좋습니다.'
   },
   evening: {
     label: '저녁',
-    imageUrl: 'assets/images/home/evening.webp',
+    imageUrls: [
+      'assets/images/home/evening-1.webp',
+      'assets/images/home/evening-2.webp',
+      'assets/images/home/evening-3.webp',
+      'assets/images/home/evening-4.webp'
+    ],
     title: '노을과 함께하는 전통문화 코스',
     description: '저녁 시간에는 산책길과 공연을 함께 연결한 코스를 추천합니다.'
   },
   night: {
     label: '밤',
-    imageUrl: 'assets/images/home/night.webp',
+    imageUrls: [
+      'assets/images/home/night-1.webp',
+      'assets/images/home/night-2.webp',
+      'assets/images/home/night-3.webp',
+      'assets/images/home/night-4.webp'
+    ],
     title: '밤에 더 아름다운 한국 전통문화',
     description: '궁궐 야경과 조용한 한옥 분위기를 중심으로 추천합니다.'
   }
@@ -496,6 +516,7 @@ let plannerStep = 1;
 let toastTimer;
 let ariMessages = [];
 let homeTimePreviewPeriod = '';
+let homeImagePreviewIndex = null;
 
 function qs(selector, root = document) {
   return root.querySelector(selector);
@@ -735,19 +756,38 @@ function getTimePeriod(date = new Date()) {
   return 'night';
 }
 
+function getHomeImageUrls(config) {
+  if (Array.isArray(config.imageUrls) && config.imageUrls.length) return config.imageUrls;
+  return config.imageUrl ? [config.imageUrl] : [];
+}
+
+function getHomeImageIndex(imageCount, date = new Date()) {
+  if (!imageCount) return 0;
+  if (Number.isInteger(homeImagePreviewIndex)) {
+    return Math.max(0, Math.min(homeImagePreviewIndex, imageCount - 1));
+  }
+  return getSeoulHour(date) % imageCount;
+}
+
 function renderHomeTimeHero(periodOverride) {
   const hero = qs('[data-home-time-hero]');
   const selector = qs('[data-time-preview-selector]');
   if (!hero && !selector) return;
 
-  if (periodOverride && HOME_TIME_IMAGES[periodOverride]) homeTimePreviewPeriod = periodOverride;
+  if (periodOverride && HOME_TIME_IMAGES[periodOverride]) {
+    homeTimePreviewPeriod = periodOverride;
+    homeImagePreviewIndex = null;
+  }
   const period = HOME_TIME_IMAGES[homeTimePreviewPeriod] ? homeTimePreviewPeriod : getTimePeriod();
   const config = HOME_TIME_IMAGES[period];
+  const imageUrls = getHomeImageUrls(config);
+  const imageIndex = getHomeImageIndex(imageUrls.length);
+  const selectedImageUrl = imageUrls[imageIndex] || '';
 
   if (hero) {
     hero.innerHTML = `
       ${renderImageFrame({
-        src: config.imageUrl,
+        src: selectedImageUrl,
         alt: `${config.label} 시간대 전통문화 추천 이미지`,
         notice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 이해 보조 이미지',
         className: 'home-time-image'
@@ -756,6 +796,13 @@ function renderHomeTimeHero(periodOverride) {
         <span>서울 시간대 추천 · ${escapeHtml(config.label)}</span>
         <h1>${escapeHtml(config.title)}</h1>
         <p>${escapeHtml(config.description)}</p>
+        ${imageUrls.length > 1 ? `
+          <div class="home-image-dots" aria-label="${escapeHtml(config.label)} 이미지 선택">
+            ${imageUrls.map((_, index) => `
+              <button class="home-image-dot ${index === imageIndex ? 'is-active' : ''}" type="button" data-home-image-variant="${index}" aria-label="${escapeHtml(config.label)} 이미지 ${index + 1}번" aria-pressed="${index === imageIndex}"></button>
+            `).join('')}
+          </div>
+        ` : ''}
       </div>
     `;
   }
@@ -1414,6 +1461,13 @@ function bindMobileInteractions() {
     if (timeButton) {
       renderHomeTimeHero(timeButton.dataset.timePreview);
       showToast(`${timeButton.textContent.trim()} 시간대 이미지가 적용되었습니다.`);
+    }
+
+    const imageVariantButton = event.target.closest('[data-home-image-variant]');
+    if (imageVariantButton) {
+      homeImagePreviewIndex = Number(imageVariantButton.dataset.homeImageVariant);
+      renderHomeTimeHero();
+      showToast(`이미지 ${homeImagePreviewIndex + 1}번이 적용되었습니다.`);
     }
   });
 
