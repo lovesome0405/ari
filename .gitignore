@@ -1,0 +1,13 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local runtime / dependency folders
+node_modules/
+dist/
+build/
+
+# Logs
+*.log

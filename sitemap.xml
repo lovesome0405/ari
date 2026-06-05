@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Replace https://example.com with your deployed domain before submitting this sitemap. -->
+  <url><loc>https://example.com/index.html</loc></url>
+  <url><loc>https://example.com/planner.html</loc></url>
+  <url><loc>https://example.com/routes.html</loc></url>
+  <url><loc>https://example.com/map.html</loc></url>
+  <url><loc>https://example.com/weather.html</loc></url>
+  <url><loc>https://example.com/support.html</loc></url>
+  <url><loc>https://example.com/passport.html</loc></url>
+  <url><loc>https://example.com/about.html</loc></url>
+</urlset>

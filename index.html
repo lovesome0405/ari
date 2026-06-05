@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HanRoute AI</title>
+  <meta name="description" content="외국인 방문객을 위한 AI 기반 한국 전통문화 스토리 코스 추천 모바일 웹 앱">
+  <meta name="theme-color" content="#07111f">
+  <meta property="og:title" content="HanRoute AI">
+  <meta property="og:description" content="외국인 방문객을 위한 AI 기반 한국 전통문화 스토리 코스 추천 모바일 웹 앱">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ko_KR">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="home">
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="brand" href="index.html" aria-label="HanRoute AI 홈">
+        <span class="brand-mark">HR</span>
+        <span><strong>HanRoute AI</strong><small>Heritage route app</small></span>
+      </a>
+      <button class="header-pill" type="button" data-language-trigger>KR</button>
+    </header>
+
+    <main class="app-main onboarding-main">
+      <section class="home-time-hero" data-home-time-hero aria-label="현재 시간대 추천 이미지">
+        <div class="image-frame image-placeholder home-time-image">
+          <div class="image-placeholder-content">
+            <strong>AI Visual Guide</strong>
+            <small>이미지 준비 중</small>
+          </div>
+        </div>
+        <div class="home-time-copy">
+          <span>현재 시간대 추천</span>
+          <h1>한국 전통문화를 만나는 시간</h1>
+          <p>사용자 현지 시간에 맞춰 홈 이미지를 자동으로 선택합니다.</p>
+        </div>
+      </section>
+
+      <section class="time-preview-selector" data-time-preview-selector aria-label="시간대 이미지 미리보기">
+        <button class="time-preview-button" type="button" data-time-preview="morning">아침</button>
+        <button class="time-preview-button" type="button" data-time-preview="noon">점심</button>
+        <button class="time-preview-button" type="button" data-time-preview="evening">저녁</button>
+        <button class="time-preview-button" type="button" data-time-preview="night">밤</button>
+      </section>
+
+      <section class="language-card" aria-label="언어 선택">
+        <div class="language-grid">
+          <button class="language-choice is-active" type="button" data-language="KR">한국어</button>
+          <button class="language-choice" type="button" data-language="EN">English</button>
+          <button class="language-choice" type="button" data-language="JP">日本語</button>
+          <button class="language-choice" type="button" data-language="CN">中文</button>
+        </div>
+        <div class="selection-confirm" data-language-confirm>한국어로 시작합니다.</div>
+      </section>
+
+      <section class="theme-section">
+        <div class="section-mini-heading">
+          <span>화면 분위기 선택</span>
+          <strong>3가지 한국 heritage 테마</strong>
+        </div>
+        <div class="theme-preview-grid" data-theme-selector></div>
+      </section>
+
+      <section class="intro-card">
+        <span class="card-kicker">AI Story Route</span>
+        <h2>한국 전통문화를 이해하는 가장 쉬운 코스</h2>
+        <p>AI가 공식 문화데이터 구조를 바탕으로 당신에게 맞는 전통문화 스토리 코스를 추천합니다.</p>
+        <div class="principle-list">
+          <span>DB = 검증된 문화 사실</span>
+          <span>Server = 조건 필터링과 추천 점수</span>
+          <span>AI = 쉬운 문화 해설</span>
+        </div>
+      </section>
+
+      <section class="quick-action-list" aria-label="빠른 시작">
+        <a class="quick-action" href="routes.html">
+          <span class="quick-symbol route-symbol"></span>
+          <strong>오늘 추천 코스</strong>
+          <small>대표 스토리 코스 먼저 보기</small>
+        </a>
+        <a class="quick-action" href="weather.html">
+          <span class="quick-symbol rain-symbol"></span>
+          <strong>비 오는 날 코스</strong>
+          <small>실내 중심 대체 코스</small>
+        </a>
+        <a class="quick-action" href="support.html">
+          <span class="quick-symbol support-symbol"></span>
+          <strong>여행자 지원</strong>
+          <small>긴급·분실·번역 도움</small>
+        </a>
+      </section>
+
+      <section class="more-links home-more-links">
+        <a href="about.html">서비스 소개</a>
+        <a href="culture-data.html">공공데이터 활용 보기</a>
+      </section>
+    </main>
+
+    <div class="bottom-cta">
+      <a class="button button-primary button-block" href="planner.html">시작하기</a>
+    </div>
+
+    <nav class="bottom-tab" aria-label="하단 탭">
+      <a href="index.html" data-tab="home"><span class="tab-icon home-icon"></span><strong>홈</strong></a>
+      <a href="planner.html" data-tab="recommend"><span class="tab-icon recommend-icon"></span><strong>추천</strong></a>
+      <a href="map.html" data-tab="map"><span class="tab-icon map-icon"></span><strong>지도</strong></a>
+      <a href="support.html" data-tab="support"><span class="tab-icon support-icon"></span><strong>지원</strong></a>
+      <a href="passport.html" data-tab="passport"><span class="tab-icon save-icon"></span><strong>저장</strong></a>
+    </nav>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

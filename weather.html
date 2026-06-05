@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>서울 날씨 | HanRoute AI</title>
+  <meta name="description" content="서울 날씨와 날씨 기반 전통문화 코스 추천">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="weather">
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="brand" href="index.html"><span class="brand-mark">HR</span><span><strong>서울 날씨</strong><small>Weather route</small></span></a>
+      <a class="header-pill" href="routes.html">코스 보기</a>
+    </header>
+
+    <main class="app-main">
+      <section class="weather-summary">
+        <p class="eyebrow">Current Weather</p>
+        <h1>오늘 서울은 맑음</h1>
+        <p>16℃ / 27℃ · 강수확률 낮음 · 미세먼지 좋음</p>
+      </section>
+
+      <section class="today-route-card">
+        <span>오늘의 추천</span>
+        <h2>궁궐·한옥 산책 코스</h2>
+        <p>맑은 날에는 궁궐 외부 동선과 한옥 골목을 함께 걷기 좋습니다.</p>
+        <a class="button button-primary button-block" href="routes.html">추천 코스 보기</a>
+      </section>
+
+      <section class="mobile-card">
+        <h2>3일 예보</h2>
+        <div class="weather-list" data-weather-list></div>
+      </section>
+
+      <section class="mobile-card">
+        <h2>대기 정보</h2>
+        <div class="air-row"><span>미세먼지 PM10</span><strong>좋음</strong></div>
+        <div class="air-row"><span>초미세먼지 PM2.5</span><strong>좋음</strong></div>
+      </section>
+
+      <section class="mobile-card">
+        <h2>날씨별 대체 코스</h2>
+        <button class="route-suggestion" type="button" data-toast="맑은 날 추천 코스가 선택되었습니다."><span>맑은 날 추천</span><strong>궁궐·한옥 산책 코스</strong></button>
+        <button class="route-suggestion" type="button" data-toast="비 오는 날 실내 코스가 선택되었습니다."><span>비 오는 날 추천</span><strong>박물관·공연 실내 코스</strong></button>
+        <button class="route-suggestion" type="button" data-toast="더운 날 실내 중심 코스가 선택되었습니다."><span>더운 날 추천</span><strong>실내 전시·시장 중심 코스</strong></button>
+      </section>
+    </main>
+
+    <nav class="bottom-tab" aria-label="하단 탭">
+      <a href="index.html" data-tab="home"><span class="tab-icon home-icon"></span><strong>홈</strong></a>
+      <a href="planner.html" data-tab="recommend"><span class="tab-icon recommend-icon"></span><strong>추천</strong></a>
+      <a href="map.html" data-tab="map"><span class="tab-icon map-icon"></span><strong>지도</strong></a>
+      <a href="support.html" data-tab="support"><span class="tab-icon support-icon"></span><strong>지원</strong></a>
+      <a href="passport.html" data-tab="passport"><span class="tab-icon save-icon"></span><strong>저장</strong></a>
+    </nav>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

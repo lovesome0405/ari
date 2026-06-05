@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>코스 상세 | HanRoute AI</title>
+  <meta name="description" content="선택한 전통문화 스토리 코스 상세와 Google Maps 길찾기">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="recommend">
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="brand" href="routes.html">
+        <span class="brand-mark back-mark">‹</span>
+        <span><strong>코스 상세</strong><small>Story route detail</small></span>
+      </a>
+      <button class="header-pill" type="button" data-route-action="save-current">저장</button>
+    </header>
+
+    <main class="app-main detail-main">
+      <section class="route-summary-hero">
+        <p class="eyebrow">Selected Route</p>
+        <h1 data-detail-title>왕실문화에서 생활문화로 이어지는 코스</h1>
+        <p data-detail-english>Royal Culture to Local Life</p>
+        <div class="score-row">
+          <span><strong data-detail-score>87</strong>점</span>
+          <span data-detail-time>약 3시간</span>
+          <span data-detail-walking>보통</span>
+          <span data-detail-fee>저비용</span>
+        </div>
+      </section>
+
+      <section data-detail-image></section>
+
+      <section class="mobile-card">
+        <h2>추천 이유</h2>
+        <p data-detail-reason></p>
+        <div data-detail-convenience></div>
+      </section>
+
+      <a class="button button-map button-block" href="#" target="_blank" rel="noopener" data-google-maps>
+        Google Maps로 길찾기
+      </a>
+
+      <section class="mobile-card">
+        <h2>코스 흐름</h2>
+        <ol class="timeline-list" data-detail-flow></ol>
+      </section>
+
+      <section class="place-list" data-place-cards></section>
+
+      <section class="mobile-card">
+        <h2>AI 쉬운 문화 해설</h2>
+        <p data-detail-summary></p>
+        <p class="english-note" data-detail-explanation></p>
+      </section>
+
+      <section class="mobile-card">
+        <h2>문화 키워드</h2>
+        <div class="keyword-list" data-keyword-list></div>
+      </section>
+
+      <section class="mobile-card">
+        <h2>방문 팁</h2>
+        <p data-detail-tip></p>
+        <p class="verification-warning">운영시간, 요금, 예약 여부는 방문 전 공식 출처에서 확인하세요.</p>
+      </section>
+
+      <section class="source-box">
+        <span>Source / seed data notice</span>
+        <p data-detail-source></p>
+      </section>
+    </main>
+
+    <div class="bottom-cta">
+      <button class="button button-primary button-block" type="button" data-route-action="passport-current">Route Passport에 저장</button>
+    </div>
+
+    <nav class="bottom-tab" aria-label="하단 탭">
+      <a href="index.html" data-tab="home"><span class="tab-icon home-icon"></span><strong>홈</strong></a>
+      <a href="planner.html" data-tab="recommend"><span class="tab-icon recommend-icon"></span><strong>추천</strong></a>
+      <a href="map.html" data-tab="map"><span class="tab-icon map-icon"></span><strong>지도</strong></a>
+      <a href="support.html" data-tab="support"><span class="tab-icon support-icon"></span><strong>지원</strong></a>
+      <a href="passport.html" data-tab="passport"><span class="tab-icon save-icon"></span><strong>저장</strong></a>
+    </nav>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

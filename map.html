@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>지도 | HanRoute AI</title>
+  <meta name="description" content="선택한 코스의 지도와 Google Maps 길찾기">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="map">
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="brand" href="index.html"><span class="brand-mark">HR</span><span><strong>지도</strong><small>Navigation helper</small></span></a>
+      <a class="header-pill" href="routes.html">코스 변경</a>
+    </header>
+
+    <main class="app-main">
+      <section class="page-title-card">
+        <p class="eyebrow">Route Map</p>
+        <h1 data-map-route-title>선택한 코스</h1>
+        <p>실제 GPS는 다음 버전에서 연결됩니다. 지금은 Google Maps 링크와 이동 순서를 확인할 수 있습니다.</p>
+      </section>
+
+      <section class="map-card">
+        <div class="map-canvas" data-map-canvas aria-label="지도 목업"></div>
+      </section>
+
+      <a class="button button-map button-block" href="#" target="_blank" rel="noopener" data-google-maps>Google Maps로 열기</a>
+
+      <section class="mobile-card">
+        <h2>이동 순서</h2>
+        <ol class="timeline-list" data-map-timeline></ol>
+      </section>
+
+      <section class="action-grid">
+        <button class="action-card" type="button" data-toast="적게 걷는 루트는 지도 API 연동 후 제공됩니다.">적게 걷는 루트</button>
+        <button class="action-card" type="button" data-toast="비 오는 날 실내 코스 조건이 선택되었습니다.">비 오는 날 실내 코스</button>
+        <button class="action-card" type="button" data-toast="현재 위치 주변 추천은 GPS 연동 후 제공됩니다.">현재 위치 주변 추천</button>
+      </section>
+    </main>
+
+    <nav class="bottom-tab" aria-label="하단 탭">
+      <a href="index.html" data-tab="home"><span class="tab-icon home-icon"></span><strong>홈</strong></a>
+      <a href="planner.html" data-tab="recommend"><span class="tab-icon recommend-icon"></span><strong>추천</strong></a>
+      <a href="map.html" data-tab="map"><span class="tab-icon map-icon"></span><strong>지도</strong></a>
+      <a href="support.html" data-tab="support"><span class="tab-icon support-icon"></span><strong>지원</strong></a>
+      <a href="passport.html" data-tab="passport"><span class="tab-icon save-icon"></span><strong>저장</strong></a>
+    </nav>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

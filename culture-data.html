@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>문화데이터 | HanRoute AI</title>
+  <meta name="description" content="공공 문화데이터 활용 현황과 추천 로직 설명">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="culture-data">
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="brand" href="about.html">
+        <span class="brand-mark back-mark">‹</span>
+        <span><strong>문화데이터</strong><small>Contest data view</small></span>
+      </a>
+      <a class="header-pill" href="about.html">소개</a>
+    </header>
+
+    <main class="app-main">
+      <section class="page-title-card">
+        <p class="eyebrow">Data Dashboard</p>
+        <h1>공공 문화데이터 확장 구조</h1>
+        <p>현재 정적 버전은 seed data를 사용합니다. 공식 API 연동은 Spring Boot 버전에서 처리합니다.</p>
+      </section>
+
+      <section class="metric-grid" data-culture-metrics></section>
+
+      <section class="mobile-card">
+        <h2>추천 요소</h2>
+        <div class="factor-row"><span>전통성 점수</span><strong>30%</strong></div>
+        <div class="factor-row"><span>외국인 친화도</span><strong>25%</strong></div>
+        <div class="factor-row"><span>숨은 문화 가치</span><strong>20%</strong></div>
+        <div class="factor-row"><span>도보 편의성</span><strong>15%</strong></div>
+        <div class="factor-row"><span>예산·실내 적합도</span><strong>10%</strong></div>
+      </section>
+
+      <section class="mobile-card">
+        <h2>데이터 소스 확장 계획</h2>
+        <div class="data-source-grid" data-source-list></div>
+      </section>
+
+      <section class="logic-stack">
+        <article><span>DB</span><strong>검증된 문화 사실</strong><p>공식 출처, 장소, 분류, 비용, 실내외, 영어 안내, 예약 필요 여부를 저장합니다.</p></article>
+        <article><span>Server</span><strong>필터링과 추천 점수</strong><p>방문 조건, 외국인 친화도, 예약 부담, 날씨 적합도를 계산합니다.</p></article>
+        <article><span>AI</span><strong>쉬운 문화 해설</strong><p>검증된 사실을 바탕으로 쉬운 설명, 키워드, 방문 팁을 생성합니다.</p></article>
+      </section>
+
+      <section class="mobile-card">
+        <h2>향후 API</h2>
+        <code>GET /api/resources</code>
+        <code>GET /api/resources/{id}</code>
+        <code>POST /api/recommend</code>
+        <code>GET /api/dashboard/summary</code>
+      </section>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

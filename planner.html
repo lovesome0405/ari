@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>조건 선택 | HanRoute AI</title>
+  <meta name="description" content="여행 조건을 단계별로 선택해 전통문화 스토리 코스를 추천받습니다.">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="recommend">
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="brand" href="index.html"><span class="brand-mark">HR</span><span><strong>코스 추천</strong><small>5단계 조건 선택</small></span></a>
+      <button class="header-pill" type="button" data-language-trigger>KR</button>
+    </header>
+
+    <main class="app-main planner-main">
+      <section class="page-title-card">
+        <p class="eyebrow">Route Planner</p>
+        <h1>나에게 맞는 전통문화 코스 찾기</h1>
+        <p>한 화면에 하나씩 선택하면 추천 조건이 저장됩니다.</p>
+      </section>
+
+      <section class="planner-progress" aria-label="진행 상태">
+        <span data-step-label>Step 1 / 5</span>
+        <div class="progress-track"><i data-progress-bar></i></div>
+      </section>
+
+      <form class="planner-form" data-planner-form>
+        <section class="planner-step is-active" data-step="1">
+          <h2>지역과 시간</h2>
+          <p>어디에서 얼마나 여행하나요?</p>
+          <div class="option-block" data-pref-group="region">
+            <span>지역</span>
+            <button class="choice-button is-active" type="button" data-value="종로구">종로구</button>
+            <button class="choice-button" type="button" data-value="중구">중구</button>
+            <button class="choice-button" type="button" data-value="종로+중구">종로+중구</button>
+          </div>
+          <div class="option-block" data-pref-group="time">
+            <span>시간</span>
+            <button class="choice-button is-active" type="button" data-value="2시간">2시간</button>
+            <button class="choice-button" type="button" data-value="3시간">3시간</button>
+            <button class="choice-button" type="button" data-value="반나절">반나절</button>
+            <button class="choice-button" type="button" data-value="하루">하루</button>
+          </div>
+        </section>
+
+        <section class="planner-step" data-step="2">
+          <h2>관심사</h2>
+          <p>어떤 전통문화를 보고 싶나요?</p>
+          <div class="option-block grid" data-pref-group="interests" data-multiple="true">
+            <button class="choice-button is-active" type="button" data-value="궁궐">궁궐</button>
+            <button class="choice-button" type="button" data-value="한옥">한옥</button>
+            <button class="choice-button" type="button" data-value="전통시장">전통시장</button>
+            <button class="choice-button" type="button" data-value="공예">공예</button>
+            <button class="choice-button" type="button" data-value="공연">공연</button>
+            <button class="choice-button" type="button" data-value="박물관">박물관</button>
+          </div>
+        </section>
+
+        <section class="planner-step" data-step="3">
+          <h2>동행 정보</h2>
+          <p>누구와 함께 여행하나요?</p>
+          <div class="option-block" data-pref-group="people">
+            <span>인원</span>
+            <button class="choice-button is-active" type="button" data-value="1명">1명</button>
+            <button class="choice-button" type="button" data-value="2명">2명</button>
+            <button class="choice-button" type="button" data-value="3~4명">3~4명</button>
+            <button class="choice-button" type="button" data-value="5명 이상">5명 이상</button>
+          </div>
+          <div class="option-block grid" data-pref-group="groupType">
+            <span>여행 형태</span>
+            <button class="choice-button is-active" type="button" data-value="혼자">혼자</button>
+            <button class="choice-button" type="button" data-value="친구와">친구와</button>
+            <button class="choice-button" type="button" data-value="커플">커플</button>
+            <button class="choice-button" type="button" data-value="가족">가족</button>
+            <button class="choice-button" type="button" data-value="아이 동반">아이 동반</button>
+            <button class="choice-button" type="button" data-value="부모님 동반">부모님 동반</button>
+          </div>
+        </section>
+
+        <section class="planner-step" data-step="4">
+          <h2>여행 스타일</h2>
+          <p>어떤 방식으로 여행하고 싶나요?</p>
+          <div class="option-block" data-pref-group="budget">
+            <span>예산</span>
+            <button class="choice-button is-active" type="button" data-value="무료 위주">무료 위주</button>
+            <button class="choice-button" type="button" data-value="유료 가능">유료 가능</button>
+            <button class="choice-button" type="button" data-value="상관없음">상관없음</button>
+          </div>
+          <div class="option-block" data-pref-group="walking">
+            <span>이동 부담</span>
+            <button class="choice-button is-active" type="button" data-value="적게 걷기">적게 걷기</button>
+            <button class="choice-button" type="button" data-value="보통">보통</button>
+            <button class="choice-button" type="button" data-value="많이 걸어도 괜찮음">많이 걸어도 괜찮음</button>
+          </div>
+          <div class="option-block" data-pref-group="indoorOutdoor">
+            <span>실내/실외</span>
+            <button class="choice-button is-active" type="button" data-value="실내">실내</button>
+            <button class="choice-button" type="button" data-value="실외">실외</button>
+            <button class="choice-button" type="button" data-value="상관없음">상관없음</button>
+          </div>
+        </section>
+
+        <section class="planner-step" data-step="5">
+          <h2>추가 요청</h2>
+          <p>원하는 조건이 더 있나요?</p>
+          <label class="text-field">
+            <span>자연어 요청</span>
+            <textarea data-pref-request rows="5" placeholder="종로에서 3시간 정도 전통문화 코스를 추천해줘. 너무 많이 걷지 않는 코스면 좋겠어."></textarea>
+          </label>
+          <div class="summary-preview" data-condition-summary>선택한 조건이 여기에 표시됩니다.</div>
+        </section>
+      </form>
+    </main>
+
+    <div class="bottom-cta planner-cta">
+      <button class="button button-secondary" type="button" data-planner-prev>이전</button>
+      <button class="button button-primary" type="button" data-planner-next>다음</button>
+      <button class="button button-primary button-block is-hidden" type="button" data-planner-finish>추천 코스 보기</button>
+    </div>
+
+    <nav class="bottom-tab" aria-label="하단 탭">
+      <a href="index.html" data-tab="home"><span class="tab-icon home-icon"></span><strong>홈</strong></a>
+      <a href="planner.html" data-tab="recommend"><span class="tab-icon recommend-icon"></span><strong>추천</strong></a>
+      <a href="map.html" data-tab="map"><span class="tab-icon map-icon"></span><strong>지도</strong></a>
+      <a href="support.html" data-tab="support"><span class="tab-icon support-icon"></span><strong>지원</strong></a>
+      <a href="passport.html" data-tab="passport"><span class="tab-icon save-icon"></span><strong>저장</strong></a>
+    </nav>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
