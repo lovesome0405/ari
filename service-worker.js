@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hanroute-ai-shell-v8';
+const CACHE_NAME = 'maru-shell-v9';
 const APP_SHELL = [
   'index.html',
   'planner.html',

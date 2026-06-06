@@ -16,7 +16,7 @@ const HOME_TIME_IMAGES = {
     },
     description: {
       KR: '현재 시간에 맞춰 낮, 저녁, 밤 분위기를 자동으로 적용합니다.',
-      EN: 'ARI automatically adapts the page mood to day, evening, or night.'
+      EN: 'MARU automatically adapts the page mood to day, evening, or night.'
     }
   },
   evening: {
@@ -33,7 +33,7 @@ const HOME_TIME_IMAGES = {
     },
     description: {
       KR: '저녁 시간에는 산책길과 공연을 연결한 문화 흐름을 부드럽게 보여줍니다.',
-      EN: 'In the evening, ARI highlights gentle walks and performance-friendly routes.'
+      EN: 'In the evening, MARU highlights gentle walks and performance-friendly routes.'
     }
   },
   night: {
@@ -65,7 +65,7 @@ const HOME_TIME_IMAGES = {
       timeEyebrow: 'ソウル時間帯ムード',
       languageConfirm: '日本語で開始します。',
       introTitle: '韓国伝統文化を理解する一番簡単なコース',
-      introBody: 'ARIが文化データと旅行条件をもとに、あなたに合う伝統文化ルートを推薦します。',
+      introBody: 'MARUが文化データと旅行条件をもとに、あなたに合う伝統文化ルートを推薦します。',
       principles: ['DB = 検証済み文化情報', 'Server = 条件フィルターと推薦スコア', 'AI = やさしい文化解説'],
       quickLabel: 'クイックスタート',
       todayRoute: '今日のおすすめコース',
@@ -80,7 +80,7 @@ const HOME_TIME_IMAGES = {
     },
     routes: {
       header: 'おすすめコース',
-      headerSub: 'Heritage routes',
+      headerSub: 'Seoul Heritage Guide',
       edit: '条件を変更',
       eyebrow: 'Recommended Routes',
       title: '伝統文化おすすめコース',
@@ -107,7 +107,7 @@ const HOME_TIME_IMAGES = {
       tip: '訪問のヒント:',
       booking: '予約案内:',
       warning: '営業時間、料金、予約、休館日は訪問前に公式情報で確認してください。',
-      passport: 'Route Passportに保存'
+      passport: '保存したコースに追加'
     },
     map: {
       header: '地図',
@@ -153,7 +153,7 @@ const HOME_TIME_IMAGES = {
       imageNotice: 'AI生成画像・公式写真ではなく理解を助ける画像です',
       imageMissing: '画像を読み込み中',
       savedRouteToast: 'コースを選択しました。',
-      passportToast: 'Route Passportに保存しました。'
+      passportToast: '保存したコースに追加しました。'
     }
   },
   CN: {
@@ -168,7 +168,7 @@ const HOME_TIME_IMAGES = {
       timeEyebrow: '首尔时段氛围',
       languageConfirm: '将以中文开始。',
       introTitle: '轻松理解韩国传统文化的路线',
-      introBody: 'ARI会根据文化数据和旅行条件，推荐适合你的传统文化路线。',
+      introBody: 'MARU会根据文化数据和旅行条件，推荐适合你的传统文化路线。',
       principles: ['DB = 已验证的文化信息', 'Server = 条件筛选与推荐分数', 'AI = 易懂文化解说'],
       quickLabel: '快速开始',
       todayRoute: '今日推荐路线',
@@ -183,7 +183,7 @@ const HOME_TIME_IMAGES = {
     },
     routes: {
       header: '推荐路线',
-      headerSub: 'Heritage routes',
+      headerSub: 'Seoul Heritage Guide',
       edit: '修改条件',
       eyebrow: 'Recommended Routes',
       title: '传统文化推荐路线',
@@ -210,7 +210,7 @@ const HOME_TIME_IMAGES = {
       tip: '游览提示:',
       booking: '预约说明:',
       warning: '访问前请通过官方信息确认营业时间、费用、预约和休馆日。',
-      passport: '保存到 Route Passport'
+      passport: '保存到已存路线'
     },
     map: {
       header: '地图',
@@ -256,7 +256,7 @@ const HOME_TIME_IMAGES = {
       imageNotice: 'AI生成图片・非官方地点照片，仅用于辅助理解',
       imageMissing: '图片加载中',
       savedRouteToast: '路线已选择。',
-      passportToast: '已保存到 Route Passport。'
+      passportToast: '已保存到已存路线。'
     }
   }
 };
@@ -270,8 +270,8 @@ const AI_PROVIDER_CONFIG = {
 };
 
 const ARI_SYSTEM_PROMPT = `
-너는 아리(Ari)다.
-아리는 한강의 옛 이름인 아리수에서 따온 한국 전통문화 여행 AI 가이드다.
+너는 마루(MARU)다.
+마루는 한국 전통문화 코스의 흐름을 차분하게 안내하는 서울 전통문화 AI 가이드다.
 
 역할:
 - 한국 전통문화, 궁궐, 한옥, 전통시장, 정원, 연못, 누각, 문화체험을 친절하게 설명한다.
@@ -758,8 +758,8 @@ const UI_COPY = {
     home: {
       timeEyebrow: '서울 시간대 추천',
       languageConfirm: '한국어로 시작합니다.',
-      introTitle: 'ARI 맞춤 전통문화 코스',
-      introBody: 'AI가 공식 문화데이터 구조를 바탕으로 당신에게 맞는 전통문화 스토리 코스를 추천합니다.',
+      introTitle: '마루 맞춤 전통문화 코스',
+      introBody: '마루가 공식 문화데이터 구조를 바탕으로 당신에게 맞는 전통문화 스토리 코스를 추천합니다.',
       principles: ['DB = 검증된 문화 사실', 'Server = 조건 필터링과 추천 점수', 'AI = 쉬운 문화 해설'],
       quickLabel: '빠른 시작',
       todayRoute: '오늘 추천 코스',
@@ -774,7 +774,7 @@ const UI_COPY = {
     },
     routes: {
       header: '추천 코스',
-      headerSub: 'Heritage routes',
+      headerSub: 'Seoul Heritage Guide',
       edit: '조건 수정',
       eyebrow: 'Recommended Routes',
       title: '추천 전통문화 코스',
@@ -789,7 +789,7 @@ const UI_COPY = {
       header: '코스 상세',
       headerSub: 'Story route detail',
       save: '저장',
-      selected: 'Selected Route',
+      selected: '선택한 코스',
       scoreSuffix: '점',
       reason: '추천 이유',
       mapButton: '선택한 지도에서 길찾기',
@@ -801,7 +801,7 @@ const UI_COPY = {
       tip: '방문 팁:',
       booking: '예약 안내:',
       warning: '운영시간, 요금, 예약 여부는 방문 전 공식 출처에서 확인하세요.',
-      passport: 'Route Passport에 저장'
+      passport: '문화여행 기록에 저장'
     },
     map: {
       header: '지도',
@@ -847,7 +847,7 @@ const UI_COPY = {
       imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 이해 보조 이미지',
       imageMissing: '이미지 준비 중',
       savedRouteToast: '코스가 선택되었습니다.',
-      passportToast: 'Route Passport에 저장되었습니다.'
+      passportToast: '문화여행 기록에 저장되었습니다.'
     }
   },
   EN: {
@@ -862,7 +862,7 @@ const UI_COPY = {
       timeEyebrow: 'Seoul Time Mood',
       languageConfirm: 'Starting in English.',
       introTitle: 'The easiest way to understand Korean heritage',
-      introBody: 'ARI recommends traditional culture routes based on structured cultural data and visitor needs.',
+      introBody: 'MARU recommends traditional culture routes based on structured cultural data and visitor needs.',
       principles: ['DB = verified cultural facts', 'Server = filters and recommendation score', 'AI = simple cultural interpretation'],
       quickLabel: 'Quick start',
       todayRoute: "Today's Routes",
@@ -877,11 +877,11 @@ const UI_COPY = {
     },
     routes: {
       header: 'Recommended Routes',
-      headerSub: 'Heritage routes',
+      headerSub: 'Seoul Heritage Guide',
       edit: 'Edit filters',
       eyebrow: 'Recommended Routes',
       title: 'Traditional Culture Routes',
-      body: 'ARI recommends story-based routes that are easy for international visitors to understand.',
+      body: 'MARU recommends story-based routes that are easy for international visitors to understand.',
       condition: 'Selected filters',
       reason: 'Why this route',
       select: 'Choose this route',
@@ -904,7 +904,7 @@ const UI_COPY = {
       tip: 'Visit tip:',
       booking: 'Booking note:',
       warning: 'Check official sources for hours, prices, reservations, and closures before visiting.',
-      passport: 'Save to Route Passport'
+      passport: 'Save to Saved Routes'
     },
     map: {
       header: 'Map',
@@ -950,7 +950,7 @@ const UI_COPY = {
       imageNotice: 'AI-generated image · visual guide, not an official location photo',
       imageMissing: 'Image loading',
       savedRouteToast: 'Route selected.',
-      passportToast: 'Saved to Route Passport.'
+      passportToast: 'Saved to Saved Routes.'
     }
   },
   JP: {
@@ -964,8 +964,8 @@ const UI_COPY = {
     home: {
       timeEyebrow: 'ソウル時間のムード',
       languageConfirm: '日本語で始めます。',
-      introTitle: 'ARI カスタム伝統文化コース',
-      introBody: 'ARIは文化データと旅行者の条件をもとに、理解しやすい伝統文化ルートを推薦します。',
+      introTitle: 'MARU カスタム伝統文化コース',
+      introBody: 'MARUは文化データと旅行者の条件をもとに、理解しやすい伝統文化ルートを推薦します。',
       principles: ['DB = 検証された文化情報', 'Server = 条件フィルターと推薦スコア', 'AI = わかりやすい文化解説'],
       quickLabel: 'クイックスタート',
       todayRoute: '今日のおすすめコース',
@@ -980,11 +980,11 @@ const UI_COPY = {
     },
     routes: {
       header: 'おすすめコース',
-      headerSub: 'Heritage routes',
+      headerSub: 'Seoul Heritage Guide',
       edit: '条件編集',
       eyebrow: 'Recommended Routes',
       title: '伝統文化コース',
-      body: 'ARIは海外旅行者にも理解しやすいストーリー型コースを推薦します。',
+      body: 'MARUは海外旅行者にも理解しやすいストーリー型コースを推薦します。',
       condition: '選択条件',
       reason: 'おすすめ理由',
       select: 'このコースを選択',
@@ -1007,7 +1007,7 @@ const UI_COPY = {
       tip: '訪問のヒント:',
       booking: '予約案内:',
       warning: '営業時間、料金、予約、休館日は訪問前に公式情報で確認してください。',
-      passport: 'Route Passportに保存'
+      passport: '保存したコースに追加'
     },
     map: {
       header: '地図',
@@ -1053,7 +1053,7 @@ const UI_COPY = {
       imageNotice: 'AI生成画像 · 実際の場所写真ではない理解補助画像',
       imageMissing: '画像を読み込み中',
       savedRouteToast: 'コースを選択しました。',
-      passportToast: 'Route Passportに保存しました。'
+      passportToast: '保存したコースに追加しました。'
     }
   },
   CN: {
@@ -1067,8 +1067,8 @@ const UI_COPY = {
     home: {
       timeEyebrow: '首尔时间氛围',
       languageConfirm: '将以中文开始。',
-      introTitle: 'ARI 定制传统文化路线',
-      introBody: 'ARI根据文化数据和旅行者条件，推荐容易理解的韩国传统文化路线。',
+      introTitle: 'MARU 定制传统文化路线',
+      introBody: 'MARU根据文化数据和旅行者条件，推荐容易理解的韩国传统文化路线。',
       principles: ['DB = 已验证的文化信息', 'Server = 条件筛选与推荐分数', 'AI = 简明文化解读'],
       quickLabel: '快速开始',
       todayRoute: '今日推荐路线',
@@ -1083,11 +1083,11 @@ const UI_COPY = {
     },
     routes: {
       header: '推荐路线',
-      headerSub: 'Heritage routes',
+      headerSub: 'Seoul Heritage Guide',
       edit: '修改条件',
       eyebrow: 'Recommended Routes',
       title: '传统文化路线',
-      body: 'ARI推荐适合外国游客理解的故事型传统文化路线。',
+      body: 'MARU推荐适合外国游客理解的故事型传统文化路线。',
       condition: '已选条件',
       reason: '推荐理由',
       select: '选择此路线',
@@ -1110,7 +1110,7 @@ const UI_COPY = {
       tip: '参观提示:',
       booking: '预约说明:',
       warning: '请在访问前通过官方信息确认开放时间、费用、预约和休馆信息。',
-      passport: '保存到 Route Passport'
+      passport: '保存到已存路线'
     },
     map: {
       header: '地图',
@@ -1156,7 +1156,7 @@ const UI_COPY = {
       imageNotice: 'AI生成图片 · 非实际地点照片，仅用于理解辅助',
       imageMissing: '图片加载中',
       savedRouteToast: '已选择路线。',
-      passportToast: '已保存到 Route Passport。'
+      passportToast: '已保存到已存路线。'
     }
   }
 };
@@ -3031,7 +3031,7 @@ function renderAriMessages() {
   if (!ariMessages.length) {
     container.innerHTML = `
       <div class="ari-message ari-message-assistant">
-        <strong>아리</strong>
+        <strong>마루</strong>
         <p>안녕하세요. 한국 전통문화 코스와 여행 도움을 앱 데이터 기준으로 안내해드릴게요.</p>
       </div>
     `;
@@ -3040,7 +3040,7 @@ function renderAriMessages() {
 
   container.innerHTML = ariMessages.map((item) => `
     <div class="ari-message ari-message-${escapeHtml(item.role)}">
-      <strong>${item.role === 'user' ? '나' : '아리'}</strong>
+      <strong>${item.role === 'user' ? '나' : '마루'}</strong>
       <p>${escapeHtml(item.message)}</p>
     </div>
   `).join('');
@@ -3056,7 +3056,7 @@ function appendChatMessage(role, message) {
 function setAriBusy(isBusy) {
   const status = qs('[data-ari-status]');
   const sendButton = qs('[data-ari-send]');
-  if (status) status.textContent = isBusy ? '아리가 답변을 준비하고 있어요.' : '';
+  if (status) status.textContent = isBusy ? '마루가 답변을 준비하고 있어요.' : '';
   if (sendButton) sendButton.disabled = isBusy;
 }
 
@@ -3104,14 +3104,14 @@ function mountAriChat() {
   ariMessages = storageJsonGet(STORAGE_KEYS.ariMessages, []);
   shell.insertAdjacentHTML('beforeend', `
     <section class="ari-chat" data-ari-root>
-      <button class="ari-fab" type="button" data-ari-open aria-label="아리 챗봇 열기">아리</button>
-      <div class="ari-panel" data-ari-panel role="dialog" aria-hidden="true" aria-label="아리 전통문화 AI 가이드">
+      <button class="ari-fab" type="button" data-ari-open aria-label="마루 챗봇 열기">마루</button>
+      <div class="ari-panel" data-ari-panel role="dialog" aria-hidden="true" aria-label="마루 전통문화 AI 가이드">
         <header class="ari-header">
           <div>
-            <span>아리(Ari)</span>
+            <span>마루(MARU)</span>
             <strong>전통문화 AI 가이드</strong>
           </div>
-          <button type="button" data-ari-close aria-label="아리 챗봇 닫기">×</button>
+          <button type="button" data-ari-close aria-label="마루 챗봇 닫기">×</button>
         </header>
         <div class="ari-quick-list">
           ${ARI_QUICK_QUESTIONS.map((question) => `<button type="button" data-ari-quick="${escapeHtml(question)}">${escapeHtml(question)}</button>`).join('')}
