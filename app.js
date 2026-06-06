@@ -3,7 +3,7 @@
 // EDIT HOME TIME IMAGES HERE
 const HOME_TIME_IMAGES = {
   day: {
-    label: { KR: '낮', EN: 'Day' },
+    label: { KR: '낮', EN: 'Day', JP: '昼', CN: '白天' },
     imageUrls: [
       'assets/images/home/day-1.webp',
       'assets/images/home/day-2.webp',
@@ -12,15 +12,19 @@ const HOME_TIME_IMAGES = {
     ],
     title: {
       KR: '외국인을 위한 서울 전통문화 AI 가이드',
-      EN: 'Seoul Heritage Guide for Global Travelers'
+      EN: 'Seoul Heritage Guide for Global Travelers',
+      JP: '外国人のためのソウル伝統文化AIガイド',
+      CN: '面向外国游客的首尔传统文化AI指南'
     },
     description: {
       KR: '궁궐, 한옥, 사찰, 역사 공간을 여행자의 시간·날씨·관심사에 맞춰 이야기 흐름으로 추천합니다.',
-      EN: 'MARU adapts the page mood to day, evening, or night.'
+      EN: 'MARU recommends palaces, hanok villages, temples, and historic spaces around your time, weather, and interests.',
+      JP: '宮殿、韓屋、寺院、歴史空間を、時間・天気・関心に合わせて物語の流れで推薦します。',
+      CN: '根据时间、天气和兴趣，以故事路线推荐宫殿、韩屋、寺庙与历史空间。'
     }
   },
   evening: {
-    label: { KR: '저녁', EN: 'Evening' },
+    label: { KR: '저녁', EN: 'Evening', JP: '夕方', CN: '傍晚' },
     imageUrls: [
       'assets/images/home/evening-1.webp',
       'assets/images/home/evening-2.webp',
@@ -29,15 +33,19 @@ const HOME_TIME_IMAGES = {
     ],
     title: {
       KR: '아리가 당신의 서울 전통문화 여정을 도와드릴게요',
-      EN: 'Heritage Stories in the Evening Glow'
+      EN: 'ARI will guide your Seoul heritage route',
+      JP: 'ARIがソウル伝統文化の旅を案内します',
+      CN: 'ARI将为你引导首尔传统文化路线'
     },
     description: {
       KR: '저녁 시간에는 산책길과 공연을 연결한 문화 흐름을 부드럽게 보여줍니다.',
-      EN: 'In the evening, MARU highlights gentle walks and performance-friendly routes.'
+      EN: 'In the evening, MARU highlights gentle walks and performance-friendly routes.',
+      JP: '夕方には散策路や公演とつながる文化の流れをやさしく提案します。',
+      CN: '傍晚时，MARU会优先呈现适合散步和演出的文化路线。'
     }
   },
   night: {
-    label: { KR: '밤', EN: 'Night' },
+    label: { KR: '밤', EN: 'Night', JP: '夜', CN: '夜晚' },
     imageUrls: [
       'assets/images/home/night-1.webp',
       'assets/images/home/night-2.webp',
@@ -46,11 +54,15 @@ const HOME_TIME_IMAGES = {
     ],
     title: {
       KR: '밤에도 이어지는 서울 전통문화 이야기',
-      EN: 'Korean Heritage After Dark'
+      EN: 'Seoul Heritage Stories After Dark',
+      JP: '夜にも続くソウル伝統文化の物語',
+      CN: '夜晚继续展开的首尔传统文化故事'
     },
     description: {
       KR: '궁궐 야경과 조용한 한옥 분위기에 맞춰 차분한 화면으로 전환됩니다.',
-      EN: 'At night, the interface shifts into a calmer palace and hanok mood.'
+      EN: 'At night, the interface shifts into a calmer palace and hanok mood.',
+      JP: '宮殿の夜景や静かな韓屋の雰囲気に合わせて落ち着いた表示に変わります。',
+      CN: '夜晚会切换为更适合宫殿夜景和安静韩屋氛围的画面。'
     }
   },
   JP: {
@@ -739,10 +751,47 @@ const STORAGE_KEYS = {
 };
 
 const LANGUAGES = {
-  KR: '한국어',
-  EN: 'English',
-  JP: '日本語',
-  CN: '中文'
+  ko: '한국어',
+  en: 'English',
+  ja: '日本語',
+  zh: '中文'
+};
+
+const LANGUAGE_ALIASES = {
+  ko: 'ko',
+  KR: 'ko',
+  kr: 'ko',
+  en: 'en',
+  EN: 'en',
+  ja: 'ja',
+  JP: 'ja',
+  jp: 'ja',
+  zh: 'zh',
+  CN: 'zh',
+  cn: 'zh',
+  'zh-CN': 'zh',
+  'zh-cn': 'zh'
+};
+
+const LANGUAGE_LEGACY_CODES = {
+  ko: 'KR',
+  en: 'EN',
+  ja: 'JP',
+  zh: 'CN'
+};
+
+const LANGUAGE_HTML_LANG = {
+  ko: 'ko',
+  en: 'en',
+  ja: 'ja',
+  zh: 'zh'
+};
+
+const LANGUAGE_PILL_LABELS = {
+  ko: 'KO',
+  en: 'EN',
+  ja: 'JA',
+  zh: 'ZH'
 };
 
 const MAP_SERVICES = {
@@ -855,6 +904,21 @@ const UI_COPY = {
       action: '확인하기'
     },
     planner: {
+      eyebrow: 'Route Planner',
+      title: '나에게 맞는 전통문화 코스 찾기',
+      body: '한 화면에 하나씩 선택하면 추천 조건이 저장됩니다.',
+      stepLabel: 'Step',
+      steps: [
+        { title: '지역과 시간', body: '어디에서 얼마나 여행하나요?' },
+        { title: '관심사', body: '어떤 전통문화를 보고 싶나요?' },
+        { title: '동행 정보', body: '누구와 함께 여행하나요?' },
+        { title: '여행 스타일', body: '어떤 방식으로 여행하고 싶나요?' },
+        { title: '추가 요청', body: '원하는 조건이 더 있나요?' }
+      ],
+      optionLabels: ['지역', '시간', '인원', '여행 형태', '예산', '이동 부담', '실내/실외'],
+      requestLabel: '자연어 요청',
+      requestPlaceholder: '종로에서 3시간 정도 전통문화 코스를 추천해줘. 너무 많이 걷지 않는 코스면 좋겠어.',
+      summaryPlaceholder: '선택한 조건이 여기에 표시됩니다.',
       prev: '이전',
       next: '다음',
       finish: '추천 코스 보기'
@@ -970,6 +1034,21 @@ const UI_COPY = {
       action: 'Check'
     },
     planner: {
+      eyebrow: 'Route Planner',
+      title: 'Find a heritage route that fits you',
+      body: 'Choose one item at a time and MARU will save your route preferences.',
+      stepLabel: 'Step',
+      steps: [
+        { title: 'Area and Time', body: 'Where and how long will you travel?' },
+        { title: 'Interests', body: 'What kind of heritage do you want to see?' },
+        { title: 'Travel Party', body: 'Who are you traveling with?' },
+        { title: 'Travel Style', body: 'How would you like to explore?' },
+        { title: 'Extra Request', body: 'Any extra conditions?' }
+      ],
+      optionLabels: ['Area', 'Time', 'People', 'Group type', 'Budget', 'Walking', 'Indoor/Outdoor'],
+      requestLabel: 'Free-text request',
+      requestPlaceholder: 'Recommend a 3-hour heritage route around Jongno. I prefer less walking.',
+      summaryPlaceholder: 'Your selected filters will appear here.',
       prev: 'Back',
       next: 'Next',
       finish: 'See routes'
@@ -1008,8 +1087,8 @@ const UI_COPY = {
       start: '始める'
     },
     routes: {
-      header: 'おすすめコース',
-      headerSub: 'Seoul Heritage Guide',
+      header: 'MARU',
+      headerSub: 'おすすめコース',
       edit: '条件編集',
       eyebrow: 'Recommended Routes',
       title: '伝統文化コース',
@@ -1033,8 +1112,8 @@ const UI_COPY = {
       beta: 'beta'
     },
     detail: {
-      header: 'コース詳細',
-      headerSub: 'Story route detail',
+      header: 'MARU',
+      headerSub: 'コース詳細',
       save: '保存',
       selected: '選択したコース',
       scoreSuffix: '点',
@@ -1051,8 +1130,8 @@ const UI_COPY = {
       passport: '保存したコースに追加'
     },
     map: {
-      header: '地図',
-      headerSub: 'Navigation helper',
+      header: 'MARU',
+      headerSub: '地図',
       changeRoute: 'コース変更',
       eyebrow: 'Route Map',
       fallbackTitle: '選択したコース',
@@ -1072,8 +1151,8 @@ const UI_COPY = {
       savedToast: '地図サービスを保存しました。'
     },
     support: {
-      header: '旅行者サポート',
-      headerSub: 'Help during trip',
+      header: 'MARU',
+      headerSub: '旅行者サポート',
       list: 'サポート一覧',
       eyebrow: 'Emergency',
       title: '今すぐサポートが必要ですか？',
@@ -1085,6 +1164,21 @@ const UI_COPY = {
       action: '確認する'
     },
     planner: {
+      eyebrow: 'Route Planner',
+      title: 'あなたに合う伝統文化コースを探す',
+      body: '一つずつ選ぶと、推薦条件が保存されます。',
+      stepLabel: 'Step',
+      steps: [
+        { title: 'エリアと時間', body: 'どこで、どのくらい旅行しますか？' },
+        { title: '関心分野', body: 'どんな伝統文化を見たいですか？' },
+        { title: '同行情報', body: '誰と一緒に旅行しますか？' },
+        { title: '旅行スタイル', body: 'どんな方法で巡りたいですか？' },
+        { title: '追加リクエスト', body: 'ほかに希望条件はありますか？' }
+      ],
+      optionLabels: ['エリア', '時間', '人数', '旅行タイプ', '予算', '歩行負担', '屋内/屋外'],
+      requestLabel: '自由入力リクエスト',
+      requestPlaceholder: '鍾路で3時間ほどの伝統文化コースを推薦して。あまり歩かないコースがいいです。',
+      summaryPlaceholder: '選択した条件がここに表示されます。',
       prev: '戻る',
       next: '次へ',
       finish: 'おすすめコースを見る'
@@ -1123,8 +1217,8 @@ const UI_COPY = {
       start: '开始'
     },
     routes: {
-      header: '推荐路线',
-      headerSub: 'Seoul Heritage Guide',
+      header: 'MARU',
+      headerSub: '推荐路线',
       edit: '修改条件',
       eyebrow: 'Recommended Routes',
       title: '传统文化路线',
@@ -1148,8 +1242,8 @@ const UI_COPY = {
       beta: 'beta'
     },
     detail: {
-      header: '路线详情',
-      headerSub: 'Story route detail',
+      header: 'MARU',
+      headerSub: '路线详情',
       save: '保存',
       selected: '已选路线',
       scoreSuffix: '分',
@@ -1166,8 +1260,8 @@ const UI_COPY = {
       passport: '保存到已存路线'
     },
     map: {
-      header: '地图',
-      headerSub: 'Navigation helper',
+      header: 'MARU',
+      headerSub: '地图',
       changeRoute: '更换路线',
       eyebrow: 'Route Map',
       fallbackTitle: '已选路线',
@@ -1187,8 +1281,8 @@ const UI_COPY = {
       savedToast: '地图服务已保存。'
     },
     support: {
-      header: '旅行者帮助',
-      headerSub: 'Help during trip',
+      header: 'MARU',
+      headerSub: '旅行者帮助',
       list: '帮助列表',
       eyebrow: 'Emergency',
       title: '现在需要帮助吗？',
@@ -1200,6 +1294,21 @@ const UI_COPY = {
       action: '查看'
     },
     planner: {
+      eyebrow: 'Route Planner',
+      title: '寻找适合你的传统文化路线',
+      body: '逐项选择后，推荐条件会被保存。',
+      stepLabel: 'Step',
+      steps: [
+        { title: '地区和时间', body: '你想在哪里、旅行多久？' },
+        { title: '兴趣', body: '你想看哪类传统文化？' },
+        { title: '同行信息', body: '你和谁一起旅行？' },
+        { title: '旅行方式', body: '你希望怎样游览？' },
+        { title: '额外需求', body: '还有其他条件吗？' }
+      ],
+      optionLabels: ['地区', '时间', '人数', '旅行类型', '预算', '步行强度', '室内/室外'],
+      requestLabel: '自由输入需求',
+      requestPlaceholder: '请推荐钟路附近约3小时的传统文化路线。我希望少走路。',
+      summaryPlaceholder: '你选择的条件会显示在这里。',
       prev: '上一步',
       next: '下一步',
       finish: '查看推荐路线'
@@ -1210,6 +1319,155 @@ const UI_COPY = {
       imageMissing: '图片加载中',
       savedRouteToast: '已选择路线。',
       passportToast: '已保存到已存路线。'
+    }
+  }
+};
+
+const translations = {
+  ko: UI_COPY.KR,
+  en: UI_COPY.EN,
+  ja: UI_COPY.JP,
+  zh: UI_COPY.CN
+};
+
+const CONVENIENCE_TRANSLATIONS = {
+  ko: {
+    englishAvailable: '영어 안내 가능',
+    checkEnglish: '영어 안내 확인 필요',
+    visitorFavorite: '외국인 인기',
+    hiddenResource: '숨은 문화자원',
+    reservationNeeded: '예약 필요',
+    noReservation: '예약 불필요'
+  },
+  en: {
+    englishAvailable: 'English available',
+    checkEnglish: 'Check English support',
+    visitorFavorite: 'Visitor favorite',
+    hiddenResource: 'Hidden culture resource',
+    reservationNeeded: 'Reservation needed',
+    noReservation: 'No reservation needed'
+  },
+  ja: {
+    englishAvailable: '英語案内あり',
+    checkEnglish: '英語案内を確認',
+    visitorFavorite: '外国人に人気',
+    hiddenResource: '隠れた文化資源',
+    reservationNeeded: '予約必要',
+    noReservation: '予約不要'
+  },
+  zh: {
+    englishAvailable: '提供英语导览',
+    checkEnglish: '请确认英语支持',
+    visitorFavorite: '外国游客喜爱',
+    hiddenResource: '隐藏文化资源',
+    reservationNeeded: '需要预约',
+    noReservation: '无需预约'
+  }
+};
+
+const GENERATED_ROUTE_TRANSLATIONS = {
+  ja: {
+    'first-visit-seoul-heritage': {
+      title: '初めてのソウル伝統文化コース',
+      subtitle: '宮殿・韓屋・伝統通りを一度に理解する入門ルート',
+      reason: 'ソウルの代表的な伝統文化シーンを無理なくつなげて見られます。',
+      summary: '宮殿、韓屋の街並み、伝統通りをつなぐ初訪問者向けのコースです。',
+      tip: '景福宮周辺は歩く時間が多いので、歩きやすい靴がおすすめです。',
+      time: '約3〜4時間',
+      walking: '普通',
+      fee: '低予算'
+    },
+    'rainy-day-indoor-heritage': {
+      title: '雨の日おすすめコース',
+      subtitle: '博物館と屋内文化施設を中心に巡るルート',
+      reason: '天気の負担を減らしながら、展示と文化施設で伝統文化の流れを追えます。',
+      summary: '雨の日でも安定して楽しめる屋内中心の文化コースです。',
+      tip: '博物館の休館日と公演・体験の予約情報を先に確認してください。',
+      time: '約3時間',
+      walking: '少なめ',
+      fee: '無料〜有料'
+    },
+    'photo-spot-heritage-walk': {
+      title: '写真スポットコース',
+      subtitle: '宮殿・韓屋・城郭の景色を楽しむルート',
+      reason: '写真に残しやすいソウル伝統文化の代表的な場面を自然につなげます。',
+      summary: '視覚的に印象的な場所を中心に構成した散策コースです。',
+      tip: '夕方は城郭や石垣道が特にきれいです。雨の日は屋内コースに切り替えましょう。',
+      time: '約3〜4時間',
+      walking: '普通',
+      fee: '低予算'
+    },
+    'deep-history-route': {
+      title: '歴史を深く見るコース',
+      subtitle: '王室儀礼・近現代史・都市史をつなぐルート',
+      reason: '王室文化から近現代の記憶まで続くソウルの歴史の流れを見られます。',
+      summary: '儀礼、近現代史、城門、都市史を深く理解するコースです。',
+      tip: '展示解説を読む時間を考え、訪問地を増やしすぎないのがおすすめです。',
+      time: '半日',
+      walking: '普通',
+      fee: '無料〜有料'
+    },
+    'easy-walking-heritage': {
+      title: '気軽に歩くコース',
+      subtitle: '歩行負担が少ない近距離の伝統文化散策',
+      reason: '移動の負担を抑えながら、寺院、韓屋、伝統通り、小さな博物館を体験できます。',
+      summary: '近い場所をつなぐ、軽めの伝統文化散策コースです。',
+      tip: '益善洞と仁寺洞は混雑することがあるため、午前か早い夕方が歩きやすいです。',
+      time: '約2〜3時間',
+      walking: '少なめ',
+      fee: '無料中心'
+    }
+  },
+  zh: {
+    'first-visit-seoul-heritage': {
+      title: '首次到访推荐路线',
+      subtitle: '一次理解宫殿、韩屋与传统街区的入门路线',
+      reason: '适合外国游客轻松串联首尔传统文化的代表场景。',
+      summary: '连接宫殿、韩屋街区和传统街道的首尔传统文化入门路线。',
+      tip: '景福宫周边步行较多，建议穿舒适的鞋。',
+      time: '约3–4小时',
+      walking: '普通',
+      fee: '低预算'
+    },
+    'rainy-day-indoor-heritage': {
+      title: '雨天推荐路线',
+      subtitle: '以博物馆和室内文化空间为主的路线',
+      reason: '以室内展览和文化设施为中心，降低天气影响并延续传统文化脉络。',
+      summary: '雨天也能稳定参观的室内文化路线。',
+      tip: '请先确认博物馆闭馆日以及演出、体验是否需要预约。',
+      time: '约3小时',
+      walking: '较少',
+      fee: '免费至付费'
+    },
+    'photo-spot-heritage-walk': {
+      title: '摄影名胜路线',
+      subtitle: '围绕宫殿、韩屋、城墙和散步路的视觉路线',
+      reason: '自然串联适合拍照留念的首尔传统文化代表场景。',
+      summary: '以视觉印象强的地点为中心设计的传统文化散步路线。',
+      tip: '傍晚时城墙和石墙路尤其适合拍照；下雨时建议改为室内路线。',
+      time: '约3–4小时',
+      walking: '普通',
+      fee: '低预算'
+    },
+    'deep-history-route': {
+      title: '深度历史路线',
+      subtitle: '连接王室礼仪、近现代史和城市史的路线',
+      reason: '可以看到首尔传统文化从王室文化延伸到近现代记忆的脉络。',
+      summary: '深入理解王室礼仪、近现代史、城门与城市历史的路线。',
+      tip: '建议预留阅读展览说明的时间，不要安排过多地点。',
+      time: '半天',
+      walking: '普通',
+      fee: '免费至付费'
+    },
+    'easy-walking-heritage': {
+      title: '轻松步行路线',
+      subtitle: '步行难度较低、地点相近的传统文化散步',
+      reason: '减少移动负担，同时体验寺庙、韩屋、传统街道和小型博物馆。',
+      summary: '串联相近地点的轻量传统文化散步路线。',
+      tip: '益善洞和仁寺洞可能较拥挤，上午或傍晚较早时段更舒适。',
+      time: '约2–3小时',
+      walking: '较少',
+      fee: '以免费为主'
     }
   }
 };
@@ -2027,13 +2285,23 @@ function showToast(message) {
   toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 2400);
 }
 
+function normalizeLanguage(language) {
+  return LANGUAGE_ALIASES[String(language || '').trim()] || 'ko';
+}
+
+function getLegacyLanguage(language = getCurrentLanguage()) {
+  return LANGUAGE_LEGACY_CODES[normalizeLanguage(language)] || 'KR';
+}
+
 function getCurrentLanguage() {
-  return LANGUAGES[storageGet(STORAGE_KEYS.language, 'KR')] ? storageGet(STORAGE_KEYS.language, 'KR') : 'KR';
+  return normalizeLanguage(storageGet(STORAGE_KEYS.language, 'ko'));
 }
 
 function textFrom(value, language = getCurrentLanguage()) {
   if (value && typeof value === 'object' && !Array.isArray(value)) {
-    return value[language] || value.KR || value.EN || '';
+    const code = normalizeLanguage(language);
+    const legacyCode = getLegacyLanguage(code);
+    return value[code] || value[legacyCode] || value.KR || value.EN || value.ko || value.en || '';
   }
   return value || '';
 }
@@ -2041,7 +2309,11 @@ function textFrom(value, language = getCurrentLanguage()) {
 function t(path, fallback = '') {
   const language = getCurrentLanguage();
   const read = (source) => path.split('.').reduce((value, key) => value?.[key], source);
-  return read(UI_COPY[language]) ?? read(UI_COPY.KR) ?? fallback;
+  return read(translations[language]) ?? read(translations.ko) ?? fallback;
+}
+
+function convenienceText(key) {
+  return CONVENIENCE_TRANSLATIONS[getCurrentLanguage()]?.[key] || CONVENIENCE_TRANSLATIONS.en[key] || key;
 }
 
 function setText(selector, value) {
@@ -2313,7 +2585,7 @@ async function loadCultureResources() {
 
 function applyStaticTranslations() {
   const language = getCurrentLanguage();
-  document.documentElement.lang = ({ KR: 'ko', EN: 'en', JP: 'ja', CN: 'zh-CN' })[language] || 'ko';
+  document.documentElement.lang = LANGUAGE_HTML_LANG[language] || 'ko';
 
   Object.entries({
     home: 'tabs.home',
@@ -2325,17 +2597,10 @@ function applyStaticTranslations() {
     setText(`[data-tab="${tab}"] strong`, t(key));
   });
 
-  qsa('[data-language="KR"]').forEach((button) => {
-    button.textContent = '한국어';
-  });
-  qsa('[data-language="EN"]').forEach((button) => {
-    button.textContent = 'English';
-  });
-  qsa('[data-language="JP"]').forEach((button) => {
-    button.textContent = '日本語';
-  });
-  qsa('[data-language="CN"]').forEach((button) => {
-    button.textContent = '中文';
+  qsa('[data-language]').forEach((button) => {
+    const code = normalizeLanguage(button.dataset.language);
+    button.dataset.language = code;
+    button.textContent = LANGUAGES[code] || LANGUAGES.ko;
   });
 
   const confirm = qs('[data-language-confirm]');
@@ -2440,6 +2705,34 @@ function applyStaticTranslations() {
   }
 
   if (fileName === 'planner.html') {
+    setText('.page-title-card .eyebrow', t('planner.eyebrow'));
+    setText('.page-title-card h1', t('planner.title'));
+    setText('.page-title-card > p:not(.eyebrow)', t('planner.body'));
+
+    qsa('[data-step]').forEach((step, index) => {
+      const copy = t('planner.steps')[index];
+      if (!copy) return;
+      const title = qs('h2', step);
+      const body = qs(':scope > p', step);
+      if (title) title.textContent = copy.title;
+      if (body) body.textContent = copy.body;
+    });
+
+    qsa('.option-block > span').forEach((span, index) => {
+      span.textContent = t('planner.optionLabels')[index] || span.textContent;
+    });
+
+    qsa('[data-pref-group] .choice-button').forEach((button) => {
+      button.textContent = translatePreferenceValue(button.dataset.value);
+    });
+
+    const requestLabel = qs('.text-field span');
+    if (requestLabel) requestLabel.textContent = t('planner.requestLabel');
+    qs('[data-pref-request]')?.setAttribute('placeholder', t('planner.requestPlaceholder'));
+
+    const summary = qs('.summary-preview');
+    if (summary && !summary.textContent.trim()) summary.textContent = t('planner.summaryPlaceholder');
+
     setText('[data-planner-prev]', t('planner.prev'));
     setText('[data-planner-next]', t('planner.next'));
     setText('[data-planner-finish]', t('planner.finish'));
@@ -2463,17 +2756,19 @@ function renderLocalizedContent() {
 }
 
 function setLanguage(language, options = {}) {
-  const nextLanguage = LANGUAGES[language] ? language : 'KR';
+  const nextLanguage = normalizeLanguage(language);
   storageSet(STORAGE_KEYS.language, nextLanguage);
 
   qsa('[data-language]').forEach((button) => {
-    const isActive = button.dataset.language === nextLanguage;
+    const buttonLanguage = normalizeLanguage(button.dataset.language);
+    button.dataset.language = buttonLanguage;
+    const isActive = buttonLanguage === nextLanguage;
     button.classList.toggle('is-active', isActive);
     button.setAttribute('aria-pressed', String(isActive));
   });
 
   qsa('[data-language-trigger]').forEach((button) => {
-    button.textContent = nextLanguage;
+    button.textContent = LANGUAGE_PILL_LABELS[nextLanguage] || LANGUAGE_PILL_LABELS.ko;
   });
 
   applyStaticTranslations();
@@ -2502,8 +2797,9 @@ function loadUserPreference() {
 
 function translatePreferenceValue(value) {
   const language = getCurrentLanguage();
-  if (language === 'KR') return value;
-  return PREFERENCE_TRANSLATIONS[language]?.[value] || PREFERENCE_TRANSLATIONS.EN[value] || value;
+  if (language === 'ko') return value;
+  const legacyLanguage = getLegacyLanguage(language);
+  return PREFERENCE_TRANSLATIONS[legacyLanguage]?.[value] || PREFERENCE_TRANSLATIONS.EN[value] || value;
 }
 
 function formatPreference(preference) {
@@ -2550,26 +2846,19 @@ function getRouteFromUrlOrStorage() {
 function renderConvenienceBadges(convenience) {
   if (!convenience) return '';
   const labels = convenience.labels || [
-    convenience.englishAvailable
-      ? (getCurrentLanguage() === 'EN' ? 'English available' : '영어 안내 가능')
-      : (getCurrentLanguage() === 'EN' ? 'Check English support' : '영어 안내 확인 필요'),
-    convenience.foreignerPopular
-      ? (getCurrentLanguage() === 'EN' ? 'Visitor favorite' : '외국인 인기')
-      : (getCurrentLanguage() === 'EN' ? 'Hidden culture resource' : '숨은 문화자원'),
-    convenience.reservationRequired
-      ? (getCurrentLanguage() === 'EN' ? 'Reservation needed' : '예약 필요')
-      : (getCurrentLanguage() === 'EN' ? 'No reservation needed' : '예약 불필요')
+    convenience.englishAvailable ? convenienceText('englishAvailable') : convenienceText('checkEnglish'),
+    convenience.foreignerPopular ? convenienceText('visitorFavorite') : convenienceText('hiddenResource'),
+    convenience.reservationRequired ? convenienceText('reservationNeeded') : convenienceText('noReservation')
   ];
   return `<div class="convenience-badges">${labels.map((label) => `<span class="convenience-badge">${escapeHtml(label)}</span>`).join('')}</div>`;
 }
 
 function resourceConvenience(resource) {
-  const language = getCurrentLanguage();
   return {
     labels: [
-      resource.englishAvailable ? (language === 'EN' ? 'English available' : '영어 안내 가능') : (language === 'EN' ? 'Check English support' : '영어 안내 확인 필요'),
-      resource.foreignerPopular ? (language === 'EN' ? 'Visitor favorite' : '외국인 인기') : (language === 'EN' ? 'Hidden culture resource' : '숨은 문화자원'),
-      resource.reservationRequired ? (language === 'EN' ? 'Reservation needed' : '예약 필요') : (language === 'EN' ? 'No reservation needed' : '예약 불필요'),
+      resource.englishAvailable ? convenienceText('englishAvailable') : convenienceText('checkEnglish'),
+      resource.foreignerPopular ? convenienceText('visitorFavorite') : convenienceText('hiddenResource'),
+      resource.reservationRequired ? convenienceText('reservationNeeded') : convenienceText('noReservation'),
       resource.verifiedStatus
     ]
   };
@@ -2692,7 +2981,7 @@ function renderHomeTimeHero(periodOverride = getTimePeriod(), imageUrlOverride =
   hero.innerHTML = `
     ${renderImageFrame({
       src: imageUrl,
-      alt: `${label} ${getCurrentLanguage() === 'EN' ? 'Korean heritage mood image' : '시간대 전통문화 추천 이미지'}`,
+      alt: `${label} ${getCurrentLanguage() === 'en' ? 'Korean heritage mood image' : '시간대 전통문화 추천 이미지'}`,
       notice: t('common.imageNotice'),
       className: 'home-time-image'
     })}
@@ -2746,15 +3035,17 @@ function renderPlaceImage(resource) {
 
 function localizePlaceName(placeName) {
   const language = getCurrentLanguage();
+  const legacyLanguage = getLegacyLanguage(language);
   const resource = CULTURE_RESOURCES.find((item) => item.nameKo === placeName || item.nameEn === placeName);
-  if (resource && language !== 'KR') return resource.nameEn || resource.nameKo;
-  if (language === 'KR') return placeName;
-  return PLACE_NAME_BY_LANGUAGE[language]?.[placeName] || PLACE_NAME_EN[placeName] || placeName;
+  if (resource && language !== 'ko') return resource.nameEn || resource.nameKo;
+  if (language === 'ko') return placeName;
+  return PLACE_NAME_BY_LANGUAGE[legacyLanguage]?.[placeName] || PLACE_NAME_EN[placeName] || placeName;
 }
 
 function getRouteView(route) {
   const language = getCurrentLanguage();
-  if (language === 'KR') {
+  const legacyLanguage = getLegacyLanguage(language);
+  if (language === 'ko') {
     return {
       ...route,
       subtitle: route.englishTitle,
@@ -2764,7 +3055,11 @@ function getRouteView(route) {
     };
   }
 
-  const translated = ROUTE_TRANSLATIONS[language]?.[route.id] || EN_ROUTE_TRANSLATIONS[route.id] || {};
+  const translated =
+    ROUTE_TRANSLATIONS[legacyLanguage]?.[route.id] ||
+    GENERATED_ROUTE_TRANSLATIONS[language]?.[route.id] ||
+    EN_ROUTE_TRANSLATIONS[route.id] ||
+    {};
   return {
     ...route,
     title: translated.title || route.englishTitle || route.title,
@@ -2787,7 +3082,8 @@ function getRouteView(route) {
 
 function getResourceView(resource) {
   const language = getCurrentLanguage();
-  if (language === 'KR') {
+  const legacyLanguage = getLegacyLanguage(language);
+  if (language === 'ko') {
     return {
       ...resource,
       displayName: resource.nameKo,
@@ -2797,12 +3093,12 @@ function getResourceView(resource) {
     };
   }
 
-  const translated = RESOURCE_TRANSLATIONS[language]?.[resource.id] || EN_RESOURCE_TRANSLATIONS[resource.id] || {};
+  const translated = RESOURCE_TRANSLATIONS[legacyLanguage]?.[resource.id] || EN_RESOURCE_TRANSLATIONS[resource.id] || {};
   return {
     ...resource,
     ...translated,
     displayName: localizePlaceName(resource.nameKo) || resource.nameEn || resource.nameKo,
-    secondaryName: language === 'EN' ? resource.nameKo : (resource.nameEn || resource.nameKo),
+    secondaryName: language === 'en' ? resource.nameKo : (resource.nameEn || resource.nameKo),
     category: translated.category || resource.categoryEn || resource.category,
     region: translated.region || resource.region,
     displayDistrict: resource.district || translated.region || resource.region,
@@ -2945,7 +3241,7 @@ function getMapTargetForPlace(placeName) {
 
   return {
     name: displayName,
-    query: getCurrentLanguage() === 'KR' ? searchName : `${displayName} Seoul`,
+    query: getCurrentLanguage() === 'ko' ? searchName : `${displayName} Seoul`,
     latitude: coords.latitude,
     longitude: coords.longitude
   };
@@ -3205,7 +3501,7 @@ function renderSupport() {
   if (!container) return;
 
   container.innerHTML = SUPPORT_DATA.map((item) => {
-    const translated = SUPPORT_TRANSLATIONS[getCurrentLanguage()]?.[item.id] || item;
+    const translated = SUPPORT_TRANSLATIONS[getLegacyLanguage()]?.[item.id] || item;
     return `
     <a class="support-card" href="${escapeHtml(item.url)}" target="_blank" rel="noopener" data-support-card="${escapeHtml(item.id)}">
       <span class="support-card-kicker">${escapeHtml(t('support.action'))}</span>
@@ -3307,7 +3603,7 @@ function buildAriContext() {
 
   return {
     currentPage: getCurrentFileName(),
-    language: storageGet(STORAGE_KEYS.language, 'KR'),
+    language: getCurrentLanguage(),
     preference: loadUserPreference(),
     selectedRoute: {
       id: selectedRoute.id,
@@ -3618,7 +3914,7 @@ function updatePlannerStep() {
   });
 
   const label = qs('[data-step-label]');
-  if (label) label.textContent = `Step ${plannerStep} / 5`;
+  if (label) label.textContent = `${t('planner.stepLabel')} ${plannerStep} / 5`;
 
   const bar = qs('[data-progress-bar]');
   if (bar) bar.style.width = `${plannerStep * 20}%`;
@@ -3654,8 +3950,9 @@ function bindMobileInteractions() {
   qsa('[data-language-trigger]').forEach((button) => {
     button.addEventListener('click', () => {
       const order = Object.keys(LANGUAGES);
-      const current = storageGet(STORAGE_KEYS.language, 'KR');
-      const next = order[(order.indexOf(current) + 1) % order.length];
+      const current = normalizeLanguage(storageGet(STORAGE_KEYS.language, 'ko'));
+      const currentIndex = order.indexOf(current);
+      const next = order[((currentIndex >= 0 ? currentIndex : 0) + 1) % order.length];
       setLanguage(next);
       showToast(`${LANGUAGES[next]} ${t('common.selectedLanguage')}`);
     });
@@ -3742,7 +4039,7 @@ function registerServiceWorker() {
 
 async function initialize() {
   startTimeImageRotation();
-  setLanguage(storageGet(STORAGE_KEYS.language, 'KR'), { rerender: false });
+  setLanguage(storageGet(STORAGE_KEYS.language, 'ko'), { rerender: false });
   await loadCultureResources();
   renderLocalizedContent();
   markActiveBottomTab();

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'maru-shell-v11';
+const CACHE_NAME = 'maru-shell-v13';
 const APP_SHELL = [
   'index.html',
   'planner.html',
