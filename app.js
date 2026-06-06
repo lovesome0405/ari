@@ -52,6 +52,212 @@ const HOME_TIME_IMAGES = {
       KR: '궁궐 야경과 조용한 한옥 분위기에 맞춰 차분한 화면으로 전환됩니다.',
       EN: 'At night, the interface shifts into a calmer palace and hanok mood.'
     }
+  },
+  JP: {
+    tabs: {
+      home: 'ホーム',
+      recommend: '推薦',
+      map: '地図',
+      support: 'サポート',
+      passport: '保存'
+    },
+    home: {
+      timeEyebrow: 'ソウル時間帯ムード',
+      languageConfirm: '日本語で開始します。',
+      introTitle: '韓国伝統文化を理解する一番簡単なコース',
+      introBody: 'ARIが文化データと旅行条件をもとに、あなたに合う伝統文化ルートを推薦します。',
+      principles: ['DB = 検証済み文化情報', 'Server = 条件フィルターと推薦スコア', 'AI = やさしい文化解説'],
+      quickLabel: 'クイックスタート',
+      todayRoute: '今日のおすすめコース',
+      todayRouteDesc: '代表的なストーリールートを見る',
+      rainyRoute: '雨の日コース',
+      rainyRouteDesc: '屋内中心の代替コース',
+      support: '旅行者サポート',
+      supportDesc: '緊急・紛失・通訳サポート',
+      about: 'サービス紹介',
+      data: '公共データ活用を見る',
+      start: '始める'
+    },
+    routes: {
+      header: 'おすすめコース',
+      headerSub: 'Heritage routes',
+      edit: '条件を変更',
+      eyebrow: 'Recommended Routes',
+      title: '伝統文化おすすめコース',
+      body: '選択した条件をもとに、外国人旅行者にも分かりやすいストーリー型コースを推薦します。',
+      condition: '選択条件',
+      reason: 'おすすめ理由',
+      select: 'このコースを選ぶ',
+      detail: '詳しく見る',
+      map: '地図を開く'
+    },
+    detail: {
+      header: 'コース詳細',
+      headerSub: 'Story route detail',
+      save: '保存',
+      selected: 'Selected Route',
+      scoreSuffix: '点',
+      reason: 'おすすめ理由',
+      mapButton: '選択した地図で開く',
+      flow: 'コースの流れ',
+      aiGuide: 'AIのやさしい文化解説',
+      keywords: '文化キーワード',
+      visitTip: '訪問のヒント',
+      why: 'なぜ重要か:',
+      tip: '訪問のヒント:',
+      booking: '予約案内:',
+      warning: '営業時間、料金、予約、休館日は訪問前に公式情報で確認してください。',
+      passport: 'Route Passportに保存'
+    },
+    map: {
+      header: '地図',
+      headerSub: 'Navigation helper',
+      changeRoute: 'コース変更',
+      eyebrow: 'Route Map',
+      fallbackTitle: '選択したコース',
+      body: '実際のGPS連携は次のバージョンで提供予定です。今は地図サービスを選び、ルートを新しいタブで開けます。',
+      selector: '地図を選択',
+      selectorHint: '選択した地図サービスは次回も保持されます。',
+      openRoute: '選択した地図でルートを開く',
+      openFirst: '最初の目的地を開く',
+      openPlace: '開く',
+      timeline: '移動順序',
+      lessWalking: '歩行少なめルート',
+      rainyIndoor: '雨の日の屋内コース',
+      nearby: '現在地周辺おすすめ',
+      lessWalkingToast: '歩行少なめルートは地図API連携後に提供されます。',
+      rainyIndoorToast: '雨の日の屋内コース条件を選択しました。',
+      nearbyToast: '現在地周辺おすすめはGPS連携後に提供されます。',
+      savedToast: '地図サービスを保存しました。'
+    },
+    support: {
+      header: '旅行者サポート',
+      headerSub: 'Help during trip',
+      list: 'サポート一覧',
+      eyebrow: 'Emergency',
+      title: '今すぐ助けが必要ですか？',
+      body: '必要なサポートを選んでください。',
+      emergency: '緊急連絡先',
+      tmoney: '交通カード',
+      translation: '通訳サポート',
+      rainy: '雨天代替',
+      action: '確認する'
+    },
+    planner: {
+      prev: '前へ',
+      next: '次へ',
+      finish: 'おすすめコースを見る'
+    },
+    common: {
+      selectedLanguage: '選択しました',
+      imageNotice: 'AI生成画像・公式写真ではなく理解を助ける画像です',
+      imageMissing: '画像を読み込み中',
+      savedRouteToast: 'コースを選択しました。',
+      passportToast: 'Route Passportに保存しました。'
+    }
+  },
+  CN: {
+    tabs: {
+      home: '首页',
+      recommend: '推荐',
+      map: '地图',
+      support: '帮助',
+      passport: '收藏'
+    },
+    home: {
+      timeEyebrow: '首尔时段氛围',
+      languageConfirm: '将以中文开始。',
+      introTitle: '轻松理解韩国传统文化的路线',
+      introBody: 'ARI会根据文化数据和旅行条件，推荐适合你的传统文化路线。',
+      principles: ['DB = 已验证的文化信息', 'Server = 条件筛选与推荐分数', 'AI = 易懂文化解说'],
+      quickLabel: '快速开始',
+      todayRoute: '今日推荐路线',
+      todayRouteDesc: '先查看代表性故事路线',
+      rainyRoute: '雨天路线',
+      rainyRouteDesc: '以室内为主的替代路线',
+      support: '旅行者帮助',
+      supportDesc: '紧急、遗失、翻译帮助',
+      about: '服务介绍',
+      data: '查看公共数据使用',
+      start: '开始'
+    },
+    routes: {
+      header: '推荐路线',
+      headerSub: 'Heritage routes',
+      edit: '修改条件',
+      eyebrow: 'Recommended Routes',
+      title: '传统文化推荐路线',
+      body: '根据所选条件，推荐外国游客也容易理解的故事型路线。',
+      condition: '已选条件',
+      reason: '推荐理由',
+      select: '选择此路线',
+      detail: '查看详情',
+      map: '打开地图'
+    },
+    detail: {
+      header: '路线详情',
+      headerSub: 'Story route detail',
+      save: '保存',
+      selected: 'Selected Route',
+      scoreSuffix: '分',
+      reason: '推荐理由',
+      mapButton: '用所选地图打开',
+      flow: '路线顺序',
+      aiGuide: 'AI简明文化解说',
+      keywords: '文化关键词',
+      visitTip: '游览提示',
+      why: '为什么重要:',
+      tip: '游览提示:',
+      booking: '预约说明:',
+      warning: '访问前请通过官方信息确认营业时间、费用、预约和休馆日。',
+      passport: '保存到 Route Passport'
+    },
+    map: {
+      header: '地图',
+      headerSub: 'Navigation helper',
+      changeRoute: '更换路线',
+      eyebrow: 'Route Map',
+      fallbackTitle: '已选路线',
+      body: '实时GPS将在下一版本连接。现在可选择地图服务，并在新标签页打开路线。',
+      selector: '选择地图',
+      selectorHint: '所选地图服务会保留到下次访问。',
+      openRoute: '用所选地图打开路线',
+      openFirst: '打开第一站',
+      openPlace: '打开',
+      timeline: '移动顺序',
+      lessWalking: '少步行路线',
+      rainyIndoor: '雨天室内路线',
+      nearby: '附近推荐',
+      lessWalkingToast: '少步行路线将在地图API连接后提供。',
+      rainyIndoorToast: '已选择雨天室内路线条件。',
+      nearbyToast: '附近推荐将在GPS连接后提供。',
+      savedToast: '地图服务已保存。'
+    },
+    support: {
+      header: '旅行者帮助',
+      headerSub: 'Help during trip',
+      list: '帮助列表',
+      eyebrow: 'Emergency',
+      title: '现在需要帮助吗？',
+      body: '请选择所需帮助。',
+      emergency: '紧急联系方式',
+      tmoney: '交通卡',
+      translation: '翻译帮助',
+      rainy: '雨天替代',
+      action: '查看'
+    },
+    planner: {
+      prev: '上一步',
+      next: '下一步',
+      finish: '查看推荐路线'
+    },
+    common: {
+      selectedLanguage: '已选择',
+      imageNotice: 'AI生成图片・非官方地点照片，仅用于辅助理解',
+      imageMissing: '图片加载中',
+      savedRouteToast: '路线已选择。',
+      passportToast: '已保存到 Route Passport。'
+    }
   }
 };
 
@@ -529,13 +735,15 @@ const STORAGE_KEYS = {
 
 const LANGUAGES = {
   KR: '한국어',
-  EN: 'English'
+  EN: 'English',
+  JP: '日本語',
+  CN: '中文'
 };
 
 const MAP_SERVICES = {
-  google: { label: { KR: 'Google Maps', EN: 'Google Maps' }, shortLabel: 'Google' },
-  naver: { label: { KR: '네이버지도', EN: 'Naver Map' }, shortLabel: 'Naver' },
-  kakao: { label: { KR: '카카오맵', EN: 'Kakao Map' }, shortLabel: 'Kakao' }
+  google: { label: { KR: 'Google Maps', EN: 'Google Maps', JP: 'Google Maps', CN: 'Google Maps' }, shortLabel: 'Google' },
+  naver: { label: { KR: '네이버지도', EN: 'Naver Map', JP: 'NAVERマップ', CN: 'NAVER地图' }, shortLabel: 'Naver' },
+  kakao: { label: { KR: '카카오맵', EN: 'Kakao Map', JP: 'Kakaoマップ', CN: 'Kakao地图' }, shortLabel: 'Kakao' }
 };
 
 const UI_COPY = {
@@ -550,7 +758,7 @@ const UI_COPY = {
     home: {
       timeEyebrow: '서울 시간대 추천',
       languageConfirm: '한국어로 시작합니다.',
-      introTitle: '한국 전통문화를 이해하는 가장 쉬운 코스',
+      introTitle: 'ARI 맞춤 전통문화 코스',
       introBody: 'AI가 공식 문화데이터 구조를 바탕으로 당신에게 맞는 전통문화 스토리 코스를 추천합니다.',
       principles: ['DB = 검증된 문화 사실', 'Server = 조건 필터링과 추천 점수', 'AI = 쉬운 문화 해설'],
       quickLabel: '빠른 시작',
@@ -744,6 +952,212 @@ const UI_COPY = {
       savedRouteToast: 'Route selected.',
       passportToast: 'Saved to Route Passport.'
     }
+  },
+  JP: {
+    tabs: {
+      home: 'ホーム',
+      recommend: '推薦',
+      map: '地図',
+      support: 'ヘルプ',
+      passport: '保存'
+    },
+    home: {
+      timeEyebrow: 'ソウル時間のムード',
+      languageConfirm: '日本語で始めます。',
+      introTitle: 'ARI カスタム伝統文化コース',
+      introBody: 'ARIは文化データと旅行者の条件をもとに、理解しやすい伝統文化ルートを推薦します。',
+      principles: ['DB = 検証された文化情報', 'Server = 条件フィルターと推薦スコア', 'AI = わかりやすい文化解説'],
+      quickLabel: 'クイックスタート',
+      todayRoute: '今日のおすすめコース',
+      todayRouteDesc: '代表的なストーリールートを見る',
+      rainyRoute: '雨の日コース',
+      rainyRouteDesc: '屋内中心の代替ルート',
+      support: '旅行者サポート',
+      supportDesc: '緊急・紛失・翻訳ヘルプ',
+      about: 'サービス紹介',
+      data: '公共データ活用を見る',
+      start: '始める'
+    },
+    routes: {
+      header: 'おすすめコース',
+      headerSub: 'Heritage routes',
+      edit: '条件編集',
+      eyebrow: 'Recommended Routes',
+      title: '伝統文化コース',
+      body: 'ARIは海外旅行者にも理解しやすいストーリー型コースを推薦します。',
+      condition: '選択条件',
+      reason: 'おすすめ理由',
+      select: 'このコースを選択',
+      detail: '詳しく見る',
+      map: '地図を開く'
+    },
+    detail: {
+      header: 'コース詳細',
+      headerSub: 'Story route detail',
+      save: '保存',
+      selected: '選択したコース',
+      scoreSuffix: '点',
+      reason: 'おすすめ理由',
+      mapButton: '選択した地図で開く',
+      flow: 'コースの流れ',
+      aiGuide: 'やさしい文化解説',
+      keywords: '文化キーワード',
+      visitTip: '訪問のヒント',
+      why: '重要な理由:',
+      tip: '訪問のヒント:',
+      booking: '予約案内:',
+      warning: '営業時間、料金、予約、休館日は訪問前に公式情報で確認してください。',
+      passport: 'Route Passportに保存'
+    },
+    map: {
+      header: '地図',
+      headerSub: 'Navigation helper',
+      changeRoute: 'コース変更',
+      eyebrow: 'Route Map',
+      fallbackTitle: '選択したコース',
+      body: '今は地図サービスを選んで、各スポットまたはコースのルートを新しいタブで確認できます。',
+      selector: '地図を選択',
+      selectorHint: '選択した地図サービスは次回も保持されます。',
+      openRoute: '選択した地図で開く',
+      openFirst: '最初の場所を開く',
+      openPlace: '開く',
+      timeline: '移動順',
+      lessWalking: '少なめに歩くルート',
+      rainyIndoor: '雨の日の屋内コース',
+      nearby: '現在地周辺の推薦',
+      lessWalkingToast: '少なめに歩くルートは地図API連携後に提供されます。',
+      rainyIndoorToast: '雨の日の屋内条件を選択しました。',
+      nearbyToast: '現在地周辺の推薦はGPS連携後に提供されます。',
+      savedToast: '地図サービスを保存しました。'
+    },
+    support: {
+      header: '旅行者サポート',
+      headerSub: 'Help during trip',
+      list: 'サポート一覧',
+      eyebrow: 'Emergency',
+      title: '今すぐサポートが必要ですか？',
+      body: '必要なサポートを選んでください。',
+      emergency: '緊急連絡先',
+      tmoney: '交通カード',
+      translation: '翻訳ヘルプ',
+      rainy: '雨の日代替',
+      action: '確認する'
+    },
+    planner: {
+      prev: '戻る',
+      next: '次へ',
+      finish: 'おすすめコースを見る'
+    },
+    common: {
+      selectedLanguage: '選択済み',
+      imageNotice: 'AI生成画像 · 実際の場所写真ではない理解補助画像',
+      imageMissing: '画像を読み込み中',
+      savedRouteToast: 'コースを選択しました。',
+      passportToast: 'Route Passportに保存しました。'
+    }
+  },
+  CN: {
+    tabs: {
+      home: '首页',
+      recommend: '推荐',
+      map: '地图',
+      support: '帮助',
+      passport: '保存'
+    },
+    home: {
+      timeEyebrow: '首尔时间氛围',
+      languageConfirm: '将以中文开始。',
+      introTitle: 'ARI 定制传统文化路线',
+      introBody: 'ARI根据文化数据和旅行者条件，推荐容易理解的韩国传统文化路线。',
+      principles: ['DB = 已验证的文化信息', 'Server = 条件筛选与推荐分数', 'AI = 简明文化解读'],
+      quickLabel: '快速开始',
+      todayRoute: '今日推荐路线',
+      todayRouteDesc: '查看代表性故事路线',
+      rainyRoute: '雨天路线',
+      rainyRouteDesc: '室内为主的替代路线',
+      support: '旅行者帮助',
+      supportDesc: '紧急、遗失、翻译帮助',
+      about: '服务介绍',
+      data: '查看公共数据使用',
+      start: '开始'
+    },
+    routes: {
+      header: '推荐路线',
+      headerSub: 'Heritage routes',
+      edit: '修改条件',
+      eyebrow: 'Recommended Routes',
+      title: '传统文化路线',
+      body: 'ARI推荐适合外国游客理解的故事型传统文化路线。',
+      condition: '已选条件',
+      reason: '推荐理由',
+      select: '选择此路线',
+      detail: '查看详情',
+      map: '打开地图'
+    },
+    detail: {
+      header: '路线详情',
+      headerSub: 'Story route detail',
+      save: '保存',
+      selected: '已选路线',
+      scoreSuffix: '分',
+      reason: '推荐理由',
+      mapButton: '用所选地图打开',
+      flow: '路线顺序',
+      aiGuide: '简明文化解读',
+      keywords: '文化关键词',
+      visitTip: '参观提示',
+      why: '重要原因:',
+      tip: '参观提示:',
+      booking: '预约说明:',
+      warning: '请在访问前通过官方信息确认开放时间、费用、预约和休馆信息。',
+      passport: '保存到 Route Passport'
+    },
+    map: {
+      header: '地图',
+      headerSub: 'Navigation helper',
+      changeRoute: '更换路线',
+      eyebrow: 'Route Map',
+      fallbackTitle: '已选路线',
+      body: '目前可以选择地图服务，并在新标签页中查看各地点或整条路线。',
+      selector: '选择地图',
+      selectorHint: '所选地图服务会保存到下次访问。',
+      openRoute: '用所选地图打开',
+      openFirst: '打开第一个地点',
+      openPlace: '打开',
+      timeline: '移动顺序',
+      lessWalking: '少步行路线',
+      rainyIndoor: '雨天室内路线',
+      nearby: '当前位置附近推荐',
+      lessWalkingToast: '少步行路线将在地图API接入后提供。',
+      rainyIndoorToast: '已选择雨天室内路线条件。',
+      nearbyToast: '附近推荐将在GPS接入后提供。',
+      savedToast: '地图服务已保存。'
+    },
+    support: {
+      header: '旅行者帮助',
+      headerSub: 'Help during trip',
+      list: '帮助列表',
+      eyebrow: 'Emergency',
+      title: '现在需要帮助吗？',
+      body: '请选择需要的帮助类型。',
+      emergency: '紧急联系方式',
+      tmoney: '交通卡',
+      translation: '翻译帮助',
+      rainy: '雨天备用',
+      action: '查看'
+    },
+    planner: {
+      prev: '上一步',
+      next: '下一步',
+      finish: '查看推荐路线'
+    },
+    common: {
+      selectedLanguage: '已选择',
+      imageNotice: 'AI生成图片 · 非实际地点照片，仅用于理解辅助',
+      imageMissing: '图片加载中',
+      savedRouteToast: '已选择路线。',
+      passportToast: '已保存到 Route Passport。'
+    }
   }
 };
 
@@ -758,6 +1172,44 @@ const PLACE_NAME_EN = {
   '익선동 한옥거리': 'Ikseon-dong Hanok Street',
   '덕수궁 돌담길': 'Deoksugung Stonewall Road',
   '국립정동극장': 'National Jeongdong Theater'
+};
+
+const PLACE_NAME_JP = {
+  '경복궁': '景福宮',
+  '국립고궁박물관': '国立古宮博物館',
+  '국립민속박물관': '国立民俗博物館',
+  '통인시장': '通仁市場',
+  '운현궁': '雲峴宮',
+  '서울우리소리박물관': 'ソウルウリソリ博物館',
+  '덕수궁': '徳寿宮',
+  '익선동 한옥거리': '益善洞韓屋通り',
+  '덕수궁 돌담길': '徳寿宮石垣道',
+  '국립정동극장': '国立貞洞劇場'
+};
+
+const PLACE_NAME_CN = {
+  '경복궁': '景福宫',
+  '국립고궁박물관': '国立古宫博物馆',
+  '국립민속박물관': '国立民俗博物馆',
+  '통인시장': '通仁市场',
+  '운현궁': '云岘宫',
+  '서울우리소리박물관': '首尔我们的声音博物馆',
+  '덕수궁': '德寿宫',
+  '익선동 한옥거리': '益善洞韩屋街',
+  '덕수궁 돌담길': '德寿宫石墙路',
+  '국립정동극장': '国立贞洞剧场'
+};
+
+const PLACE_NAME_BY_LANGUAGE = {
+  EN: PLACE_NAME_EN,
+  JP: PLACE_NAME_JP,
+  CN: PLACE_NAME_CN
+};
+
+const ROUTE_PLACE_COORDS = {
+  '익선동 한옥거리': { latitude: 37.5742, longitude: 126.9898 },
+  '덕수궁 돌담길': { latitude: 37.5662, longitude: 126.9748 },
+  '국립정동극장': { latitude: 37.5664, longitude: 126.9729 }
 };
 
 const EN_ROUTE_TRANSLATIONS = {
@@ -942,6 +1394,401 @@ const EN_SUPPORT_TRANSLATIONS = {
   }
 };
 
+const JP_ROUTE_TRANSLATIONS = {
+  'royal-culture-local-life': {
+    title: '王室文化から地域の日常へ',
+    subtitle: '宮殿文化と市場の日常をつなぐコース',
+    time: '約3時間',
+    walking: '普通',
+    fee: '低予算',
+    reason: '王室文化、宮殿建築、民俗生活、伝統市場を一つの流れで理解できる初めての旅行者向けコースです。',
+    summary: '王室の遺物から宮殿と民俗文化を見て、最後は地域市場の日常文化へ自然につなげます。',
+    tip: '営業時間、料金、予約、休館日は訪問前に公式情報で確認してください。',
+    convenienceLabels: ['英語案内あり', '旅行者に人気', '予約不要']
+  },
+  'hidden-sounds-hanok-streets': {
+    title: '隠れた音と韓屋の路地',
+    subtitle: '伝統音楽と韓屋の雰囲気を味わうコース',
+    time: '約2.5時間',
+    walking: '少なめ',
+    fee: '主に無料',
+    reason: '長く歩かずに韓屋の雰囲気と韓国の伝統音文化を一緒に体験できます。',
+    summary: '王室ゆかりの空間から始め、韓国民謡の音文化を聞き、静かな韓屋通りで締めくくります。',
+    tip: '博物館のプログラム時間と韓屋通りの混雑状況を事前に確認してください。',
+    convenienceLabels: ['一部英語案内あり', '隠れた文化資源', '予約不要']
+  },
+  'modern-seoul-performing-heritage': {
+    title: '近代ソウルと伝統公演',
+    subtitle: '近代史と舞台芸術をつなぐコース',
+    time: '約3時間',
+    walking: '少なめ',
+    fee: '有料あり',
+    reason: '近代ソウルの歴史と伝統公演を夕方の流れで楽しみたい旅行者に向いています。',
+    summary: '徳寿宮で近代ソウルの層を見て、石垣道を歩き、伝統公演で一日を締めくくります。',
+    tip: '公演チケットは事前に予約し、石垣道を歩く時間を余裕を持って確保してください。',
+    convenienceLabels: ['英語案内あり', '旅行者に人気', '公演予約確認']
+  }
+};
+
+const CN_ROUTE_TRANSLATIONS = {
+  'royal-culture-local-life': {
+    title: '从王室文化到在地日常',
+    subtitle: '连接宫殿文化与传统市场的路线',
+    time: '约3小时',
+    walking: '中等',
+    fee: '低预算',
+    reason: '这条路线把王室文化、宫殿建筑、民俗生活和传统市场串成一个容易理解的故事。',
+    summary: '从王室文物开始，参观宫殿与民俗文化，最后在传统市场感受首尔的日常生活。',
+    tip: '出发前请确认开放时间、费用、预约和休馆信息。',
+    convenienceLabels: ['提供英语信息', '游客喜爱', '通常无需预约']
+  },
+  'hidden-sounds-hanok-streets': {
+    title: '隐藏的声音与韩屋街巷',
+    subtitle: '体验传统音乐和韩屋氛围的路线',
+    time: '约2.5小时',
+    walking: '少到中等',
+    fee: '大多免费',
+    reason: '适合想轻松体验韩屋氛围和韩国传统声音文化的游客。',
+    summary: '从王室生活空间出发，聆听韩国民谣文化，最后走进安静的韩屋街巷。',
+    tip: '建议提前确认博物馆体验项目时间和韩屋街区拥挤程度。',
+    convenienceLabels: ['部分英语信息', '隐藏文化资源', '通常无需预约']
+  },
+  'modern-seoul-performing-heritage': {
+    title: '近代首尔与传统演出',
+    subtitle: '连接近代历史与传统舞台艺术的路线',
+    time: '约3小时',
+    walking: '较少',
+    fee: '有付费选项',
+    reason: '适合想在傍晚把近代首尔历史和传统演出结合起来体验的游客。',
+    summary: '在德寿宫了解近代首尔，沿石墙路散步，最后以传统演出结束行程。',
+    tip: '建议提前预订演出票，并为石墙路散步预留充足时间。',
+    convenienceLabels: ['提供英语信息', '游客喜爱', '确认演出预约']
+  }
+};
+
+const ROUTE_TRANSLATIONS = {
+  EN: EN_ROUTE_TRANSLATIONS,
+  JP: JP_ROUTE_TRANSLATIONS,
+  CN: CN_ROUTE_TRANSLATIONS
+};
+
+const RESOURCE_TRANSLATIONS = {
+  EN: EN_RESOURCE_TRANSLATIONS
+};
+
+const VISIT_SEOUL_SUPPORT_DATA = [
+  {
+    id: 'tourist-info',
+    title: '관광안내소',
+    description: '여행 중 길찾기, 교통, 축제, 현장 문의가 필요할 때 가까운 관광안내소를 이용하세요.',
+    points: ['명동, 광화문, 홍대 등 주요 관광지 주변 안내소를 확인할 수 있습니다.', '언어 지원과 운영 시간은 방문 전 공식 정보를 확인하세요.'],
+    url: 'https://korean.visitseoul.net/traveler-support'
+  },
+  {
+    id: 'medical-tourism',
+    title: '서울의료관광센터',
+    description: '의료관광 상담과 외국인 환자 지원 정보가 필요할 때 연결되는 공식 지원 채널입니다.',
+    points: ['의료기관 정보, 상담, 외국인 환자 관련 안내를 확인할 수 있습니다.', '건강 문제가 있으면 숙소 위치와 증상을 함께 준비하세요.'],
+    url: 'https://medical.visitseoul.net/;jsessionid=DF884FB79D73D04174E0A50C7A13C585'
+  },
+  {
+    id: 'emergency',
+    title: '비상 연락처',
+    description: '긴급 상황, 안전 문제, 응급 의료가 필요할 때 먼저 확인할 번호입니다.',
+    points: ['경찰 112, 화재/구급 119, 관광통역안내 1330을 기억하세요.', '현재 위치와 숙소 주소를 지도 앱에서 먼저 확인하면 신고가 쉬워집니다.'],
+    url: 'https://korean.visitseoul.net/traveler-support'
+  },
+  {
+    id: 'complaint',
+    title: '서울관광불편신고센터',
+    description: '여행 중 불편 사항이나 관광 관련 민원이 생겼을 때 도움을 요청할 수 있습니다.',
+    points: ['택시, 숙박, 쇼핑, 관광 서비스 불편 사항을 정리해두면 접수가 쉽습니다.', '가능하면 영수증, 위치, 시간 정보를 함께 보관하세요.'],
+    url: 'https://korean.visitseoul.net/traveler-support'
+  },
+  {
+    id: 'safety',
+    title: '안전정보',
+    description: '낯선 지역에서 안전하게 이동하기 위한 기본 정보를 확인하세요.',
+    points: ['야간 이동 시 밝은 길과 대중교통 중심 동선을 우선 선택하세요.', '긴급 알림과 현지 안내 방송이 있으면 즉시 확인하세요.'],
+    url: 'https://korean.visitseoul.net/traveler-support'
+  },
+  {
+    id: 'lost-items',
+    title: '분실물 찾기',
+    description: '여행 중 물건을 잃어버렸을 때 경찰청 유실물 시스템과 관광안내 정보를 함께 확인하세요.',
+    points: ['분실 장소, 시간, 물품 특징을 가능한 구체적으로 기록하세요.', '지하철/버스/택시 이용 중 분실했다면 이용 노선과 결제 정보를 확인하세요.'],
+    url: 'https://www.lost112.go.kr/'
+  },
+  {
+    id: 'translation',
+    title: '번역/통역 도움',
+    description: '현장에서 의사소통이 막힐 때 관광통역안내와 번역 도구를 함께 사용하세요.',
+    points: ['관광통역안내 1330은 여행 상담과 통역 지원을 제공합니다.', '장소명, 예약명, 알레르기, 목적지는 짧은 문장으로 준비해두세요.'],
+    url: 'https://1330chat.visitkorea.or.kr/'
+  },
+  {
+    id: 'airport',
+    title: '공항 이동 정보',
+    description: '인천공항과 김포공항에서 서울 도심으로 이동하는 기본 동선을 확인하세요.',
+    points: ['AREX 공항철도, 공항버스, 택시 중 도착 시간과 짐의 양에 맞춰 선택하세요.', '막차 시간과 숙소 주소는 출발 전에 반드시 확인하세요.'],
+    url: 'https://www.airport.kr/ap/en/tpt/pblctpt/pblctpt.do'
+  },
+  {
+    id: 'tmoney',
+    title: '교통카드/T-money 안내',
+    description: '지하철, 버스, 편의점 결제에 사용할 수 있는 교통카드 준비 안내입니다.',
+    points: ['공항, 지하철역, 편의점에서 구매와 충전이 가능합니다.', '환승 할인은 같은 카드로 태그해야 적용됩니다.'],
+    url: 'https://www.t-money.co.kr/'
+  },
+  {
+    id: 'rainy',
+    title: '날씨/우천 시 대체 코스',
+    description: '비가 오거나 덥고 추운 날에는 실내 중심으로 코스를 바꿀 수 있습니다.',
+    points: ['박물관, 전시관, 공연장, 전통시장 실내 구간을 우선 추천합니다.', '우산 이동이 부담되면 지하철역에서 가까운 장소를 먼저 보세요.'],
+    url: 'https://www.weather.go.kr/w/index.do'
+  }
+];
+
+const SUPPORT_TRANSLATIONS = {
+  EN: {
+    'tourist-info': {
+      title: 'Tourist Information Centers',
+      description: 'Use nearby centers for maps, transit questions, festivals, and on-site help.',
+      points: ['Check centers near major areas such as Myeong-dong, Gwanghwamun, and Hongdae.', 'Confirm language support and opening hours before visiting.']
+    },
+    'medical-tourism': {
+      title: 'Seoul Medical Tourism Center',
+      description: 'Official support for medical tourism consultation and foreign patient information.',
+      points: ['Check medical institution information, consultation options, and visitor support.', 'Prepare your location and symptoms if you need medical help.']
+    },
+    emergency: {
+      title: 'Emergency Contacts',
+      description: 'Numbers to check first for emergency, safety, or medical situations.',
+      points: ['Police 112, fire/ambulance 119, and travel interpretation 1330 are the key numbers.', 'Open your map app first to confirm your current location and accommodation address.']
+    },
+    complaint: {
+      title: 'Seoul Tourist Complaint Center',
+      description: 'A support channel for problems or complaints during travel in Seoul.',
+      points: ['Write down the place, time, receipt, and what happened if possible.', 'Keep taxi, shopping, lodging, or reservation details for easier reporting.']
+    },
+    safety: {
+      title: 'Safety Information',
+      description: 'Basic safety information for moving around unfamiliar areas.',
+      points: ['At night, choose bright streets and transit-centered routes.', 'Check local alerts and announcements as soon as you see them.']
+    },
+    'lost-items': {
+      title: 'Lost Items',
+      description: 'Use the police lost-item system and tourist information when something goes missing.',
+      points: ['Record the place, time, and item details as clearly as possible.', 'For transit losses, check route, station, taxi, and payment records.']
+    },
+    translation: {
+      title: 'Translation / Interpretation Help',
+      description: 'Use travel interpretation and translation tools when communication is difficult.',
+      points: ['The 1330 travel helpline can support travel questions and interpretation.', 'Prepare short phrases for place names, reservation names, allergies, and destinations.']
+    },
+    airport: {
+      title: 'Airport Transfer Information',
+      description: 'Basic ways to move from Incheon or Gimpo Airport into central Seoul.',
+      points: ['Choose AREX airport railroad, airport bus, or taxi based on arrival time and luggage.', 'Check the last train or bus and your accommodation address before leaving.']
+    },
+    tmoney: {
+      title: 'Transit Card / T-money Guide',
+      description: 'Prepare a transit card for subways, buses, and convenience stores.',
+      points: ['You can buy and recharge cards at airports, subway stations, and convenience stores.', 'Transfer discounts usually require tapping the same card.']
+    },
+    rainy: {
+      title: 'Weather / Rainy-Day Backup Routes',
+      description: 'Switch to indoor-oriented routes during rain, heat, or cold.',
+      points: ['Prioritize museums, exhibitions, theaters, and indoor market sections.', 'If umbrella travel is difficult, open places near subway stations first.']
+    }
+  },
+  JP: {
+    'tourist-info': {
+      title: '観光案内所',
+      description: '道案内、交通、イベント、現地での相談が必要な時に近くの案内所を利用できます。',
+      points: ['明洞、光化門、弘大など主要エリア周辺の案内所を確認できます。', '言語対応と営業時間は訪問前に公式情報で確認してください。']
+    },
+    'medical-tourism': {
+      title: 'ソウル医療観光センター',
+      description: '医療観光相談と外国人患者向け情報につながる公式支援チャンネルです。',
+      points: ['医療機関情報、相談、外国人患者支援を確認できます。', '体調不良時は現在地と症状を一緒に準備してください。']
+    },
+    emergency: {
+      title: '緊急連絡先',
+      description: '緊急、事故、安全、医療サポートが必要な時に最初に確認する番号です。',
+      points: ['警察112、火災・救急119、観光通訳案内1330を覚えておきましょう。', '現在地と宿泊先住所を地図アプリで確認しておくと通報しやすくなります。']
+    },
+    complaint: {
+      title: 'ソウル観光苦情申告センター',
+      description: '旅行中の不便や観光関連のトラブルを相談できます。',
+      points: ['場所、時間、領収書、状況をメモしておくと申告がスムーズです。', 'タクシー、宿泊、ショッピング、予約情報は保存しておきましょう。']
+    },
+    safety: {
+      title: '安全情報',
+      description: '慣れない地域を安全に移動するための基本情報です。',
+      points: ['夜間は明るい道と公共交通中心の移動を優先してください。', '緊急アラートや現地案内があればすぐ確認してください。']
+    },
+    'lost-items': {
+      title: '忘れ物・落とし物',
+      description: '物をなくした時は警察の遺失物システムと観光案内を一緒に確認します。',
+      points: ['なくした場所、時間、物の特徴をできるだけ詳しく記録してください。', '交通機関でなくした場合は路線、駅、タクシー、決済情報を確認してください。']
+    },
+    translation: {
+      title: '翻訳・通訳サポート',
+      description: '現地で会話が難しい時に観光通訳案内と翻訳ツールを使えます。',
+      points: ['1330観光通訳案内は旅行相談と通訳を支援します。', '場所名、予約名、アレルギー、目的地は短い文で準備しておくと便利です。']
+    },
+    airport: {
+      title: '空港アクセス情報',
+      description: '仁川空港・金浦空港からソウル市内へ移動する基本手段です。',
+      points: ['AREX空港鉄道、空港バス、タクシーを到着時間と荷物量に合わせて選びましょう。', '終電・終バスと宿泊先住所は出発前に確認してください。']
+    },
+    tmoney: {
+      title: '交通カード/T-money案内',
+      description: '地下鉄、バス、コンビニ決済に使える交通カードの案内です。',
+      points: ['空港、地下鉄駅、コンビニで購入・チャージできます。', '乗り換え割引は同じカードでタッチする必要があります。']
+    },
+    rainy: {
+      title: '天気・雨の日の代替コース',
+      description: '雨、暑さ、寒さが強い日は屋内中心のコースに切り替えられます。',
+      points: ['博物館、展示館、劇場、伝統市場の屋内エリアを優先します。', '傘での移動が大変な時は地下鉄駅に近い場所を先に選びましょう。']
+    }
+  },
+  CN: {
+    'tourist-info': {
+      title: '旅游咨询处',
+      description: '需要问路、交通、活动或现场帮助时，可以使用附近的旅游咨询处。',
+      points: ['可查看明洞、光化门、弘大等主要区域附近的咨询处。', '建议出发前确认语言服务和开放时间。']
+    },
+    'medical-tourism': {
+      title: '首尔医疗旅游中心',
+      description: '提供医疗旅游咨询和外国患者相关信息的官方支持渠道。',
+      points: ['可查看医疗机构信息、咨询方式和外国患者支持。', '如需医疗帮助，请准备当前位置和症状信息。']
+    },
+    emergency: {
+      title: '紧急联系方式',
+      description: '遇到紧急、安全或医疗情况时优先确认的号码。',
+      points: ['警察112、消防/急救119、旅游翻译咨询1330是关键号码。', '先在地图中确认当前位置和住宿地址，会更容易求助。']
+    },
+    complaint: {
+      title: '首尔旅游不便申报中心',
+      description: '旅行中遇到不便或旅游服务问题时可以寻求帮助。',
+      points: ['尽量记录地点、时间、收据和发生的情况。', '出租车、住宿、购物或预约信息请保留好。']
+    },
+    safety: {
+      title: '安全信息',
+      description: '在陌生地区安全移动所需的基本信息。',
+      points: ['夜间优先选择明亮街道和公共交通方便的路线。', '如看到紧急提示或现场公告，请立即确认。']
+    },
+    'lost-items': {
+      title: '寻找遗失物',
+      description: '丢失物品时，可同时查询警方遗失物系统和旅游咨询信息。',
+      points: ['请尽量详细记录丢失地点、时间和物品特征。', '如果是在交通工具上遗失，请确认路线、车站、出租车和支付记录。']
+    },
+    translation: {
+      title: '翻译/口译帮助',
+      description: '现场沟通困难时，可使用旅游翻译咨询和翻译工具。',
+      points: ['1330旅游咨询热线可提供旅行咨询和翻译帮助。', '建议提前准备地点名、预约名、过敏信息和目的地短句。']
+    },
+    airport: {
+      title: '机场交通信息',
+      description: '从仁川机场或金浦机场前往首尔市中心的基本交通方式。',
+      points: ['可根据到达时间和行李量选择AREX机场铁路、机场巴士或出租车。', '出发前请确认末班车时间和住宿地址。']
+    },
+    tmoney: {
+      title: '交通卡/T-money指南',
+      description: '用于地铁、公交和便利店支付的交通卡指南。',
+      points: ['可在机场、地铁站和便利店购买及充值。', '换乘优惠通常需要使用同一张卡刷卡。']
+    },
+    rainy: {
+      title: '天气/雨天替代路线',
+      description: '下雨、炎热或寒冷时，可以切换为室内为主的路线。',
+      points: ['优先选择博物馆、展览馆、剧场和传统市场室内区域。', '如果撑伞移动不方便，先选择靠近地铁站的地点。']
+    }
+  }
+};
+
+SUPPORT_DATA.splice(0, SUPPORT_DATA.length, ...VISIT_SEOUL_SUPPORT_DATA);
+
+const SUPPORT_QUICK_ACTIONS = [
+  { target: 'emergency', label: { KR: '비상 연락처', EN: 'Emergency', JP: '緊急連絡先', CN: '紧急联系' } },
+  { target: 'medical-tourism', label: { KR: '의료 지원', EN: 'Medical help', JP: '医療サポート', CN: '医疗帮助' } },
+  { target: 'translation', label: { KR: '번역 도움', EN: 'Translation', JP: '翻訳サポート', CN: '翻译帮助' } },
+  { target: 'lost-items', label: { KR: '분실물 찾기', EN: 'Lost items', JP: '忘れ物', CN: '遗失物' } }
+];
+
+const PREFERENCE_TRANSLATIONS = {
+  EN: {
+    '종로구': 'Jongno-gu',
+    '중구': 'Jung-gu',
+    '종로+중구': 'Jongno + Jung-gu',
+    '2시간': '2 hours',
+    '3시간': '3 hours',
+    '반나절': 'Half day',
+    '하루': 'Full day',
+    '궁궐': 'Palace',
+    '한옥': 'Hanok',
+    '전통시장': 'Traditional market',
+    '공예': 'Craft',
+    '공연': 'Performance',
+    '박물관': 'Museum',
+    '무료 위주': 'Mostly free',
+    '유료 가능': 'Paid options',
+    '상관없음': 'Any',
+    '적게 걷기': 'Less walking',
+    '보통': 'Moderate',
+    '많이 걸어도 괜찮음': 'Long walks OK',
+    '실내': 'Indoor',
+    '실외': 'Outdoor'
+  },
+  JP: {
+    '종로구': '鍾路区',
+    '중구': '中区',
+    '종로+중구': '鍾路区+中区',
+    '2시간': '2時間',
+    '3시간': '3時間',
+    '반나절': '半日',
+    '하루': '1日',
+    '궁궐': '宮殿',
+    '한옥': '韓屋',
+    '전통시장': '伝統市場',
+    '공예': '工芸',
+    '공연': '公演',
+    '박물관': '博物館',
+    '무료 위주': '主に無料',
+    '유료 가능': '有料可',
+    '상관없음': '指定なし',
+    '적게 걷기': '少なめに歩く',
+    '보통': '普通',
+    '많이 걸어도 괜찮음': 'たくさん歩いてもよい',
+    '실내': '屋内',
+    '실외': '屋外'
+  },
+  CN: {
+    '종로구': '钟路区',
+    '중구': '中区',
+    '종로+중구': '钟路区+中区',
+    '2시간': '2小时',
+    '3시간': '3小时',
+    '반나절': '半天',
+    '하루': '一天',
+    '궁궐': '宫殿',
+    '한옥': '韩屋',
+    '전통시장': '传统市场',
+    '공예': '工艺',
+    '공연': '演出',
+    '박물관': '博物馆',
+    '무료 위주': '以免费为主',
+    '유료 가능': '可付费',
+    '상관없음': '不限',
+    '적게 걷기': '少走路',
+    '보통': '普通',
+    '많이 걸어도 괜찮음': '可多步行',
+    '실내': '室内',
+    '실외': '室外'
+  }
+};
+
 const MAP_POSITIONS = [
   { left: '18%', top: '24%' },
   { left: '42%', top: '38%' },
@@ -1037,7 +1884,7 @@ function setText(selector, value) {
 
 function applyStaticTranslations() {
   const language = getCurrentLanguage();
-  document.documentElement.lang = language === 'EN' ? 'en' : 'ko';
+  document.documentElement.lang = ({ KR: 'ko', EN: 'en', JP: 'ja', CN: 'zh-CN' })[language] || 'ko';
 
   Object.entries({
     home: 'tabs.home',
@@ -1054,6 +1901,12 @@ function applyStaticTranslations() {
   });
   qsa('[data-language="EN"]').forEach((button) => {
     button.textContent = 'English';
+  });
+  qsa('[data-language="JP"]').forEach((button) => {
+    button.textContent = '日本語';
+  });
+  qsa('[data-language="CN"]').forEach((button) => {
+    button.textContent = '中文';
   });
 
   const confirm = qs('[data-language-confirm]');
@@ -1144,13 +1997,16 @@ function applyStaticTranslations() {
     setText('.app-header .brand strong', t('support.header'));
     setText('.app-header .brand small', t('support.headerSub'));
     setText('.app-header .header-pill', t('support.list'));
+    qs('.app-header .header-pill')?.setAttribute('data-support-jump', 'tourist-info');
     setText('.emergency-card .eyebrow', t('support.eyebrow'));
     setText('.emergency-card h1', t('support.title'));
     setText('.emergency-card > p:not(.eyebrow)', t('support.body'));
 
     const buttons = qsa('.emergency-grid button');
-    ['support.emergency', 'support.tmoney', 'support.translation', 'support.rainy'].forEach((key, index) => {
-      if (buttons[index]) buttons[index].textContent = t(key);
+    SUPPORT_QUICK_ACTIONS.forEach((action, index) => {
+      if (!buttons[index]) return;
+      buttons[index].textContent = textFrom(action.label, language);
+      buttons[index].dataset.supportJump = action.target;
     });
   }
 
@@ -1215,31 +2071,9 @@ function loadUserPreference() {
 }
 
 function translatePreferenceValue(value) {
-  if (getCurrentLanguage() !== 'EN') return value;
-  const map = {
-    '종로구': 'Jongno-gu',
-    '중구': 'Jung-gu',
-    '종로+중구': 'Jongno + Jung-gu',
-    '2시간': '2 hours',
-    '3시간': '3 hours',
-    '반나절': 'Half day',
-    '하루': 'Full day',
-    '궁궐': 'Palace',
-    '한옥': 'Hanok',
-    '전통시장': 'Traditional market',
-    '공예': 'Craft',
-    '공연': 'Performance',
-    '박물관': 'Museum',
-    '무료 위주': 'Mostly free',
-    '유료 가능': 'Paid options',
-    '상관없음': 'Any',
-    '적게 걷기': 'Less walking',
-    '보통': 'Moderate',
-    '많이 걸어도 괜찮음': 'Long walks OK',
-    '실내': 'Indoor',
-    '실외': 'Outdoor'
-  };
-  return map[value] || value;
+  const language = getCurrentLanguage();
+  if (language === 'KR') return value;
+  return PREFERENCE_TRANSLATIONS[language]?.[value] || PREFERENCE_TRANSLATIONS.EN[value] || value;
 }
 
 function formatPreference(preference) {
@@ -1481,11 +2315,14 @@ function renderPlaceImage(resource) {
 }
 
 function localizePlaceName(placeName) {
-  return getCurrentLanguage() === 'EN' ? (PLACE_NAME_EN[placeName] || placeName) : placeName;
+  const language = getCurrentLanguage();
+  if (language === 'KR') return placeName;
+  return PLACE_NAME_BY_LANGUAGE[language]?.[placeName] || PLACE_NAME_EN[placeName] || placeName;
 }
 
 function getRouteView(route) {
-  if (getCurrentLanguage() !== 'EN') {
+  const language = getCurrentLanguage();
+  if (language === 'KR') {
     return {
       ...route,
       subtitle: route.englishTitle,
@@ -1495,7 +2332,7 @@ function getRouteView(route) {
     };
   }
 
-  const translated = EN_ROUTE_TRANSLATIONS[route.id] || {};
+  const translated = ROUTE_TRANSLATIONS[language]?.[route.id] || EN_ROUTE_TRANSLATIONS[route.id] || {};
   return {
     ...route,
     title: translated.title || route.englishTitle || route.title,
@@ -1517,7 +2354,8 @@ function getRouteView(route) {
 }
 
 function getResourceView(resource) {
-  if (getCurrentLanguage() !== 'EN') {
+  const language = getCurrentLanguage();
+  if (language === 'KR') {
     return {
       ...resource,
       displayName: resource.nameKo,
@@ -1525,12 +2363,12 @@ function getResourceView(resource) {
     };
   }
 
-  const translated = EN_RESOURCE_TRANSLATIONS[resource.id] || {};
+  const translated = RESOURCE_TRANSLATIONS[language]?.[resource.id] || EN_RESOURCE_TRANSLATIONS[resource.id] || {};
   return {
     ...resource,
     ...translated,
-    displayName: resource.nameEn || resource.nameKo,
-    secondaryName: resource.nameKo
+    displayName: localizePlaceName(resource.nameKo) || resource.nameEn || resource.nameKo,
+    secondaryName: language === 'EN' ? resource.nameKo : (resource.nameEn || resource.nameKo)
   };
 }
 
@@ -1598,7 +2436,9 @@ function findResourceByPlaceName(placeName) {
   return CULTURE_RESOURCES.find((resource) =>
     resource.nameKo === placeName ||
     resource.nameEn === placeName ||
-    PLACE_NAME_EN[resource.nameKo] === placeName
+    PLACE_NAME_EN[resource.nameKo] === placeName ||
+    PLACE_NAME_JP[resource.nameKo] === placeName ||
+    PLACE_NAME_CN[resource.nameKo] === placeName
   );
 }
 
@@ -1606,17 +2446,18 @@ function getMapTargetForPlace(placeName) {
   const resource = findResourceByPlaceName(placeName);
   const displayName = resource ? getResourceView(resource).displayName : localizePlaceName(placeName);
   const searchName = resource ? `${resource.nameKo} ${resource.region || '서울'}` : `${placeName} 서울`;
+  const coords = resource || ROUTE_PLACE_COORDS[placeName] || {};
 
   return {
     name: displayName,
-    query: getCurrentLanguage() === 'EN' ? `${displayName} Seoul` : searchName,
-    latitude: resource?.latitude,
-    longitude: resource?.longitude
+    query: getCurrentLanguage() === 'KR' ? searchName : `${displayName} Seoul`,
+    latitude: coords.latitude,
+    longitude: coords.longitude
   };
 }
 
 function createMapPlaceUrl(target, service = getSelectedMapService()) {
-  const hasCoordinates = Number.isFinite(target.latitude) && Number.isFinite(target.longitude);
+  const hasCoordinates = hasMapCoordinates(target);
   const query = target.query || target.name;
 
   if (service === 'google') {
@@ -1637,30 +2478,78 @@ function createMapPlaceUrl(target, service = getSelectedMapService()) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
 
+function hasMapCoordinates(target) {
+  return Number.isFinite(target.latitude) && Number.isFinite(target.longitude);
+}
+
+function mapPointQuery(target) {
+  return hasMapCoordinates(target) ? `${target.latitude},${target.longitude}` : target.query;
+}
+
+function createNaverDirectionsUrl(targets) {
+  const points = targets.filter(hasMapCoordinates);
+  if (points.length < 2) return '';
+
+  const [origin, ...rest] = points;
+  const destination = rest.pop() || origin;
+  const params = new URLSearchParams({
+    slat: origin.latitude,
+    slng: origin.longitude,
+    sname: origin.name,
+    dlat: destination.latitude,
+    dlng: destination.longitude,
+    dname: destination.name,
+    appname: 'lovesome0405.github.io.ari'
+  });
+
+  rest.slice(0, 3).forEach((point, index) => {
+    const order = index + 1;
+    params.set(`v${order}lat`, point.latitude);
+    params.set(`v${order}lng`, point.longitude);
+    params.set(`v${order}name`, point.name);
+  });
+
+  return `nmap://route/walk?${params.toString()}`;
+}
+
+function createKakaoDirectionsUrl(targets) {
+  const points = targets.filter(hasMapCoordinates).slice(0, 5);
+  if (points.length < 2) return '';
+
+  const encodedPoints = points
+    .map((point) => `${encodeURIComponent(point.name)},${point.latitude},${point.longitude}`)
+    .join('/');
+
+  return `https://map.kakao.com/link/by/walk/${encodedPoints}`;
+}
+
 function createMapRouteUrl(route, service = getSelectedMapService()) {
   const targets = route.flow.map(getMapTargetForPlace);
   if (!targets.length) return '#';
 
-  if (service !== 'google' || targets.length === 1) {
+  if (targets.length === 1) {
     return createMapPlaceUrl(targets[0], service);
   }
 
-  const toGoogleQuery = (target) =>
-    Number.isFinite(target.latitude) && Number.isFinite(target.longitude)
-      ? `${target.latitude},${target.longitude}`
-      : target.query;
+  if (service === 'naver') {
+    return createNaverDirectionsUrl(targets) || createMapPlaceUrl(targets[0], service);
+  }
+
+  if (service === 'kakao') {
+    return createKakaoDirectionsUrl(targets) || createMapPlaceUrl(targets[0], service);
+  }
 
   const [origin, ...rest] = targets;
   const destination = rest.pop() || origin;
   const params = new URLSearchParams({
     api: '1',
-    origin: toGoogleQuery(origin),
-    destination: toGoogleQuery(destination),
+    origin: mapPointQuery(origin),
+    destination: mapPointQuery(destination),
     travelmode: 'walking'
   });
 
   if (rest.length) {
-    params.set('waypoints', rest.map(toGoogleQuery).join('|'));
+    params.set('waypoints', rest.map(mapPointQuery).join('|'));
   }
 
   return `https://www.google.com/maps/dir/?${params.toString()}`;
@@ -1694,7 +2583,7 @@ function renderMapServicePanel(route) {
       `).join('')}
     </div>
     <a class="map-service-link" href="${escapeHtml(createMapRouteUrl(route, selectedService))}" target="_blank" rel="noopener">
-      ${escapeHtml(t('map.openFirst'))}
+      ${escapeHtml(t('map.openRoute'))}
     </a>
   `;
 }
@@ -1703,7 +2592,7 @@ function updateMapOpenLinks(route) {
   const selectedService = getSelectedMapService();
   qsa('[data-map-open-route]').forEach((link) => {
     link.href = createMapRouteUrl(route, selectedService);
-    link.textContent = selectedService === 'google' ? t('map.openRoute') : t('map.openFirst');
+    link.textContent = t('map.openRoute');
   });
 }
 
@@ -1775,7 +2664,7 @@ function renderRouteDetail() {
   if (imageSlot) imageSlot.innerHTML = renderRouteImage(route, 'detail-route-image');
 
   const reason = qs('[data-detail-reason]');
-  if (reason) reason.textContent = route.reason;
+  if (reason) reason.textContent = routeView.reason;
 
   const convenience = qs('[data-detail-convenience]');
   if (convenience) convenience.innerHTML = renderConvenienceBadges(routeView.displayConvenience);
@@ -1844,16 +2733,16 @@ function renderSupport() {
   if (!container) return;
 
   container.innerHTML = SUPPORT_DATA.map((item) => {
-    const translated = getCurrentLanguage() === 'EN' ? (EN_SUPPORT_TRANSLATIONS[item.id] || item) : item;
+    const translated = SUPPORT_TRANSLATIONS[getCurrentLanguage()]?.[item.id] || item;
     return `
-    <article class="support-card" data-support-card="${escapeHtml(item.id)}">
+    <a class="support-card" href="${escapeHtml(item.url)}" target="_blank" rel="noopener" data-support-card="${escapeHtml(item.id)}">
       <span class="support-card-kicker">${escapeHtml(t('support.action'))}</span>
       <h2>${escapeHtml(translated.title)}</h2>
       <p>${escapeHtml(translated.description)}</p>
       <ul class="support-points">
         ${(translated.points || []).map((point) => `<li>${escapeHtml(point)}</li>`).join('')}
       </ul>
-    </article>
+    </a>
   `;
   }).join('');
 }
