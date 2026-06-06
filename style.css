@@ -799,6 +799,43 @@ p {
   margin-top: 14px;
 }
 
+.place-recommendation-section {
+  margin-top: 22px;
+}
+
+.section-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  background: var(--glass-strong);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.section-heading h2 {
+  font-size: 1.32rem;
+}
+
+.section-heading p:not(.eyebrow) {
+  margin-top: 6px;
+  color: var(--muted);
+}
+
+.section-heading > span {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  padding: 8px 10px;
+  color: #111827;
+  background: var(--gold);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
 .route-card {
   overflow: hidden;
 }
@@ -1095,6 +1132,10 @@ p {
 .place-card p {
   margin-top: 10px;
   color: var(--muted);
+}
+
+.place-score-row {
+  margin-top: 10px;
 }
 
 .place-map-link {
@@ -1696,7 +1737,7 @@ code {
   font-weight: 900;
 }
 
-/* Maru Chatbot */
+/* Ari Chatbot */
 .ari-chat {
   position: fixed;
   left: 50%;

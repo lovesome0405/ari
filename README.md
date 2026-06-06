@@ -52,15 +52,16 @@ https://maru-seoul-heritage.vercel.app/
 index.html          # 언어 선택, 시간대별 홈 이미지, 앱 시작 화면
 planner.html        # 단계형 여행 조건 선택
 routes.html         # 추천 코스 카드
-route-detail.html   # 코스 상세, 문화 해설, Google Maps 길찾기
+route-detail.html   # 코스 상세, 문화 해설, 지도 서비스 길찾기
 map.html            # 모바일 지도/내비게이션 보조 화면
 weather.html        # 서울 날씨와 날씨 기반 코스 추천
 support.html        # 여행자 지원
 passport.html       # 저장 코스와 문화 스탬프
 culture-data.html   # 심사용 문화데이터 대시보드
 about.html          # 서비스 설명
-style.css           # 모바일 우선 디자인 시스템, 이미지 프레임, 마루 챗봇 UI
-app.js              # 데이터, localStorage, 렌더링, 인터랙션, 마루 provider/fallback
+style.css           # 모바일 우선 디자인 시스템, 이미지 프레임, 아리 챗봇 UI
+app.js              # 데이터, localStorage, 렌더링, 인터랙션, 아리 provider/fallback
+ari_culture_resources_appjs.json # 정적 앱에서 fetch하는 서울 전통문화 장소 데이터
 manifest.json       # PWA 준비 파일
 service-worker.js   # 간단한 앱 셸 캐시
 image-prompts.md    # AI 이미지 생성 프롬프트
@@ -78,13 +79,15 @@ sitemap.xml          # 공개 페이지 목록
 3. 여행 조건 선택
 4. 추천 코스 보기
 5. 코스 선택
-6. Google Maps 길찾기
+6. 네이버지도, 카카오맵, Google Maps 길찾기
 7. 장소별 전통문화 해설 확인
 8. 여행자 지원, 날씨, 문화여행 기록 사용
 
 ## Data Expansion Plan
 
-현재 정적 버전은 `app.js`의 seed data를 사용합니다. 공식 API 통합은 Spring Boot 버전에서 처리합니다.
+현재 정적 버전은 `ari_culture_resources_appjs.json`을 상대 경로로 fetch해 서울 전통문화 장소 카드와 추천 코스를 구성합니다. fetch가 실패하면 `app.js` 안의 fallback seed data가 사용됩니다.
+
+CSV/SQL 자료는 정적 웹앱에서 직접 DB처럼 사용하지 않고, 향후 데이터 검증과 백엔드 확장 참고 자료로만 관리합니다.
 
 향후 데이터 소스 후보:
 
@@ -96,7 +99,7 @@ sitemap.xml          # 공개 페이지 목록
 
 주의사항:
 
-- 이 저장소의 데이터는 seed data입니다.
+- 이 저장소의 JSON 데이터는 정적 프로토타입용 seed data입니다.
 - 운영시간, 요금, 예약 여부, 주소, 좌표는 운영 전 공식 출처로 검증해야 합니다.
 - 서울 열린데이터광장, 한국관광공사, 국가유산청, Visit Seoul 등은 데이터 소스 참고명이며 공식 제휴를 의미하지 않습니다.
 
@@ -180,7 +183,7 @@ assets/images/routes/hidden-sounds-hanok.webp
 assets/images/routes/modern-seoul-performance.webp
 ```
 
-이미지 파일이 없으면 `AI Visual Guide / 이미지 준비 중` placeholder가 표시되며, 깨진 이미지 아이콘은 노출하지 않습니다.
+이미지 파일이 없으면 `MARU / 이미지 준비 중` placeholder가 표시되며, 깨진 이미지 아이콘은 노출하지 않습니다.
 
 ## AI Image Policy
 
@@ -191,9 +194,9 @@ assets/images/routes/modern-seoul-performance.webp
 - 실제 이미지 파일이 없으면 CSS placeholder가 표시됩니다.
 - 이미지 생성 프롬프트는 `image-prompts.md`에 정리되어 있습니다.
 
-## 마루 Chatbot
+## 아리 Chatbot
 
-마루(MARU)는 외국인을 위한 서울 전통문화 AI 가이드입니다.
+아리(ARI)는 마루 앱 안에서 서울 전통문화 코스를 안내하는 AI 가이드입니다. 앱 이름은 마루(MARU)이며, ARI는 챗봇 이름으로만 사용합니다.
 
 - 궁궐, 한옥, 전통시장, 정원, 연못, 누각, 문화체험, 추천 코스 해설을 돕습니다.
 - 유료 외부 AI API 키가 필요하지 않습니다.
@@ -227,7 +230,7 @@ ollama run llama3.2
 http://localhost:11434/api/chat
 ```
 
-브라우저와 Ollama CORS 설정에 따라 로컬 브라우저 fetch에 추가 설정이 필요할 수 있습니다. 연결이 실패해도 마루는 fallback 로직으로 계속 동작합니다.
+브라우저와 Ollama CORS 설정에 따라 로컬 브라우저 fetch에 추가 설정이 필요할 수 있습니다. 연결이 실패해도 아리는 fallback 로직으로 계속 동작합니다.
 
 ## UI Theme Plan
 
@@ -239,12 +242,14 @@ http://localhost:11434/api/chat
 
 선택값은 `localStorage`에 저장되며, CSS 변수와 hero visual 스타일을 바꿉니다.
 
-## Google Maps 링크 방식
+## 지도 링크 방식
 
-현재는 코스 장소명을 사용해 Google Maps 경로 URL을 생성합니다.
+현재는 선택한 지도 서비스에 따라 네이버지도, 카카오맵, Google Maps 새 탭 링크를 생성합니다. 좌표가 있으면 좌표를 우선 사용하고, 없으면 장소명과 서울을 함께 검색합니다.
 
 ```text
-https://www.google.com/maps/dir/장소1/장소2/장소3
+https://www.google.com/maps/dir/?api=1&origin=...
+nmap://route/walk?slat=...
+https://map.kakao.com/link/by/walk/...
 ```
 
 향후 서버에서 좌표 데이터를 제공하면 더 정확한 경로 URL이나 지도 API로 확장할 수 있습니다.

@@ -11,12 +11,12 @@ const HOME_TIME_IMAGES = {
       'assets/images/home/day-4.webp'
     ],
     title: {
-      KR: '한국 전통문화를 만나는 시간',
-      EN: 'A Clear Way Into Korean Heritage'
+      KR: '외국인을 위한 서울 전통문화 AI 가이드',
+      EN: 'Seoul Heritage Guide for Global Travelers'
     },
     description: {
-      KR: '현재 시간에 맞춰 낮, 저녁, 밤 분위기를 자동으로 적용합니다.',
-      EN: 'MARU automatically adapts the page mood to day, evening, or night.'
+      KR: '궁궐, 한옥, 사찰, 역사 공간을 여행자의 시간·날씨·관심사에 맞춰 이야기 흐름으로 추천합니다.',
+      EN: 'MARU adapts the page mood to day, evening, or night.'
     }
   },
   evening: {
@@ -28,7 +28,7 @@ const HOME_TIME_IMAGES = {
       'assets/images/home/evening-4.webp'
     ],
     title: {
-      KR: '노을과 함께 읽는 전통문화 이야기',
+      KR: '아리가 당신의 서울 전통문화 여정을 도와드릴게요',
       EN: 'Heritage Stories in the Evening Glow'
     },
     description: {
@@ -45,7 +45,7 @@ const HOME_TIME_IMAGES = {
       'assets/images/home/night-4.webp'
     ],
     title: {
-      KR: '밤에 더 깊어지는 한국 전통문화',
+      KR: '밤에도 이어지는 서울 전통문화 이야기',
       EN: 'Korean Heritage After Dark'
     },
     description: {
@@ -79,8 +79,8 @@ const HOME_TIME_IMAGES = {
       start: '始める'
     },
     routes: {
-      header: 'おすすめコース',
-      headerSub: 'Seoul Heritage Guide',
+      header: 'MARU',
+      headerSub: 'おすすめコース',
       edit: '条件を変更',
       eyebrow: 'Recommended Routes',
       title: '伝統文化おすすめコース',
@@ -92,8 +92,8 @@ const HOME_TIME_IMAGES = {
       map: '地図を開く'
     },
     detail: {
-      header: 'コース詳細',
-      headerSub: 'Story route detail',
+      header: 'MARU',
+      headerSub: 'コース詳細',
       save: '保存',
       selected: 'Selected Route',
       scoreSuffix: '点',
@@ -110,8 +110,8 @@ const HOME_TIME_IMAGES = {
       passport: '保存したコースに追加'
     },
     map: {
-      header: '地図',
-      headerSub: 'Navigation helper',
+      header: 'MARU',
+      headerSub: '地図',
       changeRoute: 'コース変更',
       eyebrow: 'Route Map',
       fallbackTitle: '選択したコース',
@@ -131,8 +131,8 @@ const HOME_TIME_IMAGES = {
       savedToast: '地図サービスを保存しました。'
     },
     support: {
-      header: '旅行者サポート',
-      headerSub: 'Help during trip',
+      header: 'MARU',
+      headerSub: '旅行者サポート',
       list: 'サポート一覧',
       eyebrow: 'Emergency',
       title: '今すぐ助けが必要ですか？',
@@ -182,8 +182,8 @@ const HOME_TIME_IMAGES = {
       start: '开始'
     },
     routes: {
-      header: '推荐路线',
-      headerSub: 'Seoul Heritage Guide',
+      header: 'MARU',
+      headerSub: '推荐路线',
       edit: '修改条件',
       eyebrow: 'Recommended Routes',
       title: '传统文化推荐路线',
@@ -195,8 +195,8 @@ const HOME_TIME_IMAGES = {
       map: '打开地图'
     },
     detail: {
-      header: '路线详情',
-      headerSub: 'Story route detail',
+      header: 'MARU',
+      headerSub: '路线详情',
       save: '保存',
       selected: 'Selected Route',
       scoreSuffix: '分',
@@ -213,8 +213,8 @@ const HOME_TIME_IMAGES = {
       passport: '保存到已存路线'
     },
     map: {
-      header: '地图',
-      headerSub: 'Navigation helper',
+      header: 'MARU',
+      headerSub: '地图',
       changeRoute: '更换路线',
       eyebrow: 'Route Map',
       fallbackTitle: '已选路线',
@@ -234,8 +234,8 @@ const HOME_TIME_IMAGES = {
       savedToast: '地图服务已保存。'
     },
     support: {
-      header: '旅行者帮助',
-      headerSub: 'Help during trip',
+      header: 'MARU',
+      headerSub: '旅行者帮助',
       list: '帮助列表',
       eyebrow: 'Emergency',
       title: '现在需要帮助吗？',
@@ -270,8 +270,10 @@ const AI_PROVIDER_CONFIG = {
 };
 
 const ARI_SYSTEM_PROMPT = `
-너는 마루(MARU)다.
-마루는 한국 전통문화 코스의 흐름을 차분하게 안내하는 서울 전통문화 AI 가이드다.
+너는 아리(ARI)다.
+아리는 마루 앱 안에서 서울 전통문화 코스를 안내하는 AI 가이드다.
+사용자에게 앱 이름을 말해야 할 때는 마루 또는 MARU라고 부른다.
+ARI를 앱 이름처럼 말하지 않는다.
 
 역할:
 - 한국 전통문화, 궁궐, 한옥, 전통시장, 정원, 연못, 누각, 문화체험을 친절하게 설명한다.
@@ -295,9 +297,12 @@ const ARI_QUICK_QUESTIONS = [
   '예약이 필요한 곳이 있어?'
 ];
 
-// EDIT CULTURE RESOURCE DATA HERE
-// Static seed data only. Official API integration belongs in the Spring Boot version.
-const CULTURE_RESOURCES = [
+const CULTURE_RESOURCE_DATA_URL = 'ari_culture_resources_appjs.json';
+let cultureResourceLoadStatus = 'fallback';
+let cultureResourceLoadMessage = '';
+
+// Fallback seed data only. The primary static dataset is ari_culture_resources_appjs.json.
+let CULTURE_RESOURCES = [
   {
     id: 'gyeongbokgung-palace',
     nameKo: '경복궁',
@@ -552,8 +557,8 @@ const CULTURE_RESOURCES = [
   }
 ];
 
-// EDIT ROUTE DATA HERE
-const ROUTE_DATA = [
+// Fallback route data. The primary routes are generated from CULTURE_RESOURCES after JSON load.
+let ROUTE_DATA = [
   {
     id: 'royal-culture-local-life',
     title: '왕실문화에서 생활문화로 이어지는 코스',
@@ -773,8 +778,8 @@ const UI_COPY = {
       start: '시작하기'
     },
     routes: {
-      header: '추천 코스',
-      headerSub: 'Seoul Heritage Guide',
+      header: '마루',
+      headerSub: '추천 코스',
       edit: '조건 수정',
       eyebrow: 'Recommended Routes',
       title: '추천 전통문화 코스',
@@ -785,9 +790,21 @@ const UI_COPY = {
       detail: '자세히 보기',
       map: '지도 열기'
     },
+    places: {
+      title: '서울 전통문화 장소 추천',
+      body: '실제 데이터에서 좌표와 설명 품질이 좋은 장소를 우선 정렬했습니다.',
+      count: '추천 장소',
+      reason: '외국인 추천 이유',
+      tip: '방문 팁',
+      rainy: '우천',
+      photo: '사진',
+      quality: '품질',
+      map: '지도에서 보기',
+      beta: ''
+    },
     detail: {
-      header: '코스 상세',
-      headerSub: 'Story route detail',
+      header: '마루',
+      headerSub: '코스 상세',
       save: '저장',
       selected: '선택한 코스',
       scoreSuffix: '점',
@@ -804,8 +821,8 @@ const UI_COPY = {
       passport: '문화여행 기록에 저장'
     },
     map: {
-      header: '지도',
-      headerSub: 'Navigation helper',
+      header: '마루',
+      headerSub: '지도 길찾기',
       changeRoute: '코스 변경',
       eyebrow: 'Route Map',
       fallbackTitle: '선택한 코스',
@@ -825,8 +842,8 @@ const UI_COPY = {
       savedToast: '지도 서비스가 저장되었습니다.'
     },
     support: {
-      header: '여행자 지원',
-      headerSub: 'Help during trip',
+      header: '마루',
+      headerSub: '여행자 지원',
       list: '지원 목록',
       eyebrow: 'Emergency',
       title: '긴급 상황인가요?',
@@ -876,8 +893,8 @@ const UI_COPY = {
       start: 'Get Started'
     },
     routes: {
-      header: 'Recommended Routes',
-      headerSub: 'Seoul Heritage Guide',
+      header: 'MARU',
+      headerSub: 'Recommended Routes',
       edit: 'Edit filters',
       eyebrow: 'Recommended Routes',
       title: 'Traditional Culture Routes',
@@ -888,9 +905,21 @@ const UI_COPY = {
       detail: 'View details',
       map: 'Open map'
     },
+    places: {
+      title: 'Recommended Seoul Heritage Places',
+      body: 'Places are sorted by coordinates, data quality, tradition score, visitor-friendly explanations, and independent travel value.',
+      count: 'places',
+      reason: 'Why recommended',
+      tip: 'Visit tip',
+      rainy: 'Rainy',
+      photo: 'Photo',
+      quality: 'Quality',
+      map: 'Open map',
+      beta: ''
+    },
     detail: {
-      header: 'Route Detail',
-      headerSub: 'Story route detail',
+      header: 'MARU',
+      headerSub: 'Route Detail',
       save: 'Save',
       selected: 'Selected Route',
       scoreSuffix: ' pts',
@@ -907,7 +936,7 @@ const UI_COPY = {
       passport: 'Save to Saved Routes'
     },
     map: {
-      header: 'Map',
+      header: 'MARU',
       headerSub: 'Navigation helper',
       changeRoute: 'Change route',
       eyebrow: 'Route Map',
@@ -928,8 +957,8 @@ const UI_COPY = {
       savedToast: 'Map service saved.'
     },
     support: {
-      header: 'Traveler Help',
-      headerSub: 'Help during trip',
+      header: 'MARU',
+      headerSub: 'Traveler Help',
       list: 'Help List',
       eyebrow: 'Emergency',
       title: 'Need help right now?',
@@ -990,6 +1019,18 @@ const UI_COPY = {
       select: 'このコースを選択',
       detail: '詳しく見る',
       map: '地図を開く'
+    },
+    places: {
+      title: 'ソウル伝統文化スポット',
+      body: '日本語説明は準備中です。場所名と主要ラベルを中心に表示します。',
+      count: 'スポット',
+      reason: 'おすすめ理由',
+      tip: '訪問のヒント',
+      rainy: '雨',
+      photo: '写真',
+      quality: '品質',
+      map: '地図で見る',
+      beta: 'beta'
     },
     detail: {
       header: 'コース詳細',
@@ -1093,6 +1134,18 @@ const UI_COPY = {
       select: '选择此路线',
       detail: '查看详情',
       map: '打开地图'
+    },
+    places: {
+      title: '首尔传统文化地点推荐',
+      body: '中文说明仍在准备中，当前优先显示地点名和主要标签。',
+      count: '地点',
+      reason: '推荐理由',
+      tip: '参观提示',
+      rainy: '雨天',
+      photo: '照片',
+      quality: '质量',
+      map: '打开地图',
+      beta: 'beta'
     },
     detail: {
       header: '路线详情',
@@ -1796,6 +1849,121 @@ const MAP_POSITIONS = [
   { left: '74%', top: '70%' }
 ];
 
+const PRIORITY_PLACE_NAMES = [
+  '경복궁',
+  '창덕궁',
+  '덕수궁',
+  '종묘',
+  '북촌한옥마을',
+  '인사동',
+  '남산골한옥마을',
+  '조계사',
+  '국립민속박물관',
+  '국립고궁박물관',
+  '서울역사박물관',
+  '서대문형무소역사관',
+  '숭례문',
+  '한양도성',
+  '운현궁',
+  '선릉과 정릉',
+  '석촌동 고분군'
+];
+
+const DETAIL_STORY_PATTERNS = [
+  '나무',
+  '유물',
+  '전시품',
+  '석물',
+  '불상',
+  '비석',
+  '현판',
+  '탑신',
+  '초상',
+  '문양',
+  '부재'
+];
+
+const ROUTE_BLUEPRINTS = [
+  {
+    id: 'first-visit-seoul-heritage',
+    title: '첫 방문자 추천 코스',
+    englishTitle: 'First-Time Seoul Heritage Route',
+    summary: '궁궐, 한옥, 전통거리를 한 번에 이해하는 서울 전통문화 입문 코스입니다.',
+    englishExplanation: 'A first-time route connecting a palace, hanok neighborhood, and traditional street.',
+    reason: '외국인 방문객이 서울 전통문화의 대표 장면을 가장 쉽게 연결해서 볼 수 있습니다.',
+    tip: '경복궁 주변은 도보 이동이 많으니 편한 신발을 준비하세요.',
+    tags: ['궁궐', '한옥', '전통거리'],
+    preferredNames: ['광화문광장', '국립고궁박물관', '경복궁', '북촌한옥마을', '인사동'],
+    fallbackTags: ['first visit', 'palace', 'hanok'],
+    time: '약 3~4시간',
+    walking: '보통',
+    fee: '저비용'
+  },
+  {
+    id: 'rainy-day-indoor-heritage',
+    title: '비 오는 날 추천 코스',
+    englishTitle: 'Rainy-Day Indoor Heritage Route',
+    summary: '박물관과 실내 문화시설 중심으로 비 오는 날에도 안정적으로 둘러보는 코스입니다.',
+    englishExplanation: 'An indoor-focused route for rainy days with museums and cultural venues.',
+    reason: '실내 전시와 문화시설을 중심으로 날씨 부담을 줄이면서 전통문화 맥락을 이어갑니다.',
+    tip: '박물관 휴관일과 공연·체험 예약 여부를 먼저 확인하세요.',
+    tags: ['실내', '박물관', '우천'],
+    preferredNames: ['국립고궁박물관', '국립민속박물관', '서울역사박물관', '서울우리소리박물관', '한국의집'],
+    fallbackTags: ['rainy day', 'museum', 'performance'],
+    preferIndoor: true,
+    time: '약 3시간',
+    walking: '낮음',
+    fee: '무료~유료 가능'
+  },
+  {
+    id: 'photo-spot-heritage-walk',
+    title: '사진 명소 코스',
+    englishTitle: 'Photo Spot Heritage Walk',
+    summary: '궁궐, 한옥, 성곽, 산책길의 시각적 장면을 중심으로 구성한 코스입니다.',
+    englishExplanation: 'A visual route for palaces, hanok streets, walls, and scenic walking spots.',
+    reason: '사진으로 남기기 좋은 서울 전통문화의 대표 장면을 자연스럽게 묶었습니다.',
+    tip: '노을 시간대에는 성곽과 돌담길이 특히 좋지만 우천 시에는 실내 코스로 바꾸세요.',
+    tags: ['사진명소', '한옥', '성곽'],
+    preferredNames: ['창덕궁', '북촌한옥마을', '덕수궁 돌담길', '한양도성', '남산골한옥마을'],
+    fallbackTags: ['photo spot', 'sunset', 'hanok'],
+    preferPhoto: true,
+    time: '약 3~4시간',
+    walking: '보통',
+    fee: '저비용'
+  },
+  {
+    id: 'deep-history-route',
+    title: '역사 깊이 보기 코스',
+    englishTitle: 'Deep History Route',
+    summary: '왕실 의례, 근현대사, 성문과 도시사를 연결해 깊게 보는 코스입니다.',
+    englishExplanation: 'A deeper route connecting royal rituals, modern history, gates, and city history.',
+    reason: '서울의 전통문화가 왕실문화에서 근현대사의 기억까지 이어지는 흐름을 보여줍니다.',
+    tip: '전시 해설을 천천히 읽을 시간이 필요하므로 이동 장소를 너무 늘리지 마세요.',
+    tags: ['왕실', '근현대사', '유적지'],
+    preferredNames: ['종묘', '덕수궁', '서울역사박물관', '서대문형무소역사관', '숭례문'],
+    fallbackTags: ['history', 'modern history', 'royal ritual'],
+    time: '반나절',
+    walking: '보통',
+    fee: '무료~유료 가능'
+  },
+  {
+    id: 'easy-walking-heritage',
+    title: '가볍게 걷는 코스',
+    englishTitle: 'Easy Walking Heritage Route',
+    summary: '도보 난이도가 낮고 가까운 장소를 묶은 부담 적은 전통문화 산책 코스입니다.',
+    englishExplanation: 'A lighter walking route linking nearby heritage stops with low walking difficulty.',
+    reason: '이동 부담을 낮추면서 사찰, 한옥, 전통거리, 작은 박물관을 함께 경험할 수 있습니다.',
+    tip: '익선동과 인사동은 혼잡할 수 있어 오전이나 이른 저녁이 편합니다.',
+    tags: ['가벼운 산책', '사찰', '한옥'],
+    preferredNames: ['운현궁', '조계사', '인사동', '서울우리소리박물관', '익선동 한옥거리'],
+    fallbackTags: ['walking', 'quiet stop', 'low'],
+    preferEasy: true,
+    time: '약 2~3시간',
+    walking: '낮음',
+    fee: '무료 중심'
+  }
+];
+
 let plannerStep = 1;
 let toastTimer;
 let ariMessages = [];
@@ -1880,6 +2048,267 @@ function setText(selector, value) {
   qsa(selector).forEach((element) => {
     element.textContent = value;
   });
+}
+
+function toArray(value) {
+  if (Array.isArray(value)) return value.filter(Boolean);
+  if (typeof value === 'string') {
+    return value
+      .split(/[|,]/)
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+  return [];
+}
+
+function toNumber(value, fallback = 0) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : fallback;
+}
+
+function toBoolean(value, fallback = false) {
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'number') return value > 0;
+  if (typeof value === 'string') {
+    const normalized = value.trim().toLowerCase();
+    if (['true', 'yes', 'y', '1', '추천', '가능'].includes(normalized)) return true;
+    if (['false', 'no', 'n', '0', '비추천', '불가'].includes(normalized)) return false;
+  }
+  return fallback;
+}
+
+function slugifyResource(raw, index = 0) {
+  const source = raw.id || raw.slug || raw.nameEn || raw.nameKo || `resource-${index + 1}`;
+  const slug = String(source)
+    .normalize('NFKD')
+    .replace(/[^\w\s-]/g, '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/_+/g, '-');
+  return slug || `resource-${index + 1}`;
+}
+
+function normalizeDistrict(raw) {
+  const district = raw.district || raw.gu || raw.area || '';
+  if (district) return district;
+  const region = raw.region || '';
+  return /구$/.test(region) ? region : '';
+}
+
+function isSeoulResource(resource) {
+  const text = [resource.region, resource.district, resource.address].filter(Boolean).join(' ');
+  if (/인천|김포|강화/.test(text)) return false;
+  return !text || /서울|종로구|중구|서대문구|강남구|송파구|용산구/.test(text);
+}
+
+function isDetailStoryOnlyResource(resource) {
+  if (toBoolean(resource.isDetailStoryOnly)) return true;
+  const text = [resource.nameKo, resource.nameEn, resource.category, resource.globalTags?.join(' ')].filter(Boolean).join(' ');
+  return DETAIL_STORY_PATTERNS.some((pattern) => text.includes(pattern));
+}
+
+function normalizeCultureResource(raw, index = 0) {
+  const district = normalizeDistrict(raw);
+  const tags = toArray(raw.globalTags || raw.tags || raw.aiCulturalKeywords);
+  const latitude = toNumber(raw.latitude ?? raw.lat, NaN);
+  const longitude = toNumber(raw.longitude ?? raw.lng ?? raw.lon, NaN);
+  const hasCoordinates = Number.isFinite(latitude) && Number.isFinite(longitude);
+  const qualityScore = toNumber(raw.qualityScore, toNumber(raw.score, 70));
+  const traditionScore = toNumber(raw.traditionScore, 70);
+  const photoSpotScore = toNumber(raw.photoSpotScore, tags.some((tag) => /photo|사진|view|야경|노을/i.test(tag)) ? 4 : 2);
+  const rainyDayScore = toNumber(raw.rainyDayScore, /실내|Indoor/i.test(raw.indoorOutdoor || '') ? 4 : 2);
+
+  const resource = {
+    ...raw,
+    id: slugifyResource(raw, index),
+    nameKo: raw.nameKo || raw.name_ko || raw.name || raw.title || `장소 ${index + 1}`,
+    nameEn: raw.nameEn || raw.name_en || raw.englishName || raw.nameKo || raw.name || `Place ${index + 1}`,
+    region: /구$/.test(raw.region || '') ? '서울' : (raw.region || '서울'),
+    district,
+    category: raw.category || raw.type || '전통문화 장소',
+    categoryEn: raw.categoryEn || raw.category_en || raw.category || 'Heritage Place',
+    address: raw.address || raw.addr || '',
+    latitude: hasCoordinates ? latitude : undefined,
+    longitude: hasCoordinates ? longitude : undefined,
+    imageUrl: raw.imageUrl || raw.image_url || '',
+    globalTags: tags,
+    aiSimpleExplanation: raw.aiSimpleExplanation || raw.descriptionKo || raw.description || raw.summary || '',
+    aiSimpleExplanationEn: raw.aiSimpleExplanationEn || raw.descriptionEn || raw.description_en || raw.aiSimpleExplanation || raw.description || '',
+    aiWhyItMatters: raw.aiWhyItMatters || raw.recommendReasonKo || raw.why || raw.aiSimpleExplanation || '',
+    aiWhyItMattersEn: raw.aiWhyItMattersEn || raw.recommendReasonEn || raw.aiWhyItMatters || raw.why || raw.aiSimpleExplanationEn || '',
+    aiVisitTip: raw.aiVisitTip || raw.visitTipKo || raw.tip || '운영시간과 예약 여부는 방문 전 공식 정보를 확인하세요.',
+    aiVisitTipEn: raw.aiVisitTipEn || raw.visitTipEn || raw.aiVisitTip || raw.tip || 'Check official hours and reservation details before visiting.',
+    indoorOutdoor: raw.indoorOutdoor || raw.indoor_outdoor || '확인 필요',
+    indoorOutdoorEn: raw.indoorOutdoorEn || raw.indoor_outdoor_en || raw.indoorOutdoor || 'Check',
+    walkingLevel: raw.walkingLevel || raw.walking_level || '보통',
+    walkingLevelEn: raw.walkingLevelEn || raw.walking_level_en || raw.walkingLevel || 'Moderate',
+    rainyDayScore,
+    photoSpotScore,
+    qualityScore,
+    traditionScore,
+    foreignerScore: toNumber(raw.foreignerScore, toNumber(raw.foreignerPopularityScore, 70)),
+    foreignerPopular: toBoolean(raw.foreignerPopular, toNumber(raw.foreignerScore, 0) >= 80),
+    englishAvailable: toBoolean(raw.englishAvailable, Boolean(raw.nameEn || raw.descriptionEn || raw.aiSimpleExplanationEn)),
+    reservationRequired: toBoolean(raw.reservationRequired, false),
+    isIndependentSite: !isDetailStoryOnlyResource(raw) && toBoolean(raw.isIndependentSite, true),
+    isDetailStoryOnly: isDetailStoryOnlyResource(raw),
+    imageAlt: raw.imageAlt || `${raw.nameKo || raw.name || '서울 전통문화 장소'} 이미지`,
+    feeType: raw.feeType || raw.fee || '공식 확인 필요',
+    bookingNote: raw.bookingNote || '운영시간, 요금, 예약 여부는 방문 전 공식 정보를 확인하세요.',
+    sourceName: raw.sourceName || raw.source || CULTURE_RESOURCE_DATA_URL,
+    sourceUrl: raw.sourceUrl || '',
+    verifiedStatus: raw.verifiedStatus || '데이터 검토 필요'
+  };
+
+  return resource;
+}
+
+function recommendationPriority(resource) {
+  const priorityIndex = PRIORITY_PLACE_NAMES.indexOf(resource.nameKo);
+  const hasCoordinates = Number.isFinite(resource.latitude) && Number.isFinite(resource.longitude);
+  const hasText = Boolean(resource.aiSimpleExplanation && resource.aiWhyItMatters && resource.aiVisitTip);
+  const hasImageOrFallback = Boolean(resource.imageUrl) || true;
+  const tagText = resource.globalTags.join(' ');
+  const detailPenalty = resource.isDetailStoryOnly || !resource.isIndependentSite ? -120 : 0;
+
+  return (
+    (priorityIndex >= 0 ? 120 - priorityIndex * 3 : 0) +
+    (hasCoordinates ? 45 : 0) +
+    (hasImageOrFallback ? 10 : 0) +
+    resource.qualityScore * 0.8 +
+    resource.traditionScore * 0.65 +
+    resource.foreignerScore * 0.35 +
+    (hasText ? 30 : 0) +
+    (resource.photoSpotScore >= 4 ? 10 : 0) +
+    (/palace|궁궐|hanok|한옥|temple|사찰|museum|박물관|history|역사/i.test(`${resource.category} ${tagText}`) ? 12 : 0) +
+    detailPenalty
+  );
+}
+
+function getRecommendedResources(limit = 24, options = {}) {
+  return CULTURE_RESOURCES
+    .filter(isSeoulResource)
+    .filter((resource) => options.includeDetail || (!resource.isDetailStoryOnly && resource.isIndependentSite))
+    .sort((a, b) => recommendationPriority(b) - recommendationPriority(a))
+    .slice(0, limit);
+}
+
+function matchesRouteBlueprint(resource, blueprint) {
+  const text = `${resource.nameKo} ${resource.nameEn} ${resource.category} ${resource.globalTags.join(' ')}`.toLowerCase();
+  if (blueprint.preferIndoor && resource.rainyDayScore >= 4) return true;
+  if (blueprint.preferPhoto && resource.photoSpotScore >= 4) return true;
+  if (blueprint.preferEasy && /낮음|low/i.test(`${resource.walkingLevel} ${resource.walkingLevelEn}`)) return true;
+  return blueprint.fallbackTags.some((tag) => text.includes(String(tag).toLowerCase()));
+}
+
+function pickResourcesForRoute(blueprint, recommendedResources) {
+  const selected = [];
+  const addResource = (resource) => {
+    if (resource && !selected.some((item) => item.id === resource.id)) selected.push(resource);
+  };
+
+  blueprint.preferredNames.forEach((name) => {
+    addResource(CULTURE_RESOURCES.find((resource) => resource.nameKo === name || resource.nameEn === name));
+  });
+
+  recommendedResources
+    .filter((resource) => matchesRouteBlueprint(resource, blueprint))
+    .forEach(addResource);
+
+  recommendedResources.forEach(addResource);
+  return selected.slice(0, 5);
+}
+
+function makeRouteKeywords(routeResources, tags) {
+  const keywords = [...new Set(tags.concat(routeResources.flatMap((resource) => resource.globalTags)).slice(0, 5))];
+  return keywords.map((tag) => ({
+    name: tag,
+    description: `이 코스의 분위기를 설명하는 핵심 태그입니다.`
+  }));
+}
+
+function buildRouteFromResources(blueprint, routeResources) {
+  const average = (field) =>
+    Math.round(routeResources.reduce((sum, resource) => sum + toNumber(resource[field], 0), 0) / Math.max(routeResources.length, 1));
+  const score = Math.min(99, Math.round((average('qualityScore') * 0.45) + (average('traditionScore') * 0.35) + (average('foreignerScore') * 0.2)));
+
+  return {
+    id: blueprint.id,
+    title: blueprint.title,
+    englishTitle: blueprint.englishTitle,
+    score,
+    time: blueprint.time,
+    walking: blueprint.walking,
+    fee: blueprint.fee,
+    resourceIds: routeResources.map((resource) => resource.id),
+    flow: routeResources.map((resource) => resource.nameKo),
+    reason: blueprint.reason,
+    reasonEn: blueprint.reasonEn || blueprint.englishExplanation,
+    tags: blueprint.tags,
+    convenience: {
+      englishAvailable: routeResources.some((resource) => resource.englishAvailable),
+      foreignerPopular: average('foreignerScore') >= 80,
+      reservationRequired: routeResources.some((resource) => resource.reservationRequired),
+      labels: ['실제 데이터 기반', '서울 전통문화', `${routeResources.length}개 장소`]
+    },
+    imageUrl: '',
+    imageAlt: `${blueprint.title} 대표 이미지`,
+    imageNotice: t('common.imageNotice'),
+    summary: blueprint.summary,
+    englishExplanation: blueprint.englishExplanation,
+    tip: blueprint.tip,
+    tipEn: blueprint.tipEn || 'Check official hours, reservations, and closures before visiting.',
+    source: `${CULTURE_RESOURCE_DATA_URL} 기반 정적 추천 코스입니다. 운영 정보는 방문 전 공식 출처 확인이 필요합니다.`,
+    keywords: makeRouteKeywords(routeResources, blueprint.tags)
+  };
+}
+
+function generateRoutesFromResources() {
+  const recommendedResources = getRecommendedResources(80);
+  const routes = ROUTE_BLUEPRINTS
+    .map((blueprint) => buildRouteFromResources(blueprint, pickResourcesForRoute(blueprint, recommendedResources)))
+    .filter((route) => route.resourceIds.length >= 3);
+
+  return routes.length >= 3 ? routes : ROUTE_DATA;
+}
+
+function applyCultureResources(rawResources) {
+  const normalizedResources = rawResources
+    .map(normalizeCultureResource)
+    .filter(isSeoulResource);
+  const deduped = [];
+  const seenIds = new Set();
+
+  normalizedResources.forEach((resource) => {
+    if (seenIds.has(resource.id)) return;
+    seenIds.add(resource.id);
+    deduped.push(resource);
+  });
+
+  if (deduped.length < 5) {
+    cultureResourceLoadStatus = 'fallback';
+    cultureResourceLoadMessage = 'JSON 데이터가 부족해 fallback seed data를 사용했습니다.';
+    return;
+  }
+
+  CULTURE_RESOURCES = deduped;
+  ROUTE_DATA = generateRoutesFromResources();
+  cultureResourceLoadStatus = 'loaded';
+  cultureResourceLoadMessage = `${CULTURE_RESOURCE_DATA_URL}에서 ${CULTURE_RESOURCES.length}개 장소를 불러왔습니다.`;
+}
+
+async function loadCultureResources() {
+  try {
+    const response = await fetch(CULTURE_RESOURCE_DATA_URL, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const payload = await response.json();
+    const resources = Array.isArray(payload) ? payload : (payload.resources || payload.data || []);
+    applyCultureResources(resources);
+  } catch (error) {
+    cultureResourceLoadStatus = 'fallback';
+    cultureResourceLoadMessage = `${CULTURE_RESOURCE_DATA_URL} 로드 실패로 fallback seed data를 사용했습니다.`;
+  }
 }
 
 function applyStaticTranslations() {
@@ -2021,6 +2450,7 @@ function renderLocalizedContent() {
   applyStaticTranslations();
   renderHomeTimeHero();
   renderRouteCards();
+  renderRecommendedPlaces();
   renderRouteDetail();
   renderMap();
   renderWeather();
@@ -2153,8 +2583,8 @@ function imageExistsFallback(event) {
   wrapper.classList.add('is-missing');
   wrapper.innerHTML = `
     <div class="image-placeholder-content">
-      <strong>AI Visual Guide</strong>
-      <small>이미지 준비 중</small>
+      <strong>MARU</strong>
+      <small>${escapeHtml(t('common.imageMissing'))}</small>
     </div>
   `;
 }
@@ -2169,7 +2599,7 @@ function renderImageFrame({ src, alt, notice, className = '' }) {
     return `
       <div class="image-frame image-placeholder${cleanClassName}">
         <div class="image-placeholder-content">
-          <strong>AI Visual Guide</strong>
+          <strong>MARU</strong>
           <small>${escapeHtml(fallbackNotice)}</small>
         </div>
       </div>
@@ -2316,6 +2746,8 @@ function renderPlaceImage(resource) {
 
 function localizePlaceName(placeName) {
   const language = getCurrentLanguage();
+  const resource = CULTURE_RESOURCES.find((item) => item.nameKo === placeName || item.nameEn === placeName);
+  if (resource && language !== 'KR') return resource.nameEn || resource.nameKo;
   if (language === 'KR') return placeName;
   return PLACE_NAME_BY_LANGUAGE[language]?.[placeName] || PLACE_NAME_EN[placeName] || placeName;
 }
@@ -2340,10 +2772,10 @@ function getRouteView(route) {
     time: translated.time || route.time,
     walking: translated.walking || route.walking,
     fee: translated.fee || route.fee,
-    reason: translated.reason || route.reason,
+    reason: translated.reason || route.reasonEn || route.reason,
     summary: translated.summary || route.englishExplanation || route.summary,
     englishExplanation: route.summary,
-    tip: translated.tip || route.tip,
+    tip: translated.tip || route.tipEn || route.tip,
     displayFlow: translated.flow || route.flow.map(localizePlaceName),
     displayKeywords: translated.keywords || route.keywords,
     displayConvenience: {
@@ -2359,7 +2791,9 @@ function getResourceView(resource) {
     return {
       ...resource,
       displayName: resource.nameKo,
-      secondaryName: resource.nameEn
+      secondaryName: resource.nameEn,
+      displayDistrict: resource.district || resource.region,
+      displayTags: resource.globalTags || []
     };
   }
 
@@ -2368,8 +2802,54 @@ function getResourceView(resource) {
     ...resource,
     ...translated,
     displayName: localizePlaceName(resource.nameKo) || resource.nameEn || resource.nameKo,
-    secondaryName: language === 'EN' ? resource.nameKo : (resource.nameEn || resource.nameKo)
+    secondaryName: language === 'EN' ? resource.nameKo : (resource.nameEn || resource.nameKo),
+    category: translated.category || resource.categoryEn || resource.category,
+    region: translated.region || resource.region,
+    displayDistrict: resource.district || translated.region || resource.region,
+    feeType: translated.feeType || resource.feeType,
+    indoorOutdoor: translated.indoorOutdoor || resource.indoorOutdoorEn || resource.indoorOutdoor,
+    walkingLevel: translated.walkingLevel || resource.walkingLevelEn || resource.walkingLevel,
+    aiSimpleExplanation: translated.aiSimpleExplanation || resource.aiSimpleExplanationEn || resource.aiSimpleExplanation,
+    aiWhyItMatters: translated.aiWhyItMatters || resource.aiWhyItMattersEn || resource.aiWhyItMatters,
+    aiVisitTip: translated.aiVisitTip || resource.aiVisitTipEn || resource.aiVisitTip,
+    bookingNote: translated.bookingNote || resource.bookingNote,
+    displayTags: resource.globalTags || []
   };
+}
+
+function renderResourceCard(resource, index = 0, options = {}) {
+  const resourceView = getResourceView(resource);
+  const selectedService = getSelectedMapService();
+  const target = getMapTargetForPlace(resource.nameKo);
+  const tags = (resourceView.displayTags || []).slice(0, 4);
+  const titlePrefix = options.showIndex === false ? '' : `${index + 1}. `;
+  const scoreTags = [
+    `${t('places.quality')} ${Math.round(resource.qualityScore || 0)}`,
+    `${t('places.photo')} ${Math.round(resource.photoSpotScore || 0)}/5`,
+    `${t('places.rainy')} ${Math.round(resource.rainyDayScore || 0)}/5`
+  ];
+
+  return `
+    <article class="place-card" data-resource-card="${escapeHtml(resource.id)}">
+      ${renderPlaceImage(resource)}
+      <h2>${escapeHtml(titlePrefix)}${escapeHtml(resourceView.displayName)}</h2>
+      <p class="en">${escapeHtml(resourceView.secondaryName || '')}</p>
+      <div class="meta-row">
+        <span>${escapeHtml(resourceView.displayDistrict || resourceView.region || '서울')}</span>
+        <span>${escapeHtml(resourceView.category || '')}</span>
+        <span>${escapeHtml(resourceView.indoorOutdoor || '')}</span>
+        <span>${escapeHtml(resourceView.walkingLevel || '')}</span>
+      </div>
+      <div class="tag-row place-score-row">
+        ${scoreTags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}
+      </div>
+      ${tags.length ? `<div class="tag-row">${tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
+      <p>${escapeHtml(resourceView.aiSimpleExplanation || '')}</p>
+      <p><strong>${escapeHtml(t('places.reason'))}</strong> ${escapeHtml(resourceView.aiWhyItMatters || '')}</p>
+      <p><strong>${escapeHtml(t('places.tip'))}</strong> ${escapeHtml(resourceView.aiVisitTip || '')}</p>
+      <a class="button button-secondary button-block place-map-link" href="${escapeHtml(createMapPlaceUrl(target, selectedService))}" target="_blank" rel="noopener">${escapeHtml(getMapServiceLabel(selectedService))} ${escapeHtml(t('places.map'))}</a>
+    </article>
+  `;
 }
 
 function renderRouteCards() {
@@ -2395,6 +2875,7 @@ function renderRouteCards() {
           <span>${escapeHtml(routeView.fee)}</span>
         </div>
         ${renderConvenienceBadges(routeView.displayConvenience)}
+        ${route.tags?.length ? `<div class="tag-row">${route.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
         <div class="recommendation-reason">
           <span>${escapeHtml(t('routes.reason'))}</span>
           <p>${escapeHtml(routeView.reason)}</p>
@@ -2411,6 +2892,20 @@ function renderRouteCards() {
     </article>
   `;
   }).join('');
+}
+
+function renderRecommendedPlaces() {
+  const container = qs('[data-recommended-place-list]');
+  const heading = qs('[data-place-section-heading]');
+  const body = qs('[data-place-section-body]');
+  const count = qs('[data-place-count]');
+  if (!container) return;
+
+  const resources = getRecommendedResources(24);
+  if (heading) heading.textContent = t('places.title');
+  if (body) body.textContent = `${t('places.body')} ${t('places.beta')}`.trim();
+  if (count) count.textContent = `${resources.length} ${t('places.count')}`;
+  container.innerHTML = resources.map((resource, index) => renderResourceCard(resource, index)).join('');
 }
 
 function saveSelectedRoute(routeId) {
@@ -2674,30 +3169,7 @@ function renderRouteDetail() {
 
   const placeCards = qs('[data-place-cards]');
   if (placeCards) {
-    const selectedService = getSelectedMapService();
-    placeCards.innerHTML = resources.map((resource, index) => {
-      const resourceView = getResourceView(resource);
-      const target = getMapTargetForPlace(resource.nameKo);
-      return `
-      <article class="place-card">
-        ${renderPlaceImage(resource)}
-        <h2>${index + 1}. ${escapeHtml(resourceView.displayName)}</h2>
-        <p class="en">${escapeHtml(resourceView.secondaryName)}</p>
-        <div class="meta-row">
-          <span>${escapeHtml(resourceView.category)}</span>
-          <span>${escapeHtml(resourceView.feeType)}</span>
-          <span>${escapeHtml(resourceView.indoorOutdoor)}</span>
-          <span>${escapeHtml(resourceView.walkingLevel)}</span>
-        </div>
-        ${renderConvenienceBadges(resourceConvenience(resourceView))}
-        <p>${escapeHtml(resourceView.aiSimpleExplanation)}</p>
-        <p><strong>${escapeHtml(t('detail.why'))}</strong> ${escapeHtml(resourceView.aiWhyItMatters)}</p>
-        <p><strong>${escapeHtml(t('detail.tip'))}</strong> ${escapeHtml(resourceView.aiVisitTip)}</p>
-        <p><strong>${escapeHtml(t('detail.booking'))}</strong> ${escapeHtml(resourceView.bookingNote)}</p>
-        <a class="button button-secondary button-block place-map-link" href="${escapeHtml(createMapPlaceUrl(target, selectedService))}" target="_blank" rel="noopener">${escapeHtml(getMapServiceLabel(selectedService))} ${escapeHtml(t('map.openPlace'))}</a>
-      </article>
-    `;
-    }).join('');
+    placeCards.innerHTML = resources.map((resource, index) => renderResourceCard(resource, index)).join('');
   }
 
   const keywordList = qs('[data-keyword-list]');
@@ -2780,20 +3252,22 @@ function renderCultureData() {
     const englishCount = CULTURE_RESOURCES.filter((item) => item.englishAvailable).length;
     const popularCount = CULTURE_RESOURCES.filter((item) => item.foreignerPopular).length;
     const reservationCount = CULTURE_RESOURCES.filter((item) => item.reservationRequired).length;
-    const imageCount = CULTURE_RESOURCES.filter((item) => item.imageType === 'ai_generated').length + ROUTE_DATA.filter((item) => item.imageUrl).length;
+    const imageCount = CULTURE_RESOURCES.filter((item) => item.imageUrl).length + ROUTE_DATA.filter((item) => item.imageUrl).length;
     metrics.innerHTML = `
-      <article><span>문화자원 seed</span><strong>${CULTURE_RESOURCES.length}</strong></article>
+      <article><span>서울 장소 데이터</span><strong>${CULTURE_RESOURCES.length}</strong></article>
+      <article><span>추천 코스</span><strong>${ROUTE_DATA.length}</strong></article>
       <article><span>영어 안내 가능</span><strong>${englishCount}</strong></article>
       <article><span>외국인 인기</span><strong>${popularCount}</strong></article>
       <article><span>예약 필요</span><strong>${reservationCount}</strong></article>
-      <article><span>AI 이미지 안내</span><strong>${imageCount}</strong></article>
-      <article><span>공식 확인 필요</span><strong>${CULTURE_RESOURCES.length}</strong></article>
+      <article><span>이미지 URL</span><strong>${imageCount}</strong></article>
+      <article><span>데이터 상태</span><strong>${escapeHtml(cultureResourceLoadStatus)}</strong></article>
     `;
   }
 
   const sources = qs('[data-source-list]');
   if (sources) {
     const sourceItems = [
+      `${CULTURE_RESOURCE_DATA_URL} (${cultureResourceLoadMessage || 'fallback 준비 완료'})`,
       '서울 열린데이터광장',
       '한국관광공사 TourAPI / 관광정보 데이터',
       '국가유산청 / 국가유산 관련 데이터',
@@ -3031,8 +3505,8 @@ function renderAriMessages() {
   if (!ariMessages.length) {
     container.innerHTML = `
       <div class="ari-message ari-message-assistant">
-        <strong>마루</strong>
-        <p>안녕하세요. 한국 전통문화 코스와 여행 도움을 앱 데이터 기준으로 안내해드릴게요.</p>
+        <strong>아리</strong>
+        <p>안녕하세요. 아리가 서울 전통문화 코스와 여행 도움을 앱 데이터 기준으로 안내해드릴게요.</p>
       </div>
     `;
     return;
@@ -3040,7 +3514,7 @@ function renderAriMessages() {
 
   container.innerHTML = ariMessages.map((item) => `
     <div class="ari-message ari-message-${escapeHtml(item.role)}">
-      <strong>${item.role === 'user' ? '나' : '마루'}</strong>
+      <strong>${item.role === 'user' ? '나' : '아리'}</strong>
       <p>${escapeHtml(item.message)}</p>
     </div>
   `).join('');
@@ -3056,7 +3530,7 @@ function appendChatMessage(role, message) {
 function setAriBusy(isBusy) {
   const status = qs('[data-ari-status]');
   const sendButton = qs('[data-ari-send]');
-  if (status) status.textContent = isBusy ? '마루가 답변을 준비하고 있어요.' : '';
+  if (status) status.textContent = isBusy ? '아리가 답변을 준비하고 있어요.' : '';
   if (sendButton) sendButton.disabled = isBusy;
 }
 
@@ -3104,14 +3578,14 @@ function mountAriChat() {
   ariMessages = storageJsonGet(STORAGE_KEYS.ariMessages, []);
   shell.insertAdjacentHTML('beforeend', `
     <section class="ari-chat" data-ari-root>
-      <button class="ari-fab" type="button" data-ari-open aria-label="마루 챗봇 열기">마루</button>
-      <div class="ari-panel" data-ari-panel role="dialog" aria-hidden="true" aria-label="마루 전통문화 AI 가이드">
+      <button class="ari-fab" type="button" data-ari-open aria-label="아리 챗봇 열기">아리</button>
+      <div class="ari-panel" data-ari-panel role="dialog" aria-hidden="true" aria-label="아리 전통문화 AI 가이드">
         <header class="ari-header">
           <div>
-            <span>마루(MARU)</span>
+            <span>아리(ARI)</span>
             <strong>전통문화 AI 가이드</strong>
           </div>
-          <button type="button" data-ari-close aria-label="마루 챗봇 닫기">×</button>
+          <button type="button" data-ari-close aria-label="아리 챗봇 닫기">×</button>
         </header>
         <div class="ari-quick-list">
           ${ARI_QUICK_QUESTIONS.map((question) => `<button type="button" data-ari-quick="${escapeHtml(question)}">${escapeHtml(question)}</button>`).join('')}
@@ -3193,11 +3667,37 @@ function bindMobileInteractions() {
       setMapService(mapServiceButton.dataset.mapService, { toast: true });
     }
 
+    const selectRouteButton = event.target.closest('[data-select-route]');
+    if (selectRouteButton) {
+      const route = saveSelectedRoute(selectRouteButton.dataset.selectRoute);
+      showToast(t('common.savedRouteToast'));
+      window.location.href = `route-detail.html?id=${encodeURIComponent(route.id)}`;
+    }
+
+    const routeLink = event.target.closest('[data-route-link], [data-map-link]');
+    if (routeLink) {
+      saveSelectedRoute(routeLink.dataset.routeLink || routeLink.dataset.mapLink);
+    }
+
+    const routeActionButton = event.target.closest('[data-route-action="save-current"], [data-route-action="passport-current"]');
+    if (routeActionButton) {
+      const route = getRouteFromUrlOrStorage();
+      const saved = storageJsonGet(STORAGE_KEYS.savedRoutes, []);
+      const nextSaved = saved.includes(route.id) ? saved : [...saved, route.id];
+      storageJsonSet(STORAGE_KEYS.savedRoutes, nextSaved);
+      storageSet(STORAGE_KEYS.selectedRoute, route.id);
+      showToast(t('common.passportToast'));
+      renderPassport();
+    }
+
     const supportJumpButton = event.target.closest('[data-support-jump]');
     if (supportJumpButton) {
       const target = qs(`[data-support-card="${supportJumpButton.dataset.supportJump}"]`) || qs('#traveler-support');
       target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+
+    const toastButton = event.target.closest('[data-toast]');
+    if (toastButton) showToast(toastButton.dataset.toast);
   });
 
   qsa('[data-pref-group]').forEach((group) => {
@@ -3232,35 +3732,6 @@ function bindMobileInteractions() {
     window.location.href = 'routes.html';
   });
 
-  qsa('[data-select-route]').forEach((button) => {
-    button.addEventListener('click', () => {
-      const route = saveSelectedRoute(button.dataset.selectRoute);
-      showToast(t('common.savedRouteToast'));
-      window.location.href = `route-detail.html?id=${encodeURIComponent(route.id)}`;
-    });
-  });
-
-  qsa('[data-route-link], [data-map-link]').forEach((link) => {
-    link.addEventListener('click', () => {
-      saveSelectedRoute(link.dataset.routeLink || link.dataset.mapLink);
-    });
-  });
-
-  qsa('[data-route-action="save-current"], [data-route-action="passport-current"]').forEach((button) => {
-    button.addEventListener('click', () => {
-      const route = getRouteFromUrlOrStorage();
-      const saved = storageJsonGet(STORAGE_KEYS.savedRoutes, []);
-      const nextSaved = saved.includes(route.id) ? saved : [...saved, route.id];
-      storageJsonSet(STORAGE_KEYS.savedRoutes, nextSaved);
-      storageSet(STORAGE_KEYS.selectedRoute, route.id);
-      showToast(t('common.passportToast'));
-      renderPassport();
-    });
-  });
-
-  qsa('[data-toast]').forEach((button) => {
-    button.addEventListener('click', () => showToast(button.dataset.toast));
-  });
 }
 
 function registerServiceWorker() {
@@ -3269,9 +3740,10 @@ function registerServiceWorker() {
   navigator.serviceWorker.register('service-worker.js').catch(() => {});
 }
 
-function initialize() {
+async function initialize() {
   startTimeImageRotation();
   setLanguage(storageGet(STORAGE_KEYS.language, 'KR'), { rerender: false });
+  await loadCultureResources();
   renderLocalizedContent();
   markActiveBottomTab();
   bindMobileInteractions();
