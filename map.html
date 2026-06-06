@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>지도 | HanRoute AI</title>
-  <meta name="description" content="선택한 코스의 지도와 Google Maps 길찾기">
+  <meta name="description" content="선택한 코스의 지도와 네이버지도, 카카오맵, Google Maps 링크">
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -19,14 +19,16 @@
       <section class="page-title-card">
         <p class="eyebrow">Route Map</p>
         <h1 data-map-route-title>선택한 코스</h1>
-        <p>실제 GPS는 다음 버전에서 연결됩니다. 지금은 Google Maps 링크와 이동 순서를 확인할 수 있습니다.</p>
+        <p>실제 GPS는 다음 버전에서 연결됩니다. 지금은 원하는 지도 서비스 링크와 이동 순서를 확인할 수 있습니다.</p>
       </section>
 
       <section class="map-card">
         <div class="map-canvas" data-map-canvas aria-label="지도 목업"></div>
       </section>
 
-      <a class="button button-map button-block" href="#" target="_blank" rel="noopener" data-google-maps>Google Maps로 열기</a>
+      <section class="map-service-card" data-map-service-panel></section>
+
+      <a class="button button-map button-block" href="#" target="_blank" rel="noopener" data-map-open-route>선택한 지도에서 열기</a>
 
       <section class="mobile-card">
         <h2>이동 순서</h2>

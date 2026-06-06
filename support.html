@@ -12,7 +12,7 @@
   <div class="app-shell">
     <header class="app-header">
       <a class="brand" href="index.html"><span class="brand-mark">HR</span><span><strong>여행자 지원</strong><small>Help during trip</small></span></a>
-      <button class="header-pill" type="button" data-toast="지원 정보는 향후 공식 안내 데이터와 연결됩니다.">도움말</button>
+      <button class="header-pill" type="button" data-support-jump="airport">지원 목록</button>
     </header>
 
     <main class="app-main">
@@ -21,14 +21,14 @@
         <h1>긴급 상황인가요?</h1>
         <p>필요한 도움을 빠르게 선택하세요.</p>
         <div class="emergency-grid">
-          <button type="button" data-toast="응급의료 안내는 향후 공식 정보와 연결됩니다.">응급의료</button>
-          <button type="button" data-toast="분실물 안내는 향후 공식 정보와 연결됩니다.">분실물</button>
-          <button type="button" data-toast="관광불편신고 안내가 준비됩니다.">관광불편신고</button>
-          <button type="button" data-toast="번역 도움 기능은 다음 버전에서 제공됩니다.">번역 도움</button>
+          <button type="button" data-support-jump="emergency">비상 연락처</button>
+          <button type="button" data-support-jump="tmoney">교통카드</button>
+          <button type="button" data-support-jump="translation">번역 도움</button>
+          <button type="button" data-support-jump="rainy">우천 대체</button>
         </div>
       </section>
 
-      <section class="support-list" data-support-list></section>
+      <section class="support-list" id="traveler-support" data-support-list></section>
     </main>
 
     <nav class="bottom-tab" aria-label="하단 탭">

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hanroute-ai-shell-v3';
+const CACHE_NAME = 'hanroute-ai-shell-v6';
 const APP_SHELL = [
   'index.html',
   'planner.html',
@@ -13,7 +13,19 @@ const APP_SHELL = [
   'style.css',
   'app.js',
   'manifest.json',
-  'image-prompts.md'
+  'image-prompts.md',
+  'assets/images/home/day-1.webp',
+  'assets/images/home/day-2.webp',
+  'assets/images/home/day-3.webp',
+  'assets/images/home/day-4.webp',
+  'assets/images/home/evening-1.webp',
+  'assets/images/home/evening-2.webp',
+  'assets/images/home/evening-3.webp',
+  'assets/images/home/evening-4.webp',
+  'assets/images/home/night-1.webp',
+  'assets/images/home/night-2.webp',
+  'assets/images/home/night-3.webp',
+  'assets/images/home/night-4.webp'
 ];
 
 self.addEventListener('install', (event) => {
