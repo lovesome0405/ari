@@ -1,4 +1,4 @@
-const CACHE_NAME = 'maru-shell-v13';
+const CACHE_NAME = 'maru-shell-v14';
 const APP_SHELL = [
   'index.html',
   'planner.html',
@@ -15,6 +15,7 @@ const APP_SHELL = [
   'manifest.json',
   'image-prompts.md',
   'ari_culture_resources_appjs.json',
+  'assets/images/ari/ari1.webp',
   'assets/images/home/day-1.webp',
   'assets/images/home/day-2.webp',
   'assets/images/home/day-3.webp',

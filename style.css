@@ -1756,9 +1756,12 @@ body.ari-has-bottom-cta .ari-chat {
   position: absolute;
   right: 16px;
   bottom: 0;
-  display: inline-grid;
-  min-width: 58px;
-  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 82px;
+  height: 52px;
+  padding: 5px 12px 5px 5px;
   place-items: center;
   border: 0;
   border-radius: 999px;
@@ -1767,6 +1770,20 @@ body.ari-has-bottom-cta .ari-chat {
   box-shadow: 0 16px 34px rgba(8, 17, 31, 0.28);
   font-weight: 900;
   pointer-events: auto;
+}
+
+.ari-fab-avatar {
+  width: 42px;
+  height: 42px;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 49% 28%;
+  box-shadow: 0 8px 18px rgba(8, 17, 31, 0.18);
+}
+
+.ari-fab span {
+  line-height: 1;
 }
 
 .ari-panel {
@@ -1798,6 +1815,28 @@ body.ari-has-bottom-cta .ari-chat {
   padding: 14px 14px 12px;
   color: #ffffff;
   background: linear-gradient(135deg, var(--navy), #173456);
+}
+
+.ari-header-profile {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 10px;
+}
+
+.ari-header-avatar {
+  flex: 0 0 auto;
+  width: 54px;
+  height: 54px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 16px;
+  object-fit: cover;
+  object-position: 49% 28%;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+}
+
+.ari-header-profile div {
+  min-width: 0;
 }
 
 .ari-header span,

@@ -281,6 +281,8 @@ const AI_PROVIDER_CONFIG = {
   timeoutMs: 5000
 };
 
+const ARI_CHARACTER_IMAGE = 'assets/images/ari/ari1.webp';
+
 const ARI_SYSTEM_PROMPT = `
 너는 아리(ARI)다.
 아리는 마루 앱 안에서 서울 전통문화 코스를 안내하는 AI 가이드다.
@@ -3874,12 +3876,18 @@ function mountAriChat() {
   ariMessages = storageJsonGet(STORAGE_KEYS.ariMessages, []);
   shell.insertAdjacentHTML('beforeend', `
     <section class="ari-chat" data-ari-root>
-      <button class="ari-fab" type="button" data-ari-open aria-label="아리 챗봇 열기">아리</button>
+      <button class="ari-fab" type="button" data-ari-open aria-label="아리 챗봇 열기">
+        <img class="ari-fab-avatar" src="${ARI_CHARACTER_IMAGE}" alt="" aria-hidden="true">
+        <span>아리</span>
+      </button>
       <div class="ari-panel" data-ari-panel role="dialog" aria-hidden="true" aria-label="아리 전통문화 AI 가이드">
         <header class="ari-header">
-          <div>
-            <span>아리(ARI)</span>
-            <strong>전통문화 AI 가이드</strong>
+          <div class="ari-header-profile">
+            <img class="ari-header-avatar" src="${ARI_CHARACTER_IMAGE}" alt="아리 캐릭터">
+            <div>
+              <span>아리(ARI)</span>
+              <strong>전통문화 AI 가이드</strong>
+            </div>
           </div>
           <button type="button" data-ari-close aria-label="아리 챗봇 닫기">×</button>
         </header>
