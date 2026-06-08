@@ -1332,6 +1332,594 @@ const translations = {
   zh: UI_COPY.CN
 };
 
+const EXTENDED_UI_COPY = {
+  ko: {
+    pageMeta: {
+      home: { title: '마루 | 서울 전통문화 AI 가이드', description: '마루, 외국인을 위한 서울 전통문화 AI 가이드' },
+      planner: { title: '조건 선택 | 마루', description: '여행 조건을 단계별로 선택해 전통문화 스토리 코스를 추천받습니다.' },
+      routes: { title: '추천 코스 | 마루', description: '선택 조건에 맞춘 한국 전통문화 스토리 코스 추천' },
+      routeDetail: { title: '코스 상세 | 마루', description: '선택한 전통문화 스토리 코스 상세와 지도 서비스 길찾기' },
+      map: { title: '지도 | 마루', description: '선택한 코스의 지도와 네이버지도, 카카오맵, Google Maps 링크' },
+      weather: { title: '서울 날씨 | 마루', description: '서울 날씨와 날씨 기반 전통문화 코스 추천' },
+      support: { title: '여행자 지원 | 마루', description: '외국인 여행자를 위한 긴급, 분실, 관광 안내, 안전, 번역 도움' },
+      passport: { title: '문화여행 기록 | 마루', description: '마루에서 저장한 코스와 전통문화 스탬프를 확인하는 문화여행 기록' },
+      about: { title: '서비스 소개 | 마루', description: '마루 서비스 개념과 확장 계획' },
+      cultureData: { title: '문화데이터 | 마루', description: '공공 문화데이터 활용 현황과 추천 로직 설명' }
+    },
+    home: {
+      headerSub: 'Seoul Heritage Guide',
+      heroAria: '서울 시간대 추천 이미지',
+      languageAria: '언어 선택'
+    },
+    planner: {
+      header: '마루',
+      headerSub: '조건 선택',
+      progressAria: '진행 상태'
+    },
+    common: {
+      bottomTabsAria: '하단 탭',
+      timeImageAlt: '시간대 전통문화 추천 이미지'
+    },
+    weather: {
+      header: '마루',
+      headerSub: '서울 날씨',
+      action: '코스 보기',
+      eyebrow: 'Current Weather',
+      title: '오늘 서울은 맑음',
+      summary: '16℃ / 27℃ · 강수확률 낮음 · 미세먼지 좋음',
+      todayLabel: '오늘의 추천',
+      todayTitle: '궁궐·한옥 산책 코스',
+      todayBody: '맑은 날에는 궁궐 외부 동선과 한옥 골목을 함께 걷기 좋습니다.',
+      routeButton: '추천 코스 보기',
+      forecastTitle: '3일 예보',
+      airTitle: '대기 정보',
+      pm10: '미세먼지 PM10',
+      pm25: '초미세먼지 PM2.5',
+      good: '좋음',
+      backupTitle: '날씨별 대체 코스',
+      rainProbability: '강수확률',
+      values: {
+        '오늘': '오늘',
+        '내일': '내일',
+        '모레': '모레',
+        '맑음': '맑음',
+        '구름많음': '구름많음',
+        '흐림': '흐림',
+        '해': '해',
+        '구름': '구름'
+      },
+      suggestions: [
+        { label: '맑은 날 추천', title: '궁궐·한옥 산책 코스', toast: '맑은 날 추천 코스가 선택되었습니다.' },
+        { label: '비 오는 날 추천', title: '박물관·공연 실내 코스', toast: '비 오는 날 실내 코스가 선택되었습니다.' },
+        { label: '더운 날 추천', title: '실내 전시·시장 중심 코스', toast: '더운 날 실내 중심 코스가 선택되었습니다.' }
+      ]
+    },
+    passport: {
+      header: '마루',
+      headerSub: '문화여행 기록',
+      action: '새 코스',
+      eyebrow: 'Saved Routes',
+      title: '나의 문화여행 기록',
+      body: '방문한 전통문화 코스를 저장하고 스탬프로 기록합니다.',
+      savedLabel: '저장한 코스',
+      empty: '아직 저장한 코스가 없습니다.',
+      choose: '추천 코스에서 선택하기',
+      again: '다시 보기',
+      stampsTitle: '문화 스탬프',
+      nextLabel: '다음 추천',
+      nextTitle: '숨은 소리문화와 한옥 골목 코스',
+      nextBody: '궁궐문화 다음에는 한옥과 국악의 조용한 분위기를 경험해 보세요.',
+      view: '코스 보기',
+      status: { completed: 'Completed', locked: 'Locked' },
+      stamps: ['왕실문화', '전통시장', '한옥거리', '국악공연', '공예체험', '근대유산']
+    },
+    about: {
+      header: '마루',
+      headerSub: 'About MARU',
+      action: '데이터',
+      eyebrow: 'About',
+      title: '외국인 여행자를 위한 전통문화 해설 앱',
+      body: '마루는 일반 관광지가 아니라 전통문화의 의미와 흐름을 이해하도록 돕는 모바일 여행 동반 앱입니다.',
+      articles: [
+        { title: '공공데이터 확장', body: '서울 열린데이터광장, 한국관광공사 TourAPI, 국가유산 관련 데이터, 공공데이터포털, 문화기관 공식 안내자료를 향후 Spring Boot 버전에서 연결할 수 있도록 데이터 모델을 준비했습니다.' },
+        { title: '편의 정보 제공', body: '영어 안내 가능 여부, 외국인 인기 여부, 예약 필요 여부를 함께 제공해 외국인 방문객의 현장 의사결정을 돕습니다.' },
+        { title: 'AI 이미지 정책', body: 'AI 이미지는 공식 장소 사진이 아니라 이해를 돕는 시각 가이드입니다. 실제 운영에서는 공식 사진 사용 권한 또는 자체 제작 이미지를 별도로 관리해야 합니다.' },
+        { title: '일반 여행 앱과의 차이', body: '맛집·명소 나열이 아니라 궁궐, 민속, 시장, 공연을 이야기 흐름으로 연결합니다.' },
+        { title: 'AI 사용 원칙', body: 'AI는 검증되지 않은 사실을 만들지 않고 DB의 사실을 쉬운 해설, 키워드, 방문 팁으로 바꿉니다.' },
+        { title: '파트너십 아님', body: '서울 열린데이터광장, 한국관광공사, 국가유산청, Visit Seoul 등은 데이터 소스 참고명으로만 사용하며 공식 제휴를 주장하지 않습니다.' }
+      ],
+      links: ['문화데이터 활용 보기', 'AI 이미지 프롬프트 보기']
+    },
+    cultureData: {
+      header: '마루',
+      headerSub: '문화데이터',
+      action: '소개',
+      eyebrow: 'Data Dashboard',
+      title: '공공 문화데이터 확장 구조',
+      body: '현재 정적 버전은 <code>ari_culture_resources_appjs.json</code>을 읽어 추천 카드와 코스를 구성합니다. CSV/SQL 자료는 참고용으로만 관리합니다.',
+      factorsTitle: '추천 요소',
+      factors: ['전통성 점수', '외국인 친화도', '숨은 문화 가치', '도보 편의성', '예산·실내 적합도'],
+      sourcesTitle: '데이터 소스 확장 계획',
+      futureApiTitle: '향후 API',
+      metrics: ['서울 장소 데이터', '추천 코스', '영어 안내 가능', '외국인 인기', '예약 필요', '이미지 URL', '데이터 상태'],
+      status: { loaded: '로드됨', fallback: 'fallback', seed: 'seed' },
+      sourceStatus: { loaded: 'JSON 데이터 로드 완료', fallback: 'fallback 준비 완료', seed: 'seed data' },
+      sources: ['서울 열린데이터광장', '한국관광공사 TourAPI / 관광정보 데이터', '국가유산청 / 국가유산 관련 데이터', '공공데이터포털', '문화기관 공식 홈페이지', '박물관 / 공연장 / 전통시장 공식 안내자료'],
+      sourceNote: 'Spring Boot 버전에서 공식 API 또는 공식 페이지 기반 검증 데이터로 연결 예정입니다.',
+      logic: [
+        { label: 'DB', title: '검증된 문화 사실', body: '공식 출처, 장소, 분류, 비용, 실내외, 영어 안내, 예약 필요 여부를 저장합니다.' },
+        { label: 'Server', title: '필터링과 추천 점수', body: '방문 조건, 외국인 친화도, 예약 부담, 날씨 적합도를 계산합니다.' },
+        { label: 'AI', title: '쉬운 문화 해설', body: '검증된 사실을 바탕으로 쉬운 설명, 키워드, 방문 팁을 생성합니다.' }
+      ]
+    },
+    ari: {
+      fabLabel: '아리 챗봇 열기',
+      dialogLabel: '아리 전통문화 AI 가이드',
+      avatarAlt: '아리 캐릭터',
+      name: '아리',
+      profileName: '아리(ARI)',
+      profileTitle: '전통문화 AI 가이드',
+      closeLabel: '아리 챗봇 닫기',
+      greeting: '안녕하세요. 아리가 서울 전통문화 코스와 여행 도움을 앱 데이터 기준으로 안내해드릴게요.',
+      roleUser: '나',
+      roleAssistant: '아리',
+      placeholder: '궁궐, 한옥, 전통시장에 대해 물어보세요.',
+      send: '보내기',
+      busy: '아리가 답변을 준비하고 있어요.',
+      error: '지금은 답변을 준비하지 못했습니다. 추천 코스나 여행자 지원 메뉴를 먼저 확인해보세요.',
+      fallbackSuffix: 'Ollama 연결이 되지 않아 로컬 fallback 답변을 사용했습니다.',
+      quickQuestions: ['이 코스가 왜 추천됐어?', '경복궁을 쉽게 설명해줘', '비 오는 날 어디가 좋아?', '영어 안내 가능한 곳 있어?', '예약이 필요한 곳이 있어?']
+    }
+  },
+  en: {
+    pageMeta: {
+      home: { title: 'MARU | Seoul Heritage AI Guide', description: 'MARU, a Seoul heritage AI guide for global travelers' },
+      planner: { title: 'Route Planner | MARU', description: 'Choose travel conditions step by step and receive a Seoul heritage story route.' },
+      routes: { title: 'Recommended Routes | MARU', description: 'Traditional culture story routes matched to your selected conditions' },
+      routeDetail: { title: 'Route Detail | MARU', description: 'Details and map links for your selected heritage story route' },
+      map: { title: 'Map | MARU', description: 'Map links for Naver Map, Kakao Map, and Google Maps' },
+      weather: { title: 'Seoul Weather | MARU', description: 'Seoul weather and weather-based heritage route suggestions' },
+      support: { title: 'Traveler Support | MARU', description: 'Emergency, lost items, tourist information, safety, and translation help for visitors' },
+      passport: { title: 'Saved Routes | MARU', description: 'Saved MARU routes and Seoul heritage stamps' },
+      about: { title: 'About | MARU', description: 'MARU service concept and expansion plan' },
+      cultureData: { title: 'Culture Data | MARU', description: 'Public culture data usage and recommendation logic' }
+    },
+    home: {
+      headerSub: 'Seoul Heritage Guide',
+      heroAria: 'Seoul time-based heritage image',
+      languageAria: 'Language selection'
+    },
+    planner: {
+      header: 'MARU',
+      headerSub: 'Route Planner',
+      progressAria: 'Progress'
+    },
+    common: {
+      bottomTabsAria: 'Bottom navigation',
+      timeImageAlt: 'Time-based Korean heritage mood image'
+    },
+    weather: {
+      header: 'MARU',
+      headerSub: 'Seoul Weather',
+      action: 'View Routes',
+      eyebrow: 'Current Weather',
+      title: 'Clear skies in Seoul today',
+      summary: '16℃ / 27℃ · Low chance of rain · Good air quality',
+      todayLabel: "Today's Pick",
+      todayTitle: 'Palace and Hanok Walk',
+      todayBody: 'On a clear day, palace courtyards and hanok alleys make a comfortable outdoor route.',
+      routeButton: 'See recommended routes',
+      forecastTitle: '3-Day Forecast',
+      airTitle: 'Air Quality',
+      pm10: 'Fine dust PM10',
+      pm25: 'Ultrafine dust PM2.5',
+      good: 'Good',
+      backupTitle: 'Weather-Based Alternatives',
+      rainProbability: 'Chance of rain',
+      values: {
+        '오늘': 'Today',
+        '내일': 'Tomorrow',
+        '모레': 'Day after tomorrow',
+        '맑음': 'Clear',
+        '구름많음': 'Mostly cloudy',
+        '흐림': 'Cloudy',
+        '해': 'Sun',
+        '구름': 'Cloud'
+      },
+      suggestions: [
+        { label: 'Clear-day route', title: 'Palace and Hanok Walk', toast: 'Clear-day route selected.' },
+        { label: 'Rainy-day route', title: 'Museums and Indoor Performances', toast: 'Rainy-day indoor route selected.' },
+        { label: 'Hot-day route', title: 'Indoor Exhibitions and Markets', toast: 'Hot-day indoor route selected.' }
+      ]
+    },
+    passport: {
+      header: 'MARU',
+      headerSub: 'Saved Routes',
+      action: 'New Route',
+      eyebrow: 'Saved Routes',
+      title: 'My Heritage Travel Record',
+      body: 'Save traditional culture routes and keep track of your heritage stamps.',
+      savedLabel: 'Saved route',
+      empty: 'No saved route yet.',
+      choose: 'Choose from recommended routes',
+      again: 'View again',
+      stampsTitle: 'Heritage Stamps',
+      nextLabel: 'Next Pick',
+      nextTitle: 'Hidden Sounds and Hanok Streets',
+      nextBody: 'After royal culture, try a quieter route through hanok streets and Korean traditional sounds.',
+      view: 'View route',
+      status: { completed: 'Completed', locked: 'Locked' },
+      stamps: ['Royal Culture', 'Traditional Market', 'Hanok Street', 'Gugak Performance', 'Craft Experience', 'Modern Heritage']
+    },
+    about: {
+      header: 'MARU',
+      headerSub: 'About MARU',
+      action: 'Data',
+      eyebrow: 'About',
+      title: 'A heritage interpretation app for global travelers',
+      body: 'MARU is a mobile travel companion that helps visitors understand the meaning and flow of Korean heritage, not just a list of tourist spots.',
+      articles: [
+        { title: 'Public Data Expansion', body: 'The data model is prepared so a future Spring Boot version can connect Seoul Open Data, Korea Tourism Organization TourAPI, national heritage data, public data portals, and official cultural institution sources.' },
+        { title: 'Visitor Convenience', body: 'English support, visitor popularity, and reservation needs are shown together to help international visitors decide on site.' },
+        { title: 'AI Image Policy', body: 'AI images are visual guides for understanding, not official place photos. A real service should separately manage official photo rights or original image production.' },
+        { title: 'Different From Generic Travel Apps', body: 'MARU connects palaces, folk culture, markets, and performances as a story flow instead of listing restaurants and attractions.' },
+        { title: 'AI Use Principle', body: 'AI does not invent unverified facts. It turns verified database facts into simple explanations, keywords, and visit tips.' },
+        { title: 'Not an Official Partnership', body: 'Seoul Open Data, Korea Tourism Organization, National Heritage Administration, Visit Seoul, and similar names are referenced only as data sources, not as official partnerships.' }
+      ],
+      links: ['View culture data usage', 'View AI image prompts']
+    },
+    cultureData: {
+      header: 'MARU',
+      headerSub: 'Culture Data',
+      action: 'About',
+      eyebrow: 'Data Dashboard',
+      title: 'Public Culture Data Expansion Structure',
+      body: 'The current static version reads <code>ari_culture_resources_appjs.json</code> to build recommendation cards and routes. CSV/SQL files are kept as reference materials only.',
+      factorsTitle: 'Recommendation Factors',
+      factors: ['Tradition score', 'Visitor friendliness', 'Hidden cultural value', 'Walking convenience', 'Budget and indoor fit'],
+      sourcesTitle: 'Data Source Expansion Plan',
+      futureApiTitle: 'Future API',
+      metrics: ['Seoul place data', 'Recommended routes', 'English support', 'Visitor favorite', 'Reservation needed', 'Image URLs', 'Data status'],
+      status: { loaded: 'Loaded', fallback: 'Fallback', seed: 'Seed' },
+      sourceStatus: { loaded: 'JSON data loaded', fallback: 'Fallback ready', seed: 'Seed data' },
+      sources: ['Seoul Open Data Plaza', 'Korea Tourism Organization TourAPI / tourism data', 'National Heritage Administration / heritage data', 'Public Data Portal', 'Official cultural institution websites', 'Official guides from museums, theaters, and traditional markets'],
+      sourceNote: 'A future Spring Boot version can connect this to verified official APIs or official-page-based data.',
+      logic: [
+        { label: 'DB', title: 'Verified Cultural Facts', body: 'Stores official sources, places, categories, cost, indoor/outdoor status, English support, and reservation requirements.' },
+        { label: 'Server', title: 'Filtering and Scores', body: 'Calculates visit conditions, visitor friendliness, reservation burden, and weather fit.' },
+        { label: 'AI', title: 'Simple Culture Guide', body: 'Turns verified facts into simple explanations, keywords, and visit tips.' }
+      ]
+    },
+    ari: {
+      fabLabel: 'Open ARI chatbot',
+      dialogLabel: 'ARI heritage AI guide',
+      avatarAlt: 'ARI character',
+      name: 'ARI',
+      profileName: 'ARI',
+      profileTitle: 'Heritage AI Guide',
+      closeLabel: 'Close ARI chatbot',
+      greeting: 'Hello. ARI will guide your Seoul heritage routes and travel help using the app data.',
+      roleUser: 'Me',
+      roleAssistant: 'ARI',
+      placeholder: 'Ask about palaces, hanok, or traditional markets.',
+      send: 'Send',
+      busy: 'ARI is preparing a reply.',
+      error: 'ARI could not prepare an answer right now. Please check recommended routes or traveler support first.',
+      fallbackSuffix: 'Ollama is unavailable, so a local fallback answer was used.',
+      quickQuestions: ['Why is this route recommended?', 'Explain Gyeongbokgung simply.', 'Where is good on a rainy day?', 'Which places may have English support?', 'Do any places need reservations?']
+    }
+  },
+  ja: {
+    pageMeta: {
+      home: { title: 'MARU | ソウル伝統文化AIガイド', description: 'MARU、海外旅行者のためのソウル伝統文化AIガイド' },
+      planner: { title: '条件選択 | MARU', description: '旅行条件を段階的に選び、伝統文化ストーリールートを推薦します。' },
+      routes: { title: 'おすすめコース | MARU', description: '選択条件に合わせた韓国伝統文化ストーリーコース' },
+      routeDetail: { title: 'コース詳細 | MARU', description: '選択した伝統文化ストーリーコースの詳細と地図リンク' },
+      map: { title: '地図 | MARU', description: 'Naver Map、Kakao Map、Google Mapsで開ける地図リンク' },
+      weather: { title: 'ソウル天気 | MARU', description: 'ソウルの天気と天気別伝統文化コース推薦' },
+      support: { title: '旅行者サポート | MARU', description: '緊急、紛失、観光案内、安全、翻訳サポート' },
+      passport: { title: '保存したコース | MARU', description: 'MARUで保存したコースと伝統文化スタンプ' },
+      about: { title: 'サービス紹介 | MARU', description: 'MARUのサービス概念と拡張計画' },
+      cultureData: { title: '文化データ | MARU', description: '公共文化データ活用状況と推薦ロジック' }
+    },
+    home: {
+      headerSub: 'ソウル伝統文化ガイド',
+      heroAria: 'ソウル時間帯別推薦画像',
+      languageAria: '言語選択'
+    },
+    planner: {
+      header: 'MARU',
+      headerSub: '条件選択',
+      progressAria: '進行状況'
+    },
+    common: {
+      bottomTabsAria: '下部ナビゲーション',
+      timeImageAlt: '時間帯別の韓国伝統文化イメージ'
+    },
+    weather: {
+      header: 'MARU',
+      headerSub: 'ソウル天気',
+      action: 'コースを見る',
+      eyebrow: 'Current Weather',
+      title: '今日のソウルは晴れ',
+      summary: '16℃ / 27℃ · 降水確率低め · 大気質良好',
+      todayLabel: '今日のおすすめ',
+      todayTitle: '宮殿・韓屋散策コース',
+      todayBody: '晴れの日は宮殿の外部動線と韓屋の路地を一緒に歩きやすいです。',
+      routeButton: 'おすすめコースを見る',
+      forecastTitle: '3日予報',
+      airTitle: '大気情報',
+      pm10: '微細粉じん PM10',
+      pm25: '超微細粉じん PM2.5',
+      good: '良好',
+      backupTitle: '天気別代替コース',
+      rainProbability: '降水確率',
+      values: {
+        '오늘': '今日',
+        '내일': '明日',
+        '모레': '明後日',
+        '맑음': '晴れ',
+        '구름많음': '曇りがち',
+        '흐림': '曇り',
+        '해': '晴',
+        '구름': '雲'
+      },
+      suggestions: [
+        { label: '晴れの日おすすめ', title: '宮殿・韓屋散策コース', toast: '晴れの日おすすめコースを選択しました。' },
+        { label: '雨の日おすすめ', title: '博物館・公演の屋内コース', toast: '雨の日の屋内コースを選択しました。' },
+        { label: '暑い日おすすめ', title: '屋内展示・市場中心コース', toast: '暑い日の屋内中心コースを選択しました。' }
+      ]
+    },
+    passport: {
+      header: 'MARU',
+      headerSub: '保存したコース',
+      action: '新しいコース',
+      eyebrow: 'Saved Routes',
+      title: '私の文化旅行記録',
+      body: '訪問した伝統文化コースを保存し、スタンプで記録します。',
+      savedLabel: '保存したコース',
+      empty: 'まだ保存したコースはありません。',
+      choose: 'おすすめコースから選ぶ',
+      again: 'もう一度見る',
+      stampsTitle: '文化スタンプ',
+      nextLabel: '次のおすすめ',
+      nextTitle: '隠れた音と韓屋の路地',
+      nextBody: '宮殿文化の次は、韓屋と国楽の静かな雰囲気を体験してみましょう。',
+      view: 'コースを見る',
+      status: { completed: '完了', locked: 'ロック中' },
+      stamps: ['王室文化', '伝統市場', '韓屋通り', '国楽公演', '工芸体験', '近代遺産']
+    },
+    about: {
+      header: 'MARU',
+      headerSub: 'About MARU',
+      action: 'データ',
+      eyebrow: 'About',
+      title: '海外旅行者のための伝統文化解説アプリ',
+      body: 'MARUは観光地リストではなく、伝統文化の意味と流れを理解できるように助けるモバイル旅行パートナーです。',
+      articles: [
+        { title: '公共データ拡張', body: '今後のSpring Boot版で、ソウルオープンデータ、韓国観光公社TourAPI、国家遺産関連データ、公共データポータル、文化機関の公式資料と接続できるようデータモデルを準備しました。' },
+        { title: '便利情報の提供', body: '英語案内の有無、外国人旅行者の人気、予約の必要性を一緒に表示し、現地での判断を助けます。' },
+        { title: 'AI画像ポリシー', body: 'AI画像は公式写真ではなく理解を助ける視覚ガイドです。実運用では公式写真の使用権限または独自制作画像を別途管理する必要があります。' },
+        { title: '一般旅行アプリとの違い', body: 'グルメや名所の羅列ではなく、宮殿、民俗、市場、公演を物語の流れでつなぎます。' },
+        { title: 'AI利用原則', body: 'AIは未検証の事実を作らず、DBの事実をわかりやすい解説、キーワード、訪問ヒントに変換します。' },
+        { title: '公式提携ではありません', body: 'ソウルオープンデータ、韓国観光公社、国家遺産庁、Visit Seoulなどはデータソースの参考名であり、公式提携を主張するものではありません。' }
+      ],
+      links: ['文化データ活用を見る', 'AI画像プロンプトを見る']
+    },
+    cultureData: {
+      header: 'MARU',
+      headerSub: '文化データ',
+      action: '紹介',
+      eyebrow: 'Data Dashboard',
+      title: '公共文化データ拡張構造',
+      body: '現在の静的版は <code>ari_culture_resources_appjs.json</code> を読み込み、推薦カードとコースを構成します。CSV/SQL資料は参考用として管理します。',
+      factorsTitle: '推薦要素',
+      factors: ['伝統性スコア', '外国人フレンドリー度', '隠れた文化価値', '徒歩の便利さ', '予算・屋内適合度'],
+      sourcesTitle: 'データソース拡張計画',
+      futureApiTitle: '今後のAPI',
+      metrics: ['ソウル場所データ', 'おすすめコース', '英語案内あり', '外国人に人気', '予約必要', '画像URL', 'データ状態'],
+      status: { loaded: 'ロード済み', fallback: 'Fallback', seed: 'Seed' },
+      sourceStatus: { loaded: 'JSONデータをロード済み', fallback: 'Fallback準備完了', seed: 'Seed data' },
+      sources: ['ソウルオープンデータ広場', '韓国観光公社 TourAPI / 観光情報データ', '国家遺産庁 / 国家遺産関連データ', '公共データポータル', '文化機関公式サイト', '博物館・公演場・伝統市場の公式案内資料'],
+      sourceNote: '今後のSpring Boot版では、公式APIまたは公式ページベースの検証データに接続する予定です。',
+      logic: [
+        { label: 'DB', title: '検証された文化事実', body: '公式出典、場所、分類、費用、屋内外、英語案内、予約必要性を保存します。' },
+        { label: 'Server', title: 'フィルタリングと推薦スコア', body: '訪問条件、外国人フレンドリー度、予約負担、天気適合度を計算します。' },
+        { label: 'AI', title: 'やさしい文化解説', body: '検証済みの事実をもとに、やさしい説明、キーワード、訪問ヒントを生成します。' }
+      ]
+    },
+    ari: {
+      fabLabel: 'アリチャットを開く',
+      dialogLabel: 'アリ伝統文化AIガイド',
+      avatarAlt: 'アリキャラクター',
+      name: 'アリ',
+      profileName: 'アリ(ARI)',
+      profileTitle: '伝統文化AIガイド',
+      closeLabel: 'アリチャットを閉じる',
+      greeting: 'こんにちは。アリがアプリのデータをもとに、ソウル伝統文化コースと旅行サポートを案内します。',
+      roleUser: '私',
+      roleAssistant: 'アリ',
+      placeholder: '宮殿、韓屋、伝統市場について質問してください。',
+      send: '送信',
+      busy: 'アリが回答を準備しています。',
+      error: '現在回答を準備できません。おすすめコースや旅行者サポートを先に確認してください。',
+      fallbackSuffix: 'Ollamaに接続できないため、ローカルfallback回答を使用しました。',
+      quickQuestions: ['このコースはなぜおすすめ？', '景福宮を簡単に説明して', '雨の日はどこがいい？', '英語案内がある場所は？', '予約が必要な場所は？']
+    }
+  },
+  zh: {
+    pageMeta: {
+      home: { title: 'MARU | 首尔传统文化AI指南', description: 'MARU，为外国游客提供的首尔传统文化AI指南' },
+      planner: { title: '条件选择 | MARU', description: '逐步选择旅行条件，获得传统文化故事路线推荐。' },
+      routes: { title: '推荐路线 | MARU', description: '根据所选条件推荐韩国传统文化故事路线' },
+      routeDetail: { title: '路线详情 | MARU', description: '所选传统文化故事路线详情和地图链接' },
+      map: { title: '地图 | MARU', description: '可用Naver Map、Kakao Map和Google Maps打开的地图链接' },
+      weather: { title: '首尔天气 | MARU', description: '首尔天气和按天气推荐的传统文化路线' },
+      support: { title: '旅行者帮助 | MARU', description: '面向外国游客的紧急、遗失、旅游咨询、安全和翻译帮助' },
+      passport: { title: '已保存路线 | MARU', description: '在MARU保存的路线和传统文化印章' },
+      about: { title: '服务介绍 | MARU', description: 'MARU服务概念和扩展计划' },
+      cultureData: { title: '文化数据 | MARU', description: '公共文化数据使用情况和推荐逻辑说明' }
+    },
+    home: {
+      headerSub: '首尔传统文化指南',
+      heroAria: '首尔分时段推荐图片',
+      languageAria: '语言选择'
+    },
+    planner: {
+      header: 'MARU',
+      headerSub: '条件选择',
+      progressAria: '进度'
+    },
+    common: {
+      bottomTabsAria: '底部导航',
+      timeImageAlt: '按时间推荐的韩国传统文化图片'
+    },
+    weather: {
+      header: 'MARU',
+      headerSub: '首尔天气',
+      action: '查看路线',
+      eyebrow: 'Current Weather',
+      title: '今天首尔天气晴朗',
+      summary: '16℃ / 27℃ · 降雨概率低 · 空气质量良好',
+      todayLabel: '今日推荐',
+      todayTitle: '宫殿与韩屋散步路线',
+      todayBody: '晴天适合把宫殿外部动线和韩屋街巷一起安排。',
+      routeButton: '查看推荐路线',
+      forecastTitle: '3日预报',
+      airTitle: '空气信息',
+      pm10: '细颗粒物 PM10',
+      pm25: '超细颗粒物 PM2.5',
+      good: '良好',
+      backupTitle: '按天气替代路线',
+      rainProbability: '降雨概率',
+      values: {
+        '오늘': '今天',
+        '내일': '明天',
+        '모레': '后天',
+        '맑음': '晴',
+        '구름많음': '多云',
+        '흐림': '阴',
+        '해': '晴',
+        '구름': '云'
+      },
+      suggestions: [
+        { label: '晴天推荐', title: '宫殿与韩屋散步路线', toast: '已选择晴天推荐路线。' },
+        { label: '雨天推荐', title: '博物馆与演出室内路线', toast: '已选择雨天室内路线。' },
+        { label: '炎热天气推荐', title: '室内展览与市场路线', toast: '已选择炎热天气室内路线。' }
+      ]
+    },
+    passport: {
+      header: 'MARU',
+      headerSub: '已保存路线',
+      action: '新路线',
+      eyebrow: 'Saved Routes',
+      title: '我的文化旅行记录',
+      body: '保存参观过的传统文化路线，并用印章记录。',
+      savedLabel: '已保存路线',
+      empty: '还没有保存的路线。',
+      choose: '从推荐路线中选择',
+      again: '再次查看',
+      stampsTitle: '文化印章',
+      nextLabel: '下一条推荐',
+      nextTitle: '隐藏的声音与韩屋街巷',
+      nextBody: '体验王室文化之后，可以感受韩屋和国乐的安静氛围。',
+      view: '查看路线',
+      status: { completed: '已完成', locked: '未解锁' },
+      stamps: ['王室文化', '传统市场', '韩屋街', '国乐演出', '工艺体验', '近代遗产']
+    },
+    about: {
+      header: 'MARU',
+      headerSub: 'About MARU',
+      action: '数据',
+      eyebrow: 'About',
+      title: '面向外国游客的传统文化解读应用',
+      body: 'MARU不是普通景点列表，而是帮助游客理解传统文化意义和脉络的移动旅行伙伴。',
+      articles: [
+        { title: '公共数据扩展', body: '数据模型已准备好，未来Spring Boot版本可连接首尔开放数据、韩国旅游发展局TourAPI、国家遗产相关数据、公共数据门户和文化机构官方资料。' },
+        { title: '便利信息提供', body: '同时显示英语支持、外国游客人气和是否需要预约，帮助外国游客现场做决定。' },
+        { title: 'AI图片政策', body: 'AI图片不是官方地点照片，而是帮助理解的视觉指南。实际运营时需要另行管理官方照片授权或自制图片。' },
+        { title: '与普通旅行应用的区别', body: '不是罗列美食和景点，而是把宫殿、民俗、市场和演出连接成故事流。' },
+        { title: 'AI使用原则', body: 'AI不会编造未经验证的事实，而是把数据库中的事实转化为简单说明、关键词和参观提示。' },
+        { title: '并非官方合作', body: '首尔开放数据、韩国旅游发展局、国家遗产厅、Visit Seoul等仅作为数据来源参考名称，并不表示官方合作。' }
+      ],
+      links: ['查看文化数据使用', '查看AI图片提示词']
+    },
+    cultureData: {
+      header: 'MARU',
+      headerSub: '文化数据',
+      action: '介绍',
+      eyebrow: 'Data Dashboard',
+      title: '公共文化数据扩展结构',
+      body: '当前静态版本读取 <code>ari_culture_resources_appjs.json</code> 来组成推荐卡片和路线。CSV/SQL资料仅作为参考资料管理。',
+      factorsTitle: '推荐要素',
+      factors: ['传统性分数', '外国游客友好度', '隐藏文化价值', '步行便利性', '预算与室内适合度'],
+      sourcesTitle: '数据来源扩展计划',
+      futureApiTitle: '未来API',
+      metrics: ['首尔地点数据', '推荐路线', '提供英语信息', '外国游客喜爱', '需要预约', '图片URL', '数据状态'],
+      status: { loaded: '已加载', fallback: 'Fallback', seed: 'Seed' },
+      sourceStatus: { loaded: 'JSON数据已加载', fallback: 'Fallback已准备', seed: 'Seed data' },
+      sources: ['首尔开放数据广场', '韩国旅游发展局 TourAPI / 旅游信息数据', '国家遗产厅 / 国家遗产相关数据', '公共数据门户', '文化机构官方网站', '博物馆/演出场/传统市场官方指南资料'],
+      sourceNote: '未来Spring Boot版本将连接官方API或基于官方页面验证的数据。',
+      logic: [
+        { label: 'DB', title: '已验证的文化事实', body: '保存官方来源、地点、分类、费用、室内外、英语支持和是否需要预约。' },
+        { label: 'Server', title: '筛选与推荐分数', body: '计算访问条件、外国游客友好度、预约负担和天气适合度。' },
+        { label: 'AI', title: '简单文化解读', body: '基于已验证事实生成简单说明、关键词和参观提示。' }
+      ]
+    },
+    ari: {
+      fabLabel: '打开ARI聊天',
+      dialogLabel: 'ARI传统文化AI指南',
+      avatarAlt: 'ARI角色',
+      name: 'ARI',
+      profileName: 'ARI',
+      profileTitle: '传统文化AI指南',
+      closeLabel: '关闭ARI聊天',
+      greeting: '你好。ARI会根据应用数据为你介绍首尔传统文化路线和旅行帮助。',
+      roleUser: '我',
+      roleAssistant: 'ARI',
+      placeholder: '可以询问宫殿、韩屋、传统市场。',
+      send: '发送',
+      busy: 'ARI正在准备回答。',
+      error: '现在无法准备回答。请先查看推荐路线或旅行者帮助。',
+      fallbackSuffix: '无法连接Ollama，因此使用本地fallback回答。',
+      quickQuestions: ['为什么推荐这条路线？', '简单介绍景福宫', '雨天适合去哪里？', '哪些地方可能有英语信息？', '有需要预约的地方吗？']
+    }
+  }
+};
+
+function mergeI18nCopy(target, source) {
+  Object.entries(source).forEach(([key, value]) => {
+    const targetValue = target[key];
+    const shouldMerge =
+      value &&
+      typeof value === 'object' &&
+      !Array.isArray(value) &&
+      targetValue &&
+      typeof targetValue === 'object' &&
+      !Array.isArray(targetValue);
+
+    target[key] = shouldMerge ? mergeI18nCopy(targetValue, value) : value;
+  });
+  return target;
+}
+
+Object.entries(EXTENDED_UI_COPY).forEach(([language, copy]) => {
+  mergeI18nCopy(translations[language], copy);
+});
+
+const PAGE_META_KEYS = {
+  'index.html': 'home',
+  'planner.html': 'planner',
+  'routes.html': 'routes',
+  'route-detail.html': 'routeDetail',
+  'map.html': 'map',
+  'weather.html': 'weather',
+  'support.html': 'support',
+  'passport.html': 'passport',
+  'about.html': 'about',
+  'culture-data.html': 'cultureData'
+};
+
 const CONVENIENCE_TRANSLATIONS = {
   ko: {
     englishAvailable: '영어 안내 가능',
@@ -2324,6 +2912,28 @@ function setText(selector, value) {
   });
 }
 
+function setHtml(selector, value) {
+  qsa(selector).forEach((element) => {
+    element.innerHTML = value;
+  });
+}
+
+function applyPageMetadata(fileName = getCurrentFileName()) {
+  const metaKey = PAGE_META_KEYS[fileName] || PAGE_META_KEYS['index.html'];
+  const meta = t(`pageMeta.${metaKey}`, null);
+  if (!meta || typeof meta !== 'object') return;
+
+  if (meta.title) document.title = meta.title;
+
+  const description = qs('meta[name="description"]');
+  if (description && meta.description) description.setAttribute('content', meta.description);
+}
+
+function translateWeatherValue(value) {
+  const values = t('weather.values', {});
+  return values?.[value] || value;
+}
+
 function toArray(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
   if (typeof value === 'string') {
@@ -2587,7 +3197,13 @@ async function loadCultureResources() {
 
 function applyStaticTranslations() {
   const language = getCurrentLanguage();
+  const fileName = getCurrentFileName();
   document.documentElement.lang = LANGUAGE_HTML_LANG[language] || 'ko';
+  applyPageMetadata(fileName);
+
+  qsa('.bottom-tab').forEach((nav) => {
+    nav.setAttribute('aria-label', t('common.bottomTabsAria'));
+  });
 
   Object.entries({
     home: 'tabs.home',
@@ -2608,9 +3224,12 @@ function applyStaticTranslations() {
   const confirm = qs('[data-language-confirm]');
   if (confirm) confirm.textContent = t('home.languageConfirm');
 
-  const fileName = getCurrentFileName();
-
   if (fileName === 'index.html') {
+    setText('.app-header .brand strong', t('routes.header'));
+    setText('.app-header .brand small', t('home.headerSub'));
+    qs('.app-header .brand')?.setAttribute('aria-label', `${t('routes.header')} ${t('tabs.home')}`);
+    qs('[data-home-time-hero]')?.setAttribute('aria-label', t('home.heroAria'));
+    qs('.language-card')?.setAttribute('aria-label', t('home.languageAria'));
     qs('.quick-action-list')?.setAttribute('aria-label', t('home.quickLabel'));
     setText('.intro-card h2', t('home.introTitle'));
     setText('.intro-card p', t('home.introBody'));
@@ -2707,6 +3326,9 @@ function applyStaticTranslations() {
   }
 
   if (fileName === 'planner.html') {
+    setText('.app-header .brand strong', t('planner.header'));
+    setText('.app-header .brand small', t('planner.headerSub'));
+    qs('.planner-progress')?.setAttribute('aria-label', t('planner.progressAria'));
     setText('.page-title-card .eyebrow', t('planner.eyebrow'));
     setText('.page-title-card h1', t('planner.title'));
     setText('.page-title-card > p:not(.eyebrow)', t('planner.body'));
@@ -2739,6 +3361,156 @@ function applyStaticTranslations() {
     setText('[data-planner-next]', t('planner.next'));
     setText('[data-planner-finish]', t('planner.finish'));
   }
+
+  if (fileName === 'weather.html') {
+    setText('.app-header .brand strong', t('weather.header'));
+    setText('.app-header .brand small', t('weather.headerSub'));
+    setText('.app-header .header-pill', t('weather.action'));
+    setText('.weather-summary .eyebrow', t('weather.eyebrow'));
+    setText('.weather-summary h1', t('weather.title'));
+    setText('.weather-summary > p:not(.eyebrow)', t('weather.summary'));
+
+    const todayRoute = qs('.today-route-card');
+    if (todayRoute) {
+      const label = qs(':scope > span', todayRoute);
+      const title = qs(':scope > h2', todayRoute);
+      const body = qs(':scope > p', todayRoute);
+      const link = qs(':scope > a', todayRoute);
+      if (label) label.textContent = t('weather.todayLabel');
+      if (title) title.textContent = t('weather.todayTitle');
+      if (body) body.textContent = t('weather.todayBody');
+      if (link) link.textContent = t('weather.routeButton');
+    }
+
+    const weatherCards = qsa('.mobile-card');
+    if (weatherCards[0]) {
+      const heading = qs('h2', weatherCards[0]);
+      if (heading) heading.textContent = t('weather.forecastTitle');
+    }
+    if (weatherCards[1]) {
+      const heading = qs('h2', weatherCards[1]);
+      const airRows = qsa('.air-row', weatherCards[1]);
+      if (heading) heading.textContent = t('weather.airTitle');
+      if (airRows[0]) {
+        qs('span', airRows[0]).textContent = t('weather.pm10');
+        qs('strong', airRows[0]).textContent = t('weather.good');
+      }
+      if (airRows[1]) {
+        qs('span', airRows[1]).textContent = t('weather.pm25');
+        qs('strong', airRows[1]).textContent = t('weather.good');
+      }
+    }
+    if (weatherCards[2]) {
+      const heading = qs('h2', weatherCards[2]);
+      if (heading) heading.textContent = t('weather.backupTitle');
+      const suggestions = t('weather.suggestions', []);
+      qsa('.route-suggestion', weatherCards[2]).forEach((button, index) => {
+        const copy = suggestions[index];
+        if (!copy) return;
+        qs('span', button).textContent = copy.label;
+        qs('strong', button).textContent = copy.title;
+        button.dataset.toast = copy.toast;
+      });
+    }
+  }
+
+  if (fileName === 'passport.html') {
+    setText('.app-header .brand strong', t('passport.header'));
+    setText('.app-header .brand small', t('passport.headerSub'));
+    setText('.app-header .header-pill', t('passport.action'));
+    setText('.page-title-card .eyebrow', t('passport.eyebrow'));
+    setText('.page-title-card h1', t('passport.title'));
+    setText('.page-title-card > p:not(.eyebrow)', t('passport.body'));
+
+    const savedRoute = qs('[data-saved-route]');
+    if (savedRoute && !storageJsonGet(STORAGE_KEYS.savedRoutes, []).length) {
+      const label = qs(':scope > span', savedRoute);
+      const empty = qs(':scope > strong', savedRoute);
+      const link = qs(':scope > a', savedRoute);
+      if (label) label.textContent = t('passport.savedLabel');
+      if (empty) empty.textContent = t('passport.empty');
+      if (link) link.textContent = t('passport.choose');
+    }
+
+    const stampHeading = qs('[data-passport-stamps]')?.closest('.mobile-card')?.querySelector('h2');
+    if (stampHeading) stampHeading.textContent = t('passport.stampsTitle');
+
+    const nextRoute = qs('.today-route-card');
+    if (nextRoute) {
+      const label = qs(':scope > span', nextRoute);
+      const title = qs(':scope > h2', nextRoute);
+      const body = qs(':scope > p', nextRoute);
+      const link = qs(':scope > a', nextRoute);
+      if (label) label.textContent = t('passport.nextLabel');
+      if (title) title.textContent = t('passport.nextTitle');
+      if (body) body.textContent = t('passport.nextBody');
+      if (link) link.textContent = t('passport.view');
+    }
+  }
+
+  if (fileName === 'about.html') {
+    setText('.app-header .brand strong', t('about.header'));
+    setText('.app-header .brand small', t('about.headerSub'));
+    setText('.app-header .header-pill', t('about.action'));
+    setText('.page-title-card .eyebrow', t('about.eyebrow'));
+    setText('.page-title-card h1', t('about.title'));
+    setText('.page-title-card > p:not(.eyebrow)', t('about.body'));
+
+    const articles = t('about.articles', []);
+    qsa('.about-stack article').forEach((article, index) => {
+      const copy = articles[index];
+      if (!copy) return;
+      const title = qs('h2', article);
+      const body = qs('p', article);
+      if (title) title.textContent = copy.title;
+      if (body) body.textContent = copy.body;
+    });
+
+    const links = t('about.links', []);
+    qsa('.more-links a').forEach((link, index) => {
+      if (links[index]) link.textContent = links[index];
+    });
+  }
+
+  if (fileName === 'culture-data.html') {
+    setText('.app-header .brand strong', t('cultureData.header'));
+    setText('.app-header .brand small', t('cultureData.headerSub'));
+    setText('.app-header .header-pill', t('cultureData.action'));
+    setText('.page-title-card .eyebrow', t('cultureData.eyebrow'));
+    setText('.page-title-card h1', t('cultureData.title'));
+    setHtml('.page-title-card > p:not(.eyebrow)', t('cultureData.body'));
+
+    const factorCard = qs('.mobile-card');
+    if (factorCard) {
+      const heading = qs('h2', factorCard);
+      if (heading) heading.textContent = t('cultureData.factorsTitle');
+      const factors = t('cultureData.factors', []);
+      qsa('.factor-row span', factorCard).forEach((span, index) => {
+        span.textContent = factors[index] || span.textContent;
+      });
+    }
+
+    const sourceCard = qs('[data-source-list]')?.closest('.mobile-card');
+    const sourceHeading = sourceCard ? qs('h2', sourceCard) : null;
+    if (sourceHeading) sourceHeading.textContent = t('cultureData.sourcesTitle');
+
+    const logic = t('cultureData.logic', []);
+    qsa('.logic-stack article').forEach((article, index) => {
+      const copy = logic[index];
+      if (!copy) return;
+      const label = qs('span', article);
+      const title = qs('strong', article);
+      const body = qs('p', article);
+      if (label) label.textContent = copy.label;
+      if (title) title.textContent = copy.title;
+      if (body) body.textContent = copy.body;
+    });
+
+    const apiHeading = qsa('.mobile-card h2').find((heading) => heading.closest('.mobile-card')?.querySelector('code'));
+    if (apiHeading) apiHeading.textContent = t('cultureData.futureApiTitle');
+  }
+
+  applyAriTranslations();
 }
 
 function renderLocalizedContent() {
@@ -2884,7 +3656,7 @@ window.imageExistsFallback = imageExistsFallback;
 
 function renderImageFrame({ src, alt, notice, className = '' }) {
   const cleanClassName = className ? ` ${escapeHtml(className)}` : '';
-  const fallbackNotice = notice || '이미지 준비 중';
+  const fallbackNotice = notice || t('common.imageMissing');
 
   if (!src) {
     return `
@@ -2900,7 +3672,7 @@ function renderImageFrame({ src, alt, notice, className = '' }) {
   return `
     <div class="image-frame${cleanClassName}">
       <img src="${escapeHtml(src)}" alt="${escapeHtml(alt || '')}" loading="lazy" onerror="imageExistsFallback(event)">
-      <span class="ai-image-notice">${escapeHtml(notice || 'AI 생성 이미지 · 이해 보조 이미지')}</span>
+      <span class="ai-image-notice">${escapeHtml(notice || t('common.imageNotice'))}</span>
     </div>
   `;
 }
@@ -2983,7 +3755,7 @@ function renderHomeTimeHero(periodOverride = getTimePeriod(), imageUrlOverride =
   hero.innerHTML = `
     ${renderImageFrame({
       src: imageUrl,
-      alt: `${label} ${getCurrentLanguage() === 'en' ? 'Korean heritage mood image' : '시간대 전통문화 추천 이미지'}`,
+      alt: `${label} ${t('common.timeImageAlt')}`,
       notice: t('common.imageNotice'),
       className: 'home-time-image'
     })}
@@ -3489,10 +4261,10 @@ function renderWeather() {
 
   container.innerHTML = WEATHER_DATA.map((item) => `
     <article class="weather-day">
-      <span class="weather-icon">${escapeHtml(item.icon)}</span>
+      <span class="weather-icon">${escapeHtml(translateWeatherValue(item.icon))}</span>
       <div>
-        <strong>${escapeHtml(item.day)} · ${escapeHtml(item.sky)}</strong>
-        <small>${escapeHtml(item.temp)} · 강수확률 ${escapeHtml(item.rain)}</small>
+        <strong>${escapeHtml(translateWeatherValue(item.day))} · ${escapeHtml(translateWeatherValue(item.sky))}</strong>
+        <small>${escapeHtml(item.temp)} · ${escapeHtml(t('weather.rainProbability'))} ${escapeHtml(item.rain)}</small>
       </div>
     </article>
   `).join('');
@@ -3524,21 +4296,23 @@ function renderPassport() {
   const selectedRoute = savedRouteIds.length ? findRouteById(savedRouteIds[savedRouteIds.length - 1]) : null;
 
   if (savedRouteCard && selectedRoute) {
+    const routeView = getRouteView(selectedRoute);
     savedRouteCard.innerHTML = `
-      <span>저장한 코스</span>
+      <span>${escapeHtml(t('passport.savedLabel'))}</span>
       ${renderRouteImage(selectedRoute)}
-      <strong>${escapeHtml(selectedRoute.title)}</strong>
-      <p>${escapeHtml(selectedRoute.time)} · ${escapeHtml(selectedRoute.walking)} · ${escapeHtml(selectedRoute.fee)}</p>
-      ${renderConvenienceBadges(selectedRoute.convenience)}
-      <a class="button button-primary button-block" href="route-detail.html?id=${encodeURIComponent(selectedRoute.id)}">다시 보기</a>
+      <strong>${escapeHtml(routeView.title)}</strong>
+      <p>${escapeHtml(routeView.time)} · ${escapeHtml(routeView.walking)} · ${escapeHtml(routeView.fee)}</p>
+      ${renderConvenienceBadges(routeView.displayConvenience || selectedRoute.convenience)}
+      <a class="button button-primary button-block" href="route-detail.html?id=${encodeURIComponent(selectedRoute.id)}">${escapeHtml(t('passport.again'))}</a>
     `;
   }
 
   if (stamps) {
-    stamps.innerHTML = PASSPORT_DATA.map((stamp) => `
+    const stampTitles = t('passport.stamps', []);
+    stamps.innerHTML = PASSPORT_DATA.map((stamp, index) => `
       <article class="stamp-card ${stamp.status === 'completed' ? 'completed' : ''}">
-        <span>${stamp.status === 'completed' ? 'Completed' : 'Locked'}</span>
-        <strong>${escapeHtml(stamp.title)}</strong>
+        <span>${escapeHtml(t(`passport.status.${stamp.status}`, stamp.status))}</span>
+        <strong>${escapeHtml(stampTitles[index] || stamp.title)}</strong>
       </article>
     `).join('');
   }
@@ -3551,32 +4325,29 @@ function renderCultureData() {
     const popularCount = CULTURE_RESOURCES.filter((item) => item.foreignerPopular).length;
     const reservationCount = CULTURE_RESOURCES.filter((item) => item.reservationRequired).length;
     const imageCount = CULTURE_RESOURCES.filter((item) => item.imageUrl).length + ROUTE_DATA.filter((item) => item.imageUrl).length;
+    const metricLabels = t('cultureData.metrics', []);
     metrics.innerHTML = `
-      <article><span>서울 장소 데이터</span><strong>${CULTURE_RESOURCES.length}</strong></article>
-      <article><span>추천 코스</span><strong>${ROUTE_DATA.length}</strong></article>
-      <article><span>영어 안내 가능</span><strong>${englishCount}</strong></article>
-      <article><span>외국인 인기</span><strong>${popularCount}</strong></article>
-      <article><span>예약 필요</span><strong>${reservationCount}</strong></article>
-      <article><span>이미지 URL</span><strong>${imageCount}</strong></article>
-      <article><span>데이터 상태</span><strong>${escapeHtml(cultureResourceLoadStatus)}</strong></article>
+      <article><span>${escapeHtml(metricLabels[0])}</span><strong>${CULTURE_RESOURCES.length}</strong></article>
+      <article><span>${escapeHtml(metricLabels[1])}</span><strong>${ROUTE_DATA.length}</strong></article>
+      <article><span>${escapeHtml(metricLabels[2])}</span><strong>${englishCount}</strong></article>
+      <article><span>${escapeHtml(metricLabels[3])}</span><strong>${popularCount}</strong></article>
+      <article><span>${escapeHtml(metricLabels[4])}</span><strong>${reservationCount}</strong></article>
+      <article><span>${escapeHtml(metricLabels[5])}</span><strong>${imageCount}</strong></article>
+      <article><span>${escapeHtml(metricLabels[6])}</span><strong>${escapeHtml(t(`cultureData.status.${cultureResourceLoadStatus}`, cultureResourceLoadStatus))}</strong></article>
     `;
   }
 
   const sources = qs('[data-source-list]');
   if (sources) {
+    const sourceStatus = t(`cultureData.sourceStatus.${cultureResourceLoadStatus}`, t('cultureData.sourceStatus.fallback'));
     const sourceItems = [
-      `${CULTURE_RESOURCE_DATA_URL} (${cultureResourceLoadMessage || 'fallback 준비 완료'})`,
-      '서울 열린데이터광장',
-      '한국관광공사 TourAPI / 관광정보 데이터',
-      '국가유산청 / 국가유산 관련 데이터',
-      '공공데이터포털',
-      '문화기관 공식 홈페이지',
-      '박물관 / 공연장 / 전통시장 공식 안내자료'
+      `${CULTURE_RESOURCE_DATA_URL} (${sourceStatus})`,
+      ...t('cultureData.sources', [])
     ];
     sources.innerHTML = sourceItems.map((source) => `
       <article class="data-source-card">
         <strong>${escapeHtml(source)}</strong>
-        <p>Spring Boot 버전에서 공식 API 또는 공식 페이지 기반 검증 데이터로 연결 예정입니다.</p>
+        <p>${escapeHtml(t('cultureData.sourceNote'))}</p>
       </article>
     `).join('');
   }
@@ -3788,12 +4559,46 @@ async function askAri(message) {
       if (reply.trim()) return reply.trim();
     } catch (error) {
       if (AI_PROVIDER_CONFIG.mode === 'ollama') {
-        return `${fallbackAriReply(message, context)}\n\nOllama 연결이 되지 않아 로컬 fallback 답변을 사용했습니다.`;
+        return `${fallbackAriReply(message, context)}\n\n${t('ari.fallbackSuffix')}`;
       }
     }
   }
 
   return fallbackAriReply(message, context);
+}
+
+function applyAriTranslations() {
+  const root = qs('[data-ari-root]');
+  if (!root) return;
+
+  const openButton = qs('[data-ari-open]', root);
+  if (openButton) {
+    openButton.setAttribute('aria-label', t('ari.fabLabel'));
+    const openLabel = qs('span', openButton);
+    if (openLabel) openLabel.textContent = t('ari.name');
+  }
+
+  const panel = qs('[data-ari-panel]', root);
+  if (panel) panel.setAttribute('aria-label', t('ari.dialogLabel'));
+
+  const headerAvatar = qs('.ari-header-avatar', root);
+  if (headerAvatar) headerAvatar.setAttribute('alt', t('ari.avatarAlt'));
+  setText('.ari-header-profile span', t('ari.profileName'));
+  setText('.ari-header-profile strong', t('ari.profileTitle'));
+
+  const closeButton = qs('[data-ari-close]', root);
+  if (closeButton) closeButton.setAttribute('aria-label', t('ari.closeLabel'));
+
+  const quickQuestions = t('ari.quickQuestions', ARI_QUICK_QUESTIONS);
+  qsa('[data-ari-quick]', root).forEach((button, index) => {
+    const question = quickQuestions[index] || ARI_QUICK_QUESTIONS[index] || button.textContent;
+    button.textContent = question;
+    button.dataset.ariQuick = question;
+  });
+
+  const input = qs('[data-ari-input]', root);
+  if (input) input.setAttribute('placeholder', t('ari.placeholder'));
+  setText('[data-ari-send]', t('ari.send'));
 }
 
 function renderAriMessages() {
@@ -3803,8 +4608,8 @@ function renderAriMessages() {
   if (!ariMessages.length) {
     container.innerHTML = `
       <div class="ari-message ari-message-assistant">
-        <strong>아리</strong>
-        <p>안녕하세요. 아리가 서울 전통문화 코스와 여행 도움을 앱 데이터 기준으로 안내해드릴게요.</p>
+        <strong>${escapeHtml(t('ari.roleAssistant'))}</strong>
+        <p>${escapeHtml(t('ari.greeting'))}</p>
       </div>
     `;
     return;
@@ -3812,7 +4617,7 @@ function renderAriMessages() {
 
   container.innerHTML = ariMessages.map((item) => `
     <div class="ari-message ari-message-${escapeHtml(item.role)}">
-      <strong>${item.role === 'user' ? '나' : '아리'}</strong>
+      <strong>${escapeHtml(item.role === 'user' ? t('ari.roleUser') : t('ari.roleAssistant'))}</strong>
       <p>${escapeHtml(item.message)}</p>
     </div>
   `).join('');
@@ -3828,7 +4633,7 @@ function appendChatMessage(role, message) {
 function setAriBusy(isBusy) {
   const status = qs('[data-ari-status]');
   const sendButton = qs('[data-ari-send]');
-  if (status) status.textContent = isBusy ? '아리가 답변을 준비하고 있어요.' : '';
+  if (status) status.textContent = isBusy ? t('ari.busy') : '';
   if (sendButton) sendButton.disabled = isBusy;
 }
 
@@ -3862,7 +4667,7 @@ async function sendAriMessage(messageOverride = '') {
     const reply = await askAri(message);
     appendChatMessage('assistant', reply);
   } catch (error) {
-    appendChatMessage('assistant', '지금은 답변을 준비하지 못했습니다. 추천 코스나 여행자 지원 메뉴를 먼저 확인해보세요.');
+    appendChatMessage('assistant', t('ari.error'));
   } finally {
     setAriBusy(false);
   }
@@ -3874,36 +4679,38 @@ function mountAriChat() {
   if (qs('.bottom-cta')) document.body.classList.add('ari-has-bottom-cta');
 
   ariMessages = storageJsonGet(STORAGE_KEYS.ariMessages, []);
+  const quickQuestions = t('ari.quickQuestions', ARI_QUICK_QUESTIONS);
   shell.insertAdjacentHTML('beforeend', `
     <section class="ari-chat" data-ari-root>
-      <button class="ari-fab" type="button" data-ari-open aria-label="아리 챗봇 열기">
+      <button class="ari-fab" type="button" data-ari-open aria-label="${escapeHtml(t('ari.fabLabel'))}">
         <img class="ari-fab-avatar" src="${ARI_CHARACTER_IMAGE}" alt="" aria-hidden="true">
-        <span>아리</span>
+        <span>${escapeHtml(t('ari.name'))}</span>
       </button>
-      <div class="ari-panel" data-ari-panel role="dialog" aria-hidden="true" aria-label="아리 전통문화 AI 가이드">
+      <div class="ari-panel" data-ari-panel role="dialog" aria-hidden="true" aria-label="${escapeHtml(t('ari.dialogLabel'))}">
         <header class="ari-header">
           <div class="ari-header-profile">
-            <img class="ari-header-avatar" src="${ARI_CHARACTER_IMAGE}" alt="아리 캐릭터">
+            <img class="ari-header-avatar" src="${ARI_CHARACTER_IMAGE}" alt="${escapeHtml(t('ari.avatarAlt'))}">
             <div>
-              <span>아리(ARI)</span>
-              <strong>전통문화 AI 가이드</strong>
+              <span>${escapeHtml(t('ari.profileName'))}</span>
+              <strong>${escapeHtml(t('ari.profileTitle'))}</strong>
             </div>
           </div>
-          <button type="button" data-ari-close aria-label="아리 챗봇 닫기">×</button>
+          <button type="button" data-ari-close aria-label="${escapeHtml(t('ari.closeLabel'))}">×</button>
         </header>
         <div class="ari-quick-list">
-          ${ARI_QUICK_QUESTIONS.map((question) => `<button type="button" data-ari-quick="${escapeHtml(question)}">${escapeHtml(question)}</button>`).join('')}
+          ${quickQuestions.map((question) => `<button type="button" data-ari-quick="${escapeHtml(question)}">${escapeHtml(question)}</button>`).join('')}
         </div>
         <div class="ari-messages" data-ari-messages></div>
         <p class="ari-status" data-ari-status aria-live="polite"></p>
         <form class="ari-form" data-ari-form>
-          <input data-ari-input type="text" placeholder="궁궐, 한옥, 전통시장에 대해 물어보세요." autocomplete="off">
-          <button type="submit" data-ari-send>보내기</button>
+          <input data-ari-input type="text" placeholder="${escapeHtml(t('ari.placeholder'))}" autocomplete="off">
+          <button type="submit" data-ari-send>${escapeHtml(t('ari.send'))}</button>
         </form>
       </div>
     </section>
   `);
 
+  applyAriTranslations();
   renderAriMessages();
   qs('[data-ari-open]')?.addEventListener('click', openAriChat);
   qs('[data-ari-close]')?.addEventListener('click', closeAriChat);
