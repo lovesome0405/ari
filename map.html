@@ -30,6 +30,14 @@
 
       <a class="button button-map button-block" href="#" target="_blank" rel="noopener" data-map-open-route>선택한 지도에서 열기</a>
 
+      <section class="mobile-card nearby-location-card" data-nearby-section>
+        <h2 data-nearby-title>내 주변 전통문화 장소</h2>
+        <p class="nearby-notice" data-nearby-notice>위치 정보는 가까운 장소 추천에만 사용되며 저장되지 않습니다.</p>
+        <button class="button button-primary button-block" type="button" data-nearby-location-button>현재 위치로 가까운 코스 찾기</button>
+        <p class="nearby-status" data-nearby-status aria-live="polite"></p>
+        <div class="nearby-results" data-nearby-results></div>
+      </section>
+
       <section class="mobile-card">
         <h2>이동 순서</h2>
         <ol class="timeline-list" data-map-timeline></ol>
@@ -38,7 +46,6 @@
       <section class="action-grid">
         <button class="action-card" type="button" data-toast="적게 걷는 루트는 지도 API 연동 후 제공됩니다.">적게 걷는 루트</button>
         <button class="action-card" type="button" data-toast="비 오는 날 실내 코스 조건이 선택되었습니다.">비 오는 날 실내 코스</button>
-        <button class="action-card" type="button" data-toast="현재 위치 주변 추천은 GPS 연동 후 제공됩니다.">현재 위치 주변 추천</button>
       </section>
     </main>
 

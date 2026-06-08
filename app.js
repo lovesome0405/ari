@@ -877,7 +877,7 @@ const UI_COPY = {
       changeRoute: '코스 변경',
       eyebrow: 'Route Map',
       fallbackTitle: '선택한 코스',
-      body: '실제 GPS는 다음 버전에서 연결됩니다. 지금은 원하는 지도 서비스 링크와 이동 순서를 확인할 수 있습니다.',
+      body: '현재 위치로 가까운 장소를 찾거나, 선택한 지도 서비스로 코스와 이동 순서를 열 수 있습니다.',
       selector: '지도 선택',
       selectorHint: '선택한 지도 서비스는 다음 방문에도 유지됩니다.',
       openRoute: '선택한 지도에서 열기',
@@ -886,11 +886,22 @@ const UI_COPY = {
       timeline: '이동 순서',
       lessWalking: '적게 걷는 루트',
       rainyIndoor: '비 오는 날 실내 코스',
-      nearby: '현재 위치 주변 추천',
+      nearby: '현재 위치로 가까운 코스 찾기',
       lessWalkingToast: '적게 걷는 루트는 지도 API 연동 후 제공됩니다.',
       rainyIndoorToast: '비 오는 날 실내 코스 조건이 선택되었습니다.',
-      nearbyToast: '현재 위치 주변 추천은 GPS 연동 후 제공됩니다.',
-      savedToast: '지도 서비스가 저장되었습니다.'
+      nearbyToast: '현재 위치로 가까운 장소를 찾습니다.',
+      savedToast: '지도 서비스가 저장되었습니다.',
+      nearbyTitle: '내 주변 전통문화 장소',
+      nearbyButton: '현재 위치로 가까운 코스 찾기',
+      nearbyNotice: '위치 정보는 가까운 장소 추천에만 사용되며 저장되지 않습니다.',
+      nearbyLoading: '현재 위치를 확인하고 가까운 장소를 찾고 있어요.',
+      nearbyDenied: '위치 권한이 허용되지 않아 기본 서울 추천 코스를 보여드릴게요.',
+      nearbyFailed: '현재 위치를 확인하지 못해 기본 서울 추천 코스를 보여드릴게요.',
+      nearbyUnsupported: '이 브라우저에서는 위치 기능을 사용할 수 없어 기본 서울 추천 코스를 보여드릴게요.',
+      nearbyNoData: '좌표가 있는 장소 데이터를 찾지 못해 기본 서울 추천 코스를 보여드릴게요.',
+      nearbyResultTitle: '가까운 장소 추천',
+      nearbyDistance: '현재 위치에서 약 {distance} km',
+      nearbyAccuracy: '위치 정확도 약 {accuracy} m'
     },
     support: {
       header: '마루',
@@ -1007,7 +1018,7 @@ const UI_COPY = {
       changeRoute: 'Change route',
       eyebrow: 'Route Map',
       fallbackTitle: 'Selected Route',
-      body: 'Live GPS will be connected in a future version. For now, choose a map service and open each stop in a new tab.',
+      body: 'Use your current location to find nearby heritage places, or open the selected route with your preferred map service.',
       selector: 'Choose Map',
       selectorHint: 'Your selected map service is saved for next time.',
       openRoute: 'Open in selected map',
@@ -1016,11 +1027,22 @@ const UI_COPY = {
       timeline: 'Route Order',
       lessWalking: 'Less walking route',
       rainyIndoor: 'Rainy indoor route',
-      nearby: 'Nearby recommendations',
+      nearby: 'Find routes near me',
       lessWalkingToast: 'Less-walking routes will be available after map API integration.',
       rainyIndoorToast: 'Rainy-day indoor route conditions were selected.',
-      nearbyToast: 'Nearby recommendations will be available after GPS integration.',
-      savedToast: 'Map service saved.'
+      nearbyToast: 'Finding nearby heritage places from your current location.',
+      savedToast: 'Map service saved.',
+      nearbyTitle: 'Heritage Places Near Me',
+      nearbyButton: 'Find routes near me',
+      nearbyNotice: 'Your location is only used to find nearby places and is not saved.',
+      nearbyLoading: 'Checking your location and finding nearby places.',
+      nearbyDenied: "Location access was not allowed, so we'll show the default Seoul route.",
+      nearbyFailed: "We couldn't check your location, so we'll show the default Seoul route.",
+      nearbyUnsupported: "This browser doesn't support location, so we'll show the default Seoul route.",
+      nearbyNoData: "We couldn't find places with coordinates, so we'll show the default Seoul route.",
+      nearbyResultTitle: 'Nearby Place Recommendations',
+      nearbyDistance: 'About {distance} km from your current location',
+      nearbyAccuracy: 'Location accuracy about {accuracy} m'
     },
     support: {
       header: 'MARU',
@@ -1137,7 +1159,7 @@ const UI_COPY = {
       changeRoute: 'コース変更',
       eyebrow: 'Route Map',
       fallbackTitle: '選択したコース',
-      body: '今は地図サービスを選んで、各スポットまたはコースのルートを新しいタブで確認できます。',
+      body: '現在地から近い文化スポットを探したり、選択した地図サービスでコースと移動順を開いたりできます。',
       selector: '地図を選択',
       selectorHint: '選択した地図サービスは次回も保持されます。',
       openRoute: '選択した地図で開く',
@@ -1146,11 +1168,22 @@ const UI_COPY = {
       timeline: '移動順',
       lessWalking: '少なめに歩くルート',
       rainyIndoor: '雨の日の屋内コース',
-      nearby: '現在地周辺の推薦',
+      nearby: '現在地から近いコースを探す',
       lessWalkingToast: '少なめに歩くルートは地図API連携後に提供されます。',
       rainyIndoorToast: '雨の日の屋内条件を選択しました。',
-      nearbyToast: '現在地周辺の推薦はGPS連携後に提供されます。',
-      savedToast: '地図サービスを保存しました。'
+      nearbyToast: '現在地から近い文化スポットを探します。',
+      savedToast: '地図サービスを保存しました。',
+      nearbyTitle: '現在地周辺の伝統文化スポット',
+      nearbyButton: '現在地から近いコースを探す',
+      nearbyNotice: '位置情報は近くの場所を探すためだけに使用され、保存されません。',
+      nearbyLoading: '現在地を確認し、近くの場所を探しています。',
+      nearbyDenied: '位置情報が許可されなかったため、基本のソウルおすすめコースを表示します。',
+      nearbyFailed: '現在地を確認できなかったため、基本のソウルおすすめコースを表示します。',
+      nearbyUnsupported: 'このブラウザでは位置情報を使用できないため、基本のソウルおすすめコースを表示します。',
+      nearbyNoData: '座標のある場所データが見つからないため、基本のソウルおすすめコースを表示します。',
+      nearbyResultTitle: '近くの場所のおすすめ',
+      nearbyDistance: '現在地から約{distance} km',
+      nearbyAccuracy: '位置精度 約{accuracy} m'
     },
     support: {
       header: 'MARU',
@@ -1267,7 +1300,7 @@ const UI_COPY = {
       changeRoute: '更换路线',
       eyebrow: 'Route Map',
       fallbackTitle: '已选路线',
-      body: '目前可以选择地图服务，并在新标签页中查看各地点或整条路线。',
+      body: '可以使用当前位置查找附近文化地点，也可以用所选地图服务打开路线和移动顺序。',
       selector: '选择地图',
       selectorHint: '所选地图服务会保存到下次访问。',
       openRoute: '用所选地图打开',
@@ -1276,11 +1309,22 @@ const UI_COPY = {
       timeline: '移动顺序',
       lessWalking: '少步行路线',
       rainyIndoor: '雨天室内路线',
-      nearby: '当前位置附近推荐',
+      nearby: '查找附近路线',
       lessWalkingToast: '少步行路线将在地图API接入后提供。',
       rainyIndoorToast: '已选择雨天室内路线条件。',
-      nearbyToast: '附近推荐将在GPS接入后提供。',
-      savedToast: '地图服务已保存。'
+      nearbyToast: '正在根据当前位置查找附近文化地点。',
+      savedToast: '地图服务已保存。',
+      nearbyTitle: '当前位置附近的传统文化地点',
+      nearbyButton: '查找附近路线',
+      nearbyNotice: '位置信息仅用于查找附近地点，不会被保存。',
+      nearbyLoading: '正在确认当前位置并查找附近地点。',
+      nearbyDenied: '未允许位置权限，因此将显示默认的首尔推荐路线。',
+      nearbyFailed: '无法确认当前位置，因此将显示默认的首尔推荐路线。',
+      nearbyUnsupported: '此浏览器不支持位置功能，因此将显示默认的首尔推荐路线。',
+      nearbyNoData: '未找到带坐标的地点数据，因此将显示默认的首尔推荐路线。',
+      nearbyResultTitle: '附近地点推荐',
+      nearbyDistance: '距离当前位置约 {distance} km',
+      nearbyAccuracy: '位置精度约 {accuracy} m'
     },
     support: {
       header: 'MARU',
@@ -2866,6 +2910,19 @@ let ariMessages = [];
 let timeImageIndex = 0;
 let timeImagePeriod = '';
 let timeImageTimer = null;
+let nearbyRecommendationState = {
+  status: 'idle',
+  messageKey: '',
+  items: [],
+  userLocation: null,
+  accuracy: null
+};
+
+const GEOLOCATION_OPTIONS = {
+  enableHighAccuracy: true,
+  timeout: 8000,
+  maximumAge: 60000
+};
 
 function qs(selector, root = document) {
   return root.querySelector(selector);
@@ -2980,6 +3037,33 @@ function applyPageMetadata(fileName = getCurrentFileName()) {
 function translateWeatherValue(value) {
   const values = t('weather.values', {});
   return values?.[value] || value;
+}
+
+function interpolateTemplate(template, values = {}) {
+  return String(template || '').replace(/\{(\w+)\}/g, (_, key) => values[key] ?? '');
+}
+
+function toRad(value) {
+  return (value * Math.PI) / 180;
+}
+
+function getDistanceKm(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) *
+      Math.cos(toRad(lat2)) *
+      Math.sin(dLng / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+function formatDistanceKm(distanceKm) {
+  if (!Number.isFinite(distanceKm)) return '';
+  const distance = distanceKm < 10 ? distanceKm.toFixed(1) : String(Math.round(distanceKm));
+  return interpolateTemplate(t('map.nearbyDistance'), { distance });
 }
 
 function toArray(value) {
@@ -3340,13 +3424,13 @@ function applyStaticTranslations() {
     setText('.app-header .header-pill', t('map.changeRoute'));
     setText('.page-title-card .eyebrow', t('map.eyebrow'));
     setText('.page-title-card > p:not(.eyebrow)', t('map.body'));
-    setText('.mobile-card h2', t('map.timeline'));
+    const timelineHeading = qs('[data-map-timeline]')?.closest('.mobile-card')?.querySelector('h2');
+    if (timelineHeading) timelineHeading.textContent = t('map.timeline');
 
     const actions = qsa('.action-card');
     const actionData = [
       ['map.lessWalking', 'map.lessWalkingToast'],
-      ['map.rainyIndoor', 'map.rainyIndoorToast'],
-      ['map.nearby', 'map.nearbyToast']
+      ['map.rainyIndoor', 'map.rainyIndoorToast']
     ];
     actionData.forEach(([labelKey, toastKey], index) => {
       const action = actions[index];
@@ -3568,6 +3652,7 @@ function renderLocalizedContent() {
   renderRecommendedPlaces();
   renderRouteDetail();
   renderMap();
+  renderNearbyRecommendations();
   renderWeather();
   renderSupport();
   renderPassport();
@@ -3939,8 +4024,10 @@ function renderResourceCard(resource, index = 0, options = {}) {
   const resourceView = getResourceView(resource);
   const selectedService = getSelectedMapService();
   const target = getMapTargetForPlace(resource.nameKo);
+  const mapUrl = createMapPlaceUrl(target, selectedService, { origin: options.userLocation });
   const tags = (resourceView.displayTags || []).slice(0, 4);
   const titlePrefix = options.showIndex === false ? '' : `${index + 1}. `;
+  const distanceText = formatDistanceKm(options.distanceKm);
   const scoreTags = [
     `${t('places.quality')} ${Math.round(resource.qualityScore || 0)}`,
     `${t('places.photo')} ${Math.round(resource.photoSpotScore || 0)}/5`,
@@ -3961,11 +4048,12 @@ function renderResourceCard(resource, index = 0, options = {}) {
       <div class="tag-row place-score-row">
         ${scoreTags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}
       </div>
+      ${distanceText ? `<div class="distance-badge">${escapeHtml(distanceText)}</div>` : ''}
       ${tags.length ? `<div class="tag-row">${tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
       <p>${escapeHtml(resourceView.aiSimpleExplanation || '')}</p>
       <p><strong>${escapeHtml(t('places.reason'))}</strong> ${escapeHtml(resourceView.aiWhyItMatters || '')}</p>
       <p><strong>${escapeHtml(t('places.tip'))}</strong> ${escapeHtml(resourceView.aiVisitTip || '')}</p>
-      <a class="button button-secondary button-block place-map-link" href="${escapeHtml(createMapPlaceUrl(target, selectedService))}" target="_blank" rel="noopener">${escapeHtml(getMapServiceLabel(selectedService))} ${escapeHtml(t('places.map'))}</a>
+      <a class="button button-secondary button-block place-map-link" href="${escapeHtml(mapUrl)}" target="_blank" rel="noopener">${escapeHtml(getMapServiceLabel(selectedService))} ${escapeHtml(t('places.map'))}</a>
     </article>
   `;
 }
@@ -4026,6 +4114,132 @@ function renderRecommendedPlaces() {
   container.innerHTML = resources.map((resource, index) => renderResourceCard(resource, index)).join('');
 }
 
+function getNearbyResources(userLocation, limit = 8) {
+  if (!hasMapCoordinates(userLocation)) return [];
+  return CULTURE_RESOURCES
+    .filter(isSeoulResource)
+    .filter((resource) => !resource.isDetailStoryOnly && resource.isIndependentSite)
+    .filter(hasMapCoordinates)
+    .map((resource) => ({
+      resource,
+      distanceKm: getDistanceKm(userLocation.latitude, userLocation.longitude, resource.latitude, resource.longitude)
+    }))
+    .sort((a, b) => a.distanceKm - b.distanceKm)
+    .slice(0, limit);
+}
+
+function renderNearbyRecommendations() {
+  const section = qs('[data-nearby-section]');
+  if (!section) return;
+
+  const title = qs('[data-nearby-title]', section);
+  const notice = qs('[data-nearby-notice]', section);
+  const button = qs('[data-nearby-location-button]', section);
+  const status = qs('[data-nearby-status]', section);
+  const results = qs('[data-nearby-results]', section);
+  const state = nearbyRecommendationState;
+
+  if (title) title.textContent = t('map.nearbyTitle');
+  if (notice) notice.textContent = t('map.nearbyNotice');
+  if (button) {
+    button.textContent = state.status === 'loading' ? t('map.nearbyLoading') : t('map.nearbyButton');
+    button.disabled = state.status === 'loading';
+  }
+
+  if (status) {
+    const accuracyText = Number.isFinite(state.accuracy)
+      ? interpolateTemplate(t('map.nearbyAccuracy'), { accuracy: Math.round(state.accuracy) })
+      : '';
+    status.textContent = state.status === 'success' ? accuracyText : (state.messageKey ? t(state.messageKey) : '');
+  }
+
+  if (!results) return;
+  if (state.status !== 'success' || !state.items.length) {
+    results.innerHTML = '';
+    return;
+  }
+
+  results.innerHTML = `
+    <div class="nearby-results-heading">
+      <strong>${escapeHtml(t('map.nearbyResultTitle'))}</strong>
+    </div>
+    <div class="place-list nearby-place-list">
+      ${state.items.map((item, index) => renderResourceCard(item.resource, index, {
+        distanceKm: item.distanceKm,
+        userLocation: state.userLocation
+      })).join('')}
+    </div>
+  `;
+}
+
+function setNearbyFallback(messageKey) {
+  nearbyRecommendationState = {
+    status: 'fallback',
+    messageKey,
+    items: [],
+    userLocation: null,
+    accuracy: null
+  };
+  if (ROUTE_DATA[0]) renderMap(ROUTE_DATA[0]);
+  renderNearbyRecommendations();
+  showToast(t(messageKey));
+}
+
+function handleNearbyLocationSuccess(position) {
+  const coords = position?.coords || {};
+  const userLocation = {
+    latitude: Number(coords.latitude),
+    longitude: Number(coords.longitude)
+  };
+
+  if (!hasMapCoordinates(userLocation)) {
+    setNearbyFallback('map.nearbyFailed');
+    return;
+  }
+
+  const items = getNearbyResources(userLocation, 8);
+  if (!items.length) {
+    setNearbyFallback('map.nearbyNoData');
+    return;
+  }
+
+  nearbyRecommendationState = {
+    status: 'success',
+    messageKey: '',
+    items,
+    userLocation,
+    accuracy: Number(coords.accuracy)
+  };
+  renderNearbyRecommendations();
+}
+
+function handleNearbyLocationError(error) {
+  const denied = error?.code === 1;
+  setNearbyFallback(denied ? 'map.nearbyDenied' : 'map.nearbyFailed');
+}
+
+function requestNearbyLocation() {
+  if (!('geolocation' in navigator)) {
+    setNearbyFallback('map.nearbyUnsupported');
+    return;
+  }
+
+  nearbyRecommendationState = {
+    status: 'loading',
+    messageKey: 'map.nearbyLoading',
+    items: [],
+    userLocation: null,
+    accuracy: null
+  };
+  renderNearbyRecommendations();
+
+  navigator.geolocation.getCurrentPosition(
+    handleNearbyLocationSuccess,
+    handleNearbyLocationError,
+    GEOLOCATION_OPTIONS
+  );
+}
+
 function saveSelectedRoute(routeId) {
   const route = findRouteById(routeId);
   storageSet(STORAGE_KEYS.selectedRoute, route.id);
@@ -4069,11 +4283,21 @@ function getMapTargetForPlace(placeName) {
   };
 }
 
-function createMapPlaceUrl(target, service = getSelectedMapService()) {
+function createMapPlaceUrl(target, service = getSelectedMapService(), options = {}) {
   const hasCoordinates = hasMapCoordinates(target);
   const query = target.query || target.name;
+  const origin = options.origin;
 
   if (service === 'google') {
+    if (hasCoordinates && hasMapCoordinates(origin)) {
+      const params = new URLSearchParams({
+        api: '1',
+        origin: `${origin.latitude},${origin.longitude}`,
+        destination: `${target.latitude},${target.longitude}`,
+        travelmode: 'walking'
+      });
+      return `https://www.google.com/maps/dir/?${params.toString()}`;
+    }
     const googleQuery = hasCoordinates ? `${target.latitude},${target.longitude}` : query;
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(googleQuery)}`;
   }
@@ -4092,7 +4316,7 @@ function createMapPlaceUrl(target, service = getSelectedMapService()) {
 }
 
 function hasMapCoordinates(target) {
-  return Number.isFinite(target.latitude) && Number.isFinite(target.longitude);
+  return Boolean(target) && Number.isFinite(target.latitude) && Number.isFinite(target.longitude);
 }
 
 function mapPointQuery(target) {
@@ -4172,6 +4396,7 @@ function setMapService(service, options = {}) {
   const nextService = MAP_SERVICES[service] ? service : 'google';
   storageSet(STORAGE_KEYS.mapService, nextService);
   renderMap(getRouteFromUrlOrStorage());
+  renderNearbyRecommendations();
   if (options.toast) showToast(t('map.savedToast'));
 }
 
@@ -4822,6 +5047,12 @@ function bindMobileInteractions() {
   });
 
   document.addEventListener('click', (event) => {
+    const nearbyLocationButton = event.target.closest('[data-nearby-location-button]');
+    if (nearbyLocationButton) {
+      requestNearbyLocation();
+      return;
+    }
+
     const mapServiceButton = event.target.closest('[data-map-service]');
     if (mapServiceButton) {
       setMapService(mapServiceButton.dataset.mapService, { toast: true });
