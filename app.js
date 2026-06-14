@@ -312,6 +312,12 @@ const ARI_QUICK_QUESTIONS = [
 ];
 
 const CULTURE_RESOURCE_DATA_URL = 'ari_culture_resources_appjs.json';
+const DYNAMIC_DATA_URLS = {
+  routeBlueprints: 'data/route_blueprints.json',
+  weather: 'data/weather.json',
+  support: 'data/support.json',
+  passport: 'data/passport.json'
+};
 let cultureResourceLoadStatus = 'fallback';
 let cultureResourceLoadMessage = '';
 
@@ -348,7 +354,7 @@ let CULTURE_RESOURCES = [
     aiWhyItMatters: '한국 왕실문화의 중심 공간을 직접 걸으며 건축과 의례의 의미를 배울 수 있습니다.',
     aiVisitTip: '입장 시간, 휴궁일, 특별 관람 여부는 방문 전 공식 출처에서 확인하세요.',
     aiCulturalKeywords: ['Joseon Dynasty', 'Royal Palace'],
-    imageUrl: 'assets/images/places/gyeongbokgung-palace.webp',
+    imageUrl: '',
     imageAlt: '경복궁 궁궐문화 안내 AI 이미지',
     imageType: 'ai_generated',
     imagePrompt: 'A clean mobile guide illustration of Gyeongbokgung palace at night, deep navy sky, warm palace lights, elegant Korean rooflines, no text, no logos'
@@ -384,7 +390,7 @@ let CULTURE_RESOURCES = [
     aiWhyItMatters: '궁궐 방문 전에 왕실 유물의 의미를 먼저 익힐 수 있습니다.',
     aiVisitTip: '왕실 의례와 상징 관련 전시를 먼저 보면 궁궐 동선이 더 잘 이해됩니다.',
     aiCulturalKeywords: ['Royal Artifacts', 'Court Ritual'],
-    imageUrl: 'assets/images/places/national-palace-museum.webp',
+    imageUrl: '',
     imageAlt: '국립고궁박물관 왕실 유물 AI 이미지',
     imageType: 'ai_generated',
     imagePrompt: 'A clean mobile guide illustration of Korean royal artifacts in a museum, ivory display, warm gold light, no text, no logos'
@@ -420,7 +426,7 @@ let CULTURE_RESOURCES = [
     aiWhyItMatters: '왕실문화와 일상문화의 차이를 비교할 수 있습니다.',
     aiVisitTip: '생활사 전시를 중심으로 보면 전통문화가 더 쉽게 연결됩니다.',
     aiCulturalKeywords: ['Folk Culture', 'Everyday Life'],
-    imageUrl: 'assets/images/places/national-folk-museum.webp',
+    imageUrl: '',
     imageAlt: '국립민속박물관 생활문화 AI 이미지',
     imageType: 'ai_generated',
     imagePrompt: 'A clean mobile guide illustration of Korean folk museum objects and everyday culture, warm ivory and navy, no text, no logos'
@@ -456,7 +462,7 @@ let CULTURE_RESOURCES = [
     aiWhyItMatters: '전통문화가 현재의 생활문화로 이어지는 흐름을 보여줍니다.',
     aiVisitTip: '시장 운영 시간과 체험 가능 여부를 미리 확인하세요.',
     aiCulturalKeywords: ['Traditional Market', 'Local Life'],
-    imageUrl: 'assets/images/places/tongin-market.webp',
+    imageUrl: '',
     imageAlt: '통인시장 생활문화 AI 이미지',
     imageType: 'ai_generated',
     imagePrompt: 'A clean mobile guide illustration of a small Korean traditional market street at evening, warm lights, no text, no logos'
@@ -492,7 +498,7 @@ let CULTURE_RESOURCES = [
     aiWhyItMatters: '왕실문화가 궁궐 밖 생활 공간과도 연결된다는 점을 보여줍니다.',
     aiVisitTip: '내부 전시와 행사 일정을 함께 확인하세요.',
     aiCulturalKeywords: ['Royal Residence', 'Local Heritage'],
-    imageUrl: 'assets/images/places/unhyeongung.webp',
+    imageUrl: '',
     imageAlt: '운현궁 왕실가 공간 AI 이미지',
     imageType: 'ai_generated',
     imagePrompt: 'A clean mobile guide illustration of a quiet Korean royal residence courtyard, hanok rooflines, evening mood, no text, no logos'
@@ -528,7 +534,7 @@ let CULTURE_RESOURCES = [
     aiWhyItMatters: '전통문화를 소리와 감각으로 이해하게 합니다.',
     aiVisitTip: '청음형 전시를 천천히 체험하세요.',
     aiCulturalKeywords: ['Gugak', 'Folk Sound'],
-    imageUrl: 'assets/images/places/seoul-folk-music-museum.webp',
+    imageUrl: '',
     imageAlt: '서울우리소리박물관 소리문화 AI 이미지',
     imageType: 'ai_generated',
     imagePrompt: 'A clean mobile guide illustration of Korean folk sound culture, sound wave motif, museum interior, no text, no logos'
@@ -564,7 +570,7 @@ let CULTURE_RESOURCES = [
     aiWhyItMatters: '전통 왕실문화와 근대 도시의 변화가 만나는 장소입니다.',
     aiVisitTip: '석조전과 돌담길 동선을 함께 계획하세요.',
     aiCulturalKeywords: ['Korean Empire', 'Modern Heritage'],
-    imageUrl: 'assets/images/places/deoksugung-palace.webp',
+    imageUrl: '',
     imageAlt: '덕수궁 근대유산 AI 이미지',
     imageType: 'ai_generated',
     imagePrompt: 'A clean mobile guide illustration of Deoksugung palace and modern Seoul heritage, deep navy and gold, no text, no logos'
@@ -591,7 +597,7 @@ let ROUTE_DATA = [
       reservationRequired: false,
       labels: ['영어 안내 가능', '외국인 인기', '예약 불필요']
     },
-    imageUrl: 'assets/images/routes/royal-culture.webp',
+    imageUrl: '',
     imageAlt: '왕실문화에서 생활문화로 이어지는 코스 이미지',
     imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 이해 보조 이미지',
     imagePrompt: 'A clean mobile travel guide illustration showing Korean royal culture flowing into local traditional market life, inspired by Joseon palace architecture, royal artifacts, folk museum objects, and a small traditional market street, deep navy night mood, warm gold lights, subtle cyan accents, elegant Korean heritage style, not photorealistic, no text, no logos',
@@ -624,7 +630,7 @@ let ROUTE_DATA = [
       reservationRequired: false,
       labels: ['일부 영어 안내', '숨은 문화자원', '예약 불필요']
     },
-    imageUrl: 'assets/images/routes/hidden-sounds-hanok.webp',
+    imageUrl: '',
     imageAlt: '숨은 소리문화와 한옥 골목 코스 이미지',
     imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 이해 보조 이미지',
     imagePrompt: 'A clean mobile travel guide illustration of a quiet Korean hanok alley and traditional folk sound culture, showing hanok rooflines, a small museum-like interior, sound wave motif, calm evening atmosphere, deep navy, ivory, warm gold, subtle cyan, elegant Korean heritage app style, not photorealistic, no text, no logos',
@@ -656,7 +662,7 @@ let ROUTE_DATA = [
       reservationRequired: true,
       labels: ['영어 안내 가능', '외국인 인기', '공연 예약 확인']
     },
-    imageUrl: 'assets/images/routes/modern-seoul-performance.webp',
+    imageUrl: '',
     imageAlt: '근대 서울과 전통예술 코스 이미지',
     imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 이해 보조 이미지',
     imagePrompt: 'A clean mobile travel guide illustration connecting modern Seoul heritage and traditional performing arts, Deoksugung-inspired stonewall road, warm theater lights, traditional performance stage mood, deep navy and gold, premium Korean cultural travel app style, not photorealistic, no text, no logos',
@@ -686,14 +692,14 @@ const USER_PREFERENCE = {
 };
 
 // EDIT WEATHER DATA HERE
-const WEATHER_DATA = [
+let WEATHER_DATA = [
   { day: '오늘', sky: '맑음', temp: '16℃ / 27℃', rain: '20% / 0%', icon: '해' },
   { day: '내일', sky: '구름많음', temp: '16℃ / 28℃', rain: '0% / 20%', icon: '구름' },
   { day: '모레', sky: '구름많음', temp: '19℃ / 27℃', rain: '-', icon: '흐림' }
 ];
 
 // EDIT SUPPORT DATA HERE
-const SUPPORT_DATA = [
+let SUPPORT_DATA = [
   {
     id: 'airport',
     title: '공항 이동 정보',
@@ -733,7 +739,7 @@ const SUPPORT_DATA = [
 ];
 
 // EDIT PASSPORT DATA HERE
-const PASSPORT_DATA = [
+let PASSPORT_DATA = [
   { title: '왕실문화 완료', status: 'completed' },
   { title: '전통시장 완료', status: 'completed' },
   { title: '한옥거리 잠금', status: 'locked' },
@@ -749,7 +755,8 @@ const STORAGE_KEYS = {
   savedRoutes: 'hanroute.mobile.savedRoutes',
   stamps: 'hanroute.mobile.stamps',
   mapService: 'hanroute.mobile.mapService',
-  ariMessages: 'hanroute.mobile.ariMessages'
+  ariMessages: 'hanroute.mobile.ariMessages',
+  dataOverrides: 'hanroute.mobile.dataOverrides'
 };
 
 const LANGUAGES = {
@@ -1480,7 +1487,7 @@ const EXTENDED_UI_COPY = {
       action: '소개',
       eyebrow: 'Data Dashboard',
       title: '공공 문화데이터 확장 구조',
-      body: '현재 정적 버전은 <code>ari_culture_resources_appjs.json</code>을 읽어 추천 카드와 코스를 구성합니다. CSV/SQL 자료는 참고용으로만 관리합니다.',
+      body: '현재 버전은 <code>ari_culture_resources_appjs.json</code>과 <code>data/*.json</code>을 함께 읽어 추천 카드, 코스, 지원 정보를 동적으로 구성합니다. CSV/SQL 자료는 참고용으로만 관리합니다.',
       factorsTitle: '추천 요소',
       factors: ['전통성 점수', '외국인 친화도', '숨은 문화 가치', '도보 편의성', '예산·실내 적합도'],
       sourcesTitle: '데이터 소스 확장 계획',
@@ -1618,7 +1625,7 @@ const EXTENDED_UI_COPY = {
       action: 'About',
       eyebrow: 'Data Dashboard',
       title: 'Public Culture Data Expansion Structure',
-      body: 'The current static version reads <code>ari_culture_resources_appjs.json</code> to build recommendation cards and routes. CSV/SQL files are kept as reference materials only.',
+      body: 'The current version reads <code>ari_culture_resources_appjs.json</code> and <code>data/*.json</code> together to build routes, recommendation cards, and support information dynamically. CSV/SQL files are kept as reference materials only.',
       factorsTitle: 'Recommendation Factors',
       factors: ['Tradition score', 'Visitor friendliness', 'Hidden cultural value', 'Walking convenience', 'Budget and indoor fit'],
       sourcesTitle: 'Data Source Expansion Plan',
@@ -1756,7 +1763,7 @@ const EXTENDED_UI_COPY = {
       action: '紹介',
       eyebrow: 'Data Dashboard',
       title: '公共文化データ拡張構造',
-      body: '現在の静的版は <code>ari_culture_resources_appjs.json</code> を読み込み、推薦カードとコースを構成します。CSV/SQL資料は参考用として管理します。',
+      body: '現在のバージョンは <code>ari_culture_resources_appjs.json</code> と <code>data/*.json</code> を読み込み、推薦カード、コース、支援情報を動的に構成します。CSV/SQL資料は参考用として管理します。',
       factorsTitle: '推薦要素',
       factors: ['伝統性スコア', '外国人フレンドリー度', '隠れた文化価値', '徒歩の便利さ', '予算・屋内適合度'],
       sourcesTitle: 'データソース拡張計画',
@@ -1894,7 +1901,7 @@ const EXTENDED_UI_COPY = {
       action: '介绍',
       eyebrow: 'Data Dashboard',
       title: '公共文化数据扩展结构',
-      body: '当前静态版本读取 <code>ari_culture_resources_appjs.json</code> 来组成推荐卡片和路线。CSV/SQL资料仅作为参考资料管理。',
+      body: '当前版本会同时读取 <code>ari_culture_resources_appjs.json</code> 和 <code>data/*.json</code>，动态生成推荐卡片、路线和支援信息。CSV/SQL资料仅作为参考资料管理。',
       factorsTitle: '推荐要素',
       factors: ['传统性分数', '外国游客友好度', '隐藏文化价值', '步行便利性', '预算与室内适合度'],
       sourcesTitle: '数据来源扩展计划',
@@ -2795,7 +2802,7 @@ const DETAIL_STORY_PATTERNS = [
   '부재'
 ];
 
-const ROUTE_BLUEPRINTS = [
+let ROUTE_BLUEPRINTS = [
   {
     id: 'first-visit-seoul-heritage',
     title: '첫 방문자 추천 코스',
@@ -2960,6 +2967,22 @@ function storageJsonGet(key, fallback) {
 
 function storageJsonSet(key, value) {
   storageSet(key, JSON.stringify(value));
+}
+
+function cloneJsonValue(value) {
+  if (value === undefined) return undefined;
+  return JSON.parse(JSON.stringify(value));
+}
+
+function getDataOverrides() {
+  return storageJsonGet(STORAGE_KEYS.dataOverrides, {});
+}
+
+function getDataOverride(url) {
+  const overrides = getDataOverrides();
+  if (!Object.prototype.hasOwnProperty.call(overrides, url)) return null;
+  const value = overrides[url];
+  return Array.isArray(value) ? cloneJsonValue(value) : null;
 }
 
 function escapeHtml(value) {
@@ -3203,10 +3226,11 @@ function recommendationPriority(resource) {
 }
 
 function getRecommendedResources(limit = 24, options = {}) {
+  const preference = options.preference || loadUserPreference();
   return CULTURE_RESOURCES
     .filter(isSeoulResource)
     .filter((resource) => options.includeDetail || (!resource.isDetailStoryOnly && resource.isIndependentSite))
-    .sort((a, b) => recommendationPriority(b) - recommendationPriority(a))
+    .sort((a, b) => scoreResourceForPreference(b, preference) - scoreResourceForPreference(a, preference))
     .slice(0, limit);
 }
 
@@ -3275,7 +3299,7 @@ function buildRouteFromResources(blueprint, routeResources) {
     englishExplanation: blueprint.englishExplanation,
     tip: blueprint.tip,
     tipEn: blueprint.tipEn || 'Check official hours, reservations, and closures before visiting.',
-    source: `${CULTURE_RESOURCE_DATA_URL} 기반 정적 추천 코스입니다. 운영 정보는 방문 전 공식 출처 확인이 필요합니다.`,
+    source: `${CULTURE_RESOURCE_DATA_URL}와 data JSON을 함께 읽어 구성한 추천 코스입니다. 운영 정보는 방문 전 공식 출처 확인이 필요합니다.`,
     keywords: makeRouteKeywords(routeResources, blueprint.tags)
   };
 }
@@ -3315,6 +3339,14 @@ function applyCultureResources(rawResources) {
 }
 
 async function loadCultureResources() {
+  const overrideResources = getDataOverride(CULTURE_RESOURCE_DATA_URL);
+  if (overrideResources) {
+    applyCultureResources(overrideResources);
+    cultureResourceLoadStatus = 'loaded';
+    cultureResourceLoadMessage = `${CULTURE_RESOURCE_DATA_URL} 로컬 관리 오버라이드를 사용했습니다.`;
+    return;
+  }
+
   try {
     const response = await fetch(CULTURE_RESOURCE_DATA_URL, { cache: 'no-store' });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -3325,6 +3357,261 @@ async function loadCultureResources() {
     cultureResourceLoadStatus = 'fallback';
     cultureResourceLoadMessage = `${CULTURE_RESOURCE_DATA_URL} 로드 실패로 fallback seed data를 사용했습니다.`;
   }
+}
+
+async function loadDynamicArray(url, fallback) {
+  const overrideItems = getDataOverride(url);
+  if (overrideItems) return overrideItems;
+
+  try {
+    const response = await fetch(url, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const payload = await response.json();
+    const items = Array.isArray(payload) ? payload : (payload.items || payload.data || []);
+    return Array.isArray(items) && items.length ? items : fallback;
+  } catch (error) {
+    return fallback;
+  }
+}
+
+async function loadDynamicAppData() {
+  const [routeBlueprints, weather, support, passport] = await Promise.all([
+    loadDynamicArray(DYNAMIC_DATA_URLS.routeBlueprints, ROUTE_BLUEPRINTS),
+    loadDynamicArray(DYNAMIC_DATA_URLS.weather, WEATHER_DATA),
+    loadDynamicArray(DYNAMIC_DATA_URLS.support, SUPPORT_DATA),
+    loadDynamicArray(DYNAMIC_DATA_URLS.passport, PASSPORT_DATA)
+  ]);
+
+  ROUTE_BLUEPRINTS = routeBlueprints;
+  WEATHER_DATA = weather;
+  SUPPORT_DATA = support;
+  PASSPORT_DATA = passport;
+}
+
+function getPreferenceInterests(preference = loadUserPreference()) {
+  return Array.isArray(preference?.interests)
+    ? preference.interests.filter(Boolean)
+    : [preference?.interests].filter(Boolean);
+}
+
+function resourceSearchText(resource) {
+  return [
+    resource.nameKo,
+    resource.nameEn,
+    resource.category,
+    resource.categoryEn,
+    resource.district,
+    resource.region,
+    resource.globalTags?.join(' '),
+    resource.aiSimpleExplanation,
+    resource.aiWhyItMatters,
+    resource.aiVisitTip
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+}
+
+function routeSearchText(route, resources = getRouteResources(route)) {
+  return [
+    route.title,
+    route.englishTitle,
+    route.reason,
+    route.reasonEn,
+    route.summary,
+    route.englishExplanation,
+    route.tags?.join(' '),
+    resources.map((resource) => resourceSearchText(resource)).join(' ')
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+}
+
+function matchesPreferenceInterest(resource, interest) {
+  const text = resourceSearchText(resource);
+  const keywordMap = {
+    궁궐: ['궁궐', 'palace', 'royal'],
+    한옥: ['한옥', 'hanok'],
+    전통시장: ['전통시장', '시장', 'market', 'local life'],
+    공예: ['공예', 'craft', 'museum of craft', 'traditional street'],
+    공연: ['공연', 'theater', 'performance', '국악'],
+    박물관: ['박물관', 'museum', 'exhibition']
+  };
+
+  return (keywordMap[interest] || [interest]).some((keyword) => text.includes(String(keyword).toLowerCase()));
+}
+
+function isLowWalkingResource(resource) {
+  return /낮음|low/i.test(`${resource.walkingLevel || ''} ${resource.walkingLevelEn || ''}`);
+}
+
+function isIndoorResource(resource) {
+  return /실내|indoor/i.test(`${resource.indoorOutdoor || ''} ${resource.indoorOutdoorEn || ''}`);
+}
+
+function isOutdoorResource(resource) {
+  return /실외|outdoor/i.test(`${resource.indoorOutdoor || ''} ${resource.indoorOutdoorEn || ''}`);
+}
+
+function scoreResourceForPreference(resource, preference = loadUserPreference()) {
+  const interests = getPreferenceInterests(preference);
+  const requestText = `${preference?.request || ''}`.toLowerCase();
+  const text = resourceSearchText(resource);
+  let score = recommendationPriority(resource);
+
+  if (preference?.region === '종로+중구') {
+    score += ['종로구', '중구'].includes(resource.district) ? 24 : -10;
+  } else if (preference?.region) {
+    score += resource.district === preference.region ? 28 : -8;
+  }
+
+  if (interests.length) {
+    const interestMatches = interests.filter((interest) => matchesPreferenceInterest(resource, interest)).length;
+    score += interestMatches * 24;
+    if (!interestMatches) score -= 10;
+  }
+
+  if (preference?.walking === '적게 걷기') {
+    score += isLowWalkingResource(resource) ? 26 : -14;
+  } else if (preference?.walking === '많이 걸어도 괜찮음') {
+    score += /보통|높음|moderate|high/i.test(`${resource.walkingLevel || ''} ${resource.walkingLevelEn || ''}`) ? 8 : 2;
+  }
+
+  if (preference?.indoorOutdoor === '실내') {
+    score += isIndoorResource(resource) ? 28 : -18;
+  } else if (preference?.indoorOutdoor === '실외') {
+    score += isOutdoorResource(resource) ? 22 : -12;
+  }
+
+  if (preference?.budget === '무료 위주') {
+    score += /무료|free/i.test(resource.feeType || '') ? 18 : -12;
+  } else if (preference?.budget === '유료 가능') {
+    score += /유료|paid|선택/i.test(resource.feeType || '') ? 8 : 4;
+  }
+
+  if (preference?.groupType === '커플' && resource.photoSpotScore >= 4) score += 12;
+  if ((preference?.groupType === '가족' || preference?.groupType === '아이 동반' || preference?.groupType === '부모님 동반') && (isLowWalkingResource(resource) || isIndoorResource(resource))) score += 14;
+  if (preference?.groupType === '친구와' && /(market|시장|performance|공연|street|거리)/i.test(text)) score += 10;
+  if (preference?.groupType === '혼자' && /(museum|박물관|history|역사|palace|궁궐)/i.test(text)) score += 10;
+
+  if (hasAnyTerm(requestText, ['비', 'rain', '우천'])) score += Number(resource.rainyDayScore || 0) * 14;
+  if (hasAnyTerm(requestText, ['사진', 'photo', 'photogenic'])) score += Number(resource.photoSpotScore || 0) * 6;
+  if (hasAnyTerm(requestText, ['영어', 'english'])) score += resource.englishAvailable ? 12 : -4;
+  if (hasAnyTerm(requestText, ['조용', 'quiet', 'hidden'])) score += /(quiet|hidden|조용)/i.test(text) ? 10 : 0;
+  if (hasAnyTerm(requestText, ['시장', 'market', '먹거리'])) score += /(시장|market|food)/i.test(text) ? 12 : 0;
+
+  return Math.round(score);
+}
+
+function estimateRouteHours(route) {
+  const label = `${route.time || ''}`;
+  if (label.includes('반나절')) return 4;
+  if (label.includes('하루')) return 7;
+  const matches = [...label.matchAll(/(\d+(?:\.\d+)?)/g)].map((match) => Number(match[1]));
+  return matches.length ? Math.max(...matches) : 3;
+}
+
+function scoreRouteForPreference(route, preference = loadUserPreference()) {
+  const resources = getRouteResources(route);
+  const requestText = `${preference?.request || ''}`.toLowerCase();
+  const interests = getPreferenceInterests(preference);
+  const routeText = routeSearchText(route, resources);
+  const indoorCount = resources.filter(isIndoorResource).length;
+  const averageRainyScore = resources.length
+    ? resources.reduce((sum, resource) => sum + Number(resource.rainyDayScore || 0), 0) / resources.length
+    : 0;
+  const averageResourceScore = resources.length
+    ? resources.reduce((sum, resource) => sum + scoreResourceForPreference(resource, preference), 0) / resources.length
+    : 0;
+  let score = route.score * 1.2 + averageResourceScore;
+
+  if (preference?.time === '2시간') {
+    score += estimateRouteHours(route) <= 2.5 ? 24 : estimateRouteHours(route) <= 3.5 ? 8 : -12;
+  } else if (preference?.time === '3시간') {
+    score += estimateRouteHours(route) >= 2.5 && estimateRouteHours(route) <= 4 ? 18 : 4;
+  } else if (preference?.time === '반나절') {
+    score += estimateRouteHours(route) >= 3 && estimateRouteHours(route) <= 5 ? 18 : 6;
+  } else if (preference?.time === '하루') {
+    score += estimateRouteHours(route) >= 4 ? 16 : 8;
+  }
+
+  if (interests.length) {
+    const routeInterestMatches = interests.filter((interest) => routeText.includes(String(interest).toLowerCase())).length;
+    score += routeInterestMatches * 24;
+  }
+
+  if (preference?.region === '종로+중구') {
+    score += resources.some((resource) => ['종로구', '중구'].includes(resource.district)) ? 14 : -10;
+  } else if (preference?.region) {
+    score += resources.some((resource) => resource.district === preference.region) ? 18 : -10;
+  }
+
+  if (preference?.walking === '적게 걷기' && /낮음|easy|light/i.test(`${route.walking || ''}`)) score += 20;
+  if (preference?.indoorOutdoor === '실내') score += indoorCount * 8 + averageRainyScore * 6;
+  if (preference?.indoorOutdoor === '실외' && resources.filter(isOutdoorResource).length >= Math.ceil(resources.length / 2)) score += 16;
+  if (preference?.budget === '무료 위주' && /무료|저비용/i.test(route.fee || '')) score += 14;
+
+  if (hasAnyTerm(requestText, ['비', 'rain', '우천']) && /(rain|우천|실내|museum|공연)/i.test(routeText)) score += 28 + averageRainyScore * 6;
+  if (hasAnyTerm(requestText, ['사진', 'photo']) && /(사진|photo)/i.test(routeText)) score += 16;
+  if (hasAnyTerm(requestText, ['영어', 'english']) && resources.some((resource) => resource.englishAvailable)) score += 10;
+  if (interests.includes('공연') && /(공연|performance|theater)/i.test(routeText)) score += 18;
+  if (interests.includes('박물관') && /(박물관|museum)/i.test(routeText)) score += 14;
+
+  return Math.round(score);
+}
+
+function buildRoutePreferenceReason(route, preference = loadUserPreference()) {
+  const resources = getRouteResources(route);
+  const interests = getPreferenceInterests(preference);
+  const reasons = [];
+
+  if (preference?.region === '종로+중구' && resources.some((resource) => ['종로구', '중구'].includes(resource.district))) {
+    reasons.push('종로·중구 중심 동선');
+  } else if (preference?.region && resources.some((resource) => resource.district === preference.region)) {
+    reasons.push(`${preference.region} 우선`);
+  }
+
+  const matchedInterests = interests.filter((interest) => routeSearchText(route, resources).includes(String(interest).toLowerCase()));
+  if (matchedInterests.length) reasons.push(`${matchedInterests.slice(0, 2).join(', ')} 관심 반영`);
+
+  if (preference?.walking === '적게 걷기' && /낮음|easy|light/i.test(`${route.walking || ''}`)) {
+    reasons.push('걷기 부담 완화');
+  }
+
+  if (preference?.indoorOutdoor === '실내' && resources.filter(isIndoorResource).length >= Math.ceil(resources.length / 2)) {
+    reasons.push('실내 비중 강화');
+  }
+
+  if (preference?.budget === '무료 위주' && /무료|저비용/i.test(route.fee || '')) {
+    reasons.push('예산 부담 낮춤');
+  }
+
+  if (hasAnyTerm(`${preference?.request || ''}`, ['비', 'rain', '우천']) && /(rain|우천|실내|museum|공연)/i.test(routeSearchText(route, resources))) {
+    reasons.push('우천 대응');
+  }
+
+  if (hasAnyTerm(`${preference?.request || ''}`, ['사진', 'photo']) && /(사진|photo)/i.test(routeSearchText(route, resources))) {
+    reasons.push('사진 동선 반영');
+  }
+
+  return reasons.length
+    ? `${reasons.join(' · ')} 조건에 잘 맞는 코스입니다.`
+    : route.reason;
+}
+
+function getRankedRoutes(preference = loadUserPreference()) {
+  return ROUTE_DATA
+    .map((route) => ({
+      route,
+      preferenceScore: scoreRouteForPreference(route, preference),
+      dynamicReason: buildRoutePreferenceReason(route, preference)
+    }))
+    .sort((left, right) => right.preferenceScore - left.preferenceScore);
+}
+
+function getTopRecommendedRoute(preference = loadUserPreference()) {
+  return getRankedRoutes(preference)[0]?.route || ROUTE_DATA[0];
 }
 
 function applyStaticTranslations() {
@@ -3733,7 +4020,7 @@ function renderConditionSummary() {
 }
 
 function findRouteById(routeId) {
-  return ROUTE_DATA.find((route) => route.id === routeId) || ROUTE_DATA[0];
+  return ROUTE_DATA.find((route) => route.id === routeId) || getTopRecommendedRoute();
 }
 
 function findResourceById(resourceId) {
@@ -3746,7 +4033,7 @@ function getRouteResources(route) {
 
 function getRouteFromUrlOrStorage() {
   const params = new URLSearchParams(window.location.search);
-  const routeId = params.get('id') || storageGet(STORAGE_KEYS.selectedRoute, ROUTE_DATA[0].id);
+  const routeId = params.get('id') || storageGet(STORAGE_KEYS.selectedRoute, '');
   return findRouteById(routeId);
 }
 
@@ -4062,7 +4349,13 @@ function renderRouteCards() {
   const container = qs('[data-route-list]');
   if (!container) return;
 
-  container.innerHTML = ROUTE_DATA.map((route) => {
+  const rankedRoutes = getRankedRoutes();
+  const savedRouteId = storageGet(STORAGE_KEYS.selectedRoute, '');
+  if (rankedRoutes[0] && !ROUTE_DATA.some((route) => route.id === savedRouteId)) {
+    storageSet(STORAGE_KEYS.selectedRoute, rankedRoutes[0].route.id);
+  }
+
+  container.innerHTML = rankedRoutes.map(({ route, dynamicReason }) => {
     const routeView = getRouteView(route);
     return `
     <article class="route-card">
@@ -4084,7 +4377,7 @@ function renderRouteCards() {
         ${route.tags?.length ? `<div class="tag-row">${route.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
         <div class="recommendation-reason">
           <span>${escapeHtml(t('routes.reason'))}</span>
-          <p>${escapeHtml(routeView.reason)}</p>
+          <p>${escapeHtml(dynamicReason || routeView.reason)}</p>
         </div>
         <p class="flow-text">${escapeHtml(routeView.displayFlow.join(' -> '))}</p>
         <div class="route-actions">
@@ -4107,7 +4400,7 @@ function renderRecommendedPlaces() {
   const count = qs('[data-place-count]');
   if (!container) return;
 
-  const resources = getRecommendedResources(24);
+  const resources = getRecommendedResources(24, { preference: loadUserPreference() });
   if (heading) heading.textContent = t('places.title');
   if (body) body.textContent = `${t('places.body')} ${t('places.beta')}`.trim();
   if (count) count.textContent = `${resources.length} ${t('places.count')}`;
@@ -4473,6 +4766,7 @@ function renderRouteDetail() {
   const route = getRouteFromUrlOrStorage();
   const resources = getRouteResources(route);
   const routeView = getRouteView(route);
+  const dynamicReason = getRankedRoutes().find((item) => item.route.id === route.id)?.dynamicReason || routeView.reason;
   saveSelectedRoute(route.id);
 
   const assignments = [
@@ -4502,7 +4796,7 @@ function renderRouteDetail() {
   if (imageSlot) imageSlot.innerHTML = renderRouteImage(route, 'detail-route-image');
 
   const reason = qs('[data-detail-reason]');
-  if (reason) reason.textContent = routeView.reason;
+  if (reason) reason.textContent = dynamicReason;
 
   const convenience = qs('[data-detail-convenience]');
   if (convenience) convenience.innerHTML = renderConvenienceBadges(routeView.displayConvenience);
@@ -4549,8 +4843,10 @@ function renderSupport() {
 
   container.innerHTML = SUPPORT_DATA.map((item) => {
     const translated = SUPPORT_TRANSLATIONS[getLegacyLanguage()]?.[item.id] || item;
+    const safeUrl = item.url || '#';
+    const linkAttributes = item.url ? 'target="_blank" rel="noopener"' : '';
     return `
-    <a class="support-card" href="${escapeHtml(item.url)}" target="_blank" rel="noopener" data-support-card="${escapeHtml(item.id)}">
+    <a class="support-card" href="${escapeHtml(safeUrl)}" ${linkAttributes} data-support-card="${escapeHtml(item.id)}">
       <span class="support-card-kicker">${escapeHtml(t('support.action'))}</span>
       <h2>${escapeHtml(translated.title)}</h2>
       <p>${escapeHtml(translated.description)}</p>
@@ -5119,7 +5415,9 @@ function bindMobileInteractions() {
   });
 
   qs('[data-planner-finish]')?.addEventListener('click', () => {
-    saveUserPreference();
+    const preference = saveUserPreference();
+    const topRoute = getTopRecommendedRoute(preference);
+    if (topRoute) storageSet(STORAGE_KEYS.selectedRoute, topRoute.id);
     window.location.href = 'routes.html';
   });
 
@@ -5134,6 +5432,7 @@ function registerServiceWorker() {
 async function initialize() {
   startTimeImageRotation();
   setLanguage(storageGet(STORAGE_KEYS.language, 'ko'), { rerender: false });
+  await loadDynamicAppData();
   await loadCultureResources();
   renderLocalizedContent();
   markActiveBottomTab();
