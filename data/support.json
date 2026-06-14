@@ -1,0 +1,102 @@
+[
+  {
+    "id": "tourist-info",
+    "title": "관광안내소",
+    "description": "여행 중 길찾기, 교통, 축제, 현장 문의가 필요할 때 가까운 관광안내소를 이용하세요.",
+    "points": [
+      "명동, 광화문, 홍대 등 주요 관광지 주변 안내소를 확인할 수 있습니다.",
+      "언어 지원과 운영 시간은 방문 전 공식 정보를 확인하세요."
+    ],
+    "url": "https://korean.visitseoul.net/traveler-support"
+  },
+  {
+    "id": "medical-tourism",
+    "title": "서울의료관광센터",
+    "description": "의료관광 상담과 외국인 환자 지원 정보가 필요할 때 연결되는 공식 지원 채널입니다.",
+    "points": [
+      "의료기관 정보, 상담, 외국인 환자 관련 안내를 확인할 수 있습니다.",
+      "건강 문제가 있으면 숙소 위치와 증상을 함께 준비하세요."
+    ],
+    "url": "https://medical.visitseoul.net/;jsessionid=DF884FB79D73D04174E0A50C7A13C585"
+  },
+  {
+    "id": "emergency",
+    "title": "비상 연락처",
+    "description": "긴급 상황, 안전 문제, 응급 의료가 필요할 때 먼저 확인할 번호입니다.",
+    "points": [
+      "경찰 112, 화재/구급 119, 관광통역안내 1330을 기억하세요.",
+      "현재 위치와 숙소 주소를 지도 앱에서 먼저 확인하면 신고가 쉬워집니다."
+    ],
+    "url": "https://korean.visitseoul.net/traveler-support"
+  },
+  {
+    "id": "complaint",
+    "title": "서울관광불편신고센터",
+    "description": "여행 중 불편 사항이나 관광 관련 민원이 생겼을 때 도움을 요청할 수 있습니다.",
+    "points": [
+      "택시, 숙박, 쇼핑, 관광 서비스 불편 사항을 정리해두면 접수가 쉽습니다.",
+      "가능하면 영수증, 위치, 시간 정보를 함께 보관하세요."
+    ],
+    "url": "https://korean.visitseoul.net/traveler-support"
+  },
+  {
+    "id": "safety",
+    "title": "안전정보",
+    "description": "낯선 지역에서 안전하게 이동하기 위한 기본 정보를 확인하세요.",
+    "points": [
+      "야간 이동 시 밝은 길과 대중교통 중심 동선을 우선 선택하세요.",
+      "긴급 알림과 현지 안내 방송이 있으면 즉시 확인하세요."
+    ],
+    "url": "https://korean.visitseoul.net/traveler-support"
+  },
+  {
+    "id": "lost-items",
+    "title": "분실물 찾기",
+    "description": "여행 중 물건을 잃어버렸을 때 경찰청 유실물 시스템과 관광안내 정보를 함께 확인하세요.",
+    "points": [
+      "분실 장소, 시간, 물품 특징을 가능한 구체적으로 기록하세요.",
+      "지하철/버스/택시 이용 중 분실했다면 이용 노선과 결제 정보를 확인하세요."
+    ],
+    "url": "https://www.lost112.go.kr/"
+  },
+  {
+    "id": "translation",
+    "title": "번역/통역 도움",
+    "description": "현장에서 의사소통이 막힐 때 관광통역안내와 번역 도구를 함께 사용하세요.",
+    "points": [
+      "관광통역안내 1330은 여행 상담과 통역 지원을 제공합니다.",
+      "장소명, 예약명, 알레르기, 목적지는 짧은 문장으로 준비해두세요."
+    ],
+    "url": "https://1330chat.visitkorea.or.kr/"
+  },
+  {
+    "id": "airport",
+    "title": "공항 이동 정보",
+    "description": "인천공항과 김포공항에서 서울 도심으로 이동하는 기본 동선을 확인하세요.",
+    "points": [
+      "AREX 공항철도, 공항버스, 택시 중 도착 시간과 짐의 양에 맞춰 선택하세요.",
+      "막차 시간과 숙소 주소는 출발 전에 반드시 확인하세요."
+    ],
+    "url": "https://www.airport.kr/ap/en/tpt/pblctpt/pblctpt.do"
+  },
+  {
+    "id": "tmoney",
+    "title": "교통카드/T-money 안내",
+    "description": "지하철, 버스, 편의점 결제에 사용할 수 있는 교통카드 준비 안내입니다.",
+    "points": [
+      "공항, 지하철역, 편의점에서 구매와 충전이 가능합니다.",
+      "환승 할인은 같은 카드로 태그해야 적용됩니다."
+    ],
+    "url": "https://www.t-money.co.kr/"
+  },
+  {
+    "id": "rainy",
+    "title": "날씨/우천 시 대체 코스",
+    "description": "비가 오거나 덥고 추운 날에는 실내 중심으로 코스를 바꿀 수 있습니다.",
+    "points": [
+      "박물관, 전시관, 공연장, 전통시장 실내 구간을 우선 추천합니다.",
+      "우산 이동이 부담되면 지하철역에서 가까운 장소를 먼저 보세요."
+    ],
+    "url": "https://www.weather.go.kr/w/index.do"
+  }
+]
