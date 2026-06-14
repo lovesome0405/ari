@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>관리 콘솔 | 마루</title>
+  <meta name="description" content="마루 데이터 관리 콘솔">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="admin">
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="brand" href="about.html" aria-label="마루 관리 콘솔">
+        <span class="brand-mark">MR</span>
+        <span><strong>마루</strong><small>Admin Console</small></span>
+      </a>
+      <a class="header-pill" href="index.html">홈으로</a>
+    </header>
+
+    <main class="app-main admin-main">
+      <section class="page-title-card">
+        <p class="eyebrow">Admin</p>
+        <h1>디자인은 그대로 두고 데이터를 관리하는 전용 화면</h1>
+        <p>공개 페이지는 건드리지 않고, JSON 데이터만 미리보기하거나 GitHub 저장소에 반영할 수 있습니다.</p>
+      </section>
+
+      <section class="admin-layout">
+        <aside class="mobile-card">
+          <h2>데이터 선택</h2>
+          <p class="admin-note">이 페이지는 `admin.html`로만 접근하는 관리 전용 화면입니다.</p>
+          <div class="admin-dataset-list" data-admin-datasets></div>
+        </aside>
+
+        <div class="admin-stack">
+          <section class="mobile-card">
+            <h2>GitHub 반영 설정</h2>
+            <div class="admin-field-grid">
+              <label class="text-field">
+                <span>Owner</span>
+                <input type="text" data-admin-owner autocomplete="off">
+              </label>
+              <label class="text-field">
+                <span>Repository</span>
+                <input type="text" data-admin-repo autocomplete="off">
+              </label>
+              <label class="text-field">
+                <span>Branch</span>
+                <input type="text" data-admin-branch autocomplete="off">
+              </label>
+              <label class="text-field">
+                <span>GitHub Token</span>
+                <input type="password" data-admin-token autocomplete="off" placeholder="github_pat_...">
+              </label>
+            </div>
+
+            <div class="admin-toolbar">
+              <button class="button button-secondary" type="button" data-admin-save-config>설정 저장</button>
+              <button class="button button-secondary" type="button" data-admin-load-github>GitHub에서 불러오기</button>
+              <button class="button button-primary" type="button" data-admin-push-github>GitHub에 반영</button>
+              <button class="button button-primary" type="button" data-admin-push-site>현재 로컬 사이트 전체 GitHub 반영</button>
+            </div>
+
+            <p class="admin-note">토큰은 이 브라우저의 로컬 저장소에만 저장됩니다. GitHub 반영 버튼을 누를 때만 사용됩니다.</p>
+          </section>
+
+          <section class="mobile-card">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">JSON Editor</p>
+                <h2 data-admin-title>데이터 편집기</h2>
+                <p data-admin-description>선택한 데이터 파일을 불러와 편집합니다.</p>
+              </div>
+              <a class="button button-secondary" href="index.html" target="_blank" rel="noopener">미리보기 열기</a>
+            </div>
+
+            <div class="admin-meta">
+              <span class="admin-chip" data-admin-path></span>
+              <span class="admin-chip" data-admin-size></span>
+            </div>
+
+            <p class="admin-status is-info" data-admin-status>편집할 데이터를 선택해 주세요.</p>
+
+            <label class="text-field admin-editor">
+              <span>JSON 내용</span>
+              <textarea data-admin-json spellcheck="false"></textarea>
+            </label>
+
+            <div class="admin-actions">
+              <button class="button button-secondary" type="button" data-admin-validate>JSON 검사</button>
+              <button class="button button-secondary" type="button" data-admin-format>자동 정렬</button>
+              <button class="button button-secondary" type="button" data-admin-save-local>로컬 미리보기 저장</button>
+              <button class="button button-secondary" type="button" data-admin-clear-local>로컬 미리보기 해제</button>
+              <button class="button button-secondary" type="button" data-admin-download>JSON 다운로드</button>
+              <button class="button button-secondary" type="button" data-admin-import-trigger>JSON 불러오기</button>
+            </div>
+
+            <input class="admin-hidden-input" type="file" accept="application/json,.json" data-admin-import>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
