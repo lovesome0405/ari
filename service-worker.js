@@ -1,6 +1,7 @@
-const CACHE_NAME = 'maru-shell-v16';
+const CACHE_NAME = 'maru-shell-v18';
 const APP_SHELL = [
   'index.html',
+  'admin.html',
   'planner.html',
   'routes.html',
   'route-detail.html',
@@ -12,9 +13,15 @@ const APP_SHELL = [
   'about.html',
   'style.css',
   'app.js',
+  'admin.js',
   'manifest.json',
+  'assets/favicon.svg',
   'image-prompts.md',
   'ari_culture_resources_appjs.json',
+  'data/route_blueprints.json',
+  'data/weather.json',
+  'data/support.json',
+  'data/passport.json',
   'assets/images/ari/ari1.webp',
   'assets/images/home/day-1.webp',
   'assets/images/home/day-2.webp',
