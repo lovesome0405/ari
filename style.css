@@ -2009,6 +2009,139 @@ body.ari-has-bottom-cta .ari-chat {
   opacity: 0.55;
 }
 
+/* Admin */
+.admin-main {
+  padding-bottom: 28px;
+}
+
+.admin-layout {
+  display: grid;
+  gap: 16px;
+}
+
+.admin-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.admin-dataset-list {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-dataset-button {
+  width: 100%;
+  border: 1px solid rgba(21, 59, 94, 0.12);
+  border-radius: 18px;
+  padding: 14px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.82);
+  text-align: left;
+  box-shadow: 0 10px 24px rgba(8, 17, 31, 0.07);
+}
+
+.admin-dataset-button strong,
+.admin-dataset-button small {
+  display: block;
+}
+
+.admin-dataset-button strong {
+  color: var(--gold-dark);
+  font-size: 0.98rem;
+}
+
+.admin-dataset-button small {
+  margin-top: 4px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.admin-dataset-button.is-active {
+  border-color: rgba(197, 168, 116, 0.9);
+  background: linear-gradient(145deg, rgba(255, 250, 240, 0.96), rgba(246, 236, 213, 0.88));
+  box-shadow: 0 16px 32px rgba(88, 67, 25, 0.12);
+}
+
+.admin-field-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-field-grid input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.88);
+  font: inherit;
+}
+
+.admin-toolbar,
+.admin-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.admin-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.admin-chip {
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: var(--gold-dark);
+  background: rgba(246, 236, 213, 0.9);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.admin-status {
+  border: 1px solid rgba(21, 59, 94, 0.12);
+  border-radius: 16px;
+  padding: 12px 14px;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.admin-status.is-info {
+  color: var(--gold-dark);
+  background: rgba(255, 250, 240, 0.9);
+}
+
+.admin-status.is-success {
+  color: #13532d;
+  background: rgba(226, 246, 235, 0.94);
+  border-color: rgba(19, 83, 45, 0.16);
+}
+
+.admin-status.is-error {
+  color: #8d1d2f;
+  background: rgba(255, 233, 238, 0.94);
+  border-color: rgba(141, 29, 47, 0.18);
+}
+
+.admin-editor textarea {
+  min-height: 420px;
+  resize: vertical;
+  font-family: "Cascadia Code", "Consolas", "Courier New", monospace;
+  line-height: 1.55;
+}
+
+.admin-note {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.admin-hidden-input {
+  display: none;
+}
+
 /* Toast */
 .toast {
   position: fixed;
@@ -2051,5 +2184,19 @@ body.ari-has-bottom-cta .ari-chat {
   .bottom-tab,
   .bottom-cta {
     width: 430px;
+  }
+
+  .admin-layout {
+    grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .admin-field-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-toolbar,
+  .admin-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
