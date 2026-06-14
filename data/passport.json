@@ -1,0 +1,8 @@
+[
+  { "title": "왕실문화 완료", "status": "completed" },
+  { "title": "전통시장 완료", "status": "completed" },
+  { "title": "한옥거리 잠금", "status": "locked" },
+  { "title": "국악공연 잠금", "status": "locked" },
+  { "title": "공예체험 잠금", "status": "locked" },
+  { "title": "근대유산 잠금", "status": "locked" }
+]
