@@ -316,13 +316,19 @@ const DYNAMIC_DATA_URLS = {
   routeBlueprints: 'data/route_blueprints.json',
   weather: 'data/weather.json',
   support: 'data/support.json',
-  passport: 'data/passport.json'
+  passport: 'data/passport.json',
+  publicDataSources: 'data/public-data-sources.json',
+  festivals: 'data/festivals.json',
+  heritage: 'data/heritage.json'
 };
 const COURSE_DATA_URL = 'data/courses.json';
 let cultureResourceLoadStatus = 'fallback';
 let cultureResourceLoadMessage = '';
 let courseDataLoadStatus = 'fallback';
 let courseDataLoadMessage = '';
+let PUBLIC_DATA_SOURCES = [];
+let FESTIVAL_DATA = [];
+let HERITAGE_DATA = [];
 
 // Fallback seed data only. The primary static dataset is ari_culture_resources_appjs.json.
 let CULTURE_RESOURCES = [
@@ -602,7 +608,7 @@ let ROUTE_DATA = [
     },
     imageUrl: '',
     imageAlt: '왕실문화에서 생활문화로 이어지는 코스 이미지',
-    imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 이해 보조 이미지',
+    imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 코스 이해를 돕는 시각 가이드',
     imagePrompt: 'A clean mobile travel guide illustration showing Korean royal culture flowing into local traditional market life, inspired by Joseon palace architecture, royal artifacts, folk museum objects, and a small traditional market street, deep navy night mood, warm gold lights, subtle cyan accents, elegant Korean heritage style, not photorealistic, no text, no logos',
     summary: '조선 왕실 유물에서 시작해 궁궐, 민속문화, 전통시장으로 이어지는 흐름을 하나의 이야기로 이해할 수 있습니다.',
     englishExplanation: 'This route helps visitors understand Korean royal culture and everyday local culture as one story. It begins with royal artifacts, continues through the palace and folk culture, and ends at a traditional market.',
@@ -635,7 +641,7 @@ let ROUTE_DATA = [
     },
     imageUrl: '',
     imageAlt: '숨은 소리문화와 한옥 골목 코스 이미지',
-    imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 이해 보조 이미지',
+    imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 코스 이해를 돕는 시각 가이드',
     imagePrompt: 'A clean mobile travel guide illustration of a quiet Korean hanok alley and traditional folk sound culture, showing hanok rooflines, a small museum-like interior, sound wave motif, calm evening atmosphere, deep navy, ivory, warm gold, subtle cyan, elegant Korean heritage app style, not photorealistic, no text, no logos',
     summary: '왕실가의 생활 공간에서 시작해 한국의 소리문화를 듣고, 한옥 골목의 분위기로 마무리하는 코스입니다.',
     englishExplanation: 'This route introduces traditional Korean sound culture and hanok streets in a compact walking path.',
@@ -667,7 +673,7 @@ let ROUTE_DATA = [
     },
     imageUrl: '',
     imageAlt: '근대 서울과 전통예술 코스 이미지',
-    imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 이해 보조 이미지',
+    imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 코스 이해를 돕는 시각 가이드',
     imagePrompt: 'A clean mobile travel guide illustration connecting modern Seoul heritage and traditional performing arts, Deoksugung-inspired stonewall road, warm theater lights, traditional performance stage mood, deep navy and gold, premium Korean cultural travel app style, not photorealistic, no text, no logos',
     summary: '덕수궁에서 근대 서울의 흐름을 보고, 돌담길 산책 후 전통공연으로 마무리합니다.',
     englishExplanation: 'This route connects modern Seoul history with traditional performing arts in a walkable district.',
@@ -948,7 +954,7 @@ const UI_COPY = {
     },
     common: {
       selectedLanguage: '선택됨',
-      imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 이해 보조 이미지',
+      imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 코스 이해를 돕는 시각 가이드',
       imageMissing: '이미지 준비 중',
       savedRouteToast: '코스가 선택되었습니다.',
       passportToast: '문화여행 기록에 저장되었습니다.'
@@ -1089,7 +1095,7 @@ const UI_COPY = {
     },
     common: {
       selectedLanguage: 'selected',
-      imageNotice: 'AI-generated image · visual guide, not an official location photo',
+      imageNotice: 'AI-generated image · visual guide for understanding the route, not an official location photo',
       imageMissing: 'Image loading',
       savedRouteToast: 'Route selected.',
       passportToast: 'Saved to Saved Routes.'
@@ -1230,7 +1236,7 @@ const UI_COPY = {
     },
     common: {
       selectedLanguage: '選択済み',
-      imageNotice: 'AI生成画像 · 実際の場所写真ではない理解補助画像',
+      imageNotice: 'AI生成画像 · 実際の場所写真ではないルート理解用ガイド',
       imageMissing: '画像を読み込み中',
       savedRouteToast: 'コースを選択しました。',
       passportToast: '保存したコースに追加しました。'
@@ -1371,7 +1377,7 @@ const UI_COPY = {
     },
     common: {
       selectedLanguage: '已选择',
-      imageNotice: 'AI生成图片 · 非实际地点照片，仅用于理解辅助',
+      imageNotice: 'AI生成图片 · 非实际地点照片，仅用于路线理解辅助',
       imageMissing: '图片加载中',
       savedRouteToast: '已选择路线。',
       passportToast: '已保存到已存路线。'
@@ -1398,7 +1404,8 @@ const EXTENDED_UI_COPY = {
       support: { title: '여행자 지원 | 마루', description: '외국인 여행자를 위한 긴급, 분실, 관광 안내, 안전, 번역 도움' },
       passport: { title: '문화여행 기록 | 마루', description: '마루에서 저장한 코스와 전통문화 스탬프를 확인하는 문화여행 기록' },
       about: { title: '서비스 소개 | 마루', description: '마루 서비스 개념과 확장 계획' },
-      cultureData: { title: '문화데이터 | 마루', description: '공공 문화데이터 활용 현황과 추천 로직 설명' }
+      cultureData: { title: '문화데이터 | 마루', description: '공공 문화데이터 활용 현황과 추천 로직 설명' },
+      aiPhoto: { title: 'AI 포토카드 | 마루', description: '조선풍 전통 포토카드 생성형 AI 데모' }
     },
     home: {
       headerSub: 'Seoul Heritage Guide',
@@ -1536,7 +1543,8 @@ const EXTENDED_UI_COPY = {
       support: { title: 'Traveler Support | MARU', description: 'Emergency, lost items, tourist information, safety, and translation help for visitors' },
       passport: { title: 'Saved Routes | MARU', description: 'Saved MARU routes and Seoul heritage stamps' },
       about: { title: 'About | MARU', description: 'MARU service concept and expansion plan' },
-      cultureData: { title: 'Culture Data | MARU', description: 'Public culture data usage and recommendation logic' }
+      cultureData: { title: 'Culture Data | MARU', description: 'Public culture data usage and recommendation logic' },
+      aiPhoto: { title: 'AI Photo Card | MARU', description: 'Joseon-inspired traditional photo card generative AI demo' }
     },
     home: {
       headerSub: 'Seoul Heritage Guide',
@@ -1674,7 +1682,8 @@ const EXTENDED_UI_COPY = {
       support: { title: '旅行者サポート | MARU', description: '緊急、紛失、観光案内、安全、翻訳サポート' },
       passport: { title: '保存したコース | MARU', description: 'MARUで保存したコースと伝統文化スタンプ' },
       about: { title: 'サービス紹介 | MARU', description: 'MARUのサービス概念と拡張計画' },
-      cultureData: { title: '文化データ | MARU', description: '公共文化データ活用状況と推薦ロジック' }
+      cultureData: { title: '文化データ | MARU', description: '公共文化データ活用状況と推薦ロジック' },
+      aiPhoto: { title: 'AIフォトカード | MARU', description: '朝鮮時代風の伝統フォトカード生成AIデモ' }
     },
     home: {
       headerSub: 'ソウル伝統文化ガイド',
@@ -1812,7 +1821,8 @@ const EXTENDED_UI_COPY = {
       support: { title: '旅行者帮助 | MARU', description: '面向外国游客的紧急、遗失、旅游咨询、安全和翻译帮助' },
       passport: { title: '已保存路线 | MARU', description: '在MARU保存的路线和传统文化印章' },
       about: { title: '服务介绍 | MARU', description: 'MARU服务概念和扩展计划' },
-      cultureData: { title: '文化数据 | MARU', description: '公共文化数据使用情况和推荐逻辑说明' }
+      cultureData: { title: '文化数据 | MARU', description: '公共文化数据使用情况和推荐逻辑说明' },
+      aiPhoto: { title: 'AI照片卡 | MARU', description: '朝鲜时代风传统照片卡生成式AI演示' }
     },
     home: {
       headerSub: '首尔传统文化指南',
@@ -1971,7 +1981,8 @@ const PAGE_META_KEYS = {
   'support.html': 'support',
   'passport.html': 'passport',
   'about.html': 'about',
-  'culture-data.html': 'cultureData'
+  'culture-data.html': 'cultureData',
+  'ai-photo.html': 'aiPhoto'
 };
 
 const CONVENIENCE_TRANSLATIONS = {
@@ -3514,7 +3525,7 @@ function normalizeCourseRoute(rawCourse = {}, index = 0) {
     convenienceLabelsEn: ['Public-data seed', `${flow.length} stops`, indoorOutdoorLabel(rawCourse.indoorOutdoor, 'en') || 'Recommended route'],
     imageUrl: rawCourse.image || rawCourse.imageUrl || '',
     imageAlt: rawCourse.imageAlt || `${titleKo} 대표 이미지`,
-    imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 이해 보조 이미지',
+    imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 코스 이해를 돕는 시각 가이드',
     imagePrompt: rawCourse.imagePrompt || '',
     summary: summaryKo,
     englishExplanation: summaryEn,
@@ -3632,17 +3643,23 @@ async function loadDynamicArray(url, fallback) {
 }
 
 async function loadDynamicAppData() {
-  const [routeBlueprints, weather, support, passport] = await Promise.all([
+  const [routeBlueprints, weather, support, passport, publicDataSources, festivals, heritage] = await Promise.all([
     loadDynamicArray(DYNAMIC_DATA_URLS.routeBlueprints, ROUTE_BLUEPRINTS),
     loadDynamicArray(DYNAMIC_DATA_URLS.weather, WEATHER_DATA),
     loadDynamicArray(DYNAMIC_DATA_URLS.support, SUPPORT_DATA),
-    loadDynamicArray(DYNAMIC_DATA_URLS.passport, PASSPORT_DATA)
+    loadDynamicArray(DYNAMIC_DATA_URLS.passport, PASSPORT_DATA),
+    loadDynamicArray(DYNAMIC_DATA_URLS.publicDataSources, PUBLIC_DATA_SOURCES),
+    loadDynamicArray(DYNAMIC_DATA_URLS.festivals, FESTIVAL_DATA),
+    loadDynamicArray(DYNAMIC_DATA_URLS.heritage, HERITAGE_DATA)
   ]);
 
   ROUTE_BLUEPRINTS = routeBlueprints;
   WEATHER_DATA = weather;
   SUPPORT_DATA = support;
   PASSPORT_DATA = passport;
+  PUBLIC_DATA_SOURCES = publicDataSources;
+  FESTIVAL_DATA = festivals;
+  HERITAGE_DATA = heritage;
 }
 
 function getPreferenceInterests(preference = loadUserPreference()) {
@@ -4470,7 +4487,7 @@ function renderRouteImage(route, extraClass = '') {
   return renderImageFrame({
     src: route.imageUrl,
     alt: route.imageAlt,
-    notice: t('common.imageNotice'),
+    notice: route.imageNotice || t('common.imageNotice'),
     className: `route-image ${extraClass}`.trim()
   });
 }
@@ -5021,6 +5038,109 @@ function renderMap(route = getRouteFromUrlOrStorage()) {
   }
 }
 
+function getLocalizedDataValue(value) {
+  return getLocalizedValue(value, getCurrentLanguage()) || getLocalizedValue(value, 'ko') || getLocalizedValue(value, 'en') || value || '';
+}
+
+function normalizeMatchToken(value) {
+  return String(value || '').trim().toLowerCase();
+}
+
+function getRouteMatchTokens(route) {
+  return new Set([
+    route.id,
+    route.theme,
+    ...toArray(route.target),
+    ...toArray(route.tags),
+    ...toArray(route.recommendedTime)
+  ].map(normalizeMatchToken).filter(Boolean));
+}
+
+function getRoutePlaceIds(route) {
+  return new Set(toArray(route.resourceIds).map(normalizeMatchToken).filter(Boolean));
+}
+
+function hasTokenIntersection(values, tokenSet) {
+  return toArray(values).some((item) => tokenSet.has(normalizeMatchToken(item)));
+}
+
+function getRelatedFestivals(route, limit = 4) {
+  const routeTokens = getRouteMatchTokens(route);
+  const placeIds = getRoutePlaceIds(route);
+  const currentRouteId = new Set([normalizeMatchToken(route.id)]);
+
+  return FESTIVAL_DATA
+    .map((festival) => {
+      const courseMatched = hasTokenIntersection(festival.relatedCourseIds, currentRouteId);
+      const placeMatchCount = toArray(festival.relatedPlaceIds)
+        .filter((item) => placeIds.has(normalizeMatchToken(item))).length;
+      const tagMatchCount = toArray(festival.recommendedFor)
+        .filter((item) => routeTokens.has(normalizeMatchToken(item))).length;
+      const score = (courseMatched ? 100 : 0) + (placeMatchCount * 35) + (tagMatchCount * 12);
+      return { festival, score, courseMatched, placeMatchCount, tagMatchCount };
+    })
+    .filter((item) => item.courseMatched || item.placeMatchCount > 0 || item.tagMatchCount >= 2)
+    .sort((a, b) => b.score - a.score)
+    .map((item) => item.festival)
+    .slice(0, limit);
+}
+
+function getRelatedHeritage(route, limit = 5) {
+  const placeIds = getRoutePlaceIds(route);
+  return HERITAGE_DATA
+    .filter((heritage) => placeIds.has(normalizeMatchToken(heritage.id)))
+    .slice(0, limit);
+}
+
+function renderFestivalCard(festival) {
+  const title = getLocalizedDataValue(festival.title);
+  const venue = getLocalizedDataValue(festival.venue);
+  return `
+    <article class="related-data-card related-event-card">
+      <span>${escapeHtml(festival.category || 'culture-event')}</span>
+      <strong>${escapeHtml(title)}</strong>
+      <p>${escapeHtml([festival.district, venue, festival.dateType].filter(Boolean).join(' · '))}</p>
+      <dl>
+        <div><dt>MARU 적용</dt><dd>${escapeHtml(festival.aiUse || '코스 추천 이유와 방문 팁을 보강합니다.')}</dd></div>
+        <div><dt>데이터 출처</dt><dd>${escapeHtml(festival.publicDataSource || '서울시 문화행사 정보')}</dd></div>
+      </dl>
+    </article>
+  `;
+}
+
+function renderHeritageCard(heritage) {
+  const name = getLocalizedDataValue(heritage.name);
+  return `
+    <article class="related-data-card related-heritage-card">
+      <span>${escapeHtml(heritage.heritageType || 'heritage')}</span>
+      <strong>${escapeHtml(name)}</strong>
+      <p>${escapeHtml([heritage.district, heritage.address].filter(Boolean).join(' · '))}</p>
+      <dl>
+        <div><dt>간단 설명</dt><dd>${escapeHtml(heritage.aiInterpretationRole || '문화유산 의미 해설에 활용됩니다.')}</dd></div>
+        <div><dt>활용 데이터 출처</dt><dd>${escapeHtml(heritage.publicDataSource || '국가유산청 문화재 공간정보')}</dd></div>
+      </dl>
+    </article>
+  `;
+}
+
+function renderRelatedCourseData(route) {
+  const eventsContainer = qs('[data-related-events]');
+  if (eventsContainer) {
+    const festivals = getRelatedFestivals(route);
+    eventsContainer.innerHTML = festivals.length
+      ? festivals.map(renderFestivalCard).join('')
+      : '<p class="empty-related-data">현재 연결된 문화행사 샘플이 없습니다. 향후 서울시 문화행사 API와 연동 예정입니다.</p>';
+  }
+
+  const heritageContainer = qs('[data-related-heritage]');
+  if (heritageContainer) {
+    const heritageItems = getRelatedHeritage(route);
+    heritageContainer.innerHTML = heritageItems.length
+      ? heritageItems.map(renderHeritageCard).join('')
+      : '<p class="empty-related-data">현재 연결된 국가유산 샘플이 없습니다. 향후 국가유산청 문화재 공간정보와 연동 예정입니다.</p>';
+  }
+}
+
 function renderRouteDetail() {
   if (!qs('[data-detail-title]')) return;
   const route = getRouteFromUrlOrStorage();
@@ -5079,6 +5199,7 @@ function renderRouteDetail() {
     `).join('');
   }
 
+  renderRelatedCourseData(route);
   renderMap(route);
 }
 
@@ -5147,6 +5268,26 @@ function renderPassport() {
   }
 }
 
+function renderPublicDataSourceCard(source) {
+  const useFor = source.useDescription || source.use || toArray(source.useFor).join(', ') || '공공문화데이터 활용';
+  const maruApplication = source.connectedFeature || source.maruApplication || source.application || 'MARU 추천/해설 기능에 연결 예정';
+  const currentStatus = source.currentStatus || source.status || '정적 JSON 샘플 데이터로 반영';
+  const futureIntegration = source.futureIntegration || source.futureExpansion || '서버 API 연동 후 실시간 동기화 예정';
+
+  return `
+    <article class="data-source-card public-data-card">
+      <span>${escapeHtml(source.provider || '제공/참고 기관 확인 필요')}</span>
+      <strong>${escapeHtml(source.name || source.id || '공공데이터 소스')}</strong>
+      <dl>
+        <div><dt>활용</dt><dd>${escapeHtml(useFor)}</dd></div>
+        <div><dt>MARU 적용</dt><dd>${escapeHtml(maruApplication)}</dd></div>
+        <div><dt>현재 상태</dt><dd>${escapeHtml(currentStatus)}</dd></div>
+        <div><dt>향후 확장</dt><dd>${escapeHtml(futureIntegration)}</dd></div>
+      </dl>
+    </article>
+  `;
+}
+
 function renderCultureData() {
   const metrics = qs('[data-culture-metrics]');
   const dataLoadStatus = cultureResourceLoadStatus === 'loaded' && courseDataLoadStatus === 'loaded'
@@ -5171,22 +5312,14 @@ function renderCultureData() {
 
   const sources = qs('[data-source-list]');
   if (sources) {
-    const resourceSourceStatus = t(`cultureData.sourceStatus.${cultureResourceLoadStatus}`, t('cultureData.sourceStatus.fallback'));
-    const courseSourceStatus = t(`cultureData.sourceStatus.${courseDataLoadStatus}`, t('cultureData.sourceStatus.fallback'));
-    const sourceItems = [
-      `${CULTURE_RESOURCE_DATA_URL} (${resourceSourceStatus})`,
-      `${COURSE_DATA_URL} (${courseSourceStatus})`,
-      'data/public-data-sources.json (seed data)',
-      'data/festivals.json (seed data)',
-      'data/heritage.json (seed data)',
-      ...t('cultureData.sources', [])
-    ];
-    sources.innerHTML = sourceItems.map((source) => `
-      <article class="data-source-card">
-        <strong>${escapeHtml(source)}</strong>
-        <p>${escapeHtml(t('cultureData.sourceNote'))}</p>
-      </article>
-    `).join('');
+    sources.innerHTML = PUBLIC_DATA_SOURCES.length
+      ? PUBLIC_DATA_SOURCES.map(renderPublicDataSourceCard).join('')
+      : `
+        <article class="data-source-card public-data-card">
+          <strong>공공데이터 소스 로딩 대기</strong>
+          <p>${escapeHtml(t('cultureData.sourceNote'))}</p>
+        </article>
+      `;
   }
 }
 
@@ -5203,7 +5336,9 @@ function shouldShowAri() {
     'map.html',
     'weather.html',
     'support.html',
-    'passport.html'
+    'passport.html',
+    'culture-data.html',
+    'ai-photo.html'
   ].includes(getCurrentFileName());
 }
 
@@ -5288,6 +5423,7 @@ function findMatchingRoute(message, routes) {
 function fallbackAriReply(message, context) {
   const route = findMatchingRoute(message, context.routes) || context.selectedRoute;
   const resource = findMatchingResource(message, context.resources);
+  const normalizedMessage = ` ${normalizeSearchText(message)} `;
 
   if (hasAnyTerm(message, ['추천 이유', '왜 추천', 'why recommend', 'why recommended', 'why is this route recommended', 'why this route', 'recommendation reason'])) {
     return `${route.title} 추천 이유는 ${route.reason} 이동 흐름은 ${route.flow.join(' → ')}입니다. 자세한 길찾기는 지도 화면에서 선택한 지도 서비스 버튼을 사용하세요.`;
@@ -5295,6 +5431,30 @@ function fallbackAriReply(message, context) {
 
   if (resource) {
     return `${resource.nameKo}(${resource.nameEn})은 ${resource.category} 자원입니다. ${resource.explanation} ${resource.whyItMatters} 방문 전 운영시간, 요금, 예약 여부는 공식 출처 확인이 필요합니다.`;
+  }
+
+  if (hasAnyTerm(message, ['택시', 'taxi'])) {
+    return '현재는 실제 택시 호출이 아니라 지도 앱 길찾기 연결 방식입니다. 이후 서버와 모빌리티 API를 연동하면 택시 호출 기능으로 확장할 수 있습니다.';
+  }
+
+  if (hasAnyTerm(message, ['생성형 AI', '생성형ai', 'generative', 'generative ai']) || /\bai\b/.test(normalizedMessage)) {
+    return 'MARU는 생성형 AI를 활용해 공공문화데이터를 외국인용 문화 해설, 추천 이유, 코스 스토리, 코스 이미지, 조선풍 포토카드로 재구성합니다.';
+  }
+
+  if (hasAnyTerm(message, ['공공데이터', '공공 데이터', 'public data', 'data source', '문화데이터']) || /\bdata\b/.test(normalizedMessage)) {
+    return 'MARU는 한국관광공사 TourAPI, 서울시 문화행사 정보, 서울 실시간 도시데이터, 국가유산청 문화재 공간정보, 전통문화포털 데이터를 추천 근거로 확장할 수 있도록 설계되었습니다.';
+  }
+
+  if (hasAnyTerm(message, ['조선풍', '포토카드', 'photo card', 'photo-card', 'ai photo'])) {
+    return 'AI 조선풍 포토카드는 여행 사진을 한국 전통미술 분위기의 카드로 바꾸는 체험 기능입니다. 현재는 데모이며 실제 운영에서는 서버 기반 이미지 생성 API로 연결할 수 있습니다.';
+  }
+
+  if (hasAnyTerm(message, ['축제', '행사', 'festival', 'event'])) {
+    return '문화행사 데이터는 오늘 갈 수 있는 전통문화 체험을 코스에 연결하는 데 사용됩니다.';
+  }
+
+  if (hasAnyTerm(message, ['혼잡도', '혼잡', 'crowded', 'congestion', 'crowd'])) {
+    return '혼잡도 데이터는 사람이 많은 장소를 피하거나 실내·대체 코스를 추천하는 데 활용할 수 있습니다.';
   }
 
   if (hasAnyTerm(message, ['비', '우천', 'rain', 'rainy'])) {
@@ -5592,6 +5752,97 @@ function markActiveBottomTab() {
   });
 }
 
+function bindAiPhotoDemo() {
+  const root = qs('[data-ai-photo-demo]');
+  if (!root || root.dataset.aiPhotoBound === 'true') return;
+  root.dataset.aiPhotoBound = 'true';
+
+  const fileInput = qs('[data-ai-photo-file]', root);
+  const previewImage = qs('[data-ai-photo-preview]', root);
+  const previewPlaceholder = qs('[data-ai-photo-placeholder]', root);
+  const actionButton = qs('[data-ai-photo-action]', root);
+  const status = qs('[data-ai-photo-status]', root);
+  const result = qs('[data-ai-photo-result]', root);
+  const promptText = 'Convert the uploaded travel photo into a Joseon-era Korean traditional portrait style. Use hanbok-inspired clothing, soft ink-and-color painting texture, traditional Korean patterns, warm paper background, and an elegant historical atmosphere. Do not copy any specific modern studio or artist style.';
+  let previewUrl = '';
+
+  const setStatus = (message) => {
+    if (status) status.textContent = message;
+  };
+
+  const clearResult = () => {
+    if (result) {
+      result.innerHTML = '';
+      result.classList.add('is-hidden');
+    }
+  };
+
+  fileInput?.addEventListener('change', () => {
+    const file = fileInput.files?.[0];
+    clearResult();
+
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    previewUrl = '';
+
+    if (!file) {
+      if (previewImage) {
+        previewImage.removeAttribute('src');
+        previewImage.classList.add('is-hidden');
+      }
+      if (previewPlaceholder) previewPlaceholder.classList.remove('is-hidden');
+      setStatus('이미지를 선택하면 브라우저 안에서만 미리보기가 표시됩니다.');
+      return;
+    }
+
+    previewUrl = URL.createObjectURL(file);
+    if (previewImage) {
+      previewImage.src = previewUrl;
+      previewImage.alt = file.name || '업로드한 여행 사진 미리보기';
+      previewImage.classList.remove('is-hidden');
+    }
+    if (previewPlaceholder) previewPlaceholder.classList.add('is-hidden');
+    setStatus(`${file.name || '선택한 이미지'} 미리보기 준비 완료. 서버로 업로드하지 않습니다.`);
+  });
+
+  actionButton?.addEventListener('click', () => {
+    if (!previewUrl) {
+      setStatus('먼저 변환할 이미지를 선택하세요.');
+      return;
+    }
+
+    actionButton.disabled = true;
+    actionButton.textContent = '변환 데모 생성 중...';
+    setStatus('브라우저에서 데모 결과 카드를 구성하고 있습니다.');
+    clearResult();
+
+    window.setTimeout(() => {
+      if (result) {
+        result.innerHTML = `
+          <article class="ai-photo-result-card">
+            <div class="ai-photo-result-frame">
+              <img src="${escapeHtml(previewUrl)}" alt="MARU AI Photo Card demo result">
+              <span>MARU AI Photo Card</span>
+            </div>
+            <div class="ai-photo-result-copy">
+              <strong>조선시대 풍속화풍 데모 결과</strong>
+              <p>현재 화면은 실제 생성 이미지가 아니라 업로드 미리보기에 전통 문양 프레임과 한지 느낌을 입힌 체험 카드입니다.</p>
+              <small>실제 서비스에서는 서버를 통해 이미지 생성 API에 안전하게 연결하고, API 키는 프론트엔드에 노출하지 않습니다.</small>
+            </div>
+            <div class="ai-photo-prompt">
+              <span>Prompt example</span>
+              <p>${escapeHtml(promptText)}</p>
+            </div>
+          </article>
+        `;
+        result.classList.remove('is-hidden');
+      }
+      actionButton.disabled = false;
+      actionButton.textContent = '조선풍으로 변환하기';
+      setStatus('데모 결과가 생성되었습니다. 현재 데모는 서버 업로드 없이 브라우저 미리보기로만 동작합니다.');
+    }, 1200);
+  });
+}
+
 function bindMobileInteractions() {
   qsa('[data-language]').forEach((button) => {
     button.addEventListener('click', () => {
@@ -5706,6 +5957,7 @@ async function initialize() {
   renderLocalizedContent();
   markActiveBottomTab();
   bindMobileInteractions();
+  bindAiPhotoDemo();
   mountAriChat();
   registerServiceWorker();
 }

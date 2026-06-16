@@ -1,4 +1,4 @@
-const CACHE_NAME = 'maru-shell-v19';
+const CACHE_NAME = 'maru-shell-v20';
 const APP_SHELL = [
   'index.html',
   'admin.html',
@@ -10,6 +10,7 @@ const APP_SHELL = [
   'support.html',
   'passport.html',
   'culture-data.html',
+  'ai-photo.html',
   'about.html',
   'style.css',
   'app.js',
@@ -39,7 +40,13 @@ const APP_SHELL = [
   'assets/images/home/night-1.webp',
   'assets/images/home/night-2.webp',
   'assets/images/home/night-3.webp',
-  'assets/images/home/night-4.webp'
+  'assets/images/home/night-4.webp',
+  'assets/images/routes/course-palace.webp',
+  'assets/images/routes/course-hanok.webp',
+  'assets/images/routes/course-craft.webp',
+  'assets/images/routes/course-market.webp',
+  'assets/images/routes/course-night.webp',
+  'assets/images/routes/course-rainy.webp'
 ];
 
 self.addEventListener('install', (event) => {

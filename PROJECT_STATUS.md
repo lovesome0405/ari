@@ -95,3 +95,76 @@
 - 지도/택시 앱 연동 고도화
   - 현재는 지도 URL과 앱 스킴 중심이다.
   - 향후 사용자 위치, 도보 부담, 대중교통, 택시 호출 딥링크, 혼잡도, 우천 조건을 조합해 이동 옵션을 고도화할 수 있다.
+
+## 7. 2차 작업 반영 현황
+
+### 최종 추천코스 6개
+`data/courses.json`을 최종 6개 코스 구조로 정리했다.
+
+- 궁궐 역사 산책 코스
+- 북촌 한옥 문화 코스
+- 인사동 전통공예 코스
+- 전통시장 미식 코스
+- 야간 전통문화 코스
+- 비 오는 날 실내 전통문화 코스
+
+각 코스는 `id`, `title`, `theme`, `target`, `duration`, `budget`, `indoorOutdoor`, `recommendedTime`, `score`, `walking`, `fee`, `places`, `aiSummary`, `reason`, `tip`, `keywords`, `image`, `imagePrompt`, `publicDataSource`를 포함한다. 각 코스의 장소는 3개 이상이며, 지도 연결용 좌표와 공공데이터 출처를 함께 담았다.
+
+### 코스 이미지 정리
+코스 이미지는 `assets/images/routes/` 아래 전용 경로로 정리했다.
+
+- `assets/images/routes/course-palace.webp`
+- `assets/images/routes/course-hanok.webp`
+- `assets/images/routes/course-craft.webp`
+- `assets/images/routes/course-market.webp`
+- `assets/images/routes/course-night.webp`
+- `assets/images/routes/course-rainy.webp`
+
+현재 이미지는 기존 홈 이미지를 복사해 broken image가 발생하지 않도록 처리한 데모 자산이다. UI 문구는 “AI 생성 이미지 · 실제 장소 사진이 아닌 코스 이해를 돕는 시각 가이드”로 표시된다.
+
+### public-data-sources.json 실제 렌더링 여부
+적용 완료. `app.js`의 `loadDynamicAppData()`가 `data/public-data-sources.json`을 fetch하고, `culture-data.html`의 `[data-source-list]`에 실제 공공데이터 카드로 렌더링한다.
+
+카드에는 데이터명, 제공/참고 기관, 활용 방식, MARU 적용 방식, 현재 상태, 향후 확장 방식이 표시된다.
+
+### festivals.json / heritage.json 상세 페이지 연결 여부
+적용 완료. `route-detail.html`에 “관련 문화행사”와 “관련 국가유산 정보” 섹션을 추가했다.
+
+- 관련 문화행사: 선택된 코스의 `id`, `theme`, `target`, `place id`와 `data/festivals.json`의 `relatedCourseIds`, `recommendedFor`, `relatedPlaceIds`를 비교해 표시한다.
+- 관련 국가유산 정보: 선택된 코스의 장소 id와 `data/heritage.json`의 id가 일치하면 문화재명, 유형, 위치, 간단 설명, 활용 데이터 출처를 표시한다.
+- 연결 데이터가 없는 경우에도 섹션은 유지되며 향후 API 연동 예정 문구가 표시된다.
+
+### AI 조선풍 포토카드 데모 구현 여부
+적용 완료. 새 페이지 `ai-photo.html`을 추가했고, `index.html`, `about.html`, `culture-data.html`에서 접근할 수 있다.
+
+현재 기능:
+- 이미지 업로드
+- 브라우저 내 미리보기
+- “조선풍으로 변환하기” 버튼
+- 1.2초 로딩 후 데모 결과 카드 표시
+- 전통 문양 프레임, 한지 느낌 배경, “MARU AI Photo Card” 문구 표시
+- 생성 프롬프트 예시 표시
+- 실제 서비스에서는 서버 기반 이미지 생성 API로 연결한다는 설명
+- “현재 데모는 브라우저 미리보기 중심이며 서버로 업로드하지 않는다”는 개인정보 안내
+
+실제 이미지 생성 API 호출과 API 키 삽입은 하지 않았다.
+
+### Ari 챗봇 보강 키워드
+`fallbackAriReply()`에 다음 키워드 응답을 추가했다.
+
+- 택시 / taxi
+- 생성형 AI / AI / generative
+- 공공데이터 / data / public data
+- 조선풍 / 포토카드 / photo card
+- 축제 / 행사 / festival / event
+- 혼잡도 / crowded / congestion
+
+### 현재 한계
+- 서버/DB 없음
+- 실시간 공공데이터 API 미연동
+- 실제 이미지 생성 API 미연동
+- 사용자 계정 기반 저장 기능 없음
+- 현재는 GitHub Pages 정적 배포 환경에서 정적 JSON + JavaScript 기반으로 동작하는 서비스형 데모
+
+### 2차 결론
+현재 MARU는 단순 정적 소개 페이지가 아니라, GitHub Pages 기반 정적 배포 위에서 JSON 공공문화데이터 샘플과 JavaScript 동적 렌더링, Ari fallback 챗봇, 지도 이동 링크, 생성형 AI 포토카드 데모 UI를 결합한 “정적 배포 기반 동적 인터랙션 웹서비스 프로토타입” 단계다.

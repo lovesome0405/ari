@@ -1,5 +1,81 @@
 [
   {
+    "id": "palace-cultural-program-sample",
+    "title": {
+      "ko": "궁궐 문화해설 프로그램 샘플",
+      "en": "Palace Cultural Interpretation Program Sample"
+    },
+    "category": "heritage-program",
+    "district": "종로구",
+    "venue": {
+      "ko": "경복궁 및 국립고궁박물관 일대",
+      "en": "Gyeongbokgung Palace and National Palace Museum area"
+    },
+    "dateType": "variable",
+    "recommendedFor": ["palace", "history", "royal-culture", "first-time-visitor"],
+    "relatedCourseIds": ["palace-history-course"],
+    "relatedPlaceIds": ["gyeongbokgung-palace", "national-palace-museum"],
+    "publicDataSource": "서울시 문화행사 정보 / 한국관광공사 TourAPI / 문화기관 공식 안내",
+    "aiUse": "궁궐 역사 산책 코스에서 행사 일정 확인 필요성을 안내하고 추천 이유를 보강"
+  },
+  {
+    "id": "bukchon-hanok-culture-walk-sample",
+    "title": {
+      "ko": "북촌 한옥 문화산책 샘플",
+      "en": "Bukchon Hanok Culture Walk Sample"
+    },
+    "category": "walking-tour",
+    "district": "종로구",
+    "venue": {
+      "ko": "북촌한옥마을 및 계동길 일대",
+      "en": "Bukchon Hanok Village and Gyedong-gil area"
+    },
+    "dateType": "seasonal",
+    "recommendedFor": ["hanok", "architecture", "slow-walk", "local-culture"],
+    "relatedCourseIds": ["bukchon-hanok-culture-course"],
+    "relatedPlaceIds": ["bukchon-hanok-village", "changdeokgung-palace", "unhyeongung"],
+    "publicDataSource": "서울시 문화행사 정보 / 서울 관광정보",
+    "aiUse": "한옥 주거문화와 조용한 방문 예절을 외국인용 해설로 연결"
+  },
+  {
+    "id": "insadong-craft-experience-sample",
+    "title": {
+      "ko": "인사동 전통공예 체험 샘플",
+      "en": "Insadong Traditional Craft Experience Sample"
+    },
+    "category": "craft-workshop",
+    "district": "종로구",
+    "venue": {
+      "ko": "인사동 및 서울공예박물관 일대",
+      "en": "Insadong and Seoul Museum of Craft Art area"
+    },
+    "dateType": "ongoing-or-seasonal",
+    "recommendedFor": ["craft", "culture-experience", "indoor", "shopping"],
+    "relatedCourseIds": ["insadong-craft-course"],
+    "relatedPlaceIds": ["insadong", "ssamziegil", "seoul-craft-museum"],
+    "publicDataSource": "서울시 문화행사 정보 / 전통문화포털 전통문화 데이터",
+    "aiUse": "공예 키워드, 문양, 재료 설명을 Ari 문화 해설과 이미지 프롬프트에 활용"
+  },
+  {
+    "id": "traditional-market-food-event-sample",
+    "title": {
+      "ko": "전통시장 먹거리 체험 샘플",
+      "en": "Traditional Market Food Experience Sample"
+    },
+    "category": "local-food",
+    "district": "종로구 / 중구",
+    "venue": {
+      "ko": "통인시장, 광장시장, 남대문시장",
+      "en": "Tongin Market, Gwangjang Market, Namdaemun Market"
+    },
+    "dateType": "daily-or-market-day",
+    "recommendedFor": ["market", "food", "traditional-market", "local-life"],
+    "relatedCourseIds": ["traditional-market-food-course"],
+    "relatedPlaceIds": ["tongin-market", "gwangjang-market", "namdaemun-market"],
+    "publicDataSource": "서울시 문화행사 정보 / 서울시 전통시장 정보 / 한국관광공사 TourAPI",
+    "aiUse": "시장 혼잡도와 영업일 확인 필요성을 코스 팁과 Ari 답변에 연결"
+  },
+  {
     "id": "jeongdong-culture-night-sample",
     "title": {
       "ko": "정동 문화 야행 샘플",
@@ -8,49 +84,33 @@
     "category": "festival",
     "district": "중구",
     "venue": {
-      "ko": "정동 일대",
-      "en": "Jeongdong area"
+      "ko": "덕수궁, 정동길, 국립정동극장 일대",
+      "en": "Deoksugung Palace, Jeongdong-gil, and National Jeongdong Theater area"
     },
     "dateType": "seasonal",
-    "recommendedFor": ["evening", "modern-history", "performance"],
-    "relatedCourseIds": ["modern-seoul-performing-heritage"],
-    "publicDataSource": "서울시 문화행사 정보",
-    "aiUse": "근대 서울과 전통공연 코스의 저녁 추천 사유 생성에 활용"
+    "recommendedFor": ["night", "evening", "performance", "palace", "modern-history"],
+    "relatedCourseIds": ["night-traditional-culture-course"],
+    "relatedPlaceIds": ["deoksugung-palace", "deoksugung-stonewall-road", "national-jeongdong-theater"],
+    "publicDataSource": "서울시 문화행사 정보 / 국가유산청 문화재 공간정보",
+    "aiUse": "야간 전통문화 코스에서 궁궐 야간 관람과 공연 일정 확인을 안내"
   },
   {
-    "id": "palace-cultural-program-sample",
+    "id": "rainy-day-museum-program-sample",
     "title": {
-      "ko": "궁궐 문화 프로그램 샘플",
-      "en": "Palace Cultural Program Sample"
+      "ko": "비 오는 날 박물관 전시 프로그램 샘플",
+      "en": "Rainy-Day Museum Program Sample"
     },
-    "category": "heritage-program",
-    "district": "종로구",
+    "category": "museum-exhibition",
+    "district": "종로구 / 중구",
     "venue": {
-      "ko": "경복궁 및 주변 박물관",
-      "en": "Gyeongbokgung Palace and nearby museums"
-    },
-    "dateType": "variable",
-    "recommendedFor": ["palace", "first-time-visitor", "history"],
-    "relatedCourseIds": ["royal-culture-local-life"],
-    "publicDataSource": "서울시 문화행사 정보 / 한국관광공사 TourAPI",
-    "aiUse": "외국인에게 행사 일정 확인 필요성을 안내하는 Ari 응답에 활용"
-  },
-  {
-    "id": "traditional-sound-exhibit-sample",
-    "title": {
-      "ko": "전통 소리 전시 샘플",
-      "en": "Traditional Sound Exhibit Sample"
-    },
-    "category": "exhibition",
-    "district": "종로구",
-    "venue": {
-      "ko": "서울우리소리박물관",
-      "en": "Seoul Museum of Korean Folk Music"
+      "ko": "국립고궁박물관, 서울역사박물관, 남산골한옥마을",
+      "en": "National Palace Museum, Seoul Museum of History, and Namsangol Hanok Village"
     },
     "dateType": "ongoing-or-seasonal",
-    "recommendedFor": ["music", "indoor", "rainy-day"],
-    "relatedCourseIds": ["hidden-sounds-hanok-streets", "rainy-day-indoor-heritage"],
-    "publicDataSource": "서울시 문화행사 정보 / 문화기관 공식 안내",
-    "aiUse": "비 오는 날 실내 전통문화 추천과 소리문화 해설에 활용"
+    "recommendedFor": ["rainy-indoor", "rainy-day", "museum", "indoor", "family"],
+    "relatedCourseIds": ["rainy-day-indoor-heritage"],
+    "relatedPlaceIds": ["national-palace-museum", "seoul-museum-of-history", "namsangol-hanok-village"],
+    "publicDataSource": "서울시 문화행사 정보 / 서울 실시간 도시데이터 / 서울시 문화시설 정보",
+    "aiUse": "우천 시 실내 대체 코스와 전시 중심 해설을 생성하는 데 활용"
   }
 ]
