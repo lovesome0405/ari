@@ -168,3 +168,56 @@
 
 ### 2차 결론
 현재 MARU는 단순 정적 소개 페이지가 아니라, GitHub Pages 기반 정적 배포 위에서 JSON 공공문화데이터 샘플과 JavaScript 동적 렌더링, Ari fallback 챗봇, 지도 이동 링크, 생성형 AI 포토카드 데모 UI를 결합한 “정적 배포 기반 동적 인터랙션 웹서비스 프로토타입” 단계다.
+
+## 8. Spring Boot + MySQL 백엔드 기반 추가
+
+### 추가 목적
+기존 GitHub Pages 프론트엔드와 정적 JSON 구조를 유지하면서, 추천코스·장소·문화행사·국가유산·공공데이터 출처를 점진적으로 서버 API와 MySQL DB로 옮길 수 있는 기반을 추가했다.
+
+### 추가된 백엔드 구조
+- `backend/pom.xml`: Spring Boot 3.3, Java 21, Spring Web, Spring Data JPA, Flyway, MySQL 드라이버 설정
+- `backend/src/main/resources/application.yml`: MySQL 연결, CORS, JPA/Flyway, 향후 외부 API 키 환경변수 설정 예시
+- `backend/src/main/resources/db/migration/V1__create_catalog_tables.sql`: MARU 카탈로그용 DB 테이블 생성 스크립트
+- `backend/src/main/java/com/lovesome/maru/domain`: `Place`, `Course`, `CoursePlace`, `Festival`, `Heritage`, `PublicDataSource` Entity
+- `backend/src/main/java/com/lovesome/maru/dto`: 프론트 JSON 형태와 맞춘 응답 DTO
+- `backend/src/main/java/com/lovesome/maru/repository`: JPA Repository
+- `backend/src/main/java/com/lovesome/maru/service`: 조회 서비스와 DTO 변환 mapper
+- `backend/src/main/java/com/lovesome/maru/web/CatalogController.java`: REST API Controller
+- `backend/README.md`: 실행 방법, 환경변수, API 목록, 한계 정리
+
+### 만든 DB 테이블
+- `places`: 장소명, 카테고리, 주소, 좌표, 설명, 공공데이터 출처
+- `courses`: 추천코스 제목, 테마, 대상, 소요시간, 예산, 실내/실외, 추천 시간대, AI 요약, 이유, 팁, 키워드, 이미지, 지도 링크
+- `course_places`: 코스와 장소의 순서형 연결 테이블
+- `festivals`: 문화행사, 지역, 장소, 추천 대상, 관련 코스/장소 연결
+- `heritage`: 국가유산명, 유형, 지역, 좌표, 해설 키워드, AI 해설 역할
+- `public_data_sources`: 공공데이터 출처, 제공기관, 활용 기능, 현재 상태, 향후 연동 방향
+
+### 만든 REST API
+- `GET /api/courses`
+- `GET /api/courses/{id}`
+- `GET /api/places`
+- `GET /api/festivals`
+- `GET /api/heritage`
+- `GET /api/public-data-sources`
+
+### 프론트 fetch 구조 변경
+- `app.js`에 `MARU_API_PATHS`, `getMaruApiBaseUrl()`, `fetchDataArrayFromApi()`를 추가했다.
+- 로컬 개발 환경에서는 기본적으로 `http://localhost:8080` API를 먼저 시도한다.
+- GitHub Pages 배포 환경에서는 기본값으로 API를 호출하지 않고 기존 정적 JSON을 사용한다.
+- 배포 후 별도 서버 API를 붙일 때는 브라우저 콘솔에서 `localStorage.setItem('maruApiBaseUrl', 'https://your-api.example.com')`로 API base URL을 지정할 수 있다.
+- API 응답이 없거나 비어 있거나 실패하면 기존 `data/*.json`과 앱 내부 fallback 데이터로 내려간다.
+
+### API 키와 외부 연동 준비
+- OpenAI API, TourAPI, 서울시 OpenAPI 키는 프론트엔드에 넣지 않는다.
+- `application.yml`에는 `OPENAI_API_KEY`, `TOUR_API_SERVICE_KEY`, `SEOUL_OPEN_DATA_API_KEY` 환경변수 연결 위치만 준비했다.
+- 이번 단계에서는 OpenAI API나 공공데이터 API 실시간 호출을 구현하지 않았다.
+
+### 현재 한계
+- DB 테이블과 조회 API 뼈대는 있지만, 정적 JSON을 DB로 자동 적재하는 seed/import 기능은 아직 없다.
+- 로그인, 사용자 저장, 관리자 입력 화면은 아직 없다.
+- 운영 서버 배포와 HTTPS API URL 연결은 별도 단계가 필요하다.
+- 실제 공공데이터 API 동기화와 생성형 AI 응답 생성은 서버 환경변수 기반 구조만 준비한 상태다.
+
+### 3차 결론
+현재 MARU는 “GitHub Pages 프론트엔드 + 정적 JSON fallback”을 유지하면서, Spring Boot/MySQL 기반 서버 조회 API로 확장할 수 있는 하이브리드 구조가 되었다. 서버가 꺼져 있어도 기존 프론트는 깨지지 않고, 서버가 켜져 있으면 같은 화면에서 API 데이터를 우선 사용할 수 있다.

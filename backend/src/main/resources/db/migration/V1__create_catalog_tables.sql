@@ -1,0 +1,120 @@
+CREATE TABLE places (
+  id VARCHAR(120) NOT NULL,
+  name_ko VARCHAR(255) NOT NULL,
+  name_en VARCHAR(255),
+  category VARCHAR(120),
+  address VARCHAR(500),
+  lat DECIMAL(10, 7),
+  lng DECIMAL(10, 7),
+  description_ko TEXT,
+  description_en TEXT,
+  public_data_source VARCHAR(500),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  INDEX idx_places_category (category)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE courses (
+  id VARCHAR(120) NOT NULL,
+  display_order INT NOT NULL DEFAULT 0,
+  title_ko VARCHAR(255) NOT NULL,
+  title_en VARCHAR(255),
+  theme VARCHAR(120),
+  target_json JSON,
+  duration VARCHAR(80),
+  budget VARCHAR(80),
+  indoor_outdoor VARCHAR(80),
+  recommended_time_json JSON,
+  score INT,
+  walking_ko VARCHAR(120),
+  walking_en VARCHAR(120),
+  fee_ko VARCHAR(120),
+  fee_en VARCHAR(120),
+  ai_summary_ko TEXT,
+  ai_summary_en TEXT,
+  reason_ko TEXT,
+  reason_en TEXT,
+  tip_ko TEXT,
+  tip_en TEXT,
+  keywords_json JSON,
+  image VARCHAR(500),
+  image_prompt TEXT,
+  public_data_source VARCHAR(500),
+  source VARCHAR(500),
+  map_links_json JSON,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  INDEX idx_courses_theme (theme),
+  INDEX idx_courses_display_order (display_order)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE course_places (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  course_id VARCHAR(120) NOT NULL,
+  place_id VARCHAR(120) NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_course_place_order (course_id, sort_order),
+  INDEX idx_course_places_course (course_id),
+  INDEX idx_course_places_place (place_id),
+  CONSTRAINT fk_course_places_course FOREIGN KEY (course_id) REFERENCES courses (id) ON DELETE CASCADE,
+  CONSTRAINT fk_course_places_place FOREIGN KEY (place_id) REFERENCES places (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE festivals (
+  id VARCHAR(120) NOT NULL,
+  title_ko VARCHAR(255) NOT NULL,
+  title_en VARCHAR(255),
+  category VARCHAR(120),
+  district VARCHAR(120),
+  venue_ko VARCHAR(255),
+  venue_en VARCHAR(255),
+  date_type VARCHAR(120),
+  recommended_for_json JSON,
+  related_course_ids_json JSON,
+  related_place_ids_json JSON,
+  public_data_source VARCHAR(500),
+  ai_use TEXT,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  INDEX idx_festivals_category (category),
+  INDEX idx_festivals_district (district)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE heritage (
+  id VARCHAR(120) NOT NULL,
+  name_ko VARCHAR(255) NOT NULL,
+  name_en VARCHAR(255),
+  heritage_type VARCHAR(120),
+  district VARCHAR(120),
+  address VARCHAR(500),
+  lat DECIMAL(10, 7),
+  lng DECIMAL(10, 7),
+  interpretation_keywords_json JSON,
+  public_data_source VARCHAR(500),
+  ai_interpretation_role TEXT,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  INDEX idx_heritage_type (heritage_type),
+  INDEX idx_heritage_district (district)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE public_data_sources (
+  id VARCHAR(120) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  provider VARCHAR(255),
+  use_for_json JSON,
+  use_description TEXT,
+  connected_feature TEXT,
+  current_status TEXT,
+  future_integration TEXT,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  INDEX idx_public_data_sources_provider (provider)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

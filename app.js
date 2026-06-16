@@ -322,6 +322,17 @@ const DYNAMIC_DATA_URLS = {
   heritage: 'data/heritage.json'
 };
 const COURSE_DATA_URL = 'data/courses.json';
+const MARU_API_BASE_STORAGE_KEY = 'maruApiBaseUrl';
+const MARU_LOCAL_API_BASE_URL = 'http://localhost:8080';
+const MARU_API_TIMEOUT_MS = 900;
+const MARU_API_PATHS = {
+  courses: '/api/courses',
+  places: '/api/places',
+  festivals: '/api/festivals',
+  heritage: '/api/heritage',
+  publicDataSources: '/api/public-data-sources'
+};
+let maruApiUnavailable = false;
 let cultureResourceLoadStatus = 'fallback';
 let cultureResourceLoadMessage = '';
 let courseDataLoadStatus = 'fallback';
@@ -3171,12 +3182,16 @@ function normalizeCultureResource(raw, index = 0) {
   const traditionScore = toNumber(raw.traditionScore, 70);
   const photoSpotScore = toNumber(raw.photoSpotScore, tags.some((tag) => /photo|사진|view|야경|노을/i.test(tag)) ? 4 : 2);
   const rainyDayScore = toNumber(raw.rainyDayScore, /실내|Indoor/i.test(raw.indoorOutdoor || '') ? 4 : 2);
+  const nameKo = raw.nameKo || raw.name_ko || getLocalizedValue(raw.name, 'ko') || raw.name || raw.title || `장소 ${index + 1}`;
+  const nameEn = raw.nameEn || raw.name_en || raw.englishName || getLocalizedValue(raw.name, 'en') || nameKo || `Place ${index + 1}`;
+  const descriptionKo = raw.aiSimpleExplanation || raw.descriptionKo || getLocalizedValue(raw.description, 'ko') || raw.description || raw.summary || '';
+  const descriptionEn = raw.aiSimpleExplanationEn || raw.descriptionEn || raw.description_en || getLocalizedValue(raw.description, 'en') || descriptionKo;
 
   const resource = {
     ...raw,
     id: slugifyResource(raw, index),
-    nameKo: raw.nameKo || raw.name_ko || raw.name || raw.title || `장소 ${index + 1}`,
-    nameEn: raw.nameEn || raw.name_en || raw.englishName || raw.nameKo || raw.name || `Place ${index + 1}`,
+    nameKo,
+    nameEn,
     region: /구$/.test(raw.region || '') ? '서울' : (raw.region || '서울'),
     district,
     category: raw.category || raw.type || '전통문화 장소',
@@ -3186,10 +3201,10 @@ function normalizeCultureResource(raw, index = 0) {
     longitude: hasCoordinates ? longitude : undefined,
     imageUrl: raw.imageUrl || raw.image_url || '',
     globalTags: tags,
-    aiSimpleExplanation: raw.aiSimpleExplanation || raw.descriptionKo || raw.description || raw.summary || '',
-    aiSimpleExplanationEn: raw.aiSimpleExplanationEn || raw.descriptionEn || raw.description_en || raw.aiSimpleExplanation || raw.description || '',
-    aiWhyItMatters: raw.aiWhyItMatters || raw.recommendReasonKo || raw.why || raw.aiSimpleExplanation || '',
-    aiWhyItMattersEn: raw.aiWhyItMattersEn || raw.recommendReasonEn || raw.aiWhyItMatters || raw.why || raw.aiSimpleExplanationEn || '',
+    aiSimpleExplanation: descriptionKo,
+    aiSimpleExplanationEn: descriptionEn,
+    aiWhyItMatters: raw.aiWhyItMatters || raw.recommendReasonKo || raw.why || descriptionKo || '',
+    aiWhyItMattersEn: raw.aiWhyItMattersEn || raw.recommendReasonEn || raw.aiWhyItMatters || raw.why || descriptionEn || '',
     aiVisitTip: raw.aiVisitTip || raw.visitTipKo || raw.tip || '운영시간과 예약 여부는 방문 전 공식 정보를 확인하세요.',
     aiVisitTipEn: raw.aiVisitTipEn || raw.visitTipEn || raw.aiVisitTip || raw.tip || 'Check official hours and reservation details before visiting.',
     indoorOutdoor: raw.indoorOutdoor || raw.indoor_outdoor || '확인 필요',
@@ -3206,7 +3221,7 @@ function normalizeCultureResource(raw, index = 0) {
     reservationRequired: toBoolean(raw.reservationRequired, false),
     isIndependentSite: !isDetailStoryOnlyResource(raw) && toBoolean(raw.isIndependentSite, true),
     isDetailStoryOnly: isDetailStoryOnlyResource(raw),
-    imageAlt: raw.imageAlt || `${raw.nameKo || raw.name || '서울 전통문화 장소'} 이미지`,
+    imageAlt: raw.imageAlt || `${nameKo || '서울 전통문화 장소'} 이미지`,
     feeType: raw.feeType || raw.fee || '공식 확인 필요',
     bookingNote: raw.bookingNote || '운영시간, 요금, 예약 여부는 방문 전 공식 정보를 확인하세요.',
     sourceName: raw.sourceName || raw.source || CULTURE_RESOURCE_DATA_URL,
@@ -3568,8 +3583,57 @@ function applyCourseData(rawCourses) {
   courseDataLoadMessage = `${COURSE_DATA_URL}에서 ${ROUTE_DATA.length}개 추천 코스를 불러왔습니다.`;
 }
 
+function getMaruApiBaseUrl() {
+  let configured = '';
+  try {
+    configured = window.localStorage?.getItem(MARU_API_BASE_STORAGE_KEY) || '';
+  } catch (error) {
+    configured = '';
+  }
+
+  const normalized = String(configured).trim().replace(/\/+$/, '');
+  if (normalized) return normalized;
+
+  const host = window.location.hostname;
+  const isLocalFrontend = host === 'localhost' || host === '127.0.0.1' || host === '';
+  return isLocalFrontend ? MARU_LOCAL_API_BASE_URL : '';
+}
+
+function makeMaruApiUrl(path) {
+  const baseUrl = getMaruApiBaseUrl();
+  if (!baseUrl || !path) return '';
+  return `${baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
+}
+
+async function fetchDataArrayFromApi(path) {
+  const apiUrl = makeMaruApiUrl(path);
+  if (!apiUrl || maruApiUnavailable) return null;
+
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), MARU_API_TIMEOUT_MS);
+  try {
+    const response = await fetch(apiUrl, { cache: 'no-store', signal: controller.signal });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const payload = await response.json();
+    const items = Array.isArray(payload) ? payload : (payload.items || payload.data || []);
+    return Array.isArray(items) && items.length ? items : null;
+  } catch (error) {
+    maruApiUnavailable = true;
+    return null;
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
 async function loadCourseData() {
   try {
+    const apiCourses = await fetchDataArrayFromApi(MARU_API_PATHS.courses);
+    if (apiCourses) {
+      applyCourseData(apiCourses);
+      courseDataLoadMessage = `${makeMaruApiUrl(MARU_API_PATHS.courses)}에서 ${ROUTE_DATA.length}개 추천 코스를 불러왔습니다.`;
+      return;
+    }
+
     const response = await fetch(COURSE_DATA_URL, { cache: 'no-store' });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const payload = await response.json();
@@ -3616,6 +3680,13 @@ async function loadCultureResources() {
   }
 
   try {
+    const apiResources = await fetchDataArrayFromApi(MARU_API_PATHS.places);
+    if (apiResources) {
+      applyCultureResources(apiResources);
+      cultureResourceLoadMessage = `${makeMaruApiUrl(MARU_API_PATHS.places)}에서 ${CULTURE_RESOURCES.length}개 장소를 불러왔습니다.`;
+      return;
+    }
+
     const response = await fetch(CULTURE_RESOURCE_DATA_URL, { cache: 'no-store' });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const payload = await response.json();
@@ -3627,11 +3698,16 @@ async function loadCultureResources() {
   }
 }
 
-async function loadDynamicArray(url, fallback) {
+async function loadDynamicArray(url, fallback, options = {}) {
   const overrideItems = getDataOverride(url);
   if (overrideItems) return overrideItems;
 
   try {
+    if (options.apiPath) {
+      const apiItems = await fetchDataArrayFromApi(options.apiPath);
+      if (apiItems) return apiItems;
+    }
+
     const response = await fetch(url, { cache: 'no-store' });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const payload = await response.json();
@@ -3648,9 +3724,9 @@ async function loadDynamicAppData() {
     loadDynamicArray(DYNAMIC_DATA_URLS.weather, WEATHER_DATA),
     loadDynamicArray(DYNAMIC_DATA_URLS.support, SUPPORT_DATA),
     loadDynamicArray(DYNAMIC_DATA_URLS.passport, PASSPORT_DATA),
-    loadDynamicArray(DYNAMIC_DATA_URLS.publicDataSources, PUBLIC_DATA_SOURCES),
-    loadDynamicArray(DYNAMIC_DATA_URLS.festivals, FESTIVAL_DATA),
-    loadDynamicArray(DYNAMIC_DATA_URLS.heritage, HERITAGE_DATA)
+    loadDynamicArray(DYNAMIC_DATA_URLS.publicDataSources, PUBLIC_DATA_SOURCES, { apiPath: MARU_API_PATHS.publicDataSources }),
+    loadDynamicArray(DYNAMIC_DATA_URLS.festivals, FESTIVAL_DATA, { apiPath: MARU_API_PATHS.festivals }),
+    loadDynamicArray(DYNAMIC_DATA_URLS.heritage, HERITAGE_DATA, { apiPath: MARU_API_PATHS.heritage })
   ]);
 
   ROUTE_BLUEPRINTS = routeBlueprints;
