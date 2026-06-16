@@ -14,6 +14,7 @@ import java.util.List;
 public class Course {
 
   @Id
+  @Column(length = 120)
   private String id;
 
   @Column(name = "display_order")
@@ -25,15 +26,19 @@ public class Course {
   @Column(name = "title_en")
   private String titleEn;
 
+  @Column(length = 120)
   private String theme;
 
   @Column(name = "target_json", columnDefinition = "json")
   private String targetJson;
 
+  @Column(length = 80)
   private String duration;
+
+  @Column(length = 80)
   private String budget;
 
-  @Column(name = "indoor_outdoor")
+  @Column(name = "indoor_outdoor", length = 80)
   private String indoorOutdoor;
 
   @Column(name = "recommended_time_json", columnDefinition = "json")
@@ -41,16 +46,16 @@ public class Course {
 
   private Integer score;
 
-  @Column(name = "walking_ko")
+  @Column(name = "walking_ko", length = 120)
   private String walkingKo;
 
-  @Column(name = "walking_en")
+  @Column(name = "walking_en", length = 120)
   private String walkingEn;
 
-  @Column(name = "fee_ko")
+  @Column(name = "fee_ko", length = 120)
   private String feeKo;
 
-  @Column(name = "fee_en")
+  @Column(name = "fee_en", length = 120)
   private String feeEn;
 
   @Column(name = "ai_summary_ko", columnDefinition = "TEXT")
@@ -74,14 +79,16 @@ public class Course {
   @Column(name = "keywords_json", columnDefinition = "json")
   private String keywordsJson;
 
+  @Column(length = 500)
   private String image;
 
   @Column(name = "image_prompt", columnDefinition = "TEXT")
   private String imagePrompt;
 
-  @Column(name = "public_data_source")
+  @Column(name = "public_data_source", length = 500)
   private String publicDataSource;
 
+  @Column(length = 500)
   private String source;
 
   @Column(name = "map_links_json", columnDefinition = "json")
@@ -90,6 +97,69 @@ public class Course {
   @OneToMany(mappedBy = "course")
   @OrderBy("sortOrder ASC")
   private List<CoursePlace> coursePlaces = new ArrayList<>();
+
+  protected Course() {
+  }
+
+  public static Course create(
+      String id,
+      Integer displayOrder,
+      String titleKo,
+      String titleEn,
+      String theme,
+      String targetJson,
+      String duration,
+      String budget,
+      String indoorOutdoor,
+      String recommendedTimeJson,
+      Integer score,
+      String walkingKo,
+      String walkingEn,
+      String feeKo,
+      String feeEn,
+      String aiSummaryKo,
+      String aiSummaryEn,
+      String reasonKo,
+      String reasonEn,
+      String tipKo,
+      String tipEn,
+      String keywordsJson,
+      String image,
+      String imagePrompt,
+      String publicDataSource,
+      String source,
+      String mapLinksJson
+  ) {
+    Course course = new Course();
+    course.id = id;
+    course.displayOrder = displayOrder;
+    course.titleKo = titleKo;
+    course.titleEn = titleEn;
+    course.theme = theme;
+    course.targetJson = targetJson;
+    course.duration = duration;
+    course.budget = budget;
+    course.indoorOutdoor = indoorOutdoor;
+    course.recommendedTimeJson = recommendedTimeJson;
+    course.score = score;
+    course.walkingKo = walkingKo;
+    course.walkingEn = walkingEn;
+    course.feeKo = feeKo;
+    course.feeEn = feeEn;
+    course.aiSummaryKo = aiSummaryKo;
+    course.aiSummaryEn = aiSummaryEn;
+    course.reasonKo = reasonKo;
+    course.reasonEn = reasonEn;
+    course.tipKo = tipKo;
+    course.tipEn = tipEn;
+    course.keywordsJson = keywordsJson;
+    course.image = image;
+    course.imagePrompt = imagePrompt;
+    course.publicDataSource = publicDataSource;
+    course.source = source;
+    course.mapLinksJson = mapLinksJson;
+    return course;
+  }
 
   public String getId() {
     return id;

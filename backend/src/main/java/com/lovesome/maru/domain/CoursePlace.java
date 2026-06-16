@@ -27,6 +27,17 @@ public class CoursePlace {
 
   private Integer sortOrder;
 
+  protected CoursePlace() {
+  }
+
+  public static CoursePlace create(Course course, Place place, Integer sortOrder) {
+    CoursePlace coursePlace = new CoursePlace();
+    coursePlace.course = course;
+    coursePlace.place = place;
+    coursePlace.sortOrder = sortOrder;
+    return coursePlace;
+  }
+
   public Long getId() {
     return id;
   }

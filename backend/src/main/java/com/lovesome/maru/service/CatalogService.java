@@ -44,7 +44,7 @@ public class CatalogService {
   }
 
   public List<CourseDto> getCourses() {
-    return courseRepository.findAllByOrderByDisplayOrderAsc().stream()
+    return courseRepository.findAllWithPlacesOrderByDisplayOrder().stream()
         .map(mapper::toCourseDto)
         .toList();
   }

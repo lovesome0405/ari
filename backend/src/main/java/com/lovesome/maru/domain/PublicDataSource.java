@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 public class PublicDataSource {
 
   @Id
+  @Column(length = 120)
   private String id;
 
   @Column(nullable = false)
@@ -31,6 +32,31 @@ public class PublicDataSource {
 
   @Column(name = "future_integration", columnDefinition = "TEXT")
   private String futureIntegration;
+
+  protected PublicDataSource() {
+  }
+
+  public static PublicDataSource create(
+      String id,
+      String name,
+      String provider,
+      String useForJson,
+      String useDescription,
+      String connectedFeature,
+      String currentStatus,
+      String futureIntegration
+  ) {
+    PublicDataSource source = new PublicDataSource();
+    source.id = id;
+    source.name = name;
+    source.provider = provider;
+    source.useForJson = useForJson;
+    source.useDescription = useDescription;
+    source.connectedFeature = connectedFeature;
+    source.currentStatus = currentStatus;
+    source.futureIntegration = futureIntegration;
+    return source;
+  }
 
   public String getId() {
     return id;

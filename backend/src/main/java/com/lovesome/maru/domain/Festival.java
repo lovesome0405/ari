@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 public class Festival {
 
   @Id
+  @Column(length = 120)
   private String id;
 
   @Column(name = "title_ko", nullable = false)
@@ -18,7 +19,10 @@ public class Festival {
   @Column(name = "title_en")
   private String titleEn;
 
+  @Column(length = 120)
   private String category;
+
+  @Column(length = 120)
   private String district;
 
   @Column(name = "venue_ko")
@@ -27,7 +31,7 @@ public class Festival {
   @Column(name = "venue_en")
   private String venueEn;
 
-  @Column(name = "date_type")
+  @Column(name = "date_type", length = 120)
   private String dateType;
 
   @Column(name = "recommended_for_json", columnDefinition = "json")
@@ -39,11 +43,46 @@ public class Festival {
   @Column(name = "related_place_ids_json", columnDefinition = "json")
   private String relatedPlaceIdsJson;
 
-  @Column(name = "public_data_source")
+  @Column(name = "public_data_source", length = 500)
   private String publicDataSource;
 
   @Column(name = "ai_use", columnDefinition = "TEXT")
   private String aiUse;
+
+  protected Festival() {
+  }
+
+  public static Festival create(
+      String id,
+      String titleKo,
+      String titleEn,
+      String category,
+      String district,
+      String venueKo,
+      String venueEn,
+      String dateType,
+      String recommendedForJson,
+      String relatedCourseIdsJson,
+      String relatedPlaceIdsJson,
+      String publicDataSource,
+      String aiUse
+  ) {
+    Festival festival = new Festival();
+    festival.id = id;
+    festival.titleKo = titleKo;
+    festival.titleEn = titleEn;
+    festival.category = category;
+    festival.district = district;
+    festival.venueKo = venueKo;
+    festival.venueEn = venueEn;
+    festival.dateType = dateType;
+    festival.recommendedForJson = recommendedForJson;
+    festival.relatedCourseIdsJson = relatedCourseIdsJson;
+    festival.relatedPlaceIdsJson = relatedPlaceIdsJson;
+    festival.publicDataSource = publicDataSource;
+    festival.aiUse = aiUse;
+    return festival;
+  }
 
   public String getId() {
     return id;

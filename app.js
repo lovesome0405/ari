@@ -332,7 +332,8 @@ const MARU_API_PATHS = {
   heritage: '/api/heritage',
   publicDataSources: '/api/public-data-sources'
 };
-let maruApiUnavailable = false;
+const maruApiFailedPaths = new Set();
+let maruApiHostUnavailable = false;
 let cultureResourceLoadStatus = 'fallback';
 let cultureResourceLoadMessage = '';
 let courseDataLoadStatus = 'fallback';
@@ -3607,7 +3608,7 @@ function makeMaruApiUrl(path) {
 
 async function fetchDataArrayFromApi(path) {
   const apiUrl = makeMaruApiUrl(path);
-  if (!apiUrl || maruApiUnavailable) return null;
+  if (!apiUrl || maruApiHostUnavailable || maruApiFailedPaths.has(path)) return null;
 
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), MARU_API_TIMEOUT_MS);
@@ -3618,7 +3619,15 @@ async function fetchDataArrayFromApi(path) {
     const items = Array.isArray(payload) ? payload : (payload.items || payload.data || []);
     return Array.isArray(items) && items.length ? items : null;
   } catch (error) {
-    maruApiUnavailable = true;
+    const message = String(error?.message || '');
+    const isConnectionFailure = error?.name === 'AbortError'
+        || error instanceof TypeError
+        || /failed to fetch|networkerror|load failed/i.test(message);
+    if (isConnectionFailure) {
+      maruApiHostUnavailable = true;
+    } else {
+      maruApiFailedPaths.add(path);
+    }
     return null;
   } finally {
     window.clearTimeout(timeout);

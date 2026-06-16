@@ -14,7 +14,7 @@ Seoul Heritage Guide for Global Travelers
 - Server = 조건 필터링과 추천 점수
 - AI = 쉬운 문화 해설
 
-현재 버전은 GitHub Pages에서 동작하는 정적 웹앱 시제품입니다. 문화자원 JSON 데이터와 JavaScript 추천 로직으로 핵심 흐름을 구현했으며, 향후 Spring Boot + MySQL 기반 백엔드로 확장할 수 있습니다.
+현재 버전은 GitHub Pages에서 동작하는 프론트엔드 시제품과 `backend/`의 Spring Boot + MySQL 조회 API 뼈대를 함께 포함합니다. 프론트는 서버 API를 먼저 시도하고 실패하면 기존 정적 JSON으로 fallback하며, 백엔드는 seed JSON을 MySQL에 자동 적재해 실제 조회 API를 반환할 수 있습니다.
 
 ## 실행 방법
 
@@ -63,6 +63,11 @@ about.html          # 서비스 설명
 style.css           # 모바일 우선 디자인 시스템, 이미지 프레임, 아리 챗봇 UI
 app.js              # 데이터, localStorage, 렌더링, 인터랙션, 아리 provider/fallback
 ari_culture_resources_appjs.json # 정적 앱에서 fetch하는 서울 전통문화 장소 데이터
+data/courses.json   # 공공데이터 기반 추천 코스 seed
+data/festivals.json # 문화행사 seed
+data/heritage.json  # 국가유산 seed
+data/public-data-sources.json # 공공데이터 출처 seed
+backend/            # Spring Boot + MySQL API 서버와 seed/import 코드
 manifest.json       # PWA 준비 파일, SVG 아이콘 참조
 service-worker.js   # 간단한 앱 셸 캐시
 image-prompts.md    # AI 이미지 생성 프롬프트
@@ -259,31 +264,57 @@ https://map.kakao.com/link/by/walk/...
 
 현재 날씨 화면은 날씨 조건에 따른 추천 흐름을 보여주는 시제품 구조이며, 실제 날씨 API는 아직 연동하지 않았습니다. 실제 운영 시 기상청 또는 외부 날씨 API와 연동할 수 있습니다.
 
-## Spring Boot + MySQL 연동 계획
+## Spring Boot + MySQL Backend
 
-현재 저장소에는 백엔드 코드가 없습니다. 정적 웹앱에서 `ari_culture_resources_appjs.json`과 `app.js`가 DB/Server 역할 일부를 대신합니다. 아래 항목은 향후 확장 계획입니다.
+`backend/`에는 Spring Boot 3.3 + Java 21 + MySQL 기반 조회 API가 추가되어 있습니다.
 
-Spring Boot:
+구현된 테이블:
 
-- 문화자원 API
-- 공식 출처 검증 상태 관리
-- 추천 조건 저장
-- 추천 점수 계산
-- 코스 상세 응답
-- 저장 코스와 패스포트 관리
-- 지도/날씨 API 중계
+- `places`
+- `courses`
+- `course_places`
+- `festivals`
+- `heritage`
+- `public_data_sources`
 
-MySQL:
+서버 시작 시 다음 seed JSON을 읽어 DB가 비어 있는 항목을 자동 적재합니다.
 
-- cultural_resources
-- route_templates
-- route_places
-- source_groups
-- recommendation_factors
-- user_preferences
-- saved_routes
-- passport_stamps
-- resource_verification_logs
+- `backend/src/main/resources/seed/courses.json`
+- `backend/src/main/resources/seed/festivals.json`
+- `backend/src/main/resources/seed/heritage.json`
+- `backend/src/main/resources/seed/public-data-sources.json`
+
+실행:
+
+```powershell
+cd backend
+$env:MARU_DB_URL="jdbc:mysql://localhost:3306/maru?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=utf8"
+$env:MARU_DB_USERNAME="maru"
+$env:MARU_DB_PASSWORD="maru_password"
+mvn spring-boot:run
+```
+
+API 테스트:
+
+```powershell
+curl http://localhost:8080/api/courses
+curl http://localhost:8080/api/courses/palace-history-course
+curl http://localhost:8080/api/public-data-sources
+```
+
+프론트 API fallback:
+
+- 로컬 프론트는 `http://localhost:8080/api/...`를 먼저 시도합니다.
+- API가 실패하면 기존 `data/*.json`과 앱 내부 fallback 데이터로 내려갑니다.
+- endpoint별 실패 관리가 적용되어 한 API 실패가 다른 API 호출을 전부 막지 않습니다.
+- GitHub Pages에서는 별도 API base URL을 지정하지 않으면 정적 JSON으로 동작합니다.
+
+현재 한계:
+
+- 실제 공공데이터 API 동기화는 아직 없습니다.
+- 실제 생성형 AI API 호출은 아직 없습니다.
+- 로그인/사용자 저장 기능은 아직 없습니다.
+- 관리자 CRUD API와 운영 배치 동기화는 다음 단계입니다.
 
 ## AI 확장 계획
 

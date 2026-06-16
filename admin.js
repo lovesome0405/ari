@@ -16,6 +16,7 @@ const SITE_PUBLISH_PATHS = [
   'about.html',
   'admin.html',
   'admin.js',
+  'ai-photo.html',
   'app.js',
   'culture-data.html',
   'index.html',
@@ -32,6 +33,16 @@ const SITE_PUBLISH_PATHS = [
   'ari_culture_resources_appjs.json',
   'image-prompts.md',
   'assets/favicon.svg',
+  'assets/images/routes/course-palace.webp',
+  'assets/images/routes/course-hanok.webp',
+  'assets/images/routes/course-craft.webp',
+  'assets/images/routes/course-market.webp',
+  'assets/images/routes/course-night.webp',
+  'assets/images/routes/course-rainy.webp',
+  'data/courses.json',
+  'data/public-data-sources.json',
+  'data/festivals.json',
+  'data/heritage.json',
   'data/passport.json',
   'data/route_blueprints.json',
   'data/support.json',
@@ -46,8 +57,28 @@ const ADMIN_DATASETS = {
   },
   routeBlueprints: {
     path: 'data/route_blueprints.json',
-    label: '추천 코스',
+    label: '추천 코스 블루프린트',
     description: '경로 조합과 코스 블루프린트'
+  },
+  courses: {
+    path: 'data/courses.json',
+    label: '공모전 추천코스',
+    description: '공공데이터 기반 최종 추천 코스와 장소 데이터'
+  },
+  publicDataSources: {
+    path: 'data/public-data-sources.json',
+    label: '공공데이터 출처',
+    description: 'TourAPI, 서울시, 국가유산 등 핵심 데이터 출처'
+  },
+  festivals: {
+    path: 'data/festivals.json',
+    label: '문화행사',
+    description: '추천 코스와 연결되는 문화행사 seed 데이터'
+  },
+  heritage: {
+    path: 'data/heritage.json',
+    label: '국가유산',
+    description: '국가유산 공간정보 기반 해설 seed 데이터'
   },
   weather: {
     path: 'data/weather.json',

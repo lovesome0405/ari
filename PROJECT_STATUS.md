@@ -13,7 +13,7 @@
 - 메인 페이지: `index.html`에서 서비스 소개, 언어 선택, 빠른 시작, 시간대별 이미지 히어로를 제공한다.
 - 조건 선택 플래너: `planner.html`에서 지역, 시간, 관심사, 동행 정보, 예산, 도보 부담, 실내/실외, 자연어 요청을 단계별로 선택하고 `localStorage`에 저장한다.
 - 추천코스 카드: `routes.html`의 `[data-route-list]` 영역을 `app.js`가 동적으로 렌더링한다.
-- 추천코스 데이터: 장소 데이터는 `ari_culture_resources_appjs.json`, 추천 코스는 `data/courses.json`을 우선 로드하고, 실패 시 `app.js` 내부 fallback seed data를 사용한다.
+- 추천코스 데이터: 로컬 개발 환경에서는 서버 API를 우선 시도하고, 실패 시 `ari_culture_resources_appjs.json`, `data/courses.json`, `app.js` 내부 fallback seed data를 사용한다.
 - 코스 상세: `route-detail.html`에서 선택한 코스의 추천 이유, 이동 흐름, 장소 카드, AI식 문화 해설, 키워드, 방문 팁, 출처 안내를 렌더링한다.
 - 지도 연결: `map.html`과 상세 페이지에서 Google Maps, Naver Map, Kakao Map 중 선택한 지도 서비스로 코스 또는 개별 장소를 열 수 있다.
 - 위치 기반 추천: `map.html`에서 브라우저 위치 권한을 허용하면 현재 위치와 장소 좌표를 비교해 가까운 서울 전통문화 장소를 거리순으로 표시한다. 위치 정보는 저장하지 않는다.
@@ -39,15 +39,15 @@
   - `requestNearbyLocation()`은 브라우저 Geolocation API를 사용해 가까운 장소 추천 결과를 DOM에 반영한다.
   - `sendAriMessage()`와 `askAri()`는 사용자 입력을 메시지 배열에 추가하고 Ari 응답을 화면에 렌더링한다.
 - 한계:
-  - 서버/DB 없음
-  - API 실시간 호출 없음
+  - 운영 서버/DB 배포는 아직 없음
+  - 공공데이터 API 실시간 호출 없음
   - 운영 데이터 저장 없음
   - GitHub Pages 정적 호스팅 특성상 API 키가 필요한 공공데이터 실시간 호출은 직접 처리하지 않음
   - Ari는 기본적으로 앱 데이터 기반 fallback 답변이며, 실제 생성형 AI API 연동은 아직 운영 구조가 아님
 - 결론:
   - 현재는 "GitHub Pages 기반 정적 배포 + JavaScript 동적 인터랙션" 구조다.
   - 단순 HTML 여러 페이지 이동만 있는 정적 소개 페이지가 아니라, JSON 데이터, JS 상태값, 이벤트 리스너, localStorage, 동적 렌더링이 적용된 프론트엔드 기반 동적 웹페이지다.
-  - 다만 Spring Boot/MySQL 같은 서버·DB 기반 동적 웹앱은 아직 아니다.
+  - 현재 프론트 배포는 여전히 GitHub Pages 기반이지만, 별도 `backend/` Spring Boot/MySQL 서버를 실행하면 DB 조회 API 데이터를 우선 사용할 수 있다.
 
 ## 4. 공공데이터 활용 방향
 - 한국관광공사 TourAPI 관광정보
@@ -160,7 +160,7 @@
 - 혼잡도 / crowded / congestion
 
 ### 현재 한계
-- 서버/DB 없음
+- 서버/DB 뼈대는 추가되었지만 운영 배포는 아직 없음
 - 실시간 공공데이터 API 미연동
 - 실제 이미지 생성 API 미연동
 - 사용자 계정 기반 저장 기능 없음
@@ -214,10 +214,85 @@
 - 이번 단계에서는 OpenAI API나 공공데이터 API 실시간 호출을 구현하지 않았다.
 
 ### 현재 한계
-- DB 테이블과 조회 API 뼈대는 있지만, 정적 JSON을 DB로 자동 적재하는 seed/import 기능은 아직 없다.
+- DB 테이블과 조회 API 뼈대는 준비되었고, 다음 단계에서 정적 JSON을 DB로 자동 적재하는 seed/import 기능을 추가한다.
 - 로그인, 사용자 저장, 관리자 입력 화면은 아직 없다.
 - 운영 서버 배포와 HTTPS API URL 연결은 별도 단계가 필요하다.
 - 실제 공공데이터 API 동기화와 생성형 AI 응답 생성은 서버 환경변수 기반 구조만 준비한 상태다.
 
 ### 3차 결론
 현재 MARU는 “GitHub Pages 프론트엔드 + 정적 JSON fallback”을 유지하면서, Spring Boot/MySQL 기반 서버 조회 API로 확장할 수 있는 하이브리드 구조가 되었다. 서버가 꺼져 있어도 기존 프론트는 깨지지 않고, 서버가 켜져 있으면 같은 화면에서 API 데이터를 우선 사용할 수 있다.
+
+## 9. JSON seed/import 및 API 실데이터 반환 기능 추가
+
+### 추가 목적
+정적 JSON으로 관리하던 추천코스, 문화행사, 국가유산, 공공데이터 출처를 MySQL에 자동 적재하고, 백엔드 API가 실제 DB 데이터를 반환하도록 만들었다.
+
+### seed/import 구조
+- `backend/src/main/resources/seed/courses.json`
+- `backend/src/main/resources/seed/festivals.json`
+- `backend/src/main/resources/seed/heritage.json`
+- `backend/src/main/resources/seed/public-data-sources.json`
+
+서버 시작 시 `SeedDataLoader`가 위 파일을 읽고 DB에 데이터가 없거나 특정 id가 없으면 자동 저장한다. 이미 같은 id가 있으면 중복 삽입하지 않는다.
+
+### DB 적재 대상
+- `courses`: 추천코스 6개
+- `places`: `courses.json`의 장소를 id 기준 중복 제거해 저장
+- `course_places`: 코스별 장소 순서를 `sort_order` 1부터 저장
+- `festivals`: 문화행사 6개
+- `heritage`: 국가유산 10개
+- `public_data_sources`: 공공데이터 출처 5개
+
+### 백엔드 보강
+- Entity에 JPA용 기본 생성자와 저장용 정적 factory 메서드를 추가했다.
+- `CoursePlaceRepository`를 추가해 코스-장소 연결 중복을 방지한다.
+- 코스 목록 조회는 `distinct` 쿼리로 코스-장소 join 시 중복 코스가 반환되지 않게 보완했다.
+
+### 프론트 fallback 개선
+- 기존 API 우선 + 정적 JSON fallback 구조를 유지했다.
+- API 실패 상태를 endpoint별로 관리하도록 바꾸었다.
+- `/api/courses`가 실패해도 `/api/places`, `/api/festivals`, `/api/heritage`, `/api/public-data-sources`는 별도로 시도할 수 있다.
+- 서버가 완전히 꺼져 있거나 네트워크가 끊긴 경우에는 빠르게 정적 JSON fallback으로 내려간다.
+
+### admin.js 보강
+관리 콘솔의 편집/전체 반영 목록에 다음 공모전 핵심 파일을 추가했다.
+
+- `ai-photo.html`
+- `data/courses.json`
+- `data/public-data-sources.json`
+- `data/festivals.json`
+- `data/heritage.json`
+- `assets/images/routes/course-palace.webp`
+- `assets/images/routes/course-hanok.webp`
+- `assets/images/routes/course-craft.webp`
+- `assets/images/routes/course-market.webp`
+- `assets/images/routes/course-night.webp`
+- `assets/images/routes/course-rainy.webp`
+
+### 실행 및 API 테스트
+MySQL DB 생성 후 환경변수를 설정하고 백엔드를 실행한다.
+
+```powershell
+cd backend
+$env:MARU_DB_URL="jdbc:mysql://localhost:3306/maru?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=utf8"
+$env:MARU_DB_USERNAME="maru"
+$env:MARU_DB_PASSWORD="maru_password"
+mvn spring-boot:run
+```
+
+API 확인:
+
+```powershell
+curl http://localhost:8080/api/courses
+curl http://localhost:8080/api/courses/palace-history-course
+curl http://localhost:8080/api/places
+curl http://localhost:8080/api/festivals
+curl http://localhost:8080/api/heritage
+curl http://localhost:8080/api/public-data-sources
+```
+
+### 현재 한계
+- 실제 공공데이터 API 동기화는 아직 없다.
+- 실제 생성형 AI API 호출은 아직 없다.
+- 로그인/사용자 저장 기능은 아직 없다.
+- seed JSON 자동 적재는 구현되었지만, 관리자 CRUD API와 운영 배치 동기화는 아직 없다.

@@ -11,9 +11,10 @@ import org.springframework.data.repository.query.Param;
 public interface CourseRepository extends JpaRepository<Course, String> {
 
   @EntityGraph(attributePaths = {"coursePlaces", "coursePlaces.place"})
-  List<Course> findAllByOrderByDisplayOrderAsc();
+  @Query("select distinct c from Course c order by c.displayOrder asc")
+  List<Course> findAllWithPlacesOrderByDisplayOrder();
 
   @EntityGraph(attributePaths = {"coursePlaces", "coursePlaces.place"})
-  @Query("select c from Course c where c.id = :id")
+  @Query("select distinct c from Course c where c.id = :id")
   Optional<Course> findByIdWithPlaces(@Param("id") String id);
 }
