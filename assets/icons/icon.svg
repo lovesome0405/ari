@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">MARU app icon</title>
+  <desc id="desc">A dark square icon with the MR monogram and a simple heritage roof line.</desc>
+  <rect width="512" height="512" rx="112" fill="#07111f"/>
+  <path d="M112 220L256 116L400 220" fill="none" stroke="#f2c35b" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M148 238H364" fill="none" stroke="#70d8d2" stroke-width="18" stroke-linecap="round"/>
+  <text x="256" y="340" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="118" font-weight="800" letter-spacing="8" fill="#fffaf0">MR</text>
+  <circle cx="384" cy="132" r="22" fill="#f2c35b"/>
+</svg>

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "jeongdong-culture-night-sample",
+    "title": {
+      "ko": "정동 문화 야행 샘플",
+      "en": "Jeongdong Culture Night Sample"
+    },
+    "category": "festival",
+    "district": "중구",
+    "venue": {
+      "ko": "정동 일대",
+      "en": "Jeongdong area"
+    },
+    "dateType": "seasonal",
+    "recommendedFor": ["evening", "modern-history", "performance"],
+    "relatedCourseIds": ["modern-seoul-performing-heritage"],
+    "publicDataSource": "서울시 문화행사 정보",
+    "aiUse": "근대 서울과 전통공연 코스의 저녁 추천 사유 생성에 활용"
+  },
+  {
+    "id": "palace-cultural-program-sample",
+    "title": {
+      "ko": "궁궐 문화 프로그램 샘플",
+      "en": "Palace Cultural Program Sample"
+    },
+    "category": "heritage-program",
+    "district": "종로구",
+    "venue": {
+      "ko": "경복궁 및 주변 박물관",
+      "en": "Gyeongbokgung Palace and nearby museums"
+    },
+    "dateType": "variable",
+    "recommendedFor": ["palace", "first-time-visitor", "history"],
+    "relatedCourseIds": ["royal-culture-local-life"],
+    "publicDataSource": "서울시 문화행사 정보 / 한국관광공사 TourAPI",
+    "aiUse": "외국인에게 행사 일정 확인 필요성을 안내하는 Ari 응답에 활용"
+  },
+  {
+    "id": "traditional-sound-exhibit-sample",
+    "title": {
+      "ko": "전통 소리 전시 샘플",
+      "en": "Traditional Sound Exhibit Sample"
+    },
+    "category": "exhibition",
+    "district": "종로구",
+    "venue": {
+      "ko": "서울우리소리박물관",
+      "en": "Seoul Museum of Korean Folk Music"
+    },
+    "dateType": "ongoing-or-seasonal",
+    "recommendedFor": ["music", "indoor", "rainy-day"],
+    "relatedCourseIds": ["hidden-sounds-hanok-streets", "rainy-day-indoor-heritage"],
+    "publicDataSource": "서울시 문화행사 정보 / 문화기관 공식 안내",
+    "aiUse": "비 오는 날 실내 전통문화 추천과 소리문화 해설에 활용"
+  }
+]

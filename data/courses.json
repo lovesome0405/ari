@@ -1,0 +1,449 @@
+[
+  {
+    "id": "royal-culture-local-life",
+    "title": {
+      "ko": "궁궐 역사 산책 코스",
+      "en": "Royal Palace History Walk"
+    },
+    "theme": "palace",
+    "target": ["history", "architecture", "first-time-visitor"],
+    "duration": "3-4 hours",
+    "budget": "low",
+    "indoorOutdoor": "outdoor",
+    "recommendedTime": ["morning", "afternoon"],
+    "score": 92,
+    "walking": {
+      "ko": "보통",
+      "en": "Moderate"
+    },
+    "fee": {
+      "ko": "저비용",
+      "en": "Low cost"
+    },
+    "places": [
+      {
+        "id": "national-palace-museum",
+        "name": {
+          "ko": "국립고궁박물관",
+          "en": "National Palace Museum"
+        },
+        "category": "museum",
+        "address": "서울특별시 종로구 효자로 12",
+        "lat": 37.5769,
+        "lng": 126.9749,
+        "description": {
+          "ko": "조선 왕실 유물과 의례를 먼저 이해할 수 있는 박물관입니다.",
+          "en": "A museum that introduces Joseon royal artifacts and court rituals before the palace visit."
+        },
+        "publicDataSource": "한국관광공사 TourAPI / 문화기관 공식 안내"
+      },
+      {
+        "id": "gyeongbokgung-palace",
+        "name": {
+          "ko": "경복궁",
+          "en": "Gyeongbokgung Palace"
+        },
+        "category": "heritage",
+        "address": "서울특별시 종로구 사직로 161",
+        "lat": 37.579617,
+        "lng": 126.977041,
+        "description": {
+          "ko": "조선 왕조의 대표 궁궐입니다.",
+          "en": "A representative royal palace of the Joseon Dynasty."
+        },
+        "publicDataSource": "국가유산청 문화재 공간정보 / 한국관광공사 TourAPI"
+      },
+      {
+        "id": "national-folk-museum",
+        "name": {
+          "ko": "국립민속박물관",
+          "en": "National Folk Museum of Korea"
+        },
+        "category": "museum",
+        "address": "서울특별시 종로구 삼청로 37",
+        "lat": 37.5816,
+        "lng": 126.9787,
+        "description": {
+          "ko": "왕실문화 이후 한국인의 생활문화를 이어서 볼 수 있습니다.",
+          "en": "A place to continue from royal culture into everyday Korean life and folk culture."
+        },
+        "publicDataSource": "한국관광공사 TourAPI / 문화기관 공식 안내"
+      },
+      {
+        "id": "tongin-market",
+        "name": {
+          "ko": "통인시장",
+          "en": "Tongin Market"
+        },
+        "category": "traditional-market",
+        "address": "서울특별시 종로구 자하문로15길 일대",
+        "lat": 37.5808,
+        "lng": 126.9697,
+        "description": {
+          "ko": "전통이 오늘의 생활문화와 만나는 시장입니다.",
+          "en": "A market where heritage connects with local everyday life."
+        },
+        "publicDataSource": "서울시 전통시장 정보 / 한국관광공사 TourAPI"
+      }
+    ],
+    "aiSummary": {
+      "ko": "조선 왕실 문화와 서울의 역사적 중심지, 생활문화를 자연스럽게 경험할 수 있는 코스입니다.",
+      "en": "This route helps visitors experience Joseon royal culture, Seoul's historical center, and everyday local culture."
+    },
+    "reason": {
+      "ko": "궁궐과 박물관, 전통시장을 하나의 이야기로 연결해 처음 방문한 외국인도 한국 전통문화의 흐름을 이해하기 쉽습니다.",
+      "en": "It connects a palace, museums, and a traditional market into one story, making Korean heritage easy for first-time international visitors to understand."
+    },
+    "tip": {
+      "ko": "궁궐 휴궁일, 박물관 운영시간, 시장 휴무일은 방문 전 공식 출처에서 확인하세요.",
+      "en": "Check palace closing days, museum hours, and market holidays through official sources before visiting."
+    },
+    "keywords": [
+      {
+        "name": "Joseon Dynasty",
+        "description": {
+          "ko": "조선 왕실문화와 국가 질서를 이해하는 핵심 키워드입니다.",
+          "en": "A key lens for understanding royal culture and state order."
+        }
+      },
+      {
+        "name": "Royal Palace",
+        "description": {
+          "ko": "왕실 의례, 건축, 상징을 볼 수 있는 전통문화 공간입니다.",
+          "en": "A heritage space for royal rituals, architecture, and symbols."
+        }
+      },
+      {
+        "name": "Traditional Market",
+        "description": {
+          "ko": "전통이 오늘의 생활과 만나는 지역 문화 공간입니다.",
+          "en": "A local space where heritage meets daily life."
+        }
+      }
+    ],
+    "image": "assets/images/home/day-1.webp",
+    "mapLinks": {
+      "google": "",
+      "naver": "",
+      "kakao": ""
+    }
+  },
+  {
+    "id": "hidden-sounds-hanok-streets",
+    "title": {
+      "ko": "숨은 소리문화와 한옥 골목 코스",
+      "en": "Hidden Sounds and Hanok Streets"
+    },
+    "theme": "hanok-sound",
+    "target": ["music", "hanok", "slow-walk", "hidden-place"],
+    "duration": "2-3 hours",
+    "budget": "low",
+    "indoorOutdoor": "mixed",
+    "recommendedTime": ["afternoon", "evening"],
+    "score": 86,
+    "walking": {
+      "ko": "낮음~보통",
+      "en": "Low to moderate"
+    },
+    "fee": {
+      "ko": "무료 중심",
+      "en": "Mostly free"
+    },
+    "places": [
+      {
+        "id": "unhyeongung",
+        "name": {
+          "ko": "운현궁",
+          "en": "Unhyeongung"
+        },
+        "category": "heritage",
+        "address": "서울특별시 종로구 삼일대로 일대",
+        "lat": 37.5761,
+        "lng": 126.987,
+        "description": {
+          "ko": "궁궐 밖 왕실가의 생활 분위기를 느낄 수 있는 공간입니다.",
+          "en": "A royal residence that shows the atmosphere of elite life beyond the palace."
+        },
+        "publicDataSource": "국가유산청 문화재 공간정보 / 문화기관 공식 안내"
+      },
+      {
+        "id": "seoul-folk-music-museum",
+        "name": {
+          "ko": "서울우리소리박물관",
+          "en": "Seoul Museum of Korean Folk Music"
+        },
+        "category": "museum",
+        "address": "서울특별시 종로구 율곡로 일대",
+        "lat": 37.5759,
+        "lng": 126.9902,
+        "description": {
+          "ko": "한국의 민요와 전통 소리문화를 감각적으로 만날 수 있는 박물관입니다.",
+          "en": "A museum for experiencing Korean folk songs and traditional sound culture."
+        },
+        "publicDataSource": "서울시 문화시설 정보 / 문화기관 공식 안내"
+      },
+      {
+        "id": "ikseon-dong-hanok-street",
+        "name": {
+          "ko": "익선동 한옥거리",
+          "en": "Ikseon-dong Hanok Street"
+        },
+        "category": "hanok-street",
+        "address": "서울특별시 종로구 익선동 일대",
+        "lat": 37.5742,
+        "lng": 126.9898,
+        "description": {
+          "ko": "도시 골목 안에서 한옥의 분위기와 현대적 재해석을 함께 볼 수 있습니다.",
+          "en": "A city alley where hanok atmosphere meets contemporary reinterpretation."
+        },
+        "publicDataSource": "서울 관광정보 / 한국관광공사 TourAPI"
+      }
+    ],
+    "aiSummary": {
+      "ko": "짧은 동선 안에서 왕실가의 생활 공간, 전통 소리문화, 한옥 골목을 연결하는 조용한 산책 코스입니다.",
+      "en": "A compact route connecting a royal residence, traditional sound culture, and hanok streets."
+    },
+    "reason": {
+      "ko": "많이 걷지 않아도 한옥과 전통 소리문화를 함께 경험할 수 있어 느린 여행을 원하는 방문객에게 좋습니다.",
+      "en": "It is good for visitors who want a slower route that combines hanok atmosphere with traditional sound culture."
+    },
+    "tip": {
+      "ko": "박물관 프로그램 시간과 익선동 혼잡도를 미리 확인하면 더 편안하게 이동할 수 있습니다.",
+      "en": "Check museum program times and Ikseon-dong crowd levels before visiting."
+    },
+    "keywords": [
+      {
+        "name": "Gugak",
+        "description": {
+          "ko": "한국 전통음악과 소리문화를 뜻합니다.",
+          "en": "Traditional Korean music and sound culture."
+        }
+      },
+      {
+        "name": "Hanok Alley",
+        "description": {
+          "ko": "전통 주거 양식과 도시 골목이 만나는 공간입니다.",
+          "en": "A space where traditional housing and city streets meet."
+        }
+      }
+    ],
+    "image": "assets/images/home/evening-2.webp",
+    "mapLinks": {
+      "google": "",
+      "naver": "",
+      "kakao": ""
+    }
+  },
+  {
+    "id": "modern-seoul-performing-heritage",
+    "title": {
+      "ko": "근대 서울과 전통예술 코스",
+      "en": "Modern Seoul and Performing Heritage"
+    },
+    "theme": "performance",
+    "target": ["modern-history", "performance", "evening", "architecture"],
+    "duration": "3 hours",
+    "budget": "medium",
+    "indoorOutdoor": "mixed",
+    "recommendedTime": ["afternoon", "evening"],
+    "score": 88,
+    "walking": {
+      "ko": "낮음",
+      "en": "Low"
+    },
+    "fee": {
+      "ko": "유료 가능",
+      "en": "Paid options"
+    },
+    "places": [
+      {
+        "id": "deoksugung-palace",
+        "name": {
+          "ko": "덕수궁",
+          "en": "Deoksugung Palace"
+        },
+        "category": "heritage",
+        "address": "서울특별시 중구 세종대로 99",
+        "lat": 37.5658,
+        "lng": 126.9751,
+        "description": {
+          "ko": "대한제국과 근대 서울의 분위기가 함께 남아 있는 궁궐입니다.",
+          "en": "A palace where Korean Empire history and modern Seoul meet."
+        },
+        "publicDataSource": "국가유산청 문화재 공간정보 / 한국관광공사 TourAPI"
+      },
+      {
+        "id": "deoksugung-stonewall-road",
+        "name": {
+          "ko": "덕수궁 돌담길",
+          "en": "Deoksugung Stonewall Road"
+        },
+        "category": "historic-walk",
+        "address": "서울특별시 중구 정동 일대",
+        "lat": 37.5662,
+        "lng": 126.9748,
+        "description": {
+          "ko": "궁궐 담장과 근대 건축이 이어지는 서울의 대표 산책길입니다.",
+          "en": "A signature Seoul walking street connecting palace walls and modern architecture."
+        },
+        "publicDataSource": "서울 관광정보 / 서울시 문화공간 정보"
+      },
+      {
+        "id": "national-jeongdong-theater",
+        "name": {
+          "ko": "국립정동극장",
+          "en": "National Jeongdong Theater"
+        },
+        "category": "performance",
+        "address": "서울특별시 중구 정동길 43",
+        "lat": 37.5664,
+        "lng": 126.9729,
+        "description": {
+          "ko": "전통공연과 문화예술 프로그램을 확인할 수 있는 공연장입니다.",
+          "en": "A theater where visitors can check traditional performance and cultural arts programs."
+        },
+        "publicDataSource": "서울시 문화행사 정보 / 공연장 공식 안내"
+      }
+    ],
+    "aiSummary": {
+      "ko": "덕수궁에서 근대 서울의 흐름을 보고, 돌담길 산책 후 전통공연으로 마무리하는 저녁형 코스입니다.",
+      "en": "An evening route that moves from Deoksugung's modern history to a stonewall walk and a traditional performance."
+    },
+    "reason": {
+      "ko": "근대 건축과 궁궐, 공연 경험을 함께 묶어 전통문화가 현대 도시 속에서 이어지는 방식을 보여줍니다.",
+      "en": "It combines modern architecture, a palace, and stage performance to show how heritage continues in the city."
+    },
+    "tip": {
+      "ko": "공연 일정과 예매 가능 여부를 먼저 확인하고 돌담길 산책 시간을 여유 있게 잡으세요.",
+      "en": "Check performance schedules and booking first, then leave enough time for the stonewall walk."
+    },
+    "keywords": [
+      {
+        "name": "Korean Empire",
+        "description": {
+          "ko": "근대 전환기 왕실문화와 서울을 이해하는 키워드입니다.",
+          "en": "A keyword for understanding royal culture during Korea's modern transition."
+        }
+      },
+      {
+        "name": "Performing Heritage",
+        "description": {
+          "ko": "전통예술을 무대 경험으로 만나는 문화유산입니다.",
+          "en": "Traditional arts experienced through the stage."
+        }
+      }
+    ],
+    "image": "assets/images/home/evening-4.webp",
+    "mapLinks": {
+      "google": "",
+      "naver": "",
+      "kakao": ""
+    }
+  },
+  {
+    "id": "rainy-day-indoor-heritage",
+    "title": {
+      "ko": "비 오는 날 실내 전통문화 코스",
+      "en": "Rainy-Day Indoor Heritage Route"
+    },
+    "theme": "rainy-indoor",
+    "target": ["rainy-day", "museum", "low-walking", "family"],
+    "duration": "2-3 hours",
+    "budget": "low",
+    "indoorOutdoor": "indoor",
+    "recommendedTime": ["morning", "afternoon"],
+    "score": 85,
+    "walking": {
+      "ko": "낮음",
+      "en": "Low"
+    },
+    "fee": {
+      "ko": "무료 중심",
+      "en": "Mostly free"
+    },
+    "places": [
+      {
+        "id": "national-palace-museum",
+        "name": {
+          "ko": "국립고궁박물관",
+          "en": "National Palace Museum"
+        },
+        "category": "museum",
+        "address": "서울특별시 종로구 효자로 12",
+        "lat": 37.5769,
+        "lng": 126.9749,
+        "description": {
+          "ko": "왕실 유물과 의례를 실내에서 이해할 수 있는 박물관입니다.",
+          "en": "An indoor museum for understanding royal artifacts and court rituals."
+        },
+        "publicDataSource": "한국관광공사 TourAPI / 문화기관 공식 안내"
+      },
+      {
+        "id": "national-folk-museum",
+        "name": {
+          "ko": "국립민속박물관",
+          "en": "National Folk Museum of Korea"
+        },
+        "category": "museum",
+        "address": "서울특별시 종로구 삼청로 37",
+        "lat": 37.5816,
+        "lng": 126.9787,
+        "description": {
+          "ko": "생활문화와 민속을 실내 전시로 살펴볼 수 있습니다.",
+          "en": "Indoor exhibitions for Korean everyday life and folk culture."
+        },
+        "publicDataSource": "한국관광공사 TourAPI / 문화기관 공식 안내"
+      },
+      {
+        "id": "seoul-folk-music-museum",
+        "name": {
+          "ko": "서울우리소리박물관",
+          "en": "Seoul Museum of Korean Folk Music"
+        },
+        "category": "museum",
+        "address": "서울특별시 종로구 율곡로 일대",
+        "lat": 37.5759,
+        "lng": 126.9902,
+        "description": {
+          "ko": "소리 기반 전시로 비 오는 날에도 감각적으로 즐기기 좋습니다.",
+          "en": "A sound-based museum experience that works well on rainy days."
+        },
+        "publicDataSource": "서울시 문화시설 정보 / 문화기관 공식 안내"
+      }
+    ],
+    "aiSummary": {
+      "ko": "비가 오거나 더운 날에도 실내 전시와 소리문화 중심으로 전통문화를 이해할 수 있는 코스입니다.",
+      "en": "This indoor route helps visitors understand heritage through museums and sound culture during rain or heat."
+    },
+    "reason": {
+      "ko": "우천 시 이동 부담을 줄이고 박물관 중심으로 문화 해설을 이어갈 수 있습니다.",
+      "en": "It reduces rainy-day walking burden while keeping the cultural interpretation flow inside museums."
+    },
+    "tip": {
+      "ko": "우산 이동이 부담되면 지하철역과 가까운 박물관부터 선택하세요.",
+      "en": "If rain makes walking difficult, start with museums closest to subway stations."
+    },
+    "keywords": [
+      {
+        "name": "Indoor Heritage",
+        "description": {
+          "ko": "날씨 영향을 줄이면서 전시와 해설로 문화를 이해하는 방식입니다.",
+          "en": "A way to understand heritage through exhibits while reducing weather impact."
+        }
+      },
+      {
+        "name": "Rainy-Day Plan",
+        "description": {
+          "ko": "우천 시 외국인 방문객이 이동 부담을 줄일 수 있는 대체 동선입니다.",
+          "en": "A backup route that reduces travel burden on rainy days."
+        }
+      }
+    ],
+    "image": "assets/images/home/day-3.webp",
+    "mapLinks": {
+      "google": "",
+      "naver": "",
+      "kakao": ""
+    }
+  }
+]

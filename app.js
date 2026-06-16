@@ -127,7 +127,7 @@ const HOME_TIME_IMAGES = {
       changeRoute: 'コース変更',
       eyebrow: 'Route Map',
       fallbackTitle: '選択したコース',
-      body: '実際のGPS連携は次のバージョンで提供予定です。今は地図サービスを選び、ルートを新しいタブで開けます。',
+      body: '位置情報を許可すると、近くのソウル伝統文化スポットを距離順に表示します。位置情報は保存されず、選択した地図サービスでコースも開けます。',
       selector: '地図を選択',
       selectorHint: '選択した地図サービスは次回も保持されます。',
       openRoute: '選択した地図でルートを開く',
@@ -137,9 +137,9 @@ const HOME_TIME_IMAGES = {
       lessWalking: '歩行少なめルート',
       rainyIndoor: '雨の日の屋内コース',
       nearby: '現在地周辺おすすめ',
-      lessWalkingToast: '歩行少なめルートは地図API連携後に提供されます。',
+      lessWalkingToast: '歩行少なめの移動は、選択した地図サービスの経路オプションで確認してください。',
       rainyIndoorToast: '雨の日の屋内コース条件を選択しました。',
-      nearbyToast: '現在地周辺おすすめはGPS連携後に提供されます。',
+      nearbyToast: '現在地から近い文化スポットを探します。',
       savedToast: '地図サービスを保存しました。'
     },
     support: {
@@ -230,7 +230,7 @@ const HOME_TIME_IMAGES = {
       changeRoute: '更换路线',
       eyebrow: 'Route Map',
       fallbackTitle: '已选路线',
-      body: '实时GPS将在下一版本连接。现在可选择地图服务，并在新标签页打开路线。',
+      body: '允许位置权限后，将按距离推荐附近的首尔传统文化地点。位置信息不会保存，也可以用所选地图服务打开路线。',
       selector: '选择地图',
       selectorHint: '所选地图服务会保留到下次访问。',
       openRoute: '用所选地图打开路线',
@@ -240,9 +240,9 @@ const HOME_TIME_IMAGES = {
       lessWalking: '少步行路线',
       rainyIndoor: '雨天室内路线',
       nearby: '附近推荐',
-      lessWalkingToast: '少步行路线将在地图API连接后提供。',
+      lessWalkingToast: '少步行路线请在所选地图服务的路线选项中确认。',
       rainyIndoorToast: '已选择雨天室内路线条件。',
-      nearbyToast: '附近推荐将在GPS连接后提供。',
+      nearbyToast: '正在根据当前位置查找附近文化地点。',
       savedToast: '地图服务已保存。'
     },
     support: {
@@ -318,8 +318,11 @@ const DYNAMIC_DATA_URLS = {
   support: 'data/support.json',
   passport: 'data/passport.json'
 };
+const COURSE_DATA_URL = 'data/courses.json';
 let cultureResourceLoadStatus = 'fallback';
 let cultureResourceLoadMessage = '';
+let courseDataLoadStatus = 'fallback';
+let courseDataLoadMessage = '';
 
 // Fallback seed data only. The primary static dataset is ari_culture_resources_appjs.json.
 let CULTURE_RESOURCES = [
@@ -884,7 +887,7 @@ const UI_COPY = {
       changeRoute: '코스 변경',
       eyebrow: 'Route Map',
       fallbackTitle: '선택한 코스',
-      body: '현재 위치로 가까운 장소를 찾거나, 선택한 지도 서비스로 코스와 이동 순서를 열 수 있습니다.',
+      body: '현재 위치를 허용하면 가까운 서울 전통문화 장소를 거리순으로 추천합니다. 위치 정보는 저장하지 않으며, 선택한 지도 서비스로 코스와 이동 순서도 열 수 있습니다.',
       selector: '지도 선택',
       selectorHint: '선택한 지도 서비스는 다음 방문에도 유지됩니다.',
       openRoute: '선택한 지도에서 열기',
@@ -894,7 +897,7 @@ const UI_COPY = {
       lessWalking: '적게 걷는 루트',
       rainyIndoor: '비 오는 날 실내 코스',
       nearby: '현재 위치로 가까운 코스 찾기',
-      lessWalkingToast: '적게 걷는 루트는 지도 API 연동 후 제공됩니다.',
+      lessWalkingToast: '적게 걷는 이동은 선택한 지도 서비스의 경로 옵션에서 확인하세요.',
       rainyIndoorToast: '비 오는 날 실내 코스 조건이 선택되었습니다.',
       nearbyToast: '현재 위치로 가까운 장소를 찾습니다.',
       savedToast: '지도 서비스가 저장되었습니다.',
@@ -1025,7 +1028,7 @@ const UI_COPY = {
       changeRoute: 'Change route',
       eyebrow: 'Route Map',
       fallbackTitle: 'Selected Route',
-      body: 'Use your current location to find nearby heritage places, or open the selected route with your preferred map service.',
+      body: 'Allow location access to find nearby Seoul heritage places by distance. Your location is not saved, and you can also open the route with your selected map service.',
       selector: 'Choose Map',
       selectorHint: 'Your selected map service is saved for next time.',
       openRoute: 'Open in selected map',
@@ -1035,7 +1038,7 @@ const UI_COPY = {
       lessWalking: 'Less walking route',
       rainyIndoor: 'Rainy indoor route',
       nearby: 'Find routes near me',
-      lessWalkingToast: 'Less-walking routes will be available after map API integration.',
+      lessWalkingToast: 'Check less-walking options inside your selected map service.',
       rainyIndoorToast: 'Rainy-day indoor route conditions were selected.',
       nearbyToast: 'Finding nearby heritage places from your current location.',
       savedToast: 'Map service saved.',
@@ -1166,7 +1169,7 @@ const UI_COPY = {
       changeRoute: 'コース変更',
       eyebrow: 'Route Map',
       fallbackTitle: '選択したコース',
-      body: '現在地から近い文化スポットを探したり、選択した地図サービスでコースと移動順を開いたりできます。',
+      body: '位置情報を許可すると、近くのソウル伝統文化スポットを距離順に表示します。位置情報は保存されず、選択した地図サービスでコースも開けます。',
       selector: '地図を選択',
       selectorHint: '選択した地図サービスは次回も保持されます。',
       openRoute: '選択した地図で開く',
@@ -1176,7 +1179,7 @@ const UI_COPY = {
       lessWalking: '少なめに歩くルート',
       rainyIndoor: '雨の日の屋内コース',
       nearby: '現在地から近いコースを探す',
-      lessWalkingToast: '少なめに歩くルートは地図API連携後に提供されます。',
+      lessWalkingToast: '少なめに歩く移動は、選択した地図サービスの経路オプションで確認してください。',
       rainyIndoorToast: '雨の日の屋内条件を選択しました。',
       nearbyToast: '現在地から近い文化スポットを探します。',
       savedToast: '地図サービスを保存しました。',
@@ -1307,7 +1310,7 @@ const UI_COPY = {
       changeRoute: '更换路线',
       eyebrow: 'Route Map',
       fallbackTitle: '已选路线',
-      body: '可以使用当前位置查找附近文化地点，也可以用所选地图服务打开路线和移动顺序。',
+      body: '允许位置权限后，将按距离推荐附近的首尔传统文化地点。位置信息不会保存，也可以用所选地图服务打开路线。',
       selector: '选择地图',
       selectorHint: '所选地图服务会保存到下次访问。',
       openRoute: '用所选地图打开',
@@ -1317,7 +1320,7 @@ const UI_COPY = {
       lessWalking: '少步行路线',
       rainyIndoor: '雨天室内路线',
       nearby: '查找附近路线',
-      lessWalkingToast: '少步行路线将在地图API接入后提供。',
+      lessWalkingToast: '少步行路线请在所选地图服务的路线选项中确认。',
       rainyIndoorToast: '已选择雨天室内路线条件。',
       nearbyToast: '正在根据当前位置查找附近文化地点。',
       savedToast: '地图服务已保存。',
@@ -1415,9 +1418,9 @@ const EXTENDED_UI_COPY = {
       header: '마루',
       headerSub: '서울 날씨',
       action: '코스 보기',
-      eyebrow: 'Current Weather',
-      title: '오늘 서울은 맑음',
-      summary: '16℃ / 27℃ · 강수확률 낮음 · 미세먼지 좋음',
+      eyebrow: 'Weather Prototype',
+      title: '날씨 조건별 추천 시제품',
+      summary: '현재는 샘플 날씨 데이터로 추천 흐름을 보여줍니다.',
       todayLabel: '오늘의 추천',
       todayTitle: '궁궐·한옥 산책 코스',
       todayBody: '맑은 날에는 궁궐 외부 동선과 한옥 골목을 함께 걷기 좋습니다.',
@@ -1472,7 +1475,7 @@ const EXTENDED_UI_COPY = {
       title: '외국인 여행자를 위한 전통문화 해설 앱',
       body: '마루는 일반 관광지가 아니라 전통문화의 의미와 흐름을 이해하도록 돕는 모바일 여행 동반 앱입니다.',
       articles: [
-        { title: '공공데이터 확장', body: '서울 열린데이터광장, 한국관광공사 TourAPI, 국가유산 관련 데이터, 공공데이터포털, 문화기관 공식 안내자료를 향후 Spring Boot 버전에서 연결할 수 있도록 데이터 모델을 준비했습니다.' },
+        { title: '공공데이터 확장', body: '현재 버전은 GitHub Pages에서 동작하는 정적 웹앱 시제품입니다. 문화자원 JSON 데이터와 JavaScript 추천 로직으로 핵심 흐름을 구현했으며, 향후 Spring Boot 버전에서 공식 데이터 소스로 확장할 수 있습니다.' },
         { title: '편의 정보 제공', body: '영어 안내 가능 여부, 외국인 인기 여부, 예약 필요 여부를 함께 제공해 외국인 방문객의 현장 의사결정을 돕습니다.' },
         { title: 'AI 이미지 정책', body: 'AI 이미지는 공식 장소 사진이 아니라 이해를 돕는 시각 가이드입니다. 실제 운영에서는 공식 사진 사용 권한 또는 자체 제작 이미지를 별도로 관리해야 합니다.' },
         { title: '일반 여행 앱과의 차이', body: '맛집·명소 나열이 아니라 궁궐, 민속, 시장, 공연을 이야기 흐름으로 연결합니다.' },
@@ -1487,7 +1490,7 @@ const EXTENDED_UI_COPY = {
       action: '소개',
       eyebrow: 'Data Dashboard',
       title: '공공 문화데이터 확장 구조',
-      body: '현재 버전은 <code>ari_culture_resources_appjs.json</code>과 <code>data/*.json</code>을 함께 읽어 추천 카드, 코스, 지원 정보를 동적으로 구성합니다. CSV/SQL 자료는 참고용으로만 관리합니다.',
+      body: '현재 버전은 GitHub Pages에서 동작하는 정적 웹앱 시제품이며 <code>ari_culture_resources_appjs.json</code>과 <code>data/*.json</code>(<code>data/courses.json</code> 포함)을 함께 읽어 추천 카드, 코스, 지원 정보를 동적으로 구성합니다. 운영 전 운영시간·요금·예약 여부·좌표·영어 안내 가능 여부는 공식 출처 기준으로 재검증이 필요합니다.',
       factorsTitle: '추천 요소',
       factors: ['전통성 점수', '외국인 친화도', '숨은 문화 가치', '도보 편의성', '예산·실내 적합도'],
       sourcesTitle: '데이터 소스 확장 계획',
@@ -1496,11 +1499,11 @@ const EXTENDED_UI_COPY = {
       status: { loaded: '로드됨', fallback: 'fallback', seed: 'seed' },
       sourceStatus: { loaded: 'JSON 데이터 로드 완료', fallback: 'fallback 준비 완료', seed: 'seed data' },
       sources: ['서울 열린데이터광장', '한국관광공사 TourAPI / 관광정보 데이터', '국가유산청 / 국가유산 관련 데이터', '공공데이터포털', '문화기관 공식 홈페이지', '박물관 / 공연장 / 전통시장 공식 안내자료'],
-      sourceNote: 'Spring Boot 버전에서 공식 API 또는 공식 페이지 기반 검증 데이터로 연결 예정입니다.',
+      sourceNote: '현재 데이터는 시제품 구현을 위한 서울 전통문화 seed data이며, 운영 전 공식 정보 확인이 필요합니다.',
       logic: [
-        { label: 'DB', title: '검증된 문화 사실', body: '공식 출처, 장소, 분류, 비용, 실내외, 영어 안내, 예약 필요 여부를 저장합니다.' },
-        { label: 'Server', title: '필터링과 추천 점수', body: '방문 조건, 외국인 친화도, 예약 부담, 날씨 적합도를 계산합니다.' },
-        { label: 'AI', title: '쉬운 문화 해설', body: '검증된 사실을 바탕으로 쉬운 설명, 키워드, 방문 팁을 생성합니다.' }
+        { label: 'DB', title: '검증된 문화 사실', body: '현재는 JSON seed data로 유지하며, 향후 공식 출처, 장소, 분류, 비용, 실내외, 영어 안내, 예약 필요 여부를 저장할 수 있습니다.' },
+        { label: 'Server', title: '필터링과 추천 점수', body: '현재는 JavaScript가 조건과 추천 점수를 계산하며, 향후 서버에서 방문 조건, 외국인 친화도, 예약 부담, 날씨 적합도를 계산할 수 있습니다.' },
+        { label: 'AI', title: '쉬운 문화 해설', body: '현재는 앱 데이터 기반 fallback 해설을 제공하며, AI는 검증된 사실을 쉬운 설명, 키워드, 방문 팁으로 바꾸는 역할입니다.' }
       ]
     },
     ari: {
@@ -1553,9 +1556,9 @@ const EXTENDED_UI_COPY = {
       header: 'MARU',
       headerSub: 'Seoul Weather',
       action: 'View Routes',
-      eyebrow: 'Current Weather',
-      title: 'Clear skies in Seoul today',
-      summary: '16℃ / 27℃ · Low chance of rain · Good air quality',
+      eyebrow: 'Weather Prototype',
+      title: 'Weather-Based Route Prototype',
+      summary: 'This screen uses sample weather data to demonstrate the recommendation flow.',
       todayLabel: "Today's Pick",
       todayTitle: 'Palace and Hanok Walk',
       todayBody: 'On a clear day, palace courtyards and hanok alleys make a comfortable outdoor route.',
@@ -1610,7 +1613,7 @@ const EXTENDED_UI_COPY = {
       title: 'A heritage interpretation app for global travelers',
       body: 'MARU is a mobile travel companion that helps visitors understand the meaning and flow of Korean heritage, not just a list of tourist spots.',
       articles: [
-        { title: 'Public Data Expansion', body: 'The data model is prepared so a future Spring Boot version can connect Seoul Open Data, Korea Tourism Organization TourAPI, national heritage data, public data portals, and official cultural institution sources.' },
+        { title: 'Public Data Expansion', body: 'The current version is a static web app prototype for GitHub Pages. It uses culture-resource JSON data and JavaScript recommendation logic for the core flow, and can expand to official data sources in a future Spring Boot version.' },
         { title: 'Visitor Convenience', body: 'English support, visitor popularity, and reservation needs are shown together to help international visitors decide on site.' },
         { title: 'AI Image Policy', body: 'AI images are visual guides for understanding, not official place photos. A real service should separately manage official photo rights or original image production.' },
         { title: 'Different From Generic Travel Apps', body: 'MARU connects palaces, folk culture, markets, and performances as a story flow instead of listing restaurants and attractions.' },
@@ -1625,7 +1628,7 @@ const EXTENDED_UI_COPY = {
       action: 'About',
       eyebrow: 'Data Dashboard',
       title: 'Public Culture Data Expansion Structure',
-      body: 'The current version reads <code>ari_culture_resources_appjs.json</code> and <code>data/*.json</code> together to build routes, recommendation cards, and support information dynamically. CSV/SQL files are kept as reference materials only.',
+      body: 'The current version is a static web app prototype for GitHub Pages. It reads <code>ari_culture_resources_appjs.json</code> and <code>data/*.json</code>, including <code>data/courses.json</code>, to build routes, recommendation cards, and support information dynamically. Hours, prices, reservations, coordinates, and English-support status must be rechecked against official sources before operation.',
       factorsTitle: 'Recommendation Factors',
       factors: ['Tradition score', 'Visitor friendliness', 'Hidden cultural value', 'Walking convenience', 'Budget and indoor fit'],
       sourcesTitle: 'Data Source Expansion Plan',
@@ -1634,11 +1637,11 @@ const EXTENDED_UI_COPY = {
       status: { loaded: 'Loaded', fallback: 'Fallback', seed: 'Seed' },
       sourceStatus: { loaded: 'JSON data loaded', fallback: 'Fallback ready', seed: 'Seed data' },
       sources: ['Seoul Open Data Plaza', 'Korea Tourism Organization TourAPI / tourism data', 'National Heritage Administration / heritage data', 'Public Data Portal', 'Official cultural institution websites', 'Official guides from museums, theaters, and traditional markets'],
-      sourceNote: 'A future Spring Boot version can connect this to verified official APIs or official-page-based data.',
+      sourceNote: 'The current data is Seoul heritage seed data for the prototype, and official information must be checked before operation.',
       logic: [
-        { label: 'DB', title: 'Verified Cultural Facts', body: 'Stores official sources, places, categories, cost, indoor/outdoor status, English support, and reservation requirements.' },
-        { label: 'Server', title: 'Filtering and Scores', body: 'Calculates visit conditions, visitor friendliness, reservation burden, and weather fit.' },
-        { label: 'AI', title: 'Simple Culture Guide', body: 'Turns verified facts into simple explanations, keywords, and visit tips.' }
+        { label: 'DB', title: 'Verified Cultural Facts', body: 'The prototype currently uses JSON seed data; a future backend can store official sources, places, categories, cost, indoor/outdoor status, English support, and reservation requirements.' },
+        { label: 'Server', title: 'Filtering and Scores', body: 'JavaScript currently calculates filters and scores; a future server can calculate visit conditions, visitor friendliness, reservation burden, and weather fit.' },
+        { label: 'AI', title: 'Simple Culture Guide', body: 'The current app provides data-based fallback guidance; AI should turn verified facts into simple explanations, keywords, and visit tips.' }
       ]
     },
     ari: {
@@ -1691,9 +1694,9 @@ const EXTENDED_UI_COPY = {
       header: 'MARU',
       headerSub: 'ソウル天気',
       action: 'コースを見る',
-      eyebrow: 'Current Weather',
-      title: '今日のソウルは晴れ',
-      summary: '16℃ / 27℃ · 降水確率低め · 大気質良好',
+      eyebrow: 'Weather Prototype',
+      title: '天気条件別おすすめプロトタイプ',
+      summary: '現在はサンプル天気データで推薦の流れを表示しています。',
       todayLabel: '今日のおすすめ',
       todayTitle: '宮殿・韓屋散策コース',
       todayBody: '晴れの日は宮殿の外部動線と韓屋の路地を一緒に歩きやすいです。',
@@ -1748,7 +1751,7 @@ const EXTENDED_UI_COPY = {
       title: '海外旅行者のための伝統文化解説アプリ',
       body: 'MARUは観光地リストではなく、伝統文化の意味と流れを理解できるように助けるモバイル旅行パートナーです。',
       articles: [
-        { title: '公共データ拡張', body: '今後のSpring Boot版で、ソウルオープンデータ、韓国観光公社TourAPI、国家遺産関連データ、公共データポータル、文化機関の公式資料と接続できるようデータモデルを準備しました。' },
+        { title: '公共データ拡張', body: '現在のバージョンはGitHub Pagesで動作する静的Webアプリのプロトタイプです。文化資源JSONデータとJavaScript推薦ロジックで主要な流れを実装しており、今後のSpring Boot版で公式データソースへ拡張できます。' },
         { title: '便利情報の提供', body: '英語案内の有無、外国人旅行者の人気、予約の必要性を一緒に表示し、現地での判断を助けます。' },
         { title: 'AI画像ポリシー', body: 'AI画像は公式写真ではなく理解を助ける視覚ガイドです。実運用では公式写真の使用権限または独自制作画像を別途管理する必要があります。' },
         { title: '一般旅行アプリとの違い', body: 'グルメや名所の羅列ではなく、宮殿、民俗、市場、公演を物語の流れでつなぎます。' },
@@ -1763,7 +1766,7 @@ const EXTENDED_UI_COPY = {
       action: '紹介',
       eyebrow: 'Data Dashboard',
       title: '公共文化データ拡張構造',
-      body: '現在のバージョンは <code>ari_culture_resources_appjs.json</code> と <code>data/*.json</code> を読み込み、推薦カード、コース、支援情報を動的に構成します。CSV/SQL資料は参考用として管理します。',
+      body: '現在のバージョンはGitHub Pagesで動作する静的Webアプリのプロトタイプで、<code>ari_culture_resources_appjs.json</code> と <code>data/courses.json</code> を含む <code>data/*.json</code> を読み込み、推薦カード、コース、支援情報を動的に構成します。運用前に営業時間・料金・予約有無・座標・英語案内の有無を公式情報で再確認する必要があります。',
       factorsTitle: '推薦要素',
       factors: ['伝統性スコア', '外国人フレンドリー度', '隠れた文化価値', '徒歩の便利さ', '予算・屋内適合度'],
       sourcesTitle: 'データソース拡張計画',
@@ -1772,11 +1775,11 @@ const EXTENDED_UI_COPY = {
       status: { loaded: 'ロード済み', fallback: 'Fallback', seed: 'Seed' },
       sourceStatus: { loaded: 'JSONデータをロード済み', fallback: 'Fallback準備完了', seed: 'Seed data' },
       sources: ['ソウルオープンデータ広場', '韓国観光公社 TourAPI / 観光情報データ', '国家遺産庁 / 国家遺産関連データ', '公共データポータル', '文化機関公式サイト', '博物館・公演場・伝統市場の公式案内資料'],
-      sourceNote: '今後のSpring Boot版では、公式APIまたは公式ページベースの検証データに接続する予定です。',
+      sourceNote: '現在のデータはプロトタイプ実装用のソウル伝統文化seed dataであり、運用前に公式情報の確認が必要です。',
       logic: [
-        { label: 'DB', title: '検証された文化事実', body: '公式出典、場所、分類、費用、屋内外、英語案内、予約必要性を保存します。' },
-        { label: 'Server', title: 'フィルタリングと推薦スコア', body: '訪問条件、外国人フレンドリー度、予約負担、天気適合度を計算します。' },
-        { label: 'AI', title: 'やさしい文化解説', body: '検証済みの事実をもとに、やさしい説明、キーワード、訪問ヒントを生成します。' }
+        { label: 'DB', title: '検証された文化事実', body: '現在はJSON seed dataで管理し、将来のバックエンドで公式出典、場所、分類、費用、屋内外、英語案内、予約必要性を保存できます。' },
+        { label: 'Server', title: 'フィルタリングと推薦スコア', body: '現在はJavaScriptが条件と推薦スコアを計算し、将来のサーバーで訪問条件、外国人フレンドリー度、予約負担、天気適合度を計算できます。' },
+        { label: 'AI', title: 'やさしい文化解説', body: '現在はアプリデータに基づくfallback解説を提供し、AIは検証済みの事実をわかりやすい説明、キーワード、訪問ヒントに変換する役割です。' }
       ]
     },
     ari: {
@@ -1829,9 +1832,9 @@ const EXTENDED_UI_COPY = {
       header: 'MARU',
       headerSub: '首尔天气',
       action: '查看路线',
-      eyebrow: 'Current Weather',
-      title: '今天首尔天气晴朗',
-      summary: '16℃ / 27℃ · 降雨概率低 · 空气质量良好',
+      eyebrow: 'Weather Prototype',
+      title: '按天气推荐路线原型',
+      summary: '当前使用示例天气数据展示推荐流程。',
       todayLabel: '今日推荐',
       todayTitle: '宫殿与韩屋散步路线',
       todayBody: '晴天适合把宫殿外部动线和韩屋街巷一起安排。',
@@ -1886,7 +1889,7 @@ const EXTENDED_UI_COPY = {
       title: '面向外国游客的传统文化解读应用',
       body: 'MARU不是普通景点列表，而是帮助游客理解传统文化意义和脉络的移动旅行伙伴。',
       articles: [
-        { title: '公共数据扩展', body: '数据模型已准备好，未来Spring Boot版本可连接首尔开放数据、韩国旅游发展局TourAPI、国家遗产相关数据、公共数据门户和文化机构官方资料。' },
+        { title: '公共数据扩展', body: '当前版本是在GitHub Pages上运行的静态网页应用原型。核心流程由文化资源JSON数据和JavaScript推荐逻辑实现，未来可扩展为连接官方数据源的Spring Boot版本。' },
         { title: '便利信息提供', body: '同时显示英语支持、外国游客人气和是否需要预约，帮助外国游客现场做决定。' },
         { title: 'AI图片政策', body: 'AI图片不是官方地点照片，而是帮助理解的视觉指南。实际运营时需要另行管理官方照片授权或自制图片。' },
         { title: '与普通旅行应用的区别', body: '不是罗列美食和景点，而是把宫殿、民俗、市场和演出连接成故事流。' },
@@ -1901,7 +1904,7 @@ const EXTENDED_UI_COPY = {
       action: '介绍',
       eyebrow: 'Data Dashboard',
       title: '公共文化数据扩展结构',
-      body: '当前版本会同时读取 <code>ari_culture_resources_appjs.json</code> 和 <code>data/*.json</code>，动态生成推荐卡片、路线和支援信息。CSV/SQL资料仅作为参考资料管理。',
+      body: '当前版本是在GitHub Pages上运行的静态网页应用原型，会读取 <code>ari_culture_resources_appjs.json</code> 和包含 <code>data/courses.json</code> 的 <code>data/*.json</code>，动态生成推荐卡片、路线和支援信息。正式运营前，开放时间、费用、预约状态、坐标和英语支持情况需要按官方来源重新确认。',
       factorsTitle: '推荐要素',
       factors: ['传统性分数', '外国游客友好度', '隐藏文化价值', '步行便利性', '预算与室内适合度'],
       sourcesTitle: '数据来源扩展计划',
@@ -1910,11 +1913,11 @@ const EXTENDED_UI_COPY = {
       status: { loaded: '已加载', fallback: 'Fallback', seed: 'Seed' },
       sourceStatus: { loaded: 'JSON数据已加载', fallback: 'Fallback已准备', seed: 'Seed data' },
       sources: ['首尔开放数据广场', '韩国旅游发展局 TourAPI / 旅游信息数据', '国家遗产厅 / 国家遗产相关数据', '公共数据门户', '文化机构官方网站', '博物馆/演出场/传统市场官方指南资料'],
-      sourceNote: '未来Spring Boot版本将连接官方API或基于官方页面验证的数据。',
+      sourceNote: '当前数据是用于原型实现的首尔传统文化seed data，正式运营前需要确认官方信息。',
       logic: [
-        { label: 'DB', title: '已验证的文化事实', body: '保存官方来源、地点、分类、费用、室内外、英语支持和是否需要预约。' },
-        { label: 'Server', title: '筛选与推荐分数', body: '计算访问条件、外国游客友好度、预约负担和天气适合度。' },
-        { label: 'AI', title: '简单文化解读', body: '基于已验证事实生成简单说明、关键词和参观提示。' }
+        { label: 'DB', title: '已验证的文化事实', body: '当前以JSON seed data管理，未来后端可保存官方来源、地点、分类、费用、室内外、英语支持和是否需要预约。' },
+        { label: 'Server', title: '筛选与推荐分数', body: '当前由JavaScript计算条件和推荐分数，未来服务器可计算访问条件、外国游客友好度、预约负担和天气适合度。' },
+        { label: 'AI', title: '简单文化解读', body: '当前提供基于应用数据的fallback说明；AI的角色是把已验证事实转化为简单说明、关键词和参观提示。' }
       ]
     },
     ari: {
@@ -3313,6 +3316,260 @@ function generateRoutesFromResources() {
   return routes.length >= 3 ? routes : ROUTE_DATA;
 }
 
+function getLocalizedValue(value, language = 'ko') {
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    const code = normalizeLanguage(language);
+    const legacyCode = getLegacyLanguage(code);
+    return value[code] || value[legacyCode] || value.ko || value.en || value.KR || value.EN || '';
+  }
+  return value || '';
+}
+
+function normalizeCourseDuration(duration, language = 'ko') {
+  const text = String(duration || '').trim();
+  if (!text) return language === 'ko' ? '시간 확인 필요' : 'Check duration';
+  if (language !== 'ko') return text;
+  return text
+    .replace(/(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*hours?/i, '약 $1~$2시간')
+    .replace(/(\d+(?:\.\d+)?)\s*hours?/i, '약 $1시간');
+}
+
+function budgetLabel(value, language = 'ko') {
+  const labels = {
+    ko: {
+      low: '저비용',
+      medium: '유료 가능',
+      high: '유료 중심',
+      free: '무료 중심'
+    },
+    en: {
+      low: 'Low cost',
+      medium: 'Paid options',
+      high: 'Mostly paid',
+      free: 'Mostly free'
+    }
+  };
+  return labels[normalizeLanguage(language)]?.[value] || value || '';
+}
+
+function indoorOutdoorLabel(value, language = 'ko') {
+  const labels = {
+    ko: {
+      indoor: '실내 중심',
+      outdoor: '실외 중심',
+      mixed: '실내외 혼합'
+    },
+    en: {
+      indoor: 'Indoor focused',
+      outdoor: 'Outdoor focused',
+      mixed: 'Indoor/outdoor mix'
+    }
+  };
+  return labels[normalizeLanguage(language)]?.[value] || value || '';
+}
+
+function extractDistrictFromAddress(address = '') {
+  const match = String(address).match(/서울특별시\s+([^\s]+구)/);
+  return match?.[1] || '';
+}
+
+function normalizeCoursePlaceResource(rawPlace = {}, index = 0, course = {}) {
+  const nameKo = getLocalizedValue(rawPlace.name, 'ko') || rawPlace.nameKo || rawPlace.name || `장소 ${index + 1}`;
+  const nameEn = getLocalizedValue(rawPlace.name, 'en') || rawPlace.nameEn || rawPlace.englishName || nameKo;
+  const descriptionKo = getLocalizedValue(rawPlace.description, 'ko') || rawPlace.descriptionKo || '';
+  const descriptionEn = getLocalizedValue(rawPlace.description, 'en') || rawPlace.descriptionEn || descriptionKo;
+  const latitude = toNumber(rawPlace.lat ?? rawPlace.latitude, NaN);
+  const longitude = toNumber(rawPlace.lng ?? rawPlace.longitude ?? rawPlace.lon, NaN);
+  const sourceName = rawPlace.publicDataSource || rawPlace.sourceName || COURSE_DATA_URL;
+  const tags = [
+    rawPlace.category,
+    course.theme,
+    ...toArray(course.target)
+  ].filter(Boolean);
+
+  return normalizeCultureResource({
+    id: rawPlace.id,
+    nameKo,
+    nameEn,
+    region: '서울',
+    district: rawPlace.district || extractDistrictFromAddress(rawPlace.address),
+    category: rawPlace.category || '전통문화 장소',
+    categoryEn: rawPlace.categoryEn || rawPlace.category || 'Heritage Place',
+    address: rawPlace.address || '',
+    latitude,
+    longitude,
+    globalTags: tags,
+    aiSimpleExplanation: descriptionKo,
+    aiSimpleExplanationEn: descriptionEn,
+    aiWhyItMatters: descriptionKo,
+    aiWhyItMattersEn: descriptionEn,
+    aiVisitTip: rawPlace.visitTip || '운영시간, 요금, 예약 여부는 방문 전 공식 정보를 확인하세요.',
+    aiVisitTipEn: rawPlace.visitTipEn || 'Check official hours, fees, and reservation details before visiting.',
+    indoorOutdoor: indoorOutdoorLabel(course.indoorOutdoor, 'ko') || '확인 필요',
+    indoorOutdoorEn: indoorOutdoorLabel(course.indoorOutdoor, 'en') || 'Check',
+    walkingLevel: getLocalizedValue(course.walking, 'ko') || '보통',
+    walkingLevelEn: getLocalizedValue(course.walking, 'en') || 'Moderate',
+    qualityScore: toNumber(course.score, 80),
+    traditionScore: 90,
+    foreignerScore: 85,
+    englishAvailable: Boolean(nameEn && nameEn !== nameKo),
+    sourceName,
+    sourceUrl: rawPlace.sourceUrl || '',
+    verifiedStatus: '공식 확인 필요'
+  }, index);
+}
+
+function mergeCoursePlacesIntoResources(rawCourses = []) {
+  const additions = [];
+  const hasResource = (candidate) => CULTURE_RESOURCES.concat(additions).some((resource) =>
+    resource.id === candidate.id ||
+    resource.nameKo === candidate.nameKo ||
+    resource.nameEn === candidate.nameEn
+  );
+
+  rawCourses.forEach((course, courseIndex) => {
+    (course.places || []).forEach((place, placeIndex) => {
+      const resource = normalizeCoursePlaceResource(place, courseIndex * 20 + placeIndex, course);
+      if (!hasResource(resource)) additions.push(resource);
+    });
+  });
+
+  if (additions.length) {
+    CULTURE_RESOURCES = CULTURE_RESOURCES.concat(additions);
+  }
+}
+
+function findResourceForCoursePlace(place = {}) {
+  const nameKo = getLocalizedValue(place.name, 'ko') || place.nameKo || place.name;
+  const nameEn = getLocalizedValue(place.name, 'en') || place.nameEn || place.englishName;
+  return CULTURE_RESOURCES.find((resource) =>
+    resource.id === place.id ||
+    resource.nameKo === nameKo ||
+    resource.nameEn === nameEn
+  );
+}
+
+function normalizeCourseKeywords(rawKeywords = [], fallbackTags = []) {
+  const keywords = Array.isArray(rawKeywords) && rawKeywords.length
+    ? rawKeywords
+    : fallbackTags.slice(0, 4).map((tag) => ({
+      name: tag,
+      description: {
+        ko: '이 코스의 추천 조건을 설명하는 키워드입니다.',
+        en: 'A keyword describing why this route is recommended.'
+      }
+    }));
+
+  return keywords.map((keyword) => ({
+    name: getLocalizedValue(keyword.name, 'en') || getLocalizedValue(keyword.name, 'ko') || keyword.name || '',
+    description: getLocalizedValue(keyword.description, 'ko') || keyword.description || '이 코스의 추천 조건을 설명하는 키워드입니다.',
+    descriptionEn: getLocalizedValue(keyword.description, 'en') || getLocalizedValue(keyword.description, 'ko') || 'A keyword describing why this route is recommended.'
+  })).filter((keyword) => keyword.name);
+}
+
+function normalizeCourseRoute(rawCourse = {}, index = 0) {
+  const places = Array.isArray(rawCourse.places) ? rawCourse.places : [];
+  const routeResources = places.map(findResourceForCoursePlace).filter(Boolean);
+  const flow = places
+    .map((place) => findResourceForCoursePlace(place)?.nameKo || getLocalizedValue(place.name, 'ko') || place.nameKo)
+    .filter(Boolean);
+  const resourceIds = routeResources.map((resource) => resource.id);
+  const targetTags = [...new Set([rawCourse.theme, ...toArray(rawCourse.target)].filter(Boolean))];
+  const keywords = normalizeCourseKeywords(rawCourse.keywords, targetTags);
+  const sources = [...new Set(places.map((place) => place.publicDataSource).filter(Boolean))];
+  const score = toNumber(rawCourse.score, Math.min(99, Math.max(75, Math.round(
+    routeResources.reduce((sum, resource) => sum + toNumber(resource.qualityScore, 80), 0) / Math.max(routeResources.length, 1)
+  ))));
+  const titleKo = getLocalizedValue(rawCourse.title, 'ko') || rawCourse.titleKo || `추천 코스 ${index + 1}`;
+  const titleEn = getLocalizedValue(rawCourse.title, 'en') || rawCourse.titleEn || rawCourse.englishTitle || titleKo;
+  const summaryKo = getLocalizedValue(rawCourse.aiSummary, 'ko') || getLocalizedValue(rawCourse.summary, 'ko') || '';
+  const summaryEn = getLocalizedValue(rawCourse.aiSummary, 'en') || getLocalizedValue(rawCourse.summary, 'en') || summaryKo;
+  const reasonKo = getLocalizedValue(rawCourse.reason, 'ko') || summaryKo;
+  const reasonEn = getLocalizedValue(rawCourse.reason, 'en') || summaryEn;
+  const tipKo = getLocalizedValue(rawCourse.tip, 'ko') || '운영시간, 요금, 예약 여부는 방문 전 공식 출처에서 확인하세요.';
+  const tipEn = getLocalizedValue(rawCourse.tip, 'en') || 'Check official hours, fees, and reservations before visiting.';
+
+  return {
+    id: rawCourse.id || `public-data-course-${index + 1}`,
+    title: titleKo,
+    englishTitle: titleEn,
+    score,
+    time: getLocalizedValue(rawCourse.durationLabel, 'ko') || normalizeCourseDuration(rawCourse.duration, 'ko'),
+    timeEn: getLocalizedValue(rawCourse.durationLabel, 'en') || normalizeCourseDuration(rawCourse.duration, 'en'),
+    walking: getLocalizedValue(rawCourse.walking, 'ko') || indoorOutdoorLabel(rawCourse.indoorOutdoor, 'ko') || '보통',
+    walkingEn: getLocalizedValue(rawCourse.walking, 'en') || indoorOutdoorLabel(rawCourse.indoorOutdoor, 'en') || 'Moderate',
+    fee: getLocalizedValue(rawCourse.fee, 'ko') || budgetLabel(rawCourse.budget, 'ko') || '공식 확인 필요',
+    feeEn: getLocalizedValue(rawCourse.fee, 'en') || budgetLabel(rawCourse.budget, 'en') || 'Check official source',
+    resourceIds,
+    flow,
+    reason: reasonKo,
+    reasonEn,
+    tags: targetTags,
+    convenience: {
+      englishAvailable: routeResources.some((resource) => resource.englishAvailable),
+      foreignerPopular: true,
+      reservationRequired: /performance|booking|reservation|공연|예약/i.test(targetTags.join(' ')),
+      labels: ['공공데이터 기반', `${flow.length}개 장소`, indoorOutdoorLabel(rawCourse.indoorOutdoor, 'ko') || '추천 코스']
+    },
+    convenienceLabelsEn: ['Public-data seed', `${flow.length} stops`, indoorOutdoorLabel(rawCourse.indoorOutdoor, 'en') || 'Recommended route'],
+    imageUrl: rawCourse.image || rawCourse.imageUrl || '',
+    imageAlt: rawCourse.imageAlt || `${titleKo} 대표 이미지`,
+    imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 이해 보조 이미지',
+    imagePrompt: rawCourse.imagePrompt || '',
+    summary: summaryKo,
+    englishExplanation: summaryEn,
+    tip: tipKo,
+    tipEn,
+    source: `${COURSE_DATA_URL} 기반 샘플 추천 코스입니다.${sources.length ? ` 참고 출처: ${sources.join(', ')}.` : ''} 운영 정보는 방문 전 공식 출처 확인이 필요합니다.`,
+    keywords,
+    keywordsEn: keywords.map((keyword) => ({
+      name: keyword.name,
+      description: keyword.descriptionEn || keyword.description
+    })),
+    theme: rawCourse.theme,
+    target: toArray(rawCourse.target),
+    recommendedTime: toArray(rawCourse.recommendedTime),
+    mapLinks: rawCourse.mapLinks || {}
+  };
+}
+
+function applyCourseData(rawCourses) {
+  const courses = Array.isArray(rawCourses) ? rawCourses : [];
+  if (!courses.length) {
+    courseDataLoadStatus = 'fallback';
+    courseDataLoadMessage = '추천 코스 JSON 데이터가 없어 fallback route data를 사용했습니다.';
+    return;
+  }
+
+  mergeCoursePlacesIntoResources(courses);
+  const normalizedRoutes = courses
+    .map(normalizeCourseRoute)
+    .filter((route) => route.flow.length && route.resourceIds.length);
+
+  if (!normalizedRoutes.length) {
+    courseDataLoadStatus = 'fallback';
+    courseDataLoadMessage = '추천 코스 JSON 구조를 읽었지만 화면에 표시할 코스가 부족해 fallback route data를 사용했습니다.';
+    return;
+  }
+
+  ROUTE_DATA = normalizedRoutes;
+  courseDataLoadStatus = 'loaded';
+  courseDataLoadMessage = `${COURSE_DATA_URL}에서 ${ROUTE_DATA.length}개 추천 코스를 불러왔습니다.`;
+}
+
+async function loadCourseData() {
+  try {
+    const response = await fetch(COURSE_DATA_URL, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const payload = await response.json();
+    const courses = Array.isArray(payload) ? payload : (payload.courses || payload.data || []);
+    applyCourseData(courses);
+  } catch (error) {
+    courseDataLoadStatus = 'fallback';
+    courseDataLoadMessage = `${COURSE_DATA_URL} 로드 실패로 fallback route data를 사용했습니다.`;
+  }
+}
+
 function applyCultureResources(rawResources) {
   const normalizedResources = rawResources
     .map(normalizeCultureResource)
@@ -4258,18 +4515,18 @@ function getRouteView(route) {
     ...route,
     title: translated.title || route.englishTitle || route.title,
     subtitle: translated.subtitle || route.title,
-    time: translated.time || route.time,
-    walking: translated.walking || route.walking,
-    fee: translated.fee || route.fee,
+    time: translated.time || route.timeEn || route.time,
+    walking: translated.walking || route.walkingEn || route.walking,
+    fee: translated.fee || route.feeEn || route.fee,
     reason: translated.reason || route.reasonEn || route.reason,
     summary: translated.summary || route.englishExplanation || route.summary,
     englishExplanation: route.summary,
     tip: translated.tip || route.tipEn || route.tip,
     displayFlow: translated.flow || route.flow.map(localizePlaceName),
-    displayKeywords: translated.keywords || route.keywords,
+    displayKeywords: translated.keywords || (language === 'en' && route.keywordsEn ? route.keywordsEn : route.keywords),
     displayConvenience: {
       ...route.convenience,
-      labels: translated.convenienceLabels || route.convenience?.labels
+      labels: translated.convenienceLabels || (language === 'en' ? route.convenienceLabelsEn : null) || route.convenience?.labels
     }
   };
 }
@@ -4654,6 +4911,9 @@ function createKakaoDirectionsUrl(targets) {
 }
 
 function createMapRouteUrl(route, service = getSelectedMapService()) {
+  const configuredMapLink = route.mapLinks?.[service];
+  if (configuredMapLink) return configuredMapLink;
+
   const targets = route.flow.map(getMapTargetForPlace);
   if (!targets.length) return '#';
 
@@ -4889,6 +5149,9 @@ function renderPassport() {
 
 function renderCultureData() {
   const metrics = qs('[data-culture-metrics]');
+  const dataLoadStatus = cultureResourceLoadStatus === 'loaded' && courseDataLoadStatus === 'loaded'
+    ? 'loaded'
+    : 'fallback';
   if (metrics) {
     const englishCount = CULTURE_RESOURCES.filter((item) => item.englishAvailable).length;
     const popularCount = CULTURE_RESOURCES.filter((item) => item.foreignerPopular).length;
@@ -4902,15 +5165,20 @@ function renderCultureData() {
       <article><span>${escapeHtml(metricLabels[3])}</span><strong>${popularCount}</strong></article>
       <article><span>${escapeHtml(metricLabels[4])}</span><strong>${reservationCount}</strong></article>
       <article><span>${escapeHtml(metricLabels[5])}</span><strong>${imageCount}</strong></article>
-      <article><span>${escapeHtml(metricLabels[6])}</span><strong>${escapeHtml(t(`cultureData.status.${cultureResourceLoadStatus}`, cultureResourceLoadStatus))}</strong></article>
+      <article><span>${escapeHtml(metricLabels[6])}</span><strong>${escapeHtml(t(`cultureData.status.${dataLoadStatus}`, dataLoadStatus))}</strong></article>
     `;
   }
 
   const sources = qs('[data-source-list]');
   if (sources) {
-    const sourceStatus = t(`cultureData.sourceStatus.${cultureResourceLoadStatus}`, t('cultureData.sourceStatus.fallback'));
+    const resourceSourceStatus = t(`cultureData.sourceStatus.${cultureResourceLoadStatus}`, t('cultureData.sourceStatus.fallback'));
+    const courseSourceStatus = t(`cultureData.sourceStatus.${courseDataLoadStatus}`, t('cultureData.sourceStatus.fallback'));
     const sourceItems = [
-      `${CULTURE_RESOURCE_DATA_URL} (${sourceStatus})`,
+      `${CULTURE_RESOURCE_DATA_URL} (${resourceSourceStatus})`,
+      `${COURSE_DATA_URL} (${courseSourceStatus})`,
+      'data/public-data-sources.json (seed data)',
+      'data/festivals.json (seed data)',
+      'data/heritage.json (seed data)',
       ...t('cultureData.sources', [])
     ];
     sources.innerHTML = sourceItems.map((source) => `
@@ -5021,7 +5289,7 @@ function fallbackAriReply(message, context) {
   const route = findMatchingRoute(message, context.routes) || context.selectedRoute;
   const resource = findMatchingResource(message, context.resources);
 
-  if (hasAnyTerm(message, ['추천 이유', '왜 추천', 'why recommend', 'why this route'])) {
+  if (hasAnyTerm(message, ['추천 이유', '왜 추천', 'why recommend', 'why recommended', 'why is this route recommended', 'why this route', 'recommendation reason'])) {
     return `${route.title} 추천 이유는 ${route.reason} 이동 흐름은 ${route.flow.join(' → ')}입니다. 자세한 길찾기는 지도 화면에서 선택한 지도 서비스 버튼을 사용하세요.`;
   }
 
@@ -5434,6 +5702,7 @@ async function initialize() {
   setLanguage(storageGet(STORAGE_KEYS.language, 'ko'), { rerender: false });
   await loadDynamicAppData();
   await loadCultureResources();
+  await loadCourseData();
   renderLocalizedContent();
   markActiveBottomTab();
   bindMobileInteractions();

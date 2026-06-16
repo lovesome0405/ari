@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Replace https://example.com with your deployed domain before submitting this sitemap. -->
-  <url><loc>https://example.com/index.html</loc></url>
-  <url><loc>https://example.com/planner.html</loc></url>
-  <url><loc>https://example.com/routes.html</loc></url>
-  <url><loc>https://example.com/map.html</loc></url>
-  <url><loc>https://example.com/weather.html</loc></url>
-  <url><loc>https://example.com/support.html</loc></url>
-  <url><loc>https://example.com/passport.html</loc></url>
-  <url><loc>https://example.com/about.html</loc></url>
+  <url><loc>https://lovesome0405.github.io/ari/index.html</loc></url>
+  <url><loc>https://lovesome0405.github.io/ari/planner.html</loc></url>
+  <url><loc>https://lovesome0405.github.io/ari/routes.html</loc></url>
+  <url><loc>https://lovesome0405.github.io/ari/route-detail.html</loc></url>
+  <url><loc>https://lovesome0405.github.io/ari/map.html</loc></url>
+  <url><loc>https://lovesome0405.github.io/ari/weather.html</loc></url>
+  <url><loc>https://lovesome0405.github.io/ari/support.html</loc></url>
+  <url><loc>https://lovesome0405.github.io/ari/passport.html</loc></url>
+  <url><loc>https://lovesome0405.github.io/ari/culture-data.html</loc></url>
+  <url><loc>https://lovesome0405.github.io/ari/about.html</loc></url>
 </urlset>

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "gyeongbokgung-palace",
+    "name": {
+      "ko": "경복궁",
+      "en": "Gyeongbokgung Palace"
+    },
+    "heritageType": "palace",
+    "district": "종로구",
+    "address": "서울특별시 종로구 사직로 161",
+    "lat": 37.579617,
+    "lng": 126.977041,
+    "interpretationKeywords": ["Joseon Dynasty", "Royal Palace", "Royal Ritual"],
+    "publicDataSource": "국가유산청 문화재 공간정보 / 한국관광공사 TourAPI",
+    "aiInterpretationRole": "조선 왕실문화와 궁궐 건축의 의미를 외국인에게 쉽게 설명"
+  },
+  {
+    "id": "deoksugung-palace",
+    "name": {
+      "ko": "덕수궁",
+      "en": "Deoksugung Palace"
+    },
+    "heritageType": "palace-modern-heritage",
+    "district": "중구",
+    "address": "서울특별시 중구 세종대로 99",
+    "lat": 37.5658,
+    "lng": 126.9751,
+    "interpretationKeywords": ["Korean Empire", "Modern Seoul", "Palace Architecture"],
+    "publicDataSource": "국가유산청 문화재 공간정보 / 한국관광공사 TourAPI",
+    "aiInterpretationRole": "전통 왕실 공간과 근대 서울이 만나는 흐름을 해설"
+  },
+  {
+    "id": "unhyeongung",
+    "name": {
+      "ko": "운현궁",
+      "en": "Unhyeongung"
+    },
+    "heritageType": "royal-residence",
+    "district": "종로구",
+    "address": "서울특별시 종로구 삼일대로 일대",
+    "lat": 37.5761,
+    "lng": 126.987,
+    "interpretationKeywords": ["Royal Residence", "Hanok", "Local Heritage"],
+    "publicDataSource": "국가유산청 문화재 공간정보 / 문화기관 공식 안내",
+    "aiInterpretationRole": "궁궐 밖 왕실가 생활문화와 한옥 공간을 연결해 설명"
+  },
+  {
+    "id": "seolleung-jeongneung-sample",
+    "name": {
+      "ko": "선릉과 정릉 샘플",
+      "en": "Seolleung and Jeongneung Sample"
+    },
+    "heritageType": "royal-tomb",
+    "district": "강남구",
+    "address": "서울특별시 강남구 선릉로100길 일대",
+    "lat": 37.5086,
+    "lng": 127.0471,
+    "interpretationKeywords": ["Royal Tomb", "Ritual Landscape", "UNESCO"],
+    "publicDataSource": "국가유산청 문화재 공간정보",
+    "aiInterpretationRole": "향후 서울 남부 확장 코스에서 왕릉과 제례 공간을 설명"
+  }
+]
