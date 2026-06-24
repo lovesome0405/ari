@@ -152,7 +152,7 @@ public class AiPhotoService {
     return new AiPhotoTransformResponse(
         imageDataUrl,
         mimeType,
-        normalizeText(aiPhotoProperties.getModel(), "gpt-image-2"),
+        normalizeText(aiPhotoProperties.getModel(), "gpt-image-1.5"),
         prompt,
         normalizeText(firstImage.revisedPrompt(), ""),
         style.label(),
@@ -245,7 +245,7 @@ public class AiPhotoService {
       boolean includeInputFidelity
   ) {
     LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-    body.add("model", normalizeText(aiPhotoProperties.getModel(), "gpt-image-2"));
+    body.add("model", normalizeText(aiPhotoProperties.getModel(), "gpt-image-1.5"));
     body.add("prompt", prompt);
     body.add("size", size);
     body.add("quality", normalizeText(aiPhotoProperties.getQuality(), "high"));

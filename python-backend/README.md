@@ -4,10 +4,22 @@ This lightweight server turns the current static MARU prototype into a dynamic l
 
 It reuses the existing JSON catalog files and adds a SQLite-backed saved-routes API on `http://localhost:8080`.
 
+If `OPENAI_API_KEY` is set, the AI photo page can also call OpenAI's image edit API through this local server for the high-quality royal portrait transform.
+
 ## Run
 
 ```powershell
 cd C:\Users\남양주시청\Documents\Codex\2026-06-23\d\work\ari-github
+python python-backend/server.py
+```
+
+Optional GPT image transform setup:
+
+```powershell
+$env:OPENAI_API_KEY="sk-..."
+$env:MARU_AI_PHOTO_MODEL="gpt-image-1.5"
+$env:OPENAI_IMAGE_SIZE="1024x1536"
+$env:MARU_AI_PHOTO_QUALITY="high"
 python python-backend/server.py
 ```
 
@@ -31,6 +43,7 @@ powershell -ExecutionPolicy Bypass -File python-backend/build-demo-package.ps1
 - `GET /api/saved-routes`
 - `POST /api/saved-routes`
 - `DELETE /api/saved-routes/{id}`
+- `POST /api/ai-photo/transform`
 
 ## Why this works fast
 

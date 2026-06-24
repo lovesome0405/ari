@@ -3231,6 +3231,9 @@ const FEATURE_COPY = {
       ready: '이미지를 선택하고 스타일을 고르면 브라우저 안에서 카드가 생성됩니다.',
       working: '브라우저에서 조선풍 카드 효과를 적용하고 있습니다.',
       loadingModel: '인물 분리와 화풍 변환을 준비하고 있습니다.',
+      gptWorking: '서버에서 GPT 왕실 초상 변환을 생성하고 있습니다. 발표용 고품질 변환은 잠시 걸릴 수 있습니다.',
+      gptDone: 'GPT 왕실 초상 변환이 완료되었습니다.',
+      gptFallback: '서버 GPT 변환을 사용할 수 없어 브라우저 변환으로 이어갑니다.',
       done: '조선풍 카드가 준비되었습니다. 바로 다운로드할 수 있습니다.',
       transformed: {
         minhwa: '배경을 부드러운 전통 채색 분위기로 정리하고, 사진을 민화풍 색감으로 바꿨습니다.',
@@ -3239,7 +3242,8 @@ const FEATURE_COPY = {
       },
       fallback: '네트워크 또는 모델 로드가 어려워 브라우저 기본 인물 마스크와 왕실 야경 배경으로 처리했습니다.',
       empty: '먼저 변환할 이미지를 선택하세요.',
-      privacy: '브라우저 안에서만 처리되며, 업로드 없이 바로 저장할 수 있습니다.'
+      privacy: '브라우저 안에서만 처리되며, 업로드 없이 바로 저장할 수 있습니다.',
+      serverPrivacy: '고급 변환은 로컬 서버를 통해 OpenAI 이미지 API로 전송됩니다. API 키는 서버에만 보관됩니다.'
     }
   },
   en: {
@@ -3309,6 +3313,9 @@ const FEATURE_COPY = {
       ready: 'Choose an image and style to generate a browser-side card.',
       working: 'Applying a Joseon-inspired card effect in the browser.',
       loadingModel: 'Preparing subject separation and painterly rendering.',
+      gptWorking: 'Generating a high-quality GPT royal portrait on the server. This can take a moment.',
+      gptDone: 'The GPT royal portrait is ready to download.',
+      gptFallback: 'The server GPT transform is unavailable, so MARU will continue with the browser transform.',
       done: 'Your Joseon-style card is ready to download.',
       transformed: {
         minhwa: 'The background was softened into a traditional color-wash mood and the photo was restyled with a Minhwa palette.',
@@ -3317,7 +3324,8 @@ const FEATURE_COPY = {
       },
       fallback: 'The segmentation model could not load, so MARU used a browser-side portrait mask with the generated royal night background.',
       empty: 'Choose an image first.',
-      privacy: 'Everything stays in the browser, so you can save the result without uploading the image.'
+      privacy: 'Everything stays in the browser, so you can save the result without uploading the image.',
+      serverPrivacy: 'High-quality transforms are sent through the local server to the OpenAI Image API. The API key stays on the server.'
     }
   },
   ja: {},
@@ -4104,7 +4112,8 @@ async function fetchJsonFromMaruApi(path, options = {}) {
   }
 
   const controller = new AbortController();
-  const timeout = window.setTimeout(() => controller.abort(), MARU_API_TIMEOUT_MS);
+  const timeoutMs = Number.isFinite(options.timeoutMs) ? options.timeoutMs : MARU_API_TIMEOUT_MS;
+  const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
   const fetchOptions = {
     cache: 'no-store',
     signal: controller.signal,
@@ -8749,6 +8758,81 @@ async function createJoseonPhotoCard(sourceImage, style = aiPhotoSelectedStyle) 
   };
 }
 
+async function createRoyalPortraitOnApi(file, style = aiPhotoSelectedStyle) {
+  if (!file) return null;
+  const apiUrl = makeMaruApiUrl(MARU_API_PATHS.aiPhotoTransform);
+  if (!apiUrl || maruApiHostUnavailable || maruApiFailedPaths.has(MARU_API_PATHS.aiPhotoTransform)) {
+    return null;
+  }
+
+  const formData = new FormData();
+  formData.append('image', file, file.name || 'maru-photo.png');
+  formData.append('styleId', style === 'night' ? 'cinematic-drama' : 'joseon-portrait');
+  formData.append('backgroundId', 'palace-courtyard');
+  formData.append('intensity', 'bold');
+  formData.append('customPrompt', 'Make this a high-end Joseon royal king portrait: dark navy gonryongpo, ornate gold dragon embroidery, black-and-gold crown, royal throne, warm palace interior, palace roofs at sunset, photorealistic editorial lighting.');
+
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), MARU_AI_PHOTO_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      cache: 'no-store',
+      body: formData,
+      signal: controller.signal
+    });
+    const payload = await response.json().catch(() => null);
+    if (!response.ok) throw new Error(payload?.message || `HTTP ${response.status}`);
+    return payload?.imageDataUrl ? payload : null;
+  } catch (error) {
+    const message = String(error?.message || '');
+    const isConnectionFailure = error?.name === 'AbortError'
+      || error instanceof TypeError
+      || /failed to fetch|networkerror|load failed/i.test(message);
+    if (isConnectionFailure) {
+      maruApiHostUnavailable = true;
+    } else {
+      maruApiFailedPaths.add(MARU_API_PATHS.aiPhotoTransform);
+    }
+    return null;
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
+function renderAiPhotoImageResult(result, payload, style = aiPhotoSelectedStyle) {
+  if (!result || !payload?.imageDataUrl) return;
+  result.innerHTML = `
+    <article class="ai-photo-result-card ai-photo-canvas-card">
+      <div class="ai-photo-canvas-host">
+        <img src="${escapeHtml(payload.imageDataUrl)}" alt="${escapeHtml(ft('photo.styles.night', 'Palace Night'))}">
+      </div>
+      <div class="ai-photo-result-copy">
+        <strong>${escapeHtml(ft(`photo.styles.${style}`, style))}</strong>
+        <p>${escapeHtml(ft('photo.gptDone', 'The GPT royal portrait is ready to download.'))}</p>
+        <small>${escapeHtml(ft('photo.serverPrivacy', 'High-quality transforms are sent through the local server to the OpenAI Image API. The API key stays on the server.'))}</small>
+      </div>
+    </article>
+  `;
+}
+
+function renderAiPhotoCanvasResult(result, canvas, transformNote, style = aiPhotoSelectedStyle) {
+  if (!result) return;
+  result.innerHTML = `
+    <article class="ai-photo-result-card ai-photo-canvas-card">
+      <div class="ai-photo-canvas-host"></div>
+      <div class="ai-photo-result-copy">
+        <strong>${escapeHtml(ft(`photo.styles.${style}`, style))}</strong>
+        <p>${escapeHtml(transformNote || ft('photo.done', 'Your Joseon-style card is ready to download.'))}</p>
+        <small>${escapeHtml(ft('photo.privacy', 'Everything stays in the browser, so you can save the result without uploading the image.'))}</small>
+      </div>
+    </article>
+  `;
+  const host = qs('.ai-photo-canvas-host', result);
+  host?.appendChild(canvas);
+}
+
 function bindAiPhotoDemo() {
   const root = qs('[data-ai-photo-demo]');
   if (!root || root.dataset.aiPhotoBound === 'true') return;
@@ -8818,7 +8902,8 @@ function bindAiPhotoDemo() {
   });
 
   actionButton?.addEventListener('click', () => {
-    if (!previewUrl) {
+    const file = fileInput?.files?.[0] || null;
+    if (!previewUrl || !file) {
       setStatus(ft('photo.empty', 'Choose an image first.'));
       return;
     }
@@ -8829,23 +8914,32 @@ function bindAiPhotoDemo() {
       actionButton.disabled = true;
       actionButton.textContent = ft('photo.working', 'Applying a Joseon-inspired card effect in the browser.');
       setStatus(aiPhotoSelectedStyle === 'night'
-        ? ft('photo.loadingModel', 'Preparing subject separation and painterly rendering.')
+        ? ft('photo.gptWorking', 'Generating a high-quality GPT royal portrait on the server. This can take a moment.')
         : ft('photo.working', 'Applying a Joseon-inspired card effect in the browser.'));
 
       try {
+        if (aiPhotoSelectedStyle === 'night') {
+          let apiResult = null;
+          try {
+            apiResult = await createRoyalPortraitOnApi(file, aiPhotoSelectedStyle);
+          } catch (error) {
+            apiResult = null;
+          }
+
+          if (apiResult?.imageDataUrl) {
+            renderAiPhotoImageResult(result, apiResult, aiPhotoSelectedStyle);
+            result.classList.remove('is-hidden');
+            if (toolbar) toolbar.classList.remove('is-hidden');
+            aiPhotoDownloadUrl = apiResult.imageDataUrl;
+            setStatus(ft('photo.gptDone', 'The GPT royal portrait is ready to download.'));
+            return;
+          }
+
+          setStatus(ft('photo.gptFallback', 'The server GPT transform is unavailable, so MARU will continue with the browser transform.'));
+        }
+
         const { canvas, transformNote, usedFallback } = await createJoseonPhotoCard(image, aiPhotoSelectedStyle);
-        result.innerHTML = `
-          <article class="ai-photo-result-card ai-photo-canvas-card">
-            <div class="ai-photo-canvas-host"></div>
-            <div class="ai-photo-result-copy">
-              <strong>${escapeHtml(ft(`photo.styles.${aiPhotoSelectedStyle}`, aiPhotoSelectedStyle))}</strong>
-              <p>${escapeHtml(transformNote || ft('photo.done', 'Your Joseon-style card is ready to download.'))}</p>
-              <small>${escapeHtml(ft('photo.privacy', 'Everything stays in the browser, so you can save the result without uploading the image.'))}</small>
-            </div>
-          </article>
-        `;
-        const host = qs('.ai-photo-canvas-host', result);
-        host?.appendChild(canvas);
+        renderAiPhotoCanvasResult(result, canvas, transformNote, aiPhotoSelectedStyle);
         result.classList.remove('is-hidden');
         if (toolbar) toolbar.classList.remove('is-hidden');
         aiPhotoDownloadUrl = canvas.toDataURL('image/png');

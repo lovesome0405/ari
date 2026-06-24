@@ -40,7 +40,7 @@ maru:
       base-url: ${SEOUL_OPEN_DATA_BASE_URL:http://openapi.seoul.go.kr:8088}
   ai-photo:
     enabled: ${MARU_AI_PHOTO_ENABLED:true}
-    model: ${MARU_AI_PHOTO_MODEL:gpt-image-2}
+    model: ${MARU_AI_PHOTO_MODEL:gpt-image-1.5}
     quality: ${MARU_AI_PHOTO_QUALITY:high}
     output-format: ${MARU_AI_PHOTO_OUTPUT_FORMAT:png}
     background: ${MARU_AI_PHOTO_BACKGROUND:opaque}

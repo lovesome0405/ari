@@ -31,6 +31,8 @@ AI 이미지 변환과 외부 API 연동을 쓰려면 다음 환경변수를 함
 
 ```powershell
 $env:OPENAI_API_KEY="sk-..."
+$env:MARU_AI_PHOTO_MODEL="gpt-image-1.5"
+$env:MARU_AI_PHOTO_QUALITY="high"
 $env:TOUR_API_SERVICE_KEY=""
 $env:SEOUL_OPEN_DATA_API_KEY=""
 ```
@@ -98,9 +100,9 @@ AI 이미지 변환 테스트:
 ```powershell
 curl -X POST http://localhost:8080/api/ai-photo/transform `
   -F "image=@C:\path\to\photo.jpg" `
-  -F "styleId=joseon-portrait" `
+  -F "styleId=cinematic-drama" `
   -F "backgroundId=palace-courtyard" `
-  -F "intensity=balanced"
+  -F "intensity=bold"
 ```
 
 개수만 빠르게 확인하려면:

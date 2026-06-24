@@ -8,6 +8,18 @@
 
 Seoul Heritage Guide for Global Travelers
 
+## Demo: GPT Royal Portrait
+
+AI 포토카드 발표 시연은 백엔드에 `OPENAI_API_KEY`를 설정한 뒤 `ai-photo.html`에서 `궁궐 야경` 스타일을 선택하면 됩니다. 서버가 켜져 있으면 `POST /api/ai-photo/transform`으로 GPT 왕실 초상 변환을 먼저 시도하고, 서버나 외부 API가 실패하면 기존 브라우저 변환으로 fallback합니다.
+
+```powershell
+$env:OPENAI_API_KEY="sk-..."
+$env:MARU_AI_PHOTO_MODEL="gpt-image-1.5"
+$env:MARU_AI_PHOTO_QUALITY="high"
+cd backend
+mvn spring-boot:run
+```
+
 핵심 원칙:
 
 - DB = 검증된 문화 사실

@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class AiPhotoProperties {
 
   private boolean enabled = true;
-  private String model = "gpt-image-2";
+  private String model = "gpt-image-1.5";
   private String quality = "high";
   private String outputFormat = "png";
   private String background = "opaque";

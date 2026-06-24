@@ -1,3 +1,6 @@
+import base64
+from email.parser import BytesParser
+from email.policy import default as email_policy
 import json
 import os
 import sqlite3
@@ -6,6 +9,7 @@ from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
+from urllib.request import Request, urlopen
 
 
 if getattr(sys, "frozen", False):
@@ -19,6 +23,13 @@ RUNTIME_DIR = APP_ROOT / "runtime"
 DB_PATH = RUNTIME_DIR / "maru_dynamic.sqlite3"
 HOST = os.environ.get("MARU_API_HOST", "127.0.0.1")
 PORT = int(os.environ.get("PORT") or os.environ.get("MARU_API_PORT") or "8080")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
+OPENAI_BASE_URL = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1").rstrip("/")
+OPENAI_IMAGE_MODEL = os.environ.get("MARU_AI_PHOTO_MODEL") or os.environ.get("OPENAI_IMAGE_MODEL", "gpt-image-1.5")
+OPENAI_IMAGE_SIZE = os.environ.get("OPENAI_IMAGE_SIZE", "1024x1536")
+OPENAI_IMAGE_QUALITY = os.environ.get("MARU_AI_PHOTO_QUALITY") or os.environ.get("OPENAI_IMAGE_QUALITY", "high")
+MAX_IMAGE_DATA_URL_LENGTH = 21_000_000
+MAX_IMAGE_UPLOAD_BYTES = 15_000_000
 
 DATA_PATHS = {
     "courses": PROJECT_ROOT / "data" / "courses.json",
@@ -151,6 +162,122 @@ def delete_saved_route(saved_id: int):
     return cursor.rowcount > 0
 
 
+def royal_portrait_prompt():
+    return (
+        "Transform the uploaded portrait into a high-quality photorealistic Joseon royal portrait. "
+        "Preserve the person's core facial identity, face shape, expression, gaze direction, skin tone, "
+        "hairstyle impression, and natural proportions. Change the clothing and scene dramatically: "
+        "dress the person as a Joseon king wearing a dark navy gonryongpo with intricate gold dragon "
+        "embroidery, a white inner collar, ornate royal belt, and a black-and-gold royal crown. "
+        "Place the subject seated in a richly decorated Joseon palace interior at golden sunset, "
+        "with carved royal furniture, gold ornaments, palace eaves, bead curtains, and softly blurred "
+        "palace architecture outside the window. Use cinematic warm light, realistic fabric texture, "
+        "detailed gold embroidery, shallow depth of field, premium editorial portrait lighting, "
+        "and a polished high-end generative image look. Do not add text, watermark, logos, extra faces, "
+        "distorted hands, or modern objects. Do not copy any specific living artist, animation studio, "
+        "or copyrighted character style."
+    )
+
+
+def build_image_data_url(image_bytes: bytes, content_type: str):
+    normalized_type = (content_type or "image/png").split(";")[0].strip().lower()
+    if normalized_type not in {"image/jpeg", "image/jpg", "image/png", "image/webp"}:
+        raise ValueError("JPG, PNG, and WEBP images are supported")
+    if not image_bytes:
+        raise ValueError("image file is empty")
+    if len(image_bytes) > MAX_IMAGE_UPLOAD_BYTES:
+        raise ValueError("image file is too large")
+    image_base64 = base64.b64encode(image_bytes).decode("ascii")
+    return f"data:{normalized_type};base64,{image_base64}"
+
+
+def parse_multipart_form(raw_body: bytes, content_type: str):
+    if "multipart/form-data" not in (content_type or "").lower():
+        raise ValueError("Content-Type must be multipart/form-data")
+
+    message = BytesParser(policy=email_policy).parsebytes(
+        b"Content-Type: " + content_type.encode("utf-8") + b"\r\n"
+        + b"MIME-Version: 1.0\r\n\r\n"
+        + raw_body
+    )
+    if not message.is_multipart():
+        raise ValueError("multipart body is invalid")
+
+    fields = {}
+    files = {}
+    for part in message.iter_parts():
+        disposition_params = part.get_params(header="content-disposition", unquote=True) or []
+        params = {key: value for key, value in disposition_params[1:]}
+        name = params.get("name")
+        if not name:
+            continue
+
+        payload = part.get_payload(decode=True) or b""
+        filename = params.get("filename")
+        if filename:
+            files[name] = {
+                "filename": filename,
+                "content_type": part.get_content_type(),
+                "bytes": payload,
+            }
+        else:
+            charset = part.get_content_charset() or "utf-8"
+            fields[name] = payload.decode(charset, errors="replace")
+
+    return fields, files
+
+
+def create_royal_portrait(payload):
+    if not OPENAI_API_KEY:
+        raise RuntimeError("OPENAI_API_KEY is not configured")
+
+    image_data_url = str(payload.get("imageDataUrl", "")).strip()
+    style = str(payload.get("style", "royal")).strip() or "royal"
+    if not image_data_url.startswith("data:image/"):
+        raise ValueError("imageDataUrl must be a data:image URL")
+    if len(image_data_url) > MAX_IMAGE_DATA_URL_LENGTH:
+        raise ValueError("imageDataUrl is too large")
+
+    request_body = json.dumps({
+        "model": OPENAI_IMAGE_MODEL,
+        "images": [{"image_url": image_data_url}],
+        "prompt": royal_portrait_prompt(),
+        "size": OPENAI_IMAGE_SIZE,
+        "quality": OPENAI_IMAGE_QUALITY,
+        "input_fidelity": "high",
+        "background": "opaque",
+        "output_format": "png",
+    }).encode("utf-8")
+
+    request = Request(
+        f"{OPENAI_BASE_URL}/images/edits",
+        data=request_body,
+        headers={
+            "Authorization": f"Bearer {OPENAI_API_KEY}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+
+    with urlopen(request, timeout=120) as response:
+        response_payload = json.loads(response.read().decode("utf-8"))
+
+    image_base64 = (
+        response_payload.get("data", [{}])[0].get("b64_json", "")
+        if isinstance(response_payload.get("data"), list)
+        else ""
+    )
+    if not image_base64:
+        raise RuntimeError("OpenAI image response did not include image data")
+
+    return {
+        "imageDataUrl": f"data:image/png;base64,{image_base64}",
+        "model": OPENAI_IMAGE_MODEL,
+        "style": style,
+        "message": "GPT 왕실 초상 변환이 완료되었습니다.",
+    }
+
+
 class MaruApiHandler(BaseHTTPRequestHandler):
     server_version = "MaruPythonBackend/1.0"
 
@@ -204,6 +331,8 @@ class MaruApiHandler(BaseHTTPRequestHandler):
                     "/api/heritage",
                     "/api/public-data-sources",
                     "/api/saved-routes",
+                    "/api/ai-photo/transform",
+                    "/api/ai-photo/royal-portrait",
                 ],
             })
             return
@@ -250,6 +379,52 @@ class MaruApiHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         parsed = urlparse(self.path)
         path = parsed.path.rstrip("/") or "/"
+
+        if path == "/api/ai-photo/transform":
+            try:
+                length = int(self.headers.get("Content-Length", "0") or "0")
+                raw_body = self.rfile.read(length) if length else b""
+                fields, files = parse_multipart_form(raw_body, self.headers.get("Content-Type", ""))
+                image_file = files.get("image") or files.get("image[]")
+                if not image_file:
+                    raise ValueError("image file is required")
+                image_data_url = build_image_data_url(image_file["bytes"], image_file["content_type"])
+                created = create_royal_portrait({
+                    "imageDataUrl": image_data_url,
+                    "style": fields.get("styleId", "royal"),
+                })
+            except ValueError as error:
+                self._send_json(400, {"error": str(error)})
+                return
+            except RuntimeError as error:
+                self._send_json(503, {"error": str(error)})
+                return
+            except Exception as error:
+                self._send_json(502, {"error": f"Failed to create royal portrait: {error}"})
+                return
+
+            self._send_json(200, created)
+            return
+
+        if path == "/api/ai-photo/royal-portrait":
+            try:
+                payload = self._read_json_body()
+                created = create_royal_portrait(payload)
+            except json.JSONDecodeError:
+                self._send_json(400, {"error": "Invalid JSON body"})
+                return
+            except ValueError as error:
+                self._send_json(400, {"error": str(error)})
+                return
+            except RuntimeError as error:
+                self._send_json(503, {"error": str(error)})
+                return
+            except Exception as error:
+                self._send_json(502, {"error": f"Failed to create royal portrait: {error}"})
+                return
+
+            self._send_json(200, created)
+            return
 
         if path != "/api/saved-routes":
             self._send_json(404, {"error": "Not found"})

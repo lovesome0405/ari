@@ -116,6 +116,7 @@ Notes
 - maru-backend.exe starts a local API server on localhost:8080
 - index.html automatically reads that API.
 - Saved data is created in the runtime folder as a SQLite file.
+- For GPT royal portrait photo transforms, set OPENAI_API_KEY before running launch-maru-demo.bat.
 
 Stop
 - Run stop-maru-demo.bat or close the maru-backend.exe process.

@@ -2898,7 +2898,8 @@ body.ari-has-bottom-cta .ari-chat {
   justify-content: center;
 }
 
-.ai-photo-canvas-host canvas {
+.ai-photo-canvas-host canvas,
+.ai-photo-canvas-host img {
   width: 100%;
   height: auto;
   border-radius: 20px;
