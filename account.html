@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account | MARU</title>
+  <meta name="description" content="MARU account sign in, sign up, and Google account linking">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="account">
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="brand" href="index.html" aria-label="Back to MARU home">
+        <span class="brand-mark back-mark">&lt;</span>
+        <span><strong>MARU</strong><small>Account Center</small></span>
+      </a>
+    </header>
+
+    <main class="app-main auth-main" data-auth-page>
+      <section class="page-title-card">
+        <p class="eyebrow">Account</p>
+        <h1>Sign in to MARU your way</h1>
+        <p>Create a local MARU account, sign in with your email and password, or link your own Google account.</p>
+      </section>
+
+      <section class="mobile-card auth-session-card" data-auth-session-card>
+        <div class="auth-session-head">
+          <div class="auth-avatar" data-auth-avatar>M</div>
+          <div class="auth-session-copy">
+            <h2 data-auth-session-title>MARU account access</h2>
+            <p data-auth-session-body>Use a local account or Google sign in.</p>
+          </div>
+        </div>
+        <div class="auth-methods" data-auth-methods></div>
+        <p class="auth-status" data-auth-status aria-live="polite"></p>
+        <button class="button button-secondary button-block is-hidden" type="button" data-auth-logout>Log out</button>
+      </section>
+
+      <section class="mobile-card auth-google-box" data-auth-google-section>
+        <div class="auth-form-copy">
+          <h2>Google sign in</h2>
+          <p data-auth-google-note>Connect your own Google account to sign in faster.</p>
+        </div>
+        <div class="auth-google-button" data-auth-google-button></div>
+      </section>
+
+      <section class="mobile-card auth-form-card" data-auth-login-card>
+        <div class="auth-form-copy">
+          <h2>Local sign in</h2>
+          <p>Use the MARU account you created with your email and password.</p>
+        </div>
+        <form class="auth-form" data-auth-login-form>
+          <label class="auth-field">
+            <span>Email</span>
+            <input type="email" autocomplete="email" required data-auth-login-email>
+          </label>
+          <label class="auth-field">
+            <span>Password</span>
+            <input type="password" autocomplete="current-password" minlength="8" required data-auth-login-password>
+          </label>
+          <button class="button button-primary button-block" type="submit">Sign in</button>
+        </form>
+      </section>
+
+      <section class="mobile-card auth-form-card" data-auth-register-card>
+        <div class="auth-form-copy">
+          <h2 data-auth-register-title>Create MARU account</h2>
+          <p data-auth-register-hint>Sign up once and you will be signed in right away.</p>
+        </div>
+        <form class="auth-form" data-auth-register-form>
+          <label class="auth-field">
+            <span>Display name</span>
+            <input type="text" autocomplete="name" maxlength="120" required data-auth-register-display-name data-reset-on-guest="true">
+          </label>
+          <label class="auth-field">
+            <span>Email</span>
+            <input type="email" autocomplete="email" maxlength="255" required data-auth-register-email data-reset-on-guest="true">
+          </label>
+          <label class="auth-field">
+            <span>Password</span>
+            <input type="password" autocomplete="new-password" minlength="8" maxlength="72" required data-auth-register-password>
+          </label>
+          <label class="auth-field">
+            <span>Confirm password</span>
+            <input type="password" autocomplete="new-password" minlength="8" maxlength="72" required data-auth-register-password-confirm>
+          </label>
+          <button class="button button-primary button-block" type="submit">Create account</button>
+        </form>
+      </section>
+    </main>
+
+    <nav class="bottom-tab" aria-label="Bottom navigation">
+      <a href="index.html" data-tab="home"><span class="tab-icon home-icon"></span><strong>Home</strong></a>
+      <a href="planner.html" data-tab="recommend"><span class="tab-icon recommend-icon"></span><strong>Routes</strong></a>
+      <a href="map.html" data-tab="map"><span class="tab-icon map-icon"></span><strong>Map</strong></a>
+      <a href="support.html" data-tab="support"><span class="tab-icon support-icon"></span><strong>Support</strong></a>
+      <a href="passport.html" data-tab="passport"><span class="tab-icon save-icon"></span><strong>Saved</strong></a>
+    </nav>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="app.js"></script>
+</body>
+</html>

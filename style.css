@@ -304,6 +304,19 @@ p {
   font-weight: 900;
 }
 
+.header-action-group {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.header-auth-pill {
+  min-width: 82px;
+}
+
 /* Bottom Tab */
 .bottom-tab {
   position: fixed;
@@ -2039,6 +2052,147 @@ code {
   color: var(--muted);
 }
 
+.auth-main {
+  padding-bottom: calc(var(--bottom-tab-height) + 24px);
+}
+
+.auth-session-card,
+.auth-form-card,
+.auth-google-box {
+  display: grid;
+  gap: 14px;
+}
+
+.auth-session-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.auth-avatar {
+  display: grid;
+  width: 60px;
+  height: 60px;
+  flex: 0 0 auto;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 20px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #122947, #2c557f);
+  font-size: 1.3rem;
+  font-weight: 900;
+  box-shadow: 0 16px 28px rgba(18, 41, 71, 0.22);
+}
+
+.auth-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.auth-session-copy {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+}
+
+.auth-session-copy h2 {
+  font-size: 1.2rem;
+}
+
+.auth-session-copy p,
+.auth-form-copy p,
+.auth-google-box p {
+  color: var(--muted);
+}
+
+.auth-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.auth-method-badge {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(18, 41, 71, 0.08);
+  border-radius: 999px;
+  padding: 0 12px;
+  color: var(--gold-dark);
+  background: rgba(255, 246, 223, 0.88);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.auth-form-copy {
+  display: grid;
+  gap: 6px;
+}
+
+.auth-form {
+  display: grid;
+  gap: 12px;
+}
+
+.auth-field {
+  display: grid;
+  gap: 6px;
+}
+
+.auth-field span {
+  color: var(--gold-dark);
+  font-size: 0.84rem;
+  font-weight: 900;
+}
+
+.auth-field input {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 0 14px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.auth-field input[readonly] {
+  background: rgba(244, 246, 248, 0.92);
+}
+
+.auth-status {
+  min-height: 22px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.auth-status.is-success {
+  color: #186a4a;
+}
+
+.auth-status.is-error {
+  color: var(--danger);
+}
+
+.auth-google-button {
+  display: flex;
+  justify-content: center;
+}
+
+.auth-google-button:empty::before {
+  content: "";
+  width: 100%;
+  height: 44px;
+}
+
+@media (max-width: 520px) {
+  .ai-photo-options,
+  .ai-photo-result-tags,
+  .ai-photo-result-actions {
+    grid-template-columns: 1fr;
+  }
+}
 /* Ari Chatbot */
 .ari-chat {
   position: fixed;

@@ -14,7 +14,7 @@ Seoul Heritage Guide for Global Travelers
 - Server = 조건 필터링과 추천 점수
 - AI = 쉬운 문화 해설
 
-현재 버전은 GitHub Pages에서 동작하는 프론트엔드 시제품과 `backend/`의 Spring Boot + MySQL API 뼈대를 함께 포함합니다. 프론트는 서버 API를 먼저 시도하고 실패하면 기존 정적 JSON/localStorage로 fallback하며, 백엔드는 seed JSON을 MySQL에 자동 적재해 조회 API와 발표용 코스 저장 API를 반환할 수 있습니다.
+현재 버전은 GitHub Pages에서 동작하는 프론트엔드 시제품과 `backend/`의 Spring Boot + MySQL 조회 API 뼈대를 함께 포함합니다. 프론트는 서버 API를 먼저 시도하고 실패하면 기존 정적 JSON으로 fallback하며, 백엔드는 seed JSON을 MySQL에 자동 적재해 실제 조회 API를 반환할 수 있습니다.
 
 ## 실행 방법
 
@@ -60,6 +60,8 @@ support.html        # 여행자 지원
 passport.html       # 저장 코스와 문화 스탬프
 culture-data.html   # 심사용 문화데이터 대시보드
 about.html          # 서비스 설명
+ai-photo.html       # 업로드 이미지를 조선풍으로 변환하는 AI 이미지 편집 화면
+account.html        # MARU 계정 로그인, 회원가입, Google 계정 연동 화면
 style.css           # 모바일 우선 디자인 시스템, 이미지 프레임, 아리 챗봇 UI
 app.js              # 데이터, localStorage, 렌더링, 인터랙션, 아리 provider/fallback
 ari_culture_resources_appjs.json # 정적 앱에서 fetch하는 서울 전통문화 장소 데이터
@@ -193,12 +195,15 @@ assets/images/routes/modern-seoul-performance.webp
 
 ## AI Image Policy
 
-앱의 이미지는 사용자가 제공하는 로컬 파일을 표시합니다. 현재 안내 문구는 AI 생성 또는 이해 보조 이미지로 오해를 줄이기 위한 정책입니다.
+기본 화면의 장소/코스 이미지는 로컬 정적 자산과 placeholder를 사용합니다. 별도 페이지 `ai-photo.html`은 사용자가 직접 올린 사진을 백엔드로 보내 실제 AI 이미지 편집을 실행할 수 있는 선택형 기능입니다.
 
-- 저작권이 있는 사진이나 외부 이미지를 사용하지 않습니다.
+- 메인 앱의 장소/코스 이미지는 저작권이 불분명한 외부 사진 대신 로컬 자산과 placeholder를 사용합니다.
 - 실제 장소 사진처럼 오해되지 않도록 “AI 생성 이미지 · 실제 장소 사진이 아닌 이해 보조 이미지” 문구를 표시합니다.
 - 실제 이미지 파일이 없으면 CSS placeholder가 표시됩니다.
 - 이미지 생성 프롬프트는 `image-prompts.md`에 정리되어 있습니다.
+- `ai-photo.html`은 `backend` 서버와 `OPENAI_API_KEY`가 준비된 경우에만 실제 변환이 동작합니다.
+- `account.html`에서는 MARU 자체 회원가입/로그인과 Google 계정 로그인 또는 연동을 사용할 수 있습니다.
+- 사용자 업로드 이미지는 프론트엔드가 직접 외부 API로 보내지 않고, 백엔드를 통해서만 전달해야 합니다.
 
 ## 아리 Chatbot
 
@@ -266,7 +271,7 @@ https://map.kakao.com/link/by/walk/...
 
 ## Spring Boot + MySQL Backend
 
-`backend/`에는 Spring Boot 3.3 + Java 21 + MySQL 기반 조회 API와 발표용 코스 저장 API가 추가되어 있습니다.
+`backend/`에는 Spring Boot 3.3 + Java 21 + MySQL 기반 조회 API가 추가되어 있습니다.
 
 구현된 테이블:
 
@@ -276,7 +281,6 @@ https://map.kakao.com/link/by/walk/...
 - `festivals`
 - `heritage`
 - `public_data_sources`
-- `saved_routes`
 
 서버 시작 시 다음 seed JSON을 읽어 DB가 비어 있는 항목을 자동 적재합니다.
 
@@ -301,7 +305,6 @@ API 테스트:
 curl http://localhost:8080/api/courses
 curl http://localhost:8080/api/courses/palace-history-course
 curl http://localhost:8080/api/public-data-sources
-curl http://localhost:8080/api/saved-routes
 ```
 
 프론트 API fallback:
@@ -310,37 +313,12 @@ curl http://localhost:8080/api/saved-routes
 - API가 실패하면 기존 `data/*.json`과 앱 내부 fallback 데이터로 내려갑니다.
 - endpoint별 실패 관리가 적용되어 한 API 실패가 다른 API 호출을 전부 막지 않습니다.
 - GitHub Pages에서는 별도 API base URL을 지정하지 않으면 정적 JSON으로 동작합니다.
-- 코스 상세 저장 버튼은 서버가 켜져 있으면 `POST /api/saved-routes`에 저장하고, 실패하면 기존 localStorage 저장으로 fallback합니다.
-- `passport.html`은 `GET /api/saved-routes`를 먼저 읽고, 실패하면 기존 localStorage 저장 목록을 표시합니다.
-
-발표 시연용 확인 절차:
-
-1. MySQL에서 `maru` DB를 생성합니다.
-   ```sql
-   CREATE DATABASE maru CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   ```
-2. 백엔드를 실행합니다.
-   ```powershell
-   cd backend
-   mvn spring-boot:run
-   ```
-3. 브라우저에서 API를 확인합니다.
-   ```text
-   http://localhost:8080/api/courses
-   http://localhost:8080/api/saved-routes
-   ```
-4. 프론트에서 코스 상세 페이지로 이동합니다.
-5. `문화여행 기록에 저장` 또는 저장 버튼을 클릭합니다.
-6. MySQL에서 저장 결과를 확인합니다.
-   ```sql
-   SELECT * FROM saved_routes ORDER BY id DESC;
-   ```
 
 현재 한계:
 
 - 실제 공공데이터 API 동기화는 아직 없습니다.
 - 실제 생성형 AI API 호출은 아직 없습니다.
-- 로그인 기반 사용자별 저장 기능은 아직 없습니다. 현재 저장 API는 발표 시연용 단순 코스 저장입니다.
+- 로그인/사용자 저장 기능은 아직 없습니다.
 - 관리자 CRUD API와 운영 배치 동기화는 다음 단계입니다.
 
 ## AI 확장 계획

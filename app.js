@@ -349,13 +349,22 @@ const COURSE_DATA_URL = 'data/courses.json';
 const MARU_API_BASE_STORAGE_KEY = 'maruApiBaseUrl';
 const MARU_LOCAL_API_BASE_URL = 'http://localhost:8080';
 const MARU_API_TIMEOUT_MS = 900;
+const MARU_AI_PHOTO_TIMEOUT_MS = 120000;
+const MARU_AUTH_TIMEOUT_MS = 8000;
 const MARU_API_PATHS = {
   courses: '/api/courses',
   places: '/api/places',
   festivals: '/api/festivals',
   heritage: '/api/heritage',
   publicDataSources: '/api/public-data-sources',
-  savedRoutes: '/api/saved-routes'
+  savedRoutes: '/api/saved-routes',
+  aiPhotoTransform: '/api/ai-photo/transform',
+  authConfig: '/api/auth/config',
+  authRegister: '/api/auth/register',
+  authLogin: '/api/auth/login',
+  authGoogle: '/api/auth/google',
+  authGoogleLink: '/api/auth/google/link',
+  authMe: '/api/auth/me'
 };
 const maruApiFailedPaths = new Set();
 let maruApiHostUnavailable = false;
@@ -805,7 +814,9 @@ const STORAGE_KEYS = {
   mapService: 'hanroute.mobile.mapService',
   ariMessages: 'hanroute.mobile.ariMessages',
   ariProviderSettings: 'hanroute.mobile.ariProviderSettings',
-  dataOverrides: 'hanroute.mobile.dataOverrides'
+  dataOverrides: 'hanroute.mobile.dataOverrides',
+  authToken: 'maru.auth.token',
+  authUser: 'maru.auth.user'
 };
 
 const LANGUAGES = {
@@ -843,6 +854,13 @@ const LANGUAGE_HTML_LANG = {
   en: 'en',
   ja: 'ja',
   zh: 'zh'
+};
+
+const AUTH_LABELS = {
+  guest: { KR: '로그인', EN: 'Sign in', JP: 'ログイン', CN: '登录' },
+  member: { KR: '계정', EN: 'Account', JP: 'アカウント', CN: '账号' },
+  linked: { KR: '연결됨', EN: 'Linked', JP: '連携済み', CN: '已连接' },
+  notLinked: { KR: '미연결', EN: 'Not linked', JP: '未連携', CN: '未连接' }
 };
 
 const LANGUAGE_PILL_LABELS = {
@@ -3008,6 +3026,12 @@ let ariMessages = [];
 let timeImageIndex = 0;
 let timeImagePeriod = '';
 let timeImageTimer = null;
+let authState = {
+  token: '',
+  user: null,
+  offline: false
+};
+let authConfigState = null;
 let nearbyRecommendationState = {
   status: 'idle',
   messageKey: '',
@@ -3312,6 +3336,10 @@ function langPick(values, language = getCurrentLanguage(), fallback = '') {
   return values[normalizedLanguage] ?? values.en ?? values.ko ?? fallback;
 }
 
+function authLabel(key) {
+  return textFrom(AUTH_LABELS[key] || AUTH_LABELS.guest);
+}
+
 function convenienceText(key) {
   return CONVENIENCE_TRANSLATIONS[getCurrentLanguage()]?.[key] || CONVENIENCE_TRANSLATIONS.en[key] || key;
 }
@@ -3329,7 +3357,7 @@ function setHtml(selector, value) {
 }
 
 function applyPageMetadata(fileName = getCurrentFileName()) {
-  const metaKey = PAGE_META_KEYS[fileName] || PAGE_META_KEYS['index.html'];
+  const metaKey = PAGE_META_KEYS[fileName];
   const meta = t(`pageMeta.${metaKey}`, null);
   if (!meta || typeof meta !== 'object') return;
 
@@ -3927,6 +3955,146 @@ function makeMaruApiUrl(path) {
   const baseUrl = getMaruApiBaseUrl();
   if (!baseUrl || !path) return '';
   return `${baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
+}
+
+function getAuthToken() {
+  return String(storageGet(STORAGE_KEYS.authToken, '') || '').trim();
+}
+
+function getCachedAuthUser() {
+  const user = storageJsonGet(STORAGE_KEYS.authUser, null);
+  return user && typeof user === 'object' ? user : null;
+}
+
+function setAuthSession(payload) {
+  const token = String(payload?.accessToken || '').trim();
+  const user = payload?.user && typeof payload.user === 'object' ? payload.user : null;
+
+  if (token) {
+    storageSet(STORAGE_KEYS.authToken, token);
+  } else {
+    storageSet(STORAGE_KEYS.authToken, '');
+  }
+
+  if (user) {
+    storageJsonSet(STORAGE_KEYS.authUser, user);
+  } else {
+    storageSet(STORAGE_KEYS.authUser, '');
+  }
+
+  authState = {
+    token,
+    user,
+    offline: false
+  };
+  renderHeaderAuthAction();
+  renderAuthPage();
+}
+
+function clearAuthSession() {
+  storageSet(STORAGE_KEYS.authToken, '');
+  storageSet(STORAGE_KEYS.authUser, '');
+  authState = {
+    token: '',
+    user: null,
+    offline: false
+  };
+  renderHeaderAuthAction();
+  renderAuthPage();
+}
+
+async function fetchMaruApiJson(path, options = {}) {
+  const url = makeMaruApiUrl(path);
+  if (!url) throw new Error('MARU API 서버 주소가 설정되지 않았습니다.');
+
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), options.timeoutMs || MARU_AUTH_TIMEOUT_MS);
+  const headers = { ...(options.headers || {}) };
+  const token = options.token || getAuthToken();
+
+  if (options.body && !headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json';
+  }
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  try {
+    const response = await fetch(url, {
+      method: options.method || 'GET',
+      cache: 'no-store',
+      headers,
+      body: options.body ? JSON.stringify(options.body) : undefined,
+      signal: controller.signal
+    });
+
+    let payload = null;
+    try {
+      payload = await response.json();
+    } catch (error) {
+      payload = null;
+    }
+
+    if (!response.ok) {
+      const error = new Error(payload?.message || `HTTP ${response.status}`);
+      error.status = response.status;
+      error.payload = payload;
+      throw error;
+    }
+
+    return payload;
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
+async function refreshAuthSession() {
+  const token = getAuthToken();
+  const cachedUser = getCachedAuthUser();
+
+  authState = {
+    token,
+    user: cachedUser,
+    offline: false
+  };
+
+  if (!token) {
+    renderHeaderAuthAction();
+    renderAuthPage();
+    return null;
+  }
+
+  try {
+    const user = await fetchMaruApiJson(MARU_API_PATHS.authMe, { token });
+    authState = {
+      token,
+      user,
+      offline: false
+    };
+    storageJsonSet(STORAGE_KEYS.authUser, user);
+    renderHeaderAuthAction();
+    renderAuthPage();
+    return user;
+  } catch (error) {
+    const message = String(error?.message || '');
+    const isConnectionFailure = error?.name === 'AbortError'
+        || error instanceof TypeError
+        || /failed to fetch|networkerror|load failed/i.test(message);
+
+    if (error?.status === 401 || error?.status === 403) {
+      clearAuthSession();
+      return null;
+    }
+
+    authState = {
+      token,
+      user: cachedUser,
+      offline: isConnectionFailure
+    };
+    renderHeaderAuthAction();
+    renderAuthPage();
+    return cachedUser;
+  }
 }
 
 async function fetchJsonFromMaruApi(path, options = {}) {
@@ -4927,6 +5095,7 @@ function applyStaticTranslations() {
     if (apiHeading) apiHeading.textContent = t('cultureData.futureApiTitle');
   }
 
+  renderHeaderAuthAction();
   applyAriTranslations();
 }
 
@@ -4946,6 +5115,7 @@ function renderLocalizedContent() {
   renderPassport();
   renderCultureData();
   renderSavedBundles();
+  renderAuthPage();
   renderConditionSummary();
   renderAriMessages();
   updatePlannerStep();
@@ -7407,6 +7577,295 @@ function renderAriMessages() {
   container.scrollTop = container.scrollHeight;
 }
 
+function getCompactDisplayName(user) {
+  const source = String(user?.displayName || user?.email || '').trim();
+  if (!source) return authLabel('member');
+  const firstWord = source.split(/\s+/)[0];
+  return firstWord.length > 10 ? `${firstWord.slice(0, 10)}…` : firstWord;
+}
+
+function ensureHeaderActionGroup() {
+  const header = qs('.app-header');
+  const brand = qs('.brand', header);
+  if (!header || !brand) return null;
+
+  let group = qs('.header-action-group', header);
+  if (!group) {
+    group = document.createElement('div');
+    group.className = 'header-action-group';
+
+    Array.from(header.children)
+      .filter((child) => child !== brand)
+      .forEach((child) => group.appendChild(child));
+
+    header.appendChild(group);
+  }
+
+  return group;
+}
+
+function renderHeaderAuthAction() {
+  const group = ensureHeaderActionGroup();
+  if (!group) return;
+
+  let link = qs('[data-auth-header-link]', group);
+  if (!link) {
+    link = document.createElement('a');
+    link.className = 'header-pill header-auth-pill';
+    link.href = 'account.html';
+    link.dataset.authHeaderLink = 'true';
+    group.appendChild(link);
+  }
+
+  link.textContent = authState.user ? getCompactDisplayName(authState.user) : authLabel('guest');
+  link.setAttribute('aria-label', authState.user ? authLabel('member') : authLabel('guest'));
+}
+
+function setAuthStatus(message = '', tone = 'info') {
+  const status = qs('[data-auth-status]');
+  if (!status) return;
+  status.textContent = message;
+  status.className = `auth-status${message ? ` is-${tone}` : ''}`;
+}
+
+async function renderGoogleSignInButton() {
+  const root = qs('[data-auth-page]');
+  if (!root) return;
+
+  const section = qs('[data-auth-google-section]', root);
+  const container = qs('[data-auth-google-button]', root);
+  const note = qs('[data-auth-google-note]', root);
+  if (!section || !container || !note) return;
+
+  if (authState.user?.googleLinked) {
+    section.classList.add('is-hidden');
+    container.innerHTML = '';
+    note.textContent = 'Google 계정이 이미 연결되어 있습니다.';
+    return;
+  }
+
+  section.classList.remove('is-hidden');
+
+  if (!authConfigState?.googleEnabled || !authConfigState?.googleClientId) {
+    container.innerHTML = '';
+    note.textContent = '관리자가 Google 로그인 Client ID를 설정하면 여기서 바로 로그인할 수 있습니다.';
+    return;
+  }
+
+  let attempts = 0;
+  while (!(window.google?.accounts?.id) && attempts < 60) {
+    await new Promise((resolve) => window.setTimeout(resolve, 100));
+    attempts += 1;
+  }
+
+  if (!(window.google?.accounts?.id)) {
+    container.innerHTML = '';
+    note.textContent = 'Google 로그인 스크립트를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.';
+    return;
+  }
+
+  note.textContent = authState.user
+    ? '현재 로그인된 MARU 계정과 같은 이메일의 Google 계정을 연결할 수 있습니다.'
+    : 'Google 계정으로 바로 가입하거나 로그인할 수 있습니다.';
+
+  window.google.accounts.id.initialize({
+    client_id: authConfigState.googleClientId,
+    callback: async (response) => {
+      const isLinkMode = Boolean(authState.user && !authState.user.googleLinked);
+      try {
+        const payload = await fetchMaruApiJson(
+            isLinkMode ? MARU_API_PATHS.authGoogleLink : MARU_API_PATHS.authGoogle,
+            {
+              method: 'POST',
+              body: { credential: response.credential }
+            }
+        );
+        setAuthSession(payload);
+        setAuthStatus(isLinkMode ? 'Google 계정 연결이 완료되었습니다.' : 'Google 로그인에 성공했습니다.', 'success');
+        showToast(isLinkMode ? 'Google 계정 연결 완료' : 'Google 로그인 완료');
+      } catch (error) {
+        setAuthStatus(error?.message || 'Google 로그인에 실패했습니다.', 'error');
+      }
+    }
+  });
+
+  container.innerHTML = '';
+  window.google.accounts.id.renderButton(container, {
+    theme: 'outline',
+    size: 'large',
+    shape: 'pill',
+    width: 320,
+    text: authState.user ? 'continue_with' : 'signin_with'
+  });
+}
+
+function renderAuthPage() {
+  const root = qs('[data-auth-page]');
+  if (!root) return;
+
+  const user = authState.user;
+  const sessionTitle = qs('[data-auth-session-title]', root);
+  const sessionBody = qs('[data-auth-session-body]', root);
+  const methods = qs('[data-auth-methods]', root);
+  const avatar = qs('[data-auth-avatar]', root);
+  const loginCard = qs('[data-auth-login-card]', root);
+  const registerCard = qs('[data-auth-register-card]', root);
+  const logoutButton = qs('[data-auth-logout]', root);
+  const registerTitle = qs('[data-auth-register-title]', root);
+  const registerHint = qs('[data-auth-register-hint]', root);
+  const displayNameInput = qs('[data-auth-register-display-name]', root);
+  const emailInput = qs('[data-auth-register-email]', root);
+  const passwordInput = qs('[data-auth-register-password]', root);
+  const passwordConfirmInput = qs('[data-auth-register-password-confirm]', root);
+
+  if (sessionTitle) {
+    sessionTitle.textContent = user
+      ? `${user.displayName || user.email} 님이 로그인 중입니다`
+      : 'MARU 계정으로 로그인하거나 새로 가입할 수 있습니다.';
+  }
+
+  if (sessionBody) {
+    if (user) {
+      const offlineNote = authState.offline ? ' 현재는 서버 연결을 확인하지 못해 저장된 세션 정보를 표시 중입니다.' : '';
+      sessionBody.textContent = `${user.email}${offlineNote}`;
+    } else {
+      sessionBody.textContent = '이메일/비밀번호 회원가입과 Google 로그인을 모두 지원합니다.';
+    }
+  }
+
+  if (methods) {
+    methods.innerHTML = user ? [
+      `<span class="auth-method-badge">${escapeHtml(user.localLoginEnabled ? '비밀번호 로그인 연결됨' : '비밀번호 로그인 미연결')}</span>`,
+      `<span class="auth-method-badge">${escapeHtml(user.googleLinked ? 'Google 로그인 연결됨' : 'Google 로그인 미연결')}</span>`,
+      `<span class="auth-method-badge">${escapeHtml(user.emailVerified ? '이메일 확인됨' : '이메일 확인 전')}</span>`
+    ].join('') : '';
+  }
+
+  if (avatar) {
+    if (user?.pictureUrl) {
+      avatar.innerHTML = `<img src="${escapeHtml(user.pictureUrl)}" alt="MARU account avatar">`;
+    } else if (user) {
+      avatar.textContent = (user.displayName || user.email || 'M').trim().slice(0, 1).toUpperCase();
+    } else {
+      avatar.textContent = 'M';
+    }
+  }
+
+  if (logoutButton) logoutButton.classList.toggle('is-hidden', !user);
+  if (loginCard) loginCard.classList.toggle('is-hidden', Boolean(user));
+
+  if (registerCard) {
+    const hideRegisterCard = Boolean(user && user.localLoginEnabled);
+    registerCard.classList.toggle('is-hidden', hideRegisterCard);
+
+    if (registerTitle) {
+      registerTitle.textContent = user ? 'MARU 비밀번호 로그인 추가' : 'MARU 회원가입';
+    }
+
+    if (registerHint) {
+      registerHint.textContent = user
+        ? '현재 계정에 비밀번호 로그인을 추가하려면 같은 이메일로 비밀번호를 설정하세요.'
+        : '회원가입 후 바로 로그인 상태가 유지됩니다.';
+    }
+
+    if (user && displayNameInput && !displayNameInput.value.trim()) displayNameInput.value = user.displayName || '';
+    if (user && emailInput) {
+      emailInput.value = user.email || '';
+      emailInput.readOnly = true;
+    } else if (emailInput) {
+      emailInput.readOnly = false;
+    }
+
+    if (!user && displayNameInput && displayNameInput.readOnly) displayNameInput.readOnly = false;
+    if (!user && emailInput && emailInput.readOnly) emailInput.readOnly = false;
+  }
+
+  if (!user) {
+    if (displayNameInput && displayNameInput.dataset.resetOnGuest === 'true') displayNameInput.value = '';
+    if (emailInput && emailInput.dataset.resetOnGuest === 'true') emailInput.value = '';
+  }
+
+  if (!user && passwordInput && !passwordInput.value) passwordInput.value = '';
+  if (!user && passwordConfirmInput && !passwordConfirmInput.value) passwordConfirmInput.value = '';
+
+  void renderGoogleSignInButton();
+}
+
+function bindAuthPage() {
+  const root = qs('[data-auth-page]');
+  if (!root || root.dataset.authBound === 'true') return;
+  root.dataset.authBound = 'true';
+
+  const loginForm = qs('[data-auth-login-form]', root);
+  const registerForm = qs('[data-auth-register-form]', root);
+  const logoutButton = qs('[data-auth-logout]', root);
+
+  const syncAuthConfig = async () => {
+    try {
+      authConfigState = await fetchMaruApiJson(MARU_API_PATHS.authConfig, { timeoutMs: MARU_AUTH_TIMEOUT_MS });
+    } catch (error) {
+      authConfigState = { googleEnabled: false, googleClientId: '' };
+    }
+    renderAuthPage();
+  };
+
+  loginForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const email = qs('[data-auth-login-email]', loginForm)?.value.trim() || '';
+    const password = qs('[data-auth-login-password]', loginForm)?.value || '';
+
+    try {
+      const payload = await fetchMaruApiJson(MARU_API_PATHS.authLogin, {
+        method: 'POST',
+        body: { email, password }
+      });
+      setAuthSession(payload);
+      setAuthStatus('로그인에 성공했습니다.', 'success');
+      showToast('로그인 완료');
+      loginForm.reset();
+    } catch (error) {
+      setAuthStatus(error?.message || '로그인에 실패했습니다.', 'error');
+    }
+  });
+
+  registerForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const displayName = qs('[data-auth-register-display-name]', registerForm)?.value.trim() || '';
+    const email = qs('[data-auth-register-email]', registerForm)?.value.trim() || '';
+    const password = qs('[data-auth-register-password]', registerForm)?.value || '';
+    const passwordConfirm = qs('[data-auth-register-password-confirm]', registerForm)?.value || '';
+
+    if (password !== passwordConfirm) {
+      setAuthStatus('비밀번호 확인이 일치하지 않습니다.', 'error');
+      return;
+    }
+
+    try {
+      const payload = await fetchMaruApiJson(MARU_API_PATHS.authRegister, {
+        method: 'POST',
+        body: { displayName, email, password }
+      });
+      setAuthSession(payload);
+      setAuthStatus(authState.user?.localLoginEnabled && authState.user?.googleLinked
+        ? '비밀번호 로그인이 추가되었습니다.'
+        : '회원가입과 로그인에 성공했습니다.', 'success');
+      showToast('계정 저장 완료');
+      registerForm.reset();
+    } catch (error) {
+      setAuthStatus(error?.message || '회원가입에 실패했습니다.', 'error');
+    }
+  });
+
+  logoutButton?.addEventListener('click', () => {
+    clearAuthSession();
+    setAuthStatus('로그아웃되었습니다.', 'success');
+    showToast('로그아웃 완료');
+  });
+
+  void syncAuthConfig();
+  renderAuthPage();
+}
+
 function appendChatMessage(role, message) {
   ariMessages = [...ariMessages, { role, message, createdAt: Date.now() }].slice(-14);
   storageJsonSet(STORAGE_KEYS.ariMessages, ariMessages);
@@ -8545,9 +9004,11 @@ async function initialize() {
   await loadDynamicAppData();
   await loadCultureResources();
   await loadCourseData();
+  await refreshAuthSession();
   renderLocalizedContent();
   markActiveBottomTab();
   bindMobileInteractions();
+  bindAuthPage();
   bindAiPhotoDemo();
   mountAriChat();
   registerServiceWorker();

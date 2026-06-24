@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: maru-backend
+  servlet:
+    multipart:
+      max-file-size: ${MARU_MULTIPART_MAX_FILE_SIZE:20MB}
+      max-request-size: ${MARU_MULTIPART_MAX_REQUEST_SIZE:20MB}
   datasource:
     url: ${MARU_DB_URL:jdbc:mysql://localhost:3306/maru?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=utf8}
     username: ${MARU_DB_USERNAME:root}
@@ -34,3 +38,20 @@ maru:
     seoul-open-data:
       api-key: ${SEOUL_OPEN_DATA_API_KEY:}
       base-url: ${SEOUL_OPEN_DATA_BASE_URL:http://openapi.seoul.go.kr:8088}
+  ai-photo:
+    enabled: ${MARU_AI_PHOTO_ENABLED:true}
+    model: ${MARU_AI_PHOTO_MODEL:gpt-image-2}
+    quality: ${MARU_AI_PHOTO_QUALITY:high}
+    output-format: ${MARU_AI_PHOTO_OUTPUT_FORMAT:png}
+    background: ${MARU_AI_PHOTO_BACKGROUND:opaque}
+    input-fidelity: ${MARU_AI_PHOTO_INPUT_FIDELITY:high}
+    preferred-long-edge: ${MARU_AI_PHOTO_PREFERRED_LONG_EDGE:1536}
+    max-upload-bytes: ${MARU_AI_PHOTO_MAX_UPLOAD_BYTES:15000000}
+  auth:
+    jwt:
+      secret: ${MARU_JWT_SECRET:change-this-local-dev-jwt-secret-to-a-long-random-value}
+      issuer: ${MARU_JWT_ISSUER:maru-backend}
+      access-token-minutes: ${MARU_JWT_ACCESS_TOKEN_MINUTES:720}
+    google:
+      enabled: ${MARU_GOOGLE_ENABLED:true}
+      web-client-id: ${MARU_GOOGLE_WEB_CLIENT_ID:}

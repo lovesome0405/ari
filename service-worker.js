@@ -1,4 +1,4 @@
-const CACHE_NAME = 'maru-shell-v23';
+const CACHE_NAME = 'maru-shell-v24';
 const APP_SHELL = [
   'index.html',
   'admin.html',
@@ -11,6 +11,7 @@ const APP_SHELL = [
   'passport.html',
   'culture-data.html',
   'ai-photo.html',
+  'account.html',
   'about.html',
   'style.css',
   'app.js',

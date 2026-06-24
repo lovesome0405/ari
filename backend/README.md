@@ -1,6 +1,6 @@
 # MARU Backend
 
-Spring Boot + MySQL 기반 MARU API입니다. 기존 GitHub Pages 프론트엔드는 유지하면서, 정적 JSON 데이터를 서버 시작 시 MySQL에 자동 적재하고 `/api/*` 조회 API와 발표용 코스 저장 API로 제공합니다.
+Spring Boot + MySQL 기반 MARU 조회 API입니다. 기존 GitHub Pages 프론트엔드는 유지하면서, 정적 JSON 데이터를 서버 시작 시 MySQL에 자동 적재하고 `/api/*` 조회 API로 제공합니다.
 
 ## 실행 환경
 - Java 21 이상
@@ -27,10 +27,10 @@ $env:MARU_DB_PASSWORD="maru_password"
 $env:MARU_ALLOWED_ORIGINS="http://localhost:4173,http://127.0.0.1:4173,https://lovesome0405.github.io"
 ```
 
-향후 외부 API 연결용 환경변수 자리도 준비되어 있습니다. 이번 단계에서는 실제 호출하지 않습니다.
+AI 이미지 변환과 외부 API 연동을 쓰려면 다음 환경변수를 함께 설정합니다.
 
 ```powershell
-$env:OPENAI_API_KEY=""
+$env:OPENAI_API_KEY="sk-..."
 $env:TOUR_API_SERVICE_KEY=""
 $env:SEOUL_OPEN_DATA_API_KEY=""
 ```
@@ -75,9 +75,13 @@ src/main/resources/seed/public-data-sources.json
 - `GET /api/festivals`
 - `GET /api/heritage`
 - `GET /api/public-data-sources`
-- `POST /api/saved-routes`
-- `GET /api/saved-routes`
-- `DELETE /api/saved-routes/{id}`
+- `POST /api/ai-photo/transform`
+- `GET /api/auth/config`
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `POST /api/auth/google`
+- `POST /api/auth/google/link`
+- `GET /api/auth/me`
 
 ## API 테스트
 ```powershell
@@ -87,10 +91,16 @@ curl http://localhost:8080/api/places
 curl http://localhost:8080/api/festivals
 curl http://localhost:8080/api/heritage
 curl http://localhost:8080/api/public-data-sources
-curl http://localhost:8080/api/saved-routes
-curl -X POST http://localhost:8080/api/saved-routes `
-  -H "Content-Type: application/json" `
-  -d "{\"routeId\":\"palace-history-course\",\"routeTitle\":\"왕실문화 코스\",\"language\":\"ko\",\"theme\":\"palace\",\"memo\":\"발표 시연용 저장 코스\"}"
+```
+
+AI 이미지 변환 테스트:
+
+```powershell
+curl -X POST http://localhost:8080/api/ai-photo/transform `
+  -F "image=@C:\path\to\photo.jpg" `
+  -F "styleId=joseon-portrait" `
+  -F "backgroundId=palace-courtyard" `
+  -F "intensity=balanced"
 ```
 
 개수만 빠르게 확인하려면:
@@ -100,11 +110,10 @@ curl -X POST http://localhost:8080/api/saved-routes `
 (Invoke-RestMethod http://localhost:8080/api/festivals).Count
 (Invoke-RestMethod http://localhost:8080/api/heritage).Count
 (Invoke-RestMethod http://localhost:8080/api/public-data-sources).Count
-(Invoke-RestMethod http://localhost:8080/api/saved-routes).Count
 ```
 
 ## DB 테이블
-Flyway 마이그레이션 `src/main/resources/db/migration/V1__create_catalog_tables.sql`과 `V2__create_saved_routes_table.sql`에서 생성합니다.
+Flyway 마이그레이션 `src/main/resources/db/migration/V1__create_catalog_tables.sql`에서 생성합니다.
 
 - `places`
 - `courses`
@@ -112,32 +121,9 @@ Flyway 마이그레이션 `src/main/resources/db/migration/V1__create_catalog_ta
 - `festivals`
 - `heritage`
 - `public_data_sources`
-- `saved_routes`
-
-## 발표 시연용 확인 절차
-1. MySQL에서 `maru` DB를 생성합니다.
-   ```sql
-   CREATE DATABASE maru CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   ```
-2. 백엔드를 실행합니다.
-   ```powershell
-   cd backend
-   mvn spring-boot:run
-   ```
-3. 브라우저에서 API를 확인합니다.
-   ```text
-   http://localhost:8080/api/courses
-   http://localhost:8080/api/saved-routes
-   ```
-4. 프론트에서 코스 상세 페이지로 이동합니다.
-5. `문화여행 기록에 저장` 또는 상단 저장 버튼을 클릭합니다.
-6. MySQL에서 저장 결과를 확인합니다.
-   ```sql
-   SELECT * FROM saved_routes ORDER BY id DESC;
-   ```
 
 ## 프론트 연결
-로컬에서 프론트를 `http://localhost:4173` 또는 `http://127.0.0.1:4173`으로 열면 프론트는 `http://localhost:8080/api/...`를 먼저 시도합니다.
+로컬에서 프론트를 `http://localhost:4173` 또는 `http://127.0.0.1:4173`으로 열면 프론트는 `http://localhost:8080/api/...`를 먼저 시도합니다. `ai-photo.html`도 같은 방식으로 `/api/ai-photo/transform`을 호출합니다.
 
 서버가 꺼져 있거나 특정 API가 실패하면 기존 정적 JSON으로 fallback됩니다. API 실패 관리는 endpoint별로 동작하므로 `/api/courses`가 실패해도 `/api/places` 등은 별도로 시도할 수 있습니다. 서버가 완전히 꺼져 있으면 빠르게 정적 JSON fallback으로 내려갑니다.
 
@@ -153,8 +139,26 @@ localStorage.setItem('maruApiBaseUrl', 'https://your-api.example.com');
 localStorage.removeItem('maruApiBaseUrl');
 ```
 
+## Authentication
+
+Local MARU account auth and Google sign in are available through the backend.
+
+Environment variables:
+
+```powershell
+$env:MARU_JWT_SECRET="replace-with-a-long-random-secret"
+$env:MARU_GOOGLE_ENABLED="true"
+$env:MARU_GOOGLE_WEB_CLIENT_ID="your-google-oauth-web-client-id.apps.googleusercontent.com"
+```
+
+Google setup notes:
+
+- Create an OAuth 2.0 Web client in Google Cloud.
+- Add your frontend origins to Authorized JavaScript origins, including `http://localhost:4173`, `http://127.0.0.1:4173`, and your deployed frontend origin.
+- The frontend receives a Google ID token and the backend verifies that token before creating or linking a MARU account.
+
 ## 현재 한계
 - 실제 공공데이터 API 동기화는 아직 없다.
-- 실제 생성형 AI API 호출은 아직 없다.
-- 로그인 기반 사용자별 저장 기능은 아직 없다. 현재 저장 API는 발표 시연용 단순 코스 저장이다.
+- AI 이미지 변환은 `OPENAI_API_KEY`가 없으면 동작하지 않는다.
+- 로그인/사용자 저장 기능은 아직 없다.
 - seed JSON을 운영 DB에 넣는 초기 기반이며, 관리자 CRUD API와 운영 배치 동기화는 다음 단계가 필요하다.
