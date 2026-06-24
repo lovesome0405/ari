@@ -14,11 +14,10 @@ AI 포토카드 발표 시연은 백엔드에 `OPENAI_API_KEY`를 설정한 뒤 
 
 ```powershell
 $env:OPENAI_API_KEY="sk-..."
-$env:MARU_AI_PHOTO_MODEL="gpt-image-1.5"
-$env:MARU_AI_PHOTO_QUALITY="high"
-cd backend
-mvn spring-boot:run
+powershell -ExecutionPolicy Bypass -File .\start-maru-pwa-demo.ps1
 ```
+
+Maven-free demo mode uses `python-backend/server.py` for the local API and serves the static PWA at `http://127.0.0.1:4173`. Use this path for the final presentation when Java/Maven/MySQL setup is risky.
 
 핵심 원칙:
 
@@ -304,11 +303,8 @@ https://map.kakao.com/link/by/walk/...
 실행:
 
 ```powershell
-cd backend
-$env:MARU_DB_URL="jdbc:mysql://localhost:3306/maru?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=utf8"
-$env:MARU_DB_USERNAME="maru"
-$env:MARU_DB_PASSWORD="maru_password"
-mvn spring-boot:run
+$env:OPENAI_API_KEY="sk-..."
+powershell -ExecutionPolicy Bypass -File .\start-maru-pwa-demo.ps1
 ```
 
 API 테스트:

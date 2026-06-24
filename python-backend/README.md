@@ -1,19 +1,31 @@
 # MARU Python Dynamic API
 
-This lightweight server turns the current static MARU prototype into a dynamic local web app without installing Java, MySQL, or Docker.
+This lightweight server turns the static MARU prototype into a Maven-free local PWA demo.
 
-It reuses the existing JSON catalog files and adds a SQLite-backed saved-routes API on `http://localhost:8080`.
+It reuses the existing JSON catalog files, persists saved routes in SQLite, and can call OpenAI's image edit API for the high-quality royal portrait transform when `OPENAI_API_KEY` is set.
 
-If `OPENAI_API_KEY` is set, the AI photo page can also call OpenAI's image edit API through this local server for the high-quality royal portrait transform.
+## Maven-Free PWA Demo
 
-## Run
+Run from the repository root:
 
 ```powershell
-cd C:\Users\남양주시청\Documents\Codex\2026-06-23\d\work\ari-github
-python python-backend/server.py
+$env:OPENAI_API_KEY="sk-..."
+powershell -ExecutionPolicy Bypass -File .\start-maru-pwa-demo.ps1
 ```
 
-Optional GPT image transform setup:
+This starts:
+
+- local API server: `http://127.0.0.1:8080`
+- static PWA frontend: `http://127.0.0.1:4173`
+- AI photo page: `http://127.0.0.1:4173/ai-photo.html`
+
+Stop the demo:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\stop-maru-pwa-demo.ps1
+```
+
+## Manual API-Only Run
 
 ```powershell
 $env:OPENAI_API_KEY="sk-..."
@@ -23,7 +35,7 @@ $env:MARU_AI_PHOTO_QUALITY="high"
 python python-backend/server.py
 ```
 
-## Build presentation kit
+## Build Presentation Kit
 
 This creates a portable Windows demo bundle with the frontend files, a packaged backend exe, and launch scripts.
 
@@ -45,8 +57,9 @@ powershell -ExecutionPolicy Bypass -File python-backend/build-demo-package.ps1
 - `DELETE /api/saved-routes/{id}`
 - `POST /api/ai-photo/transform`
 
-## Why this works fast
+## Why This Fits The PWA Direction
 
-- The frontend already tries `http://localhost:8080/api/...` first when the app is opened locally.
-- If this server is running, the current `file://` prototype starts behaving like a dynamic site.
-- Saved routes are persisted in `python-backend/runtime/maru_dynamic.sqlite3`.
+- The frontend remains static and installable as a PWA.
+- The API key stays outside the browser in a local API process.
+- For production, the same `/api/...` contract can move to an HTTPS API host or serverless function.
+- Saved routes persist in `python-backend/runtime/maru_dynamic.sqlite3` during local demos.

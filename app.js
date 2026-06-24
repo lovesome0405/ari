@@ -3233,7 +3233,7 @@ const FEATURE_COPY = {
       loadingModel: '인물 분리와 화풍 변환을 준비하고 있습니다.',
       gptWorking: '서버에서 GPT 왕실 초상 변환을 생성하고 있습니다. 발표용 고품질 변환은 잠시 걸릴 수 있습니다.',
       gptDone: 'GPT 왕실 초상 변환이 완료되었습니다.',
-      gptFallback: 'AI 생성 서버에 연결되지 않았습니다. 백엔드 실행과 OPENAI_API_KEY 설정을 확인해 주세요.',
+      gptFallback: 'AI 생성 서버에 연결되지 않았습니다. Python API 서버 실행과 OPENAI_API_KEY 설정을 확인해 주세요.',
       done: '조선풍 카드가 준비되었습니다. 바로 다운로드할 수 있습니다.',
       transformed: {
         minhwa: '배경을 부드러운 전통 채색 분위기로 정리하고, 사진을 민화풍 색감으로 바꿨습니다.',
@@ -3315,7 +3315,7 @@ const FEATURE_COPY = {
       loadingModel: 'Preparing subject separation and painterly rendering.',
       gptWorking: 'Generating a high-quality GPT royal portrait on the server. This can take a moment.',
       gptDone: 'The GPT royal portrait is ready to download.',
-      gptFallback: 'The AI generation server is unavailable. Check the backend process and OPENAI_API_KEY setting.',
+      gptFallback: 'The AI generation server is unavailable. Check the Python API server and OPENAI_API_KEY setting.',
       done: 'Your Joseon-style card is ready to download.',
       transformed: {
         minhwa: 'The background was softened into a traditional color-wash mood and the photo was restyled with a Minhwa palette.',
@@ -8823,7 +8823,7 @@ function renderAiPhotoServerRequired(result) {
     <article class="ai-photo-result-card ai-photo-canvas-card">
       <div class="ai-photo-result-copy">
         <strong>${escapeHtml(ft('photo.styles.night', 'Palace Night'))}</strong>
-        <p>${escapeHtml(ft('photo.gptFallback', 'The AI generation server is unavailable. Check the backend process and OPENAI_API_KEY setting.'))}</p>
+        <p>${escapeHtml(ft('photo.gptFallback', 'The AI generation server is unavailable. Check the Python API server and OPENAI_API_KEY setting.'))}</p>
         <small>${escapeHtml(ft('photo.serverPrivacy', 'High-quality transforms are sent through the local server to the OpenAI Image API. The API key stays on the server.'))}</small>
       </div>
     </article>
@@ -8951,7 +8951,7 @@ function bindAiPhotoDemo() {
           renderAiPhotoServerRequired(result);
           result.classList.remove('is-hidden');
           if (toolbar) toolbar.classList.add('is-hidden');
-          setStatus(ft('photo.gptFallback', 'The AI generation server is unavailable. Check the backend process and OPENAI_API_KEY setting.'));
+          setStatus(ft('photo.gptFallback', 'The AI generation server is unavailable. Check the Python API server and OPENAI_API_KEY setting.'));
           return;
         }
 

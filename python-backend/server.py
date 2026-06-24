@@ -162,21 +162,25 @@ def delete_saved_route(saved_id: int):
     return cursor.rowcount > 0
 
 
-def royal_portrait_prompt():
-    return (
-        "Transform the uploaded portrait into a high-quality photorealistic Joseon royal portrait. "
-        "Preserve the person's core facial identity, face shape, expression, gaze direction, skin tone, "
-        "hairstyle impression, and natural proportions. Change the clothing and scene dramatically: "
-        "dress the person as a Joseon king wearing a dark navy gonryongpo with intricate gold dragon "
-        "embroidery, a white inner collar, ornate royal belt, and a black-and-gold royal crown. "
-        "Place the subject seated in a richly decorated Joseon palace interior at golden sunset, "
-        "with carved royal furniture, gold ornaments, palace eaves, bead curtains, and softly blurred "
-        "palace architecture outside the window. Use cinematic warm light, realistic fabric texture, "
-        "detailed gold embroidery, shallow depth of field, premium editorial portrait lighting, "
-        "and a polished high-end generative image look. Do not add text, watermark, logos, extra faces, "
-        "distorted hands, or modern objects. Do not copy any specific living artist, animation studio, "
-        "or copyrighted character style."
+def royal_portrait_prompt(custom_prompt=""):
+    prompt = (
+        "Transform the uploaded portrait into a high-end photorealistic Joseon royal portrait. "
+        "Preserve the same person's face, face shape, eyes, nose, mouth, gaze, expression, skin tone, "
+        "hairstyle impression, and natural proportions. Do not beautify into a different person. "
+        "Recreate the image as a luxury royal king portrait photo: add a black-and-gold royal crown, "
+        "a dark navy Joseon king's gonryongpo with raised gold dragon embroidery, a white inner collar, "
+        "an ornate gold belt, and a carved dragon throne. Place the person in a richly decorated Joseon "
+        "royal throne room with lacquered palace pillars, hanging bead ornaments, gold dragon details, "
+        "warm sunset light, palace roofs softly blurred outside, shallow depth of field, photorealistic "
+        "skin texture, cinematic premium editorial lighting, and refined silk and gold fabric texture. "
+        "This must be a full AI image edit, not a flat card frame, sticker, sketch, browser filter, "
+        "or simple background swap. No text, watermark, logos, extra faces, distorted hands, modern "
+        "objects, or collage artifacts. Do not imitate any living artist or specific commercial studio style."
     )
+    extra = str(custom_prompt or "").strip()
+    if extra:
+        prompt += " Extra user request: " + extra[:1000]
+    return prompt
 
 
 def build_image_data_url(image_bytes: bytes, content_type: str):
@@ -233,6 +237,7 @@ def create_royal_portrait(payload):
 
     image_data_url = str(payload.get("imageDataUrl", "")).strip()
     style = str(payload.get("style", "royal")).strip() or "royal"
+    custom_prompt = str(payload.get("customPrompt", "")).strip()
     if not image_data_url.startswith("data:image/"):
         raise ValueError("imageDataUrl must be a data:image URL")
     if len(image_data_url) > MAX_IMAGE_DATA_URL_LENGTH:
@@ -241,7 +246,7 @@ def create_royal_portrait(payload):
     request_body = json.dumps({
         "model": OPENAI_IMAGE_MODEL,
         "images": [{"image_url": image_data_url}],
-        "prompt": royal_portrait_prompt(),
+        "prompt": royal_portrait_prompt(custom_prompt),
         "size": OPENAI_IMAGE_SIZE,
         "quality": OPENAI_IMAGE_QUALITY,
         "input_fidelity": "high",
@@ -392,6 +397,7 @@ class MaruApiHandler(BaseHTTPRequestHandler):
                 created = create_royal_portrait({
                     "imageDataUrl": image_data_url,
                     "style": fields.get("styleId", "royal"),
+                    "customPrompt": fields.get("customPrompt", ""),
                 })
             except ValueError as error:
                 self._send_json(400, {"error": str(error)})
