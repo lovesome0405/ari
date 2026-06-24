@@ -14,7 +14,7 @@ Seoul Heritage Guide for Global Travelers
 - Server = 조건 필터링과 추천 점수
 - AI = 쉬운 문화 해설
 
-현재 버전은 GitHub Pages에서 동작하는 프론트엔드 시제품과 `backend/`의 Spring Boot + MySQL 조회 API 뼈대를 함께 포함합니다. 프론트는 서버 API를 먼저 시도하고 실패하면 기존 정적 JSON으로 fallback하며, 백엔드는 seed JSON을 MySQL에 자동 적재해 실제 조회 API를 반환할 수 있습니다.
+현재 버전은 GitHub Pages에서 동작하는 프론트엔드 시제품과 `backend/`의 Spring Boot + MySQL API 뼈대를 함께 포함합니다. 프론트는 서버 API를 먼저 시도하고 실패하면 기존 정적 JSON/localStorage로 fallback하며, 백엔드는 seed JSON을 MySQL에 자동 적재해 조회 API와 발표용 코스 저장 API를 반환할 수 있습니다.
 
 ## 실행 방법
 
@@ -266,7 +266,7 @@ https://map.kakao.com/link/by/walk/...
 
 ## Spring Boot + MySQL Backend
 
-`backend/`에는 Spring Boot 3.3 + Java 21 + MySQL 기반 조회 API가 추가되어 있습니다.
+`backend/`에는 Spring Boot 3.3 + Java 21 + MySQL 기반 조회 API와 발표용 코스 저장 API가 추가되어 있습니다.
 
 구현된 테이블:
 
@@ -276,6 +276,7 @@ https://map.kakao.com/link/by/walk/...
 - `festivals`
 - `heritage`
 - `public_data_sources`
+- `saved_routes`
 
 서버 시작 시 다음 seed JSON을 읽어 DB가 비어 있는 항목을 자동 적재합니다.
 
@@ -300,6 +301,7 @@ API 테스트:
 curl http://localhost:8080/api/courses
 curl http://localhost:8080/api/courses/palace-history-course
 curl http://localhost:8080/api/public-data-sources
+curl http://localhost:8080/api/saved-routes
 ```
 
 프론트 API fallback:
@@ -308,12 +310,37 @@ curl http://localhost:8080/api/public-data-sources
 - API가 실패하면 기존 `data/*.json`과 앱 내부 fallback 데이터로 내려갑니다.
 - endpoint별 실패 관리가 적용되어 한 API 실패가 다른 API 호출을 전부 막지 않습니다.
 - GitHub Pages에서는 별도 API base URL을 지정하지 않으면 정적 JSON으로 동작합니다.
+- 코스 상세 저장 버튼은 서버가 켜져 있으면 `POST /api/saved-routes`에 저장하고, 실패하면 기존 localStorage 저장으로 fallback합니다.
+- `passport.html`은 `GET /api/saved-routes`를 먼저 읽고, 실패하면 기존 localStorage 저장 목록을 표시합니다.
+
+발표 시연용 확인 절차:
+
+1. MySQL에서 `maru` DB를 생성합니다.
+   ```sql
+   CREATE DATABASE maru CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   ```
+2. 백엔드를 실행합니다.
+   ```powershell
+   cd backend
+   mvn spring-boot:run
+   ```
+3. 브라우저에서 API를 확인합니다.
+   ```text
+   http://localhost:8080/api/courses
+   http://localhost:8080/api/saved-routes
+   ```
+4. 프론트에서 코스 상세 페이지로 이동합니다.
+5. `문화여행 기록에 저장` 또는 저장 버튼을 클릭합니다.
+6. MySQL에서 저장 결과를 확인합니다.
+   ```sql
+   SELECT * FROM saved_routes ORDER BY id DESC;
+   ```
 
 현재 한계:
 
 - 실제 공공데이터 API 동기화는 아직 없습니다.
 - 실제 생성형 AI API 호출은 아직 없습니다.
-- 로그인/사용자 저장 기능은 아직 없습니다.
+- 로그인 기반 사용자별 저장 기능은 아직 없습니다. 현재 저장 API는 발표 시연용 단순 코스 저장입니다.
 - 관리자 CRUD API와 운영 배치 동기화는 다음 단계입니다.
 
 ## AI 확장 계획

@@ -331,7 +331,8 @@ const MARU_API_PATHS = {
   places: '/api/places',
   festivals: '/api/festivals',
   heritage: '/api/heritage',
-  publicDataSources: '/api/public-data-sources'
+  publicDataSources: '/api/public-data-sources',
+  savedRoutes: '/api/saved-routes'
 };
 const maruApiFailedPaths = new Set();
 let maruApiHostUnavailable = false;
@@ -3888,18 +3889,32 @@ function makeMaruApiUrl(path) {
   return `${baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
 }
 
-async function fetchDataArrayFromApi(path) {
+async function fetchJsonFromMaruApi(path, options = {}) {
   const apiUrl = makeMaruApiUrl(path);
-  if (!apiUrl || maruApiHostUnavailable || maruApiFailedPaths.has(path)) return null;
+  if (!apiUrl || maruApiHostUnavailable || maruApiFailedPaths.has(path)) {
+    return { ok: false, payload: null };
+  }
 
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), MARU_API_TIMEOUT_MS);
+  const fetchOptions = {
+    cache: 'no-store',
+    signal: controller.signal,
+    method: options.method || 'GET',
+    headers: options.headers ? { ...options.headers } : {}
+  };
+
+  if (Object.prototype.hasOwnProperty.call(options, 'jsonBody')) {
+    fetchOptions.headers['Content-Type'] = 'application/json';
+    fetchOptions.body = JSON.stringify(options.jsonBody);
+  }
+
   try {
-    const response = await fetch(apiUrl, { cache: 'no-store', signal: controller.signal });
+    const response = await fetch(apiUrl, fetchOptions);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const payload = await response.json();
-    const items = Array.isArray(payload) ? payload : (payload.items || payload.data || []);
-    return Array.isArray(items) && items.length ? items : null;
+    const text = await response.text();
+    const payload = text ? JSON.parse(text) : null;
+    return { ok: true, payload };
   } catch (error) {
     const message = String(error?.message || '');
     const isConnectionFailure = error?.name === 'AbortError'
@@ -3910,10 +3925,18 @@ async function fetchDataArrayFromApi(path) {
     } else {
       maruApiFailedPaths.add(path);
     }
-    return null;
+    return { ok: false, payload: null, error };
   } finally {
     window.clearTimeout(timeout);
   }
+}
+
+async function fetchDataArrayFromApi(path) {
+  const result = await fetchJsonFromMaruApi(path);
+  if (!result.ok) return null;
+  const payload = result.payload;
+  const items = Array.isArray(payload) ? payload : (payload?.items || payload?.data || []);
+  return Array.isArray(items) && items.length ? items : null;
 }
 
 async function loadCourseData() {
@@ -4958,8 +4981,12 @@ function renderConditionSummary() {
   });
 }
 
+function findRouteByExactId(routeId) {
+  return ROUTE_DATA.find((route) => route.id === routeId) || null;
+}
+
 function findRouteById(routeId) {
-  return ROUTE_DATA.find((route) => route.id === routeId) || getTopRecommendedRoute();
+  return findRouteByExactId(routeId) || getTopRecommendedRoute();
 }
 
 function findResourceById(resourceId) {
@@ -5573,6 +5600,39 @@ function saveSelectedRoute(routeId) {
   return route;
 }
 
+function rememberSavedRouteLocally(routeId) {
+  const saved = storageJsonGet(STORAGE_KEYS.savedRoutes, []);
+  const savedRouteIds = Array.isArray(saved) ? saved.filter((item) => typeof item === 'string') : [];
+  const nextSaved = savedRouteIds.includes(routeId) ? savedRouteIds : [...savedRouteIds, routeId];
+  storageJsonSet(STORAGE_KEYS.savedRoutes, nextSaved);
+}
+
+function buildSavedRoutePayload(route) {
+  const routeView = getRouteView(route);
+  return {
+    routeId: route.id,
+    routeTitle: routeView.title || route.title || route.id,
+    language: getCurrentLanguage(),
+    theme: route.theme || '',
+    memo: 'Saved from MARU route detail page'
+  };
+}
+
+async function createSavedRouteOnApi(route) {
+  const result = await fetchJsonFromMaruApi(MARU_API_PATHS.savedRoutes, {
+    method: 'POST',
+    jsonBody: buildSavedRoutePayload(route)
+  });
+  return result.ok ? result.payload : null;
+}
+
+async function saveRouteToPassport(route) {
+  const savedRoute = await createSavedRouteOnApi(route);
+  rememberSavedRouteLocally(route.id);
+  storageSet(STORAGE_KEYS.selectedRoute, route.id);
+  return savedRoute;
+}
+
 function loadSelectedRoute() {
   return findRouteById(storageGet(STORAGE_KEYS.selectedRoute, ROUTE_DATA[0].id));
 }
@@ -6167,9 +6227,127 @@ function renderSupport() {
   }).join('');
 }
 
-function renderPassport() {
+function normalizeSavedRouteItem(item) {
+  const routeId = String(item?.routeId || item?.route_id || '').trim();
+  if (!routeId) return null;
+  return {
+    id: item?.id ?? null,
+    routeId,
+    routeTitle: String(item?.routeTitle || item?.route_title || routeId).trim(),
+    language: String(item?.language || '').trim(),
+    theme: String(item?.theme || '').trim(),
+    memo: String(item?.memo || '').trim(),
+    createdAt: item?.createdAt || item?.created_at || null
+  };
+}
+
+function normalizeSavedRouteItems(payload) {
+  const items = Array.isArray(payload) ? payload : (payload?.items || payload?.data || []);
+  return Array.isArray(items) ? items.map(normalizeSavedRouteItem).filter(Boolean) : [];
+}
+
+async function getSavedRouteItemsFromApi() {
+  const result = await fetchJsonFromMaruApi(MARU_API_PATHS.savedRoutes);
+  return result.ok ? normalizeSavedRouteItems(result.payload) : null;
+}
+
+function getLocalSavedRouteItems() {
+  const savedRouteIds = storageJsonGet(STORAGE_KEYS.savedRoutes, []).filter((routeId) => typeof routeId === 'string');
+  return [...new Set(savedRouteIds)]
+    .reverse()
+    .map((routeId) => {
+      const route = findRouteByExactId(routeId);
+      if (!route) return null;
+      const routeView = getRouteView(route);
+      return {
+        id: null,
+        routeId: route.id,
+        routeTitle: routeView.title || route.title || route.id,
+        language: getCurrentLanguage(),
+        theme: route.theme || '',
+        memo: '',
+        createdAt: null
+      };
+    })
+    .filter(Boolean);
+}
+
+function formatSavedRouteDate(value) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toLocaleString(getCurrentLanguage(), {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+}
+
+function renderSavedRouteItem(item) {
+  const route = findRouteByExactId(item.routeId);
+  const routeView = route ? getRouteView(route) : null;
+  const title = routeView?.title || item.routeTitle || item.routeId;
+  const theme = item.theme || route?.theme || '';
+  const meta = [formatSavedRouteDate(item.createdAt), item.language, theme]
+    .filter(Boolean)
+    .join(' / ');
+  const href = route ? `route-detail.html?id=${encodeURIComponent(route.id)}` : 'routes.html';
+  const actionText = route ? t('passport.again') : t('passport.choose');
+
+  return `
+    <article class="saved-route-item">
+      <div class="saved-route-item-copy">
+        <strong>${escapeHtml(title)}</strong>
+        ${meta ? `<p>${escapeHtml(meta)}</p>` : ''}
+        ${item.memo ? `<small>${escapeHtml(item.memo)}</small>` : ''}
+      </div>
+      <a class="button button-secondary" href="${escapeHtml(href)}">${escapeHtml(actionText)}</a>
+    </article>
+  `;
+}
+
+function renderSavedRoutes(savedRouteCard, savedRouteItems) {
+  if (!savedRouteCard) return;
+
+  if (!savedRouteItems.length) {
+    savedRouteCard.innerHTML = `
+      <span>${escapeHtml(t('passport.savedLabel'))}</span>
+      <strong>${escapeHtml(t('passport.empty'))}</strong>
+      <a class="button button-secondary button-block" href="routes.html">${escapeHtml(t('passport.choose'))}</a>
+    `;
+    return;
+  }
+
+  savedRouteCard.innerHTML = `
+    <span>${escapeHtml(t('passport.savedLabel'))}</span>
+    <div class="saved-route-list">
+      ${savedRouteItems.slice(0, 8).map(renderSavedRouteItem).join('')}
+    </div>
+  `;
+}
+
+async function renderPassport() {
   const savedRouteCard = qs('[data-saved-route]');
   const stamps = qs('[data-passport-stamps]');
+
+  if (savedRouteCard) {
+    const apiSavedRouteItems = await getSavedRouteItemsFromApi();
+    const savedRouteItems = apiSavedRouteItems === null ? getLocalSavedRouteItems() : apiSavedRouteItems;
+    renderSavedRoutes(savedRouteCard, savedRouteItems);
+  }
+
+  if (stamps) {
+    const stampTitles = t('passport.stamps', []);
+    stamps.innerHTML = PASSPORT_DATA.map((stamp, index) => `
+      <article class="stamp-card ${stamp.status === 'completed' ? 'completed' : ''}">
+        <span>${escapeHtml(t(`passport.status.${stamp.status}`, stamp.status))}</span>
+        <strong>${escapeHtml(stampTitles[index] || stamp.title)}</strong>
+      </article>
+    `).join('');
+  }
+  return;
+
   const savedRouteIds = storageJsonGet(STORAGE_KEYS.savedRoutes, []);
   const selectedRoute = savedRouteIds.length ? findRouteById(savedRouteIds[savedRouteIds.length - 1]) : null;
 
@@ -7629,7 +7807,7 @@ function bindMobileInteractions() {
     });
   });
 
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     const installButton = event.target.closest('[data-install-trigger]');
     if (installButton) {
       triggerInstallPrompt();
@@ -7662,13 +7840,15 @@ function bindMobileInteractions() {
     const routeActionButton = event.target.closest('[data-route-action="save-current"], [data-route-action="passport-current"]');
     if (routeActionButton) {
       const route = getRouteFromUrlOrStorage();
-      const saved = storageJsonGet(STORAGE_KEYS.savedRoutes, []);
-      const nextSaved = saved.includes(route.id) ? saved : [...saved, route.id];
-      storageJsonSet(STORAGE_KEYS.savedRoutes, nextSaved);
-      storageSet(STORAGE_KEYS.selectedRoute, route.id);
-      showToast(t('common.passportToast'));
-      renderPassport();
-      renderSavedBundles();
+      routeActionButton.disabled = true;
+      try {
+        await saveRouteToPassport(route);
+        showToast(t('common.passportToast'));
+        renderPassport();
+        renderSavedBundles();
+      } finally {
+        routeActionButton.disabled = false;
+      }
     }
 
     const saveBundleButton = event.target.closest('[data-save-bundle]');

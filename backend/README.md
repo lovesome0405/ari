@@ -1,6 +1,6 @@
 # MARU Backend
 
-Spring Boot + MySQL 기반 MARU 조회 API입니다. 기존 GitHub Pages 프론트엔드는 유지하면서, 정적 JSON 데이터를 서버 시작 시 MySQL에 자동 적재하고 `/api/*` 조회 API로 제공합니다.
+Spring Boot + MySQL 기반 MARU API입니다. 기존 GitHub Pages 프론트엔드는 유지하면서, 정적 JSON 데이터를 서버 시작 시 MySQL에 자동 적재하고 `/api/*` 조회 API와 발표용 코스 저장 API로 제공합니다.
 
 ## 실행 환경
 - Java 21 이상
@@ -75,6 +75,9 @@ src/main/resources/seed/public-data-sources.json
 - `GET /api/festivals`
 - `GET /api/heritage`
 - `GET /api/public-data-sources`
+- `POST /api/saved-routes`
+- `GET /api/saved-routes`
+- `DELETE /api/saved-routes/{id}`
 
 ## API 테스트
 ```powershell
@@ -84,6 +87,10 @@ curl http://localhost:8080/api/places
 curl http://localhost:8080/api/festivals
 curl http://localhost:8080/api/heritage
 curl http://localhost:8080/api/public-data-sources
+curl http://localhost:8080/api/saved-routes
+curl -X POST http://localhost:8080/api/saved-routes `
+  -H "Content-Type: application/json" `
+  -d "{\"routeId\":\"palace-history-course\",\"routeTitle\":\"왕실문화 코스\",\"language\":\"ko\",\"theme\":\"palace\",\"memo\":\"발표 시연용 저장 코스\"}"
 ```
 
 개수만 빠르게 확인하려면:
@@ -93,10 +100,11 @@ curl http://localhost:8080/api/public-data-sources
 (Invoke-RestMethod http://localhost:8080/api/festivals).Count
 (Invoke-RestMethod http://localhost:8080/api/heritage).Count
 (Invoke-RestMethod http://localhost:8080/api/public-data-sources).Count
+(Invoke-RestMethod http://localhost:8080/api/saved-routes).Count
 ```
 
 ## DB 테이블
-Flyway 마이그레이션 `src/main/resources/db/migration/V1__create_catalog_tables.sql`에서 생성합니다.
+Flyway 마이그레이션 `src/main/resources/db/migration/V1__create_catalog_tables.sql`과 `V2__create_saved_routes_table.sql`에서 생성합니다.
 
 - `places`
 - `courses`
@@ -104,6 +112,29 @@ Flyway 마이그레이션 `src/main/resources/db/migration/V1__create_catalog_ta
 - `festivals`
 - `heritage`
 - `public_data_sources`
+- `saved_routes`
+
+## 발표 시연용 확인 절차
+1. MySQL에서 `maru` DB를 생성합니다.
+   ```sql
+   CREATE DATABASE maru CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   ```
+2. 백엔드를 실행합니다.
+   ```powershell
+   cd backend
+   mvn spring-boot:run
+   ```
+3. 브라우저에서 API를 확인합니다.
+   ```text
+   http://localhost:8080/api/courses
+   http://localhost:8080/api/saved-routes
+   ```
+4. 프론트에서 코스 상세 페이지로 이동합니다.
+5. `문화여행 기록에 저장` 또는 상단 저장 버튼을 클릭합니다.
+6. MySQL에서 저장 결과를 확인합니다.
+   ```sql
+   SELECT * FROM saved_routes ORDER BY id DESC;
+   ```
 
 ## 프론트 연결
 로컬에서 프론트를 `http://localhost:4173` 또는 `http://127.0.0.1:4173`으로 열면 프론트는 `http://localhost:8080/api/...`를 먼저 시도합니다.
@@ -125,5 +156,5 @@ localStorage.removeItem('maruApiBaseUrl');
 ## 현재 한계
 - 실제 공공데이터 API 동기화는 아직 없다.
 - 실제 생성형 AI API 호출은 아직 없다.
-- 로그인/사용자 저장 기능은 아직 없다.
+- 로그인 기반 사용자별 저장 기능은 아직 없다. 현재 저장 API는 발표 시연용 단순 코스 저장이다.
 - seed JSON을 운영 DB에 넣는 초기 기반이며, 관리자 CRUD API와 운영 배치 동기화는 다음 단계가 필요하다.
