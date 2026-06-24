@@ -11,6 +11,14 @@ cd C:\Users\남양주시청\Documents\Codex\2026-06-23\d\work\ari-github
 python python-backend/server.py
 ```
 
+## Build presentation kit
+
+This creates a portable Windows demo bundle with the frontend files, a packaged backend exe, and launch scripts.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File python-backend/build-demo-package.ps1
+```
+
 ## Endpoints
 
 - `GET /api/health`

@@ -1,14 +1,21 @@
 import json
 import os
 import sqlite3
+import sys
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-RUNTIME_DIR = Path(__file__).resolve().parent / "runtime"
+if getattr(sys, "frozen", False):
+    PROJECT_ROOT = Path(getattr(sys, "_MEIPASS", Path(sys.executable).resolve().parent))
+    APP_ROOT = Path(sys.executable).resolve().parent
+else:
+    PROJECT_ROOT = Path(__file__).resolve().parents[1]
+    APP_ROOT = Path(__file__).resolve().parent
+
+RUNTIME_DIR = APP_ROOT / "runtime"
 DB_PATH = RUNTIME_DIR / "maru_dynamic.sqlite3"
 HOST = os.environ.get("MARU_API_HOST", "127.0.0.1")
 PORT = int(os.environ.get("PORT") or os.environ.get("MARU_API_PORT") or "8080")

@@ -17,3 +17,7 @@ __pycache__/
 
 # Local dynamic backend runtime
 python-backend/runtime/
+python-backend/build/
+python-backend/dist/
+python-backend/spec/
+python-backend/*.spec
