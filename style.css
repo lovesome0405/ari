@@ -2105,7 +2105,7 @@ body.ari-has-bottom-cta .ari-chat {
 
 .ari-chat.is-open .ari-panel {
   display: grid;
-  grid-template-rows: auto auto minmax(170px, 1fr) auto auto;
+  grid-template-rows: auto auto auto auto minmax(170px, 1fr) auto auto;
   max-height: min(72vh, 620px);
 }
 
@@ -2165,6 +2165,95 @@ body.ari-has-bottom-cta .ari-chat {
   background: rgba(255, 255, 255, 0.12);
   font-size: 1.25rem;
   font-weight: 900;
+}
+
+.ari-settings-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  border: 1px solid rgba(242, 195, 91, 0.42);
+  border-radius: 999px;
+  padding: 0 12px;
+  color: var(--gold-dark);
+  background: rgba(255, 248, 232, 0.94);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.ari-settings-strip {
+  justify-self: start;
+  margin: 10px 12px 0;
+}
+
+.ari-settings {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border-top: 1px solid rgba(234, 223, 203, 0.9);
+  border-bottom: 1px solid rgba(234, 223, 203, 0.9);
+  background: rgba(255, 252, 246, 0.95);
+}
+
+.ari-settings-copy strong {
+  display: block;
+  color: var(--gold-dark);
+  font-size: 0.88rem;
+}
+
+.ari-settings-copy p,
+.ari-settings-note,
+.ari-settings-status {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.ari-settings-group {
+  display: grid;
+  gap: 10px;
+}
+
+.ari-settings-field {
+  display: grid;
+  gap: 6px;
+}
+
+.ari-settings-field span {
+  color: var(--gold-dark);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.ari-settings-field input,
+.ari-settings-field select {
+  min-width: 0;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0 12px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.ari-settings-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ari-settings-actions button {
+  min-height: 40px;
+  border: 0;
+  border-radius: 12px;
+  padding: 0 14px;
+  color: #111827;
+  background: linear-gradient(135deg, var(--gold), #ffdc81);
+  font-weight: 900;
+}
+
+.ari-settings-status[data-status="success"] {
+  color: var(--gold-dark);
+  font-weight: 800;
 }
 
 .ari-quick-list {

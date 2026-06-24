@@ -275,10 +275,13 @@ const HOME_TIME_IMAGES = {
 
 // EDIT AI PROVIDER CONFIG HERE
 const AI_PROVIDER_CONFIG = {
-  mode: 'auto', // auto | ollama | fallback
+  mode: 'auto', // auto | openai-compatible | ollama | fallback
+  remoteEndpoint: 'https://api.openai.com/v1/chat/completions',
+  remoteModel: 'gpt-4.1-mini',
+  remoteApiKey: '',
   ollamaEndpoint: 'http://localhost:11434/api/chat',
   ollamaModel: 'llama3.2',
-  timeoutMs: 1500
+  timeoutMs: 12000
 };
 
 const ARI_CHARACTER_IMAGE = 'assets/images/ari/ari1.webp';
@@ -302,6 +305,26 @@ ARI를 앱 이름처럼 말하지 않는다.
 - 길찾기는 사용자가 선택한 지도 서비스 버튼을 사용하라고 안내한다.
 - 응급상황, 분실물, 관광불편은 여행자 지원 메뉴를 안내한다.
 - AI는 사실을 새로 만들어내는 것이 아니라, 검증된 문화데이터를 쉽게 설명하는 역할이다.
+`;
+
+const ARI_LLM_SYSTEM_PROMPT = `
+You are ARI, the heritage guide inside the MARU app.
+MARU is the app name. ARI is the guide character, not the service name.
+
+Behavior:
+- Speak naturally, warmly, and clearly like a helpful local guide.
+- Use the user's language when possible and follow the tone of the latest message.
+- Handle small everyday conversation naturally, but gently connect it back to travel help when appropriate.
+- Use the supplied MARU app context when it is relevant.
+- When the MARU context does not contain a precise fact, do not invent exact opening hours, prices, reservations, or official procedures.
+- If something needs confirmation, say it should be checked on an official source.
+- For directions, point the user to MARU's map and route screens.
+- For emergencies, lost items, or travel assistance, point the user to MARU's support information.
+
+Answer style:
+- Be concise first, then helpful.
+- Give direct recommendations when the user is unsure.
+- Explain why a route or place fits the user's situation.
 `;
 
 const ARI_QUICK_QUESTIONS = [
@@ -781,6 +804,7 @@ const STORAGE_KEYS = {
   stamps: 'hanroute.mobile.stamps',
   mapService: 'hanroute.mobile.mapService',
   ariMessages: 'hanroute.mobile.ariMessages',
+  ariProviderSettings: 'hanroute.mobile.ariProviderSettings',
   dataOverrides: 'hanroute.mobile.dataOverrides'
 };
 
@@ -1703,6 +1727,24 @@ const EXTENDED_UI_COPY = {
       busy: 'ARI is organizing the best answer for you.',
       error: 'The live reply connection is unstable right now. ARI will answer again using MARU data.',
       fallbackSuffix: 'A live model was unavailable, so ARI answered from MARU app data.',
+      settingsToggle: 'LLM',
+      settingsTitle: 'Live LLM Connection',
+      settingsBody: 'Connect an OpenAI-compatible chat/completions endpoint or a local Ollama model. On GitHub Pages, the key stays only in this browser.',
+      providerLabel: 'Reply source',
+      providerOptionAuto: 'Auto: remote LLM, then Ollama, then MARU data',
+      providerOptionRemote: 'OpenAI-compatible LLM only',
+      providerOptionOllama: 'Local Ollama only',
+      providerOptionFallback: 'MARU data only',
+      remoteEndpointLabel: 'OpenAI-compatible endpoint',
+      remoteModelLabel: 'Model name',
+      remoteKeyLabel: 'API key',
+      ollamaEndpointLabel: 'Ollama endpoint',
+      ollamaModelLabel: 'Ollama model',
+      providerNote: 'For a public release, move the API key to a server proxy. This browser-side key is best for demos or personal testing.',
+      providerSave: 'Save LLM Settings',
+      providerSavedLive: 'Live LLM settings saved. ARI will use the configured endpoint when available.',
+      providerSavedLocal: 'Settings saved. Without a live API key, ARI will fall back to Ollama or MARU data.',
+      providerSavedToast: 'ARI LLM settings saved.',
       quickQuestions: ['It is my first time in Seoul. Where should I start?', 'Why is this route recommended?', 'Where is good on a rainy day?', 'Is there a route with less walking?', 'Which places may have English support?']
     }
   },
@@ -6482,6 +6524,58 @@ function shouldShowAri() {
   ].includes(getCurrentFileName());
 }
 
+function sanitizeAriProviderSettings(raw = {}) {
+  const mode = ['auto', 'openai-compatible', 'ollama', 'fallback'].includes(raw.mode)
+    ? raw.mode
+    : AI_PROVIDER_CONFIG.mode;
+
+  return {
+    mode,
+    remoteEndpoint: String(raw.remoteEndpoint ?? AI_PROVIDER_CONFIG.remoteEndpoint ?? '').trim(),
+    remoteModel: String(raw.remoteModel ?? AI_PROVIDER_CONFIG.remoteModel ?? '').trim(),
+    remoteApiKey: String(raw.remoteApiKey ?? AI_PROVIDER_CONFIG.remoteApiKey ?? '').trim(),
+    ollamaEndpoint: String(raw.ollamaEndpoint ?? AI_PROVIDER_CONFIG.ollamaEndpoint ?? '').trim(),
+    ollamaModel: String(raw.ollamaModel ?? AI_PROVIDER_CONFIG.ollamaModel ?? '').trim(),
+    timeoutMs: Math.max(1500, Number(raw.timeoutMs ?? AI_PROVIDER_CONFIG.timeoutMs) || AI_PROVIDER_CONFIG.timeoutMs)
+  };
+}
+
+function getAriProviderSettings() {
+  return sanitizeAriProviderSettings(storageJsonGet(STORAGE_KEYS.ariProviderSettings, {}));
+}
+
+function saveAriProviderSettings(settings) {
+  const next = sanitizeAriProviderSettings(settings);
+  storageJsonSet(STORAGE_KEYS.ariProviderSettings, next);
+  ollamaHostUnavailable = false;
+  return next;
+}
+
+function normalizeAriRemoteEndpoint(endpoint) {
+  const trimmed = String(endpoint || '').trim().replace(/\/+$/, '');
+  if (!trimmed) return '';
+  if (/\/chat\/completions$/i.test(trimmed)) return trimmed;
+  if (/\/v1$/i.test(trimmed)) return `${trimmed}/chat/completions`;
+  return trimmed;
+}
+
+function normalizeAriOllamaEndpoint(endpoint) {
+  const trimmed = String(endpoint || '').trim().replace(/\/+$/, '');
+  if (!trimmed) return '';
+  if (/\/api\/chat$/i.test(trimmed)) return trimmed;
+  if (/\/api$/i.test(trimmed)) return `${trimmed}/chat`;
+  if (/^https?:\/\/[^/]+(?::\d+)?$/i.test(trimmed)) return `${trimmed}/api/chat`;
+  return trimmed;
+}
+
+function isAriRemoteConfigured(settings = getAriProviderSettings()) {
+  return Boolean(
+    normalizeAriRemoteEndpoint(settings.remoteEndpoint)
+    && settings.remoteModel
+    && settings.remoteApiKey
+  );
+}
+
 function buildAriContext() {
   const selectedRoute = getRouteFromUrlOrStorage();
   const selectedRouteView = getRouteView(selectedRoute);
@@ -6655,6 +6749,121 @@ function findRouteByHints(routes, hints = []) {
 
 function findResourceByHints(resources, hints = []) {
   return resources.find((resource) => hasAnyTerm(resourceSearchText(resource), hints));
+}
+
+function tokenizeAriSearchText(value) {
+  return Array.from(new Set(
+    normalizeSearchText(value)
+      .split(/[\s,.;:!?()[\]{}"'/\\|_-]+/)
+      .map((token) => token.trim())
+      .filter((token) => token.length >= 2)
+  ));
+}
+
+function scoreAriTextMatch(message, haystack) {
+  const text = normalizeSearchText(haystack);
+  const tokens = tokenizeAriSearchText(message);
+  if (!tokens.length || !text) return 0;
+
+  return tokens.reduce((total, token) => {
+    if (text.includes(` ${token} `)) return total + 4;
+    if (text.startsWith(token) || text.endsWith(token)) return total + 3;
+    if (text.includes(token)) return total + 2;
+    return total;
+  }, 0);
+}
+
+function rankAriItemsByMessage(message, items, toText) {
+  return items
+    .map((item) => ({
+      item,
+      score: scoreAriTextMatch(message, toText(item))
+    }))
+    .filter((entry) => entry.score > 0)
+    .sort((left, right) => right.score - left.score)
+    .map((entry) => entry.item);
+}
+
+function dedupeAriItems(items, getKey) {
+  const seen = new Set();
+  return items.filter((item) => {
+    const key = getKey(item);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function buildAriLlmKnowledgePack(message, context) {
+  const relevantRoutes = dedupeAriItems([
+    context.selectedRoute,
+    ...rankAriItemsByMessage(message, context.routes, routeSearchText).slice(0, 4),
+    ...context.ranking.topRoutes.slice(0, 2).map((item) => context.routes.find((route) => route.id === item.id)).filter(Boolean)
+  ], (item) => item.id).slice(0, 4);
+
+  const relevantResources = dedupeAriItems([
+    ...rankAriItemsByMessage(message, context.resources, resourceSearchText).slice(0, 6),
+    ...context.ranking.topPlaces.slice(0, 3).map((item) => context.resources.find((resource) => resource.id === item.id)).filter(Boolean)
+  ], (item) => item.id).slice(0, 6);
+
+  const relevantSupport = rankAriItemsByMessage(
+    message,
+    context.support,
+    (item) => `${item.title} ${item.body}`
+  ).slice(0, 3);
+
+  return {
+    currentPage: context.currentPage,
+    language: context.language,
+    preference: context.preference,
+    selectedRoute: context.selectedRoute,
+    relevantRoutes,
+    relevantResources,
+    weather: context.weather.slice(0, 3),
+    support: relevantSupport.length ? relevantSupport : context.support.slice(0, 2),
+    bundles: context.bundles.slice(0, 1),
+    ranking: {
+      topRoutes: context.ranking.topRoutes.slice(0, 3),
+      topPlaces: context.ranking.topPlaces.slice(0, 5)
+    },
+    crowd: context.crowd
+  };
+}
+
+function buildAriLlmMessages(message, context) {
+  const history = [...context.recentMessages];
+  if (!history.length || history[history.length - 1].message !== message) {
+    history.push({ role: 'user', message });
+  }
+
+  return [
+    { role: 'system', content: ARI_LLM_SYSTEM_PROMPT.trim() },
+    {
+      role: 'system',
+      content: `Preferred language: ${context.language}\nUse the user's latest message language when possible.\nMARU app context:\n${JSON.stringify(buildAriLlmKnowledgePack(message, context), null, 2)}`
+    },
+    ...history.slice(-8).map((item) => ({
+      role: item.role === 'assistant' ? 'assistant' : 'user',
+      content: item.message
+    }))
+  ];
+}
+
+function extractAriLlmTextContent(content) {
+  if (typeof content === 'string') return content;
+  if (Array.isArray(content)) {
+    return content.map((part) => {
+      if (typeof part === 'string') return part;
+      if (typeof part?.text === 'string') return part.text;
+      if (typeof part?.content === 'string') return part.content;
+      if (typeof part?.value === 'string') return part.value;
+      if (typeof part?.text?.value === 'string') return part.text.value;
+      return '';
+    }).join('\n').trim();
+  }
+  if (typeof content?.text === 'string') return content.text;
+  if (typeof content?.value === 'string') return content.value;
+  return '';
 }
 
 function fallbackAriReply(message, context) {
@@ -6943,25 +7152,62 @@ function fallbackAriReply(message, context) {
   });
 }
 
-async function askOllama(message, context) {
+async function askOpenAiCompatible(message, context, settings = getAriProviderSettings()) {
   const controller = new AbortController();
-  const timeout = window.setTimeout(() => controller.abort(), AI_PROVIDER_CONFIG.timeoutMs);
+  const timeout = window.setTimeout(() => controller.abort(), settings.timeoutMs);
+  const endpoint = normalizeAriRemoteEndpoint(settings.remoteEndpoint);
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${settings.remoteApiKey}`
+  };
+
+  if (endpoint.includes('openrouter.ai')) {
+    headers['HTTP-Referer'] = window.location.href;
+    headers['X-Title'] = 'MARU ARI';
+  }
 
   try {
-    const response = await fetch(AI_PROVIDER_CONFIG.ollamaEndpoint, {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers,
+      signal: controller.signal,
+      body: JSON.stringify({
+        model: settings.remoteModel,
+        temperature: 0.7,
+        messages: buildAriLlmMessages(message, context)
+      })
+    });
+
+    if (!response.ok) throw new Error(`Remote LLM error: ${response.status}`);
+    const data = await response.json();
+    const responseOutput = Array.isArray(data?.output)
+      ? data.output.flatMap((item) => item?.content || [])
+      : [];
+    return extractAriLlmTextContent(
+      data?.choices?.[0]?.message?.content
+      || data?.choices?.[0]?.delta?.content
+      || responseOutput
+      || data?.response
+      || ''
+    );
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
+async function askOllama(message, context, settings = getAriProviderSettings()) {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), settings.timeoutMs);
+
+  try {
+    const response = await fetch(normalizeAriOllamaEndpoint(settings.ollamaEndpoint), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       signal: controller.signal,
       body: JSON.stringify({
-        model: AI_PROVIDER_CONFIG.ollamaModel,
+        model: settings.ollamaModel,
         stream: false,
-        messages: [
-          { role: 'system', content: ARI_SYSTEM_PROMPT },
-          {
-            role: 'user',
-            content: `앱 데이터:\n${JSON.stringify(context)}\n\n사용자 질문:\n${message}`
-          }
-        ]
+        messages: buildAriLlmMessages(message, context)
       })
     });
 
@@ -6973,12 +7219,18 @@ async function askOllama(message, context) {
   }
 }
 
-function shouldTryOllamaProvider() {
-  if (AI_PROVIDER_CONFIG.mode === 'fallback') return false;
-  if (ollamaHostUnavailable) return false;
-  if (AI_PROVIDER_CONFIG.mode === 'ollama') return true;
+function shouldTryRemoteAriProvider(settings = getAriProviderSettings()) {
+  if (settings.mode === 'fallback' || settings.mode === 'ollama') return false;
+  return isAriRemoteConfigured(settings);
+}
 
-  const endpoint = AI_PROVIDER_CONFIG.ollamaEndpoint;
+function shouldTryOllamaProvider(settings = getAriProviderSettings()) {
+  const endpoint = normalizeAriOllamaEndpoint(settings.ollamaEndpoint);
+  if (!endpoint || !settings.ollamaModel) return false;
+  if (settings.mode === 'fallback') return false;
+  if (ollamaHostUnavailable) return false;
+  if (settings.mode === 'ollama') return true;
+  if (settings.mode === 'openai-compatible') return false;
   const isLocalEndpoint = endpoint.includes('localhost') || endpoint.includes('127.0.0.1') || endpoint.includes('[::1]');
   const isPublicHttpsPage = window.location.protocol === 'https:' && isLocalEndpoint;
   return !isPublicHttpsPage;
@@ -6986,13 +7238,26 @@ function shouldTryOllamaProvider() {
 
 async function askAri(message) {
   const context = buildAriContext();
-  if (shouldTryOllamaProvider()) {
+  const settings = getAriProviderSettings();
+
+  if (shouldTryRemoteAriProvider(settings)) {
     try {
-      const reply = await askOllama(message, context);
+      const reply = await askOpenAiCompatible(message, context, settings);
+      if (reply.trim()) return reply.trim();
+    } catch (error) {
+      if (settings.mode === 'openai-compatible') {
+        return `${fallbackAriReply(message, context)}\n\n${t('ari.fallbackSuffix')}`;
+      }
+    }
+  }
+
+  if (shouldTryOllamaProvider(settings)) {
+    try {
+      const reply = await askOllama(message, context, settings);
       if (reply.trim()) return reply.trim();
     } catch (error) {
       ollamaHostUnavailable = true;
-      if (AI_PROVIDER_CONFIG.mode === 'ollama') {
+      if (settings.mode === 'ollama') {
         return `${fallbackAriReply(message, context)}\n\n${t('ari.fallbackSuffix')}`;
       }
     }
@@ -7033,6 +7298,92 @@ function applyAriTranslations() {
   const input = qs('[data-ari-input]', root);
   if (input) input.setAttribute('placeholder', t('ari.placeholder'));
   setText('[data-ari-send]', t('ari.send'));
+  setText('[data-ari-settings-toggle-label]', t('ari.settingsToggle', 'LLM'));
+  setText('[data-ari-settings-title]', t('ari.settingsTitle', '실시간 LLM 연결'));
+  setText('[data-ari-settings-body]', t('ari.settingsBody', 'OpenAI 호환 chat/completions 엔드포인트나 로컬 Ollama 모델을 연결할 수 있어요. GitHub Pages에서는 키가 이 브라우저에만 저장됩니다.'));
+  setText('[data-ari-provider-label]', t('ari.providerLabel', '응답 방식'));
+  setText('[data-ari-remote-endpoint-label]', t('ari.remoteEndpointLabel', 'OpenAI 호환 엔드포인트'));
+  setText('[data-ari-remote-model-label]', t('ari.remoteModelLabel', '모델 이름'));
+  setText('[data-ari-remote-key-label]', t('ari.remoteKeyLabel', 'API 키'));
+  setText('[data-ari-ollama-endpoint-label]', t('ari.ollamaEndpointLabel', 'Ollama 엔드포인트'));
+  setText('[data-ari-ollama-model-label]', t('ari.ollamaModelLabel', 'Ollama 모델'));
+  setText('[data-ari-provider-note]', t('ari.providerNote', '정식 공개 버전에서는 API 키를 서버 프록시로 옮기는 것이 안전합니다. 지금 방식은 데모나 개인 테스트용에 적합해요.'));
+  setText('[data-ari-provider-save]', t('ari.providerSave', 'LLM 설정 저장'));
+
+  const providerSelect = qs('[data-ari-provider-mode]', root);
+  if (providerSelect) {
+    const optionLabels = {
+      auto: t('ari.providerOptionAuto', '자동: 실시간 LLM → Ollama → MARU 데이터'),
+      'openai-compatible': t('ari.providerOptionRemote', 'OpenAI 호환 LLM만 사용'),
+      ollama: t('ari.providerOptionOllama', '로컬 Ollama만 사용'),
+      fallback: t('ari.providerOptionFallback', 'MARU 데이터만 사용')
+    };
+    Array.from(providerSelect.options).forEach((option) => {
+      option.textContent = optionLabels[option.value] || option.textContent;
+    });
+  }
+
+  populateAriProviderForm();
+}
+
+function setAriProviderStatus(message = '', tone = '') {
+  const status = qs('[data-ari-provider-status]');
+  if (!status) return;
+  status.textContent = message;
+  status.dataset.status = tone;
+}
+
+function syncAriProviderFieldVisibility() {
+  const mode = qs('[data-ari-provider-mode]')?.value || getAriProviderSettings().mode;
+  const remoteFields = qs('[data-ari-remote-fields]');
+  const ollamaFields = qs('[data-ari-ollama-fields]');
+  if (remoteFields) remoteFields.hidden = !(mode === 'auto' || mode === 'openai-compatible');
+  if (ollamaFields) ollamaFields.hidden = !(mode === 'auto' || mode === 'ollama');
+}
+
+function populateAriProviderForm(settings = getAriProviderSettings()) {
+  const modeField = qs('[data-ari-provider-mode]');
+  const remoteEndpointField = qs('[data-ari-remote-endpoint]');
+  const remoteModelField = qs('[data-ari-remote-model]');
+  const remoteKeyField = qs('[data-ari-remote-key]');
+  const ollamaEndpointField = qs('[data-ari-ollama-endpoint]');
+  const ollamaModelField = qs('[data-ari-ollama-model]');
+
+  if (modeField) modeField.value = settings.mode;
+  if (remoteEndpointField) remoteEndpointField.value = settings.remoteEndpoint;
+  if (remoteModelField) remoteModelField.value = settings.remoteModel;
+  if (remoteKeyField) remoteKeyField.value = settings.remoteApiKey;
+  if (ollamaEndpointField) ollamaEndpointField.value = settings.ollamaEndpoint;
+  if (ollamaModelField) ollamaModelField.value = settings.ollamaModel;
+
+  syncAriProviderFieldVisibility();
+}
+
+function readAriProviderForm() {
+  return sanitizeAriProviderSettings({
+    mode: qs('[data-ari-provider-mode]')?.value,
+    remoteEndpoint: qs('[data-ari-remote-endpoint]')?.value,
+    remoteModel: qs('[data-ari-remote-model]')?.value,
+    remoteApiKey: qs('[data-ari-remote-key]')?.value,
+    ollamaEndpoint: qs('[data-ari-ollama-endpoint]')?.value,
+    ollamaModel: qs('[data-ari-ollama-model]')?.value
+  });
+}
+
+function toggleAriSettings(forceOpen) {
+  const root = qs('[data-ari-root]');
+  const panel = qs('[data-ari-settings]', root);
+  const trigger = qs('[data-ari-settings-toggle]', root);
+  if (!root || !panel || !trigger) return;
+
+  const nextOpen = typeof forceOpen === 'boolean'
+    ? forceOpen
+    : !root.classList.contains('ari-settings-open');
+
+  root.classList.toggle('ari-settings-open', nextOpen);
+  panel.hidden = !nextOpen;
+  trigger.setAttribute('aria-expanded', nextOpen ? 'true' : 'false');
+  if (nextOpen) populateAriProviderForm();
 }
 
 function renderAriMessages() {
@@ -7084,6 +7435,7 @@ function closeAriChat() {
   const root = qs('[data-ari-root]');
   const panel = qs('[data-ari-panel]');
   if (!root || !panel) return;
+  toggleAriSettings(false);
   root.classList.remove('is-open');
   panel.setAttribute('aria-hidden', 'true');
 }
@@ -7131,6 +7483,53 @@ function mountAriChat() {
           </div>
           <button type="button" data-ari-close aria-label="${escapeHtml(t('ari.closeLabel'))}">×</button>
         </header>
+        <button type="button" class="ari-settings-toggle ari-settings-strip" data-ari-settings-toggle aria-expanded="false">
+          <span data-ari-settings-toggle-label>${escapeHtml(t('ari.settingsToggle', 'LLM'))}</span>
+        </button>
+        <section class="ari-settings" data-ari-settings hidden>
+          <div class="ari-settings-copy">
+            <strong data-ari-settings-title>${escapeHtml(t('ari.settingsTitle', '실시간 LLM 연결'))}</strong>
+            <p data-ari-settings-body>${escapeHtml(t('ari.settingsBody', 'OpenAI 호환 chat/completions 엔드포인트나 로컬 Ollama 모델을 연결할 수 있어요. GitHub Pages에서는 키가 이 브라우저에만 저장됩니다.'))}</p>
+          </div>
+          <label class="ari-settings-field">
+            <span data-ari-provider-label>${escapeHtml(t('ari.providerLabel', '응답 방식'))}</span>
+            <select data-ari-provider-mode>
+              <option value="auto">${escapeHtml(t('ari.providerOptionAuto', '자동: 실시간 LLM → Ollama → MARU 데이터'))}</option>
+              <option value="openai-compatible">${escapeHtml(t('ari.providerOptionRemote', 'OpenAI 호환 LLM만 사용'))}</option>
+              <option value="ollama">${escapeHtml(t('ari.providerOptionOllama', '로컬 Ollama만 사용'))}</option>
+              <option value="fallback">${escapeHtml(t('ari.providerOptionFallback', 'MARU 데이터만 사용'))}</option>
+            </select>
+          </label>
+          <div class="ari-settings-group" data-ari-remote-fields>
+            <label class="ari-settings-field">
+              <span data-ari-remote-endpoint-label>${escapeHtml(t('ari.remoteEndpointLabel', 'OpenAI 호환 엔드포인트'))}</span>
+              <input data-ari-remote-endpoint type="text" placeholder="https://api.openai.com/v1/chat/completions" autocomplete="off">
+            </label>
+            <label class="ari-settings-field">
+              <span data-ari-remote-model-label>${escapeHtml(t('ari.remoteModelLabel', '모델 이름'))}</span>
+              <input data-ari-remote-model type="text" placeholder="gpt-4.1-mini" autocomplete="off">
+            </label>
+            <label class="ari-settings-field">
+              <span data-ari-remote-key-label>${escapeHtml(t('ari.remoteKeyLabel', 'API 키'))}</span>
+              <input data-ari-remote-key type="password" placeholder="sk-..." autocomplete="off">
+            </label>
+          </div>
+          <div class="ari-settings-group" data-ari-ollama-fields hidden>
+            <label class="ari-settings-field">
+              <span data-ari-ollama-endpoint-label>${escapeHtml(t('ari.ollamaEndpointLabel', 'Ollama 엔드포인트'))}</span>
+              <input data-ari-ollama-endpoint type="text" placeholder="http://localhost:11434/api/chat" autocomplete="off">
+            </label>
+            <label class="ari-settings-field">
+              <span data-ari-ollama-model-label>${escapeHtml(t('ari.ollamaModelLabel', 'Ollama 모델'))}</span>
+              <input data-ari-ollama-model type="text" placeholder="llama3.2" autocomplete="off">
+            </label>
+          </div>
+          <p class="ari-settings-note" data-ari-provider-note>${escapeHtml(t('ari.providerNote', '정식 공개 버전에서는 API 키를 서버 프록시로 옮기는 것이 안전합니다. 지금 방식은 데모나 개인 테스트용에 적합해요.'))}</p>
+          <div class="ari-settings-actions">
+            <button type="button" data-ari-provider-save>${escapeHtml(t('ari.providerSave', 'LLM 설정 저장'))}</button>
+          </div>
+          <p class="ari-settings-status" data-ari-provider-status aria-live="polite"></p>
+        </section>
         <div class="ari-quick-list">
           ${quickQuestions.map((question) => `<button type="button" data-ari-quick="${escapeHtml(question)}">${escapeHtml(question)}</button>`).join('')}
         </div>
@@ -7148,6 +7547,17 @@ function mountAriChat() {
   renderAriMessages();
   qs('[data-ari-open]')?.addEventListener('click', openAriChat);
   qs('[data-ari-close]')?.addEventListener('click', closeAriChat);
+  qs('[data-ari-settings-toggle]')?.addEventListener('click', () => toggleAriSettings());
+  qs('[data-ari-provider-mode]')?.addEventListener('change', syncAriProviderFieldVisibility);
+  qs('[data-ari-provider-save]')?.addEventListener('click', () => {
+    const settings = saveAriProviderSettings(readAriProviderForm());
+    const usedRemote = isAriRemoteConfigured(settings);
+    const message = usedRemote
+      ? t('ari.providerSavedLive', '실시간 LLM 설정을 저장했어요. 연결 가능할 때 이 모델을 우선 사용합니다.')
+      : t('ari.providerSavedLocal', '설정을 저장했어요. 라이브 API 키가 없으면 Ollama 또는 MARU 데이터 답변으로 이어집니다.');
+    setAriProviderStatus(message, 'success');
+    showToast(t('ari.providerSavedToast', 'ARI LLM 설정을 저장했어요.'));
+  });
   qs('[data-ari-form]')?.addEventListener('submit', (event) => {
     event.preventDefault();
     sendAriMessage();
