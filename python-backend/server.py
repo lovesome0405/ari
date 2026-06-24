@@ -2,7 +2,7 @@ import json
 import os
 import sqlite3
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
@@ -19,6 +19,8 @@ RUNTIME_DIR = APP_ROOT / "runtime"
 DB_PATH = RUNTIME_DIR / "maru_dynamic.sqlite3"
 HOST = os.environ.get("MARU_API_HOST", "127.0.0.1")
 PORT = int(os.environ.get("PORT") or os.environ.get("MARU_API_PORT") or "8080")
+ANALYTICS_RECENT_WINDOW_HOURS = 6
+ALLOWED_ENGAGEMENT_ACTIONS = {"detail_view", "visit_intent", "save", "recommend"}
 
 DATA_PATHS = {
     "courses": PROJECT_ROOT / "data" / "courses.json",
@@ -56,6 +58,36 @@ def get_catalog_items(kind: str):
     return load_json_array(path)
 
 
+def sanitize_text(value, field_name: str, max_length: int | None = None):
+    text = str(value or "").strip()
+    if not text:
+        return None
+    if max_length is not None and len(text) > max_length:
+        raise ValueError(f"{field_name} must be {max_length} characters or fewer")
+    return text
+
+
+def parse_timestamp(value):
+    raw_value = str(value or "").strip()
+    if not raw_value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(raw_value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone()
+
+
+def is_foreigner_signal(language: str | None, traveler_type: str | None):
+    normalized_traveler_type = str(traveler_type or "").strip().lower()
+    normalized_language = str(language or "").strip().lower()
+    if normalized_traveler_type == "foreigner":
+        return True
+    return normalized_language not in ("", "ko")
+
+
 def init_db():
     RUNTIME_DIR.mkdir(parents=True, exist_ok=True)
     with sqlite3.connect(DB_PATH) as connection:
@@ -70,6 +102,40 @@ def init_db():
                 memo TEXT,
                 created_at TEXT NOT NULL
             )
+            """
+        )
+        connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS engagement_events (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                event_scope TEXT NOT NULL,
+                subject_id TEXT NOT NULL,
+                subject_label TEXT,
+                route_id TEXT,
+                route_title TEXT,
+                action TEXT NOT NULL,
+                language TEXT,
+                traveler_type TEXT,
+                created_at TEXT NOT NULL
+            )
+            """
+        )
+        connection.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_engagement_scope_subject
+            ON engagement_events (event_scope, subject_id)
+            """
+        )
+        connection.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_engagement_route
+            ON engagement_events (route_id)
+            """
+        )
+        connection.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_engagement_created_at
+            ON engagement_events (created_at)
             """
         )
         connection.commit()
@@ -101,24 +167,16 @@ def list_saved_routes():
 
 
 def create_saved_route(payload):
-    route_id = str(payload.get("routeId", "")).strip()
-    route_title = str(payload.get("routeTitle", "")).strip()
-    language = str(payload.get("language", "")).strip() or None
-    theme = str(payload.get("theme", "")).strip() or None
-    memo = str(payload.get("memo", "")).strip() or None
+    route_id = sanitize_text(payload.get("routeId"), "routeId", 120)
+    route_title = sanitize_text(payload.get("routeTitle"), "routeTitle", 255)
+    language = sanitize_text(payload.get("language"), "language", 20)
+    theme = sanitize_text(payload.get("theme"), "theme", 120)
+    memo = sanitize_text(payload.get("memo"), "memo", 600)
 
     if not route_id:
         raise ValueError("routeId is required")
     if not route_title:
         raise ValueError("routeTitle is required")
-    if len(route_id) > 120:
-        raise ValueError("routeId must be 120 characters or fewer")
-    if len(route_title) > 255:
-        raise ValueError("routeTitle must be 255 characters or fewer")
-    if language and len(language) > 20:
-        raise ValueError("language must be 20 characters or fewer")
-    if theme and len(theme) > 120:
-        raise ValueError("theme must be 120 characters or fewer")
 
     created_at = datetime.now(timezone.utc).isoformat()
 
@@ -151,8 +209,241 @@ def delete_saved_route(saved_id: int):
     return cursor.rowcount > 0
 
 
+def normalize_engagement_places(raw_places):
+    if not isinstance(raw_places, list):
+        return []
+
+    normalized = []
+    seen_ids = set()
+    for item in raw_places:
+        if not isinstance(item, dict):
+            continue
+        place_id = sanitize_text(item.get("id") or item.get("placeId"), "placeId", 120)
+        if not place_id or place_id in seen_ids:
+            continue
+        seen_ids.add(place_id)
+        normalized.append({
+            "id": place_id,
+            "name": sanitize_text(
+                item.get("name") or item.get("label") or item.get("displayName"),
+                "placeName",
+                255,
+            )
+            or place_id,
+        })
+    return normalized
+
+
+def create_engagement_event(payload):
+    action = sanitize_text(payload.get("action"), "action", 40)
+    if action not in ALLOWED_ENGAGEMENT_ACTIONS:
+        raise ValueError("action must be one of detail_view, visit_intent, save, recommend")
+
+    route_id = sanitize_text(payload.get("routeId"), "routeId", 120)
+    route_title = sanitize_text(payload.get("routeTitle"), "routeTitle", 255) or route_id
+    language = sanitize_text(payload.get("language"), "language", 20)
+    traveler_type = sanitize_text(payload.get("travelerType"), "travelerType", 20)
+    places = normalize_engagement_places(payload.get("places"))
+
+    if not route_id and not places:
+        raise ValueError("routeId or places is required")
+
+    created_at = datetime.now().astimezone().isoformat()
+    rows = []
+
+    if route_id:
+        rows.append((
+            "route",
+            route_id,
+            route_title or route_id,
+            route_id,
+            route_title or route_id,
+            action,
+            language,
+            traveler_type,
+            created_at,
+        ))
+
+    for place in places:
+        rows.append((
+            "place",
+            place["id"],
+            place["name"],
+            route_id,
+            route_title or route_id,
+            action,
+            language,
+            traveler_type,
+            created_at,
+        ))
+
+    with sqlite3.connect(DB_PATH) as connection:
+        connection.executemany(
+            """
+            INSERT INTO engagement_events (
+                event_scope,
+                subject_id,
+                subject_label,
+                route_id,
+                route_title,
+                action,
+                language,
+                traveler_type,
+                created_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            rows,
+        )
+        connection.commit()
+
+    return {
+        "ok": True,
+        "action": action,
+        "routeId": route_id,
+        "createdAt": created_at,
+        "createdCount": len(rows),
+        "placesTracked": len(places),
+    }
+
+
+def create_summary_counter(scope: str, row):
+    base = {
+        "totalSignals": 0,
+        "todaySignals": 0,
+        "recentSignals": 0,
+        "foreignerSignals": 0,
+        "detailViews": 0,
+        "visitIntents": 0,
+        "saves": 0,
+        "recommends": 0,
+        "lastEventAt": None,
+    }
+
+    if scope == "route":
+        base.update({
+            "routeId": row["subject_id"],
+            "routeTitle": row["subject_label"] or row["route_title"] or row["subject_id"],
+        })
+    else:
+        base.update({
+            "placeId": row["subject_id"],
+            "placeName": row["subject_label"] or row["subject_id"],
+            "routeId": row["route_id"] or "",
+        })
+    return base
+
+
+def apply_summary_signal(counter, row, now_local, recent_cutoff):
+    created_at = parse_timestamp(row["created_at"]) or now_local
+    action = str(row["action"] or "").strip()
+
+    counter["totalSignals"] += 1
+    if created_at.date() == now_local.date():
+        counter["todaySignals"] += 1
+    if created_at >= recent_cutoff:
+        counter["recentSignals"] += 1
+    if is_foreigner_signal(row["language"], row["traveler_type"]):
+        counter["foreignerSignals"] += 1
+    if counter["lastEventAt"] is None:
+        counter["lastEventAt"] = row["created_at"]
+
+    if action == "detail_view":
+        counter["detailViews"] += 1
+    elif action == "visit_intent":
+        counter["visitIntents"] += 1
+    elif action == "save":
+        counter["saves"] += 1
+    elif action == "recommend":
+        counter["recommends"] += 1
+
+
+def build_engagement_summary():
+    with sqlite3.connect(DB_PATH) as connection:
+        connection.row_factory = sqlite3.Row
+        rows = connection.execute(
+            """
+            SELECT
+                id,
+                event_scope,
+                subject_id,
+                subject_label,
+                route_id,
+                route_title,
+                action,
+                language,
+                traveler_type,
+                created_at
+            FROM engagement_events
+            ORDER BY created_at DESC, id DESC
+            """
+        ).fetchall()
+
+    now_local = datetime.now().astimezone()
+    recent_cutoff = now_local - timedelta(hours=ANALYTICS_RECENT_WINDOW_HOURS)
+    route_counters = {}
+    place_counters = {}
+    totals = {"events": 0, "routeEvents": 0, "placeEvents": 0}
+
+    for row in rows:
+        scope = str(row["event_scope"] or "").strip()
+        if scope not in {"route", "place"}:
+            continue
+
+        key = str(row["subject_id"] or "").strip()
+        if not key:
+            continue
+
+        totals["events"] += 1
+        if scope == "route":
+            totals["routeEvents"] += 1
+            counter = route_counters.setdefault(key, create_summary_counter(scope, row))
+        else:
+            totals["placeEvents"] += 1
+            counter = place_counters.setdefault(key, create_summary_counter(scope, row))
+
+        apply_summary_signal(counter, row, now_local, recent_cutoff)
+
+    route_items = sorted(
+        route_counters.values(),
+        key=lambda item: (
+            item["todaySignals"],
+            item["recentSignals"],
+            item["recommends"],
+            item["saves"],
+            item["foreignerSignals"],
+            item["totalSignals"],
+            item.get("routeTitle", ""),
+        ),
+        reverse=True,
+    )
+    place_items = sorted(
+        place_counters.values(),
+        key=lambda item: (
+            item["todaySignals"],
+            item["recentSignals"],
+            item["recommends"],
+            item["saves"],
+            item["foreignerSignals"],
+            item["totalSignals"],
+            item.get("placeName", ""),
+        ),
+        reverse=True,
+    )
+
+    return {
+        "generatedAt": now_local.isoformat(),
+        "today": now_local.date().isoformat(),
+        "recentWindowHours": ANALYTICS_RECENT_WINDOW_HOURS,
+        "source": "sqlite",
+        "totals": totals,
+        "routes": route_items,
+        "places": place_items,
+    }
+
+
 class MaruApiHandler(BaseHTTPRequestHandler):
-    server_version = "MaruPythonBackend/1.0"
+    server_version = "MaruPythonBackend/1.1"
 
     def log_message(self, fmt, *args):
         print("[%s] %s" % (self.log_date_time_string(), fmt % args))
@@ -204,6 +495,8 @@ class MaruApiHandler(BaseHTTPRequestHandler):
                     "/api/heritage",
                     "/api/public-data-sources",
                     "/api/saved-routes",
+                    "/api/analytics/summary",
+                    "/api/analytics/engagement",
                 ],
             })
             return
@@ -245,34 +538,55 @@ class MaruApiHandler(BaseHTTPRequestHandler):
             self._send_json(200, list_saved_routes())
             return
 
+        if path == "/api/analytics/summary":
+            self._send_json(200, build_engagement_summary())
+            return
+
         self._send_json(404, {"error": "Not found"})
 
     def do_POST(self):
         parsed = urlparse(self.path)
         path = parsed.path.rstrip("/") or "/"
 
-        if path != "/api/saved-routes":
-            self._send_json(404, {"error": "Not found"})
+        if path == "/api/saved-routes":
+            try:
+                payload = self._read_json_body()
+                created = create_saved_route(payload)
+            except json.JSONDecodeError:
+                self._send_json(400, {"error": "Invalid JSON body"})
+                return
+            except ValueError as error:
+                self._send_json(400, {"error": str(error)})
+                return
+            except Exception as error:
+                self._send_json(500, {"error": f"Failed to save route: {error}"})
+                return
+
+            self._send_json(
+                201,
+                created,
+                extra_headers={"Location": f"/api/saved-routes/{created['id']}"},
+            )
             return
 
-        try:
-            payload = self._read_json_body()
-            created = create_saved_route(payload)
-        except json.JSONDecodeError:
-            self._send_json(400, {"error": "Invalid JSON body"})
-            return
-        except ValueError as error:
-            self._send_json(400, {"error": str(error)})
-            return
-        except Exception as error:
-            self._send_json(500, {"error": f"Failed to save route: {error}"})
+        if path == "/api/analytics/engagement":
+            try:
+                payload = self._read_json_body()
+                created = create_engagement_event(payload)
+            except json.JSONDecodeError:
+                self._send_json(400, {"error": "Invalid JSON body"})
+                return
+            except ValueError as error:
+                self._send_json(400, {"error": str(error)})
+                return
+            except Exception as error:
+                self._send_json(500, {"error": f"Failed to save engagement event: {error}"})
+                return
+
+            self._send_json(201, created)
             return
 
-        self._send_json(
-            201,
-            created,
-            extra_headers={"Location": f"/api/saved-routes/{created['id']}"},
-        )
+        self._send_json(404, {"error": "Not found"})
 
     def do_DELETE(self):
         parsed = urlparse(self.path)

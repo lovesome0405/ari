@@ -2105,8 +2105,8 @@ body.ari-has-bottom-cta .ari-chat {
 
 .ari-chat.is-open .ari-panel {
   display: grid;
-  grid-template-rows: auto auto auto auto minmax(170px, 1fr) auto auto;
-  max-height: min(72vh, 620px);
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  max-height: min(76vh, 680px);
 }
 
 .ari-header {
@@ -2262,6 +2262,7 @@ body.ari-has-bottom-cta .ari-chat {
   overflow-x: auto;
   padding: 10px 12px;
   background: rgba(255, 250, 240, 0.86);
+  border-bottom: 1px solid rgba(234, 223, 203, 0.9);
 }
 
 .ari-quick-list button {
@@ -2281,6 +2282,7 @@ body.ari-has-bottom-cta .ari-chat {
   align-content: start;
   gap: 10px;
   overflow-y: auto;
+  min-height: 0;
   padding: 12px;
   background: var(--glass-soft);
 }
@@ -2333,7 +2335,8 @@ body.ari-has-bottom-cta .ari-chat {
   grid-template-columns: 1fr 76px;
   gap: 8px;
   padding: 12px;
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.94);
+  border-top: 1px solid rgba(234, 223, 203, 0.9);
 }
 
 .ari-form input {
@@ -2676,6 +2679,98 @@ body.ari-has-bottom-cta .ari-chat {
   gap: 16px;
 }
 
+.ranking-grid-analytics {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.ranking-grid-analytics,
+.ranking-block,
+.ranking-section-copy,
+.route-feedback-card,
+.route-feedback-actions,
+.ranking-card-meta {
+  display: grid;
+  gap: 10px;
+}
+
+.ranking-status-note {
+  margin: 4px 0 0;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: #f8f5ef;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  color: #4b5563;
+  font-size: 0.94rem;
+}
+
+.ranking-section-copy h3,
+.route-feedback-card h2 {
+  margin: 0;
+}
+
+.ranking-section-copy p,
+.route-feedback-card p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.ranking-card-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.ranking-card-meta strong {
+  margin-top: 0;
+}
+
+.ranking-card-meta span {
+  color: #6b7280;
+  font-size: 0.92rem;
+}
+
+.ranking-rank {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: #111827;
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.98rem;
+}
+
+.ranking-stat-chips,
+.ranking-card-actions {
+  margin-top: 10px;
+}
+
+.ranking-stat-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ranking-stat-chips span {
+  border-radius: 999px;
+  padding: 7px 11px;
+  background: #f3f4f6;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.route-feedback-actions {
+  align-items: center;
+}
+
+.route-feedback-actions span {
+  color: #6b7280;
+  font-size: 0.92rem;
+}
+
 .ranking-card-top {
   justify-content: space-between;
   align-items: center;
@@ -2754,5 +2849,15 @@ body.ari-has-bottom-cta .ari-chat {
 @media (min-width: 768px) {
   .ranking-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ranking-grid-analytics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .ranking-grid-analytics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

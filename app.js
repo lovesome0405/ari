@@ -355,8 +355,19 @@ const MARU_API_PATHS = {
   festivals: '/api/festivals',
   heritage: '/api/heritage',
   publicDataSources: '/api/public-data-sources',
-  savedRoutes: '/api/saved-routes'
+  savedRoutes: '/api/saved-routes',
+  analyticsEngagement: '/api/analytics/engagement',
+  analyticsSummary: '/api/analytics/summary'
 };
+const ANALYTICS_RECENT_WINDOW_HOURS = 6;
+const ANALYTICS_LOCAL_EVENT_LIMIT = 480;
+const ANALYTICS_ROUTE_VIEW_SESSION_KEY = 'maruRouteDetailViewed';
+const ANALYTICS_ACTION_WEIGHTS = Object.freeze({
+  detail_view: 1,
+  visit_intent: 2.6,
+  save: 4.2,
+  recommend: 5.8
+});
 const maruApiFailedPaths = new Set();
 let maruApiHostUnavailable = false;
 let ollamaHostUnavailable = false;
@@ -367,6 +378,8 @@ let courseDataLoadMessage = '';
 let PUBLIC_DATA_SOURCES = [];
 let FESTIVAL_DATA = [];
 let HERITAGE_DATA = [];
+let analyticsSummaryCache = null;
+let analyticsSummaryPromise = null;
 
 // Fallback seed data only. The primary static dataset is ari_culture_resources_appjs.json.
 let CULTURE_RESOURCES = [
@@ -805,7 +818,8 @@ const STORAGE_KEYS = {
   mapService: 'hanroute.mobile.mapService',
   ariMessages: 'hanroute.mobile.ariMessages',
   ariProviderSettings: 'hanroute.mobile.ariProviderSettings',
-  dataOverrides: 'hanroute.mobile.dataOverrides'
+  dataOverrides: 'hanroute.mobile.dataOverrides',
+  analyticsEvents: 'hanroute.mobile.analyticsEvents'
 };
 
 const LANGUAGES = {
@@ -3943,7 +3957,8 @@ async function fetchJsonFromMaruApi(path, options = {}) {
     cache: 'no-store',
     signal: controller.signal,
     method: options.method || 'GET',
-    headers: options.headers ? { ...options.headers } : {}
+    headers: options.headers ? { ...options.headers } : {},
+    keepalive: Boolean(options.keepalive)
   };
 
   if (Object.prototype.hasOwnProperty.call(options, 'jsonBody')) {
@@ -4474,19 +4489,178 @@ function scoreForeignerRoute(route) {
   return Math.round((route.score * 0.9) + (averagePlaceScore * 0.6));
 }
 
-function getForeignerPlaceRanking(limit = 5) {
+function getForeignerPlaceRanking(limit = 10, summary = analyticsSummaryCache) {
   return CULTURE_RESOURCES
     .filter((resource) => !resource.isDetailStoryOnly && resource.isIndependentSite)
-    .map((resource) => ({ resource, score: scoreForeignerPlace(resource) }))
-    .sort((left, right) => right.score - left.score)
+    .map((resource) => {
+      const stats = getPlaceAnalyticsStats(resource, summary);
+      const crowdScore = getLiveResourceCrowdScore(resource, summary);
+      return {
+        resource,
+        stats,
+        crowdScore,
+        crowdLabel: getCrowdLabel(crowdScore),
+        score: scoreLiveForeignerPlace(resource, summary)
+      };
+    })
+    .sort((left, right) =>
+      (right.score - left.score)
+      || (right.stats.recommends - left.stats.recommends)
+      || (right.stats.saves - left.stats.saves)
+      || (right.stats.totalSignals - left.stats.totalSignals)
+    )
     .slice(0, limit);
 }
 
-function getForeignerRouteRanking(limit = 3) {
+function getForeignerRouteRanking(limit = ROUTE_DATA.length, summary = analyticsSummaryCache) {
   return ROUTE_DATA
-    .map((route) => ({ route, score: scoreForeignerRoute(route) }))
-    .sort((left, right) => right.score - left.score)
+    .map((route) => {
+      const stats = getRouteAnalyticsStats(route, summary);
+      const crowdScore = getLiveRouteCrowdScore(route, summary);
+      return {
+        route,
+        stats,
+        crowdScore,
+        crowdLabel: getCrowdLabel(crowdScore),
+        score: scoreLiveForeignerRoute(route, summary)
+      };
+    })
+    .sort((left, right) =>
+      (right.score - left.score)
+      || (right.stats.recommends - left.stats.recommends)
+      || (right.stats.saves - left.stats.saves)
+      || (right.stats.totalSignals - left.stats.totalSignals)
+    )
     .slice(0, limit);
+}
+
+function getQuietRouteRanking(limit = 10, summary = analyticsSummaryCache) {
+  return ROUTE_DATA
+    .map((route) => {
+      const stats = getRouteAnalyticsStats(route, summary);
+      const crowdScore = getLiveRouteCrowdScore(route, summary);
+      return {
+        route,
+        stats,
+        crowdScore,
+        crowdLabel: getCrowdLabel(crowdScore),
+        score: scoreQuietRoute(route, summary)
+      };
+    })
+    .sort((left, right) =>
+      (right.score - left.score)
+      || (left.crowdScore - right.crowdScore)
+      || (right.stats.recommends - left.stats.recommends)
+      || (right.stats.saves - left.stats.saves)
+    )
+    .slice(0, limit);
+}
+
+function getHiddenGemRanking(limit = 10, summary = analyticsSummaryCache) {
+  return CULTURE_RESOURCES
+    .filter((resource) => !resource.isDetailStoryOnly && resource.isIndependentSite)
+    .map((resource) => {
+      const stats = getPlaceAnalyticsStats(resource, summary);
+      const crowdScore = getLiveResourceCrowdScore(resource, summary);
+      const satisfactionScore = getPlaceSatisfactionScore(resource, summary);
+      return {
+        resource,
+        stats,
+        crowdScore,
+        crowdLabel: getCrowdLabel(crowdScore),
+        satisfactionScore,
+        score: scoreHiddenGem(resource, summary)
+      };
+    })
+    .sort((left, right) =>
+      (right.score - left.score)
+      || (right.satisfactionScore - left.satisfactionScore)
+      || (right.stats.recommends - left.stats.recommends)
+      || (left.stats.totalSignals - right.stats.totalSignals)
+    )
+    .slice(0, limit);
+}
+
+function getRankingActionLabel(kind = 'route') {
+  if (kind === 'place') {
+    return getCurrentLanguage() === 'ko' ? '지도 열기' : 'Open map';
+  }
+  return getCurrentLanguage() === 'ko' ? '코스 보기' : 'Open route';
+}
+
+function renderRankingStatChips(chips) {
+  const visibleChips = chips.filter(Boolean);
+  if (!visibleChips.length) return '';
+  return `
+    <div class="ranking-stat-chips">
+      ${visibleChips.map((chip) => `<span>${escapeHtml(chip)}</span>`).join('')}
+    </div>
+  `;
+}
+
+function renderNumberedRankingRow({
+  rank,
+  title,
+  body,
+  meta = '',
+  chips = [],
+  link = '',
+  actionLabel = '',
+  kind = 'route',
+  crowdLabel = '',
+  crowdScore = 46,
+  external = false
+}) {
+  const badge = crowdLabel
+    ? `<span class="route-signal-badge crowd-${escapeHtml(getCrowdLevelKey(crowdScore))}">${escapeHtml(crowdLabel)}</span>`
+    : '';
+  const action = link
+    ? `<a class="button button-secondary" href="${escapeHtml(link)}"${external ? ' target="_blank" rel="noopener"' : ''}>${escapeHtml(actionLabel || getRankingActionLabel(kind))}</a>`
+    : '';
+
+  return `
+    <article class="ranking-card">
+      <div class="ranking-card-head">
+        <span class="ranking-rank">${escapeHtml(String(rank))}</span>
+        <div class="ranking-card-meta">
+          <strong>${escapeHtml(title)}</strong>
+          ${meta ? `<span>${escapeHtml(meta)}</span>` : ''}
+        </div>
+        ${badge}
+      </div>
+      <p>${escapeHtml(body)}</p>
+      ${renderRankingStatChips(chips)}
+      ${action ? `<div class="ranking-card-actions">${action}</div>` : ''}
+    </article>
+  `;
+}
+
+function renderRankingList(items, renderItem, emptyMessage) {
+  if (!items.length) {
+    return `
+      <article class="ranking-card">
+        <p>${escapeHtml(emptyMessage)}</p>
+      </article>
+    `;
+  }
+  return items.map((item, index) => renderItem(item, index)).join('');
+}
+
+function getRankingStatusNote(summary) {
+  const eventCount = summary?.totals?.events || 0;
+  if (!eventCount) {
+    return getCurrentLanguage() === 'ko'
+      ? '아직 추천과 저장 데이터가 많지 않아 기본 추천 점수와 코스 특성으로 랭킹을 시작합니다.'
+      : 'There is not enough interaction data yet, so the ranking starts from the base recommendation scores.';
+  }
+  if (summary?.source === 'sqlite') {
+    return getCurrentLanguage() === 'ko'
+      ? `실행 중인 MARU 저장소의 반응 ${eventCount}건과 오늘의 클릭/추천 데이터를 반영합니다.`
+      : `Using ${eventCount} interactions from the live MARU local database.`;
+  }
+  return getCurrentLanguage() === 'ko'
+    ? `이 브라우저에 저장된 반응 ${eventCount}건 기준으로 실시간 랭킹을 계산합니다.`
+    : `Using ${eventCount} interactions stored in this browser.`;
 }
 
 function buildBundleStops(route, festival = null) {
@@ -5039,6 +5213,444 @@ function getRouteResources(route) {
   return route.resourceIds.map(findResourceById).filter(Boolean);
 }
 
+function getLocalDateKey(date = new Date()) {
+  const value = date instanceof Date ? date : new Date(date);
+  if (Number.isNaN(value.getTime())) return '';
+  const year = value.getFullYear();
+  const month = String(value.getMonth() + 1).padStart(2, '0');
+  const day = String(value.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function getTravelerTypeForLanguage(language = getCurrentLanguage()) {
+  return normalizeLanguage(language) === 'ko' ? 'domestic' : 'foreigner';
+}
+
+function buildRouteAnalyticsPlaces(route) {
+  const seen = new Set();
+  return getRouteResources(route)
+    .map((resource) => {
+      if (!resource?.id || seen.has(resource.id)) return null;
+      seen.add(resource.id);
+      const resourceView = getResourceView(resource);
+      return {
+        id: resource.id,
+        name: resourceView.displayName || resource.nameKo || resource.nameEn || resource.id
+      };
+    })
+    .filter(Boolean);
+}
+
+function normalizeAnalyticsEventPlace(item) {
+  const placeId = String(item?.id || item?.placeId || '').trim();
+  if (!placeId) return null;
+  return {
+    id: placeId,
+    name: String(item?.name || item?.label || item?.displayName || placeId).trim()
+  };
+}
+
+function normalizeAnalyticsEvent(item) {
+  const action = String(item?.action || '').trim();
+  if (!ANALYTICS_ACTION_WEIGHTS[action]) return null;
+
+  const routeId = String(item?.routeId || item?.route_id || '').trim();
+  const routeTitle = String(item?.routeTitle || item?.route_title || routeId).trim();
+  const language = normalizeLanguage(item?.language || getCurrentLanguage());
+  const travelerType = String(item?.travelerType || item?.traveler_type || getTravelerTypeForLanguage(language)).trim() || 'foreigner';
+  const places = Array.isArray(item?.places) ? item.places.map(normalizeAnalyticsEventPlace).filter(Boolean) : [];
+  if (!routeId && !places.length) return null;
+
+  const parsedDate = new Date(item?.createdAt || item?.created_at || Date.now());
+  const createdAt = Number.isNaN(parsedDate.getTime()) ? new Date().toISOString() : parsedDate.toISOString();
+
+  return {
+    action,
+    routeId,
+    routeTitle: routeTitle || routeId,
+    language,
+    travelerType,
+    places,
+    createdAt
+  };
+}
+
+function getLocalAnalyticsEvents() {
+  const saved = storageJsonGet(STORAGE_KEYS.analyticsEvents, []);
+  return Array.isArray(saved) ? saved.map(normalizeAnalyticsEvent).filter(Boolean) : [];
+}
+
+function saveAnalyticsEventLocally(payload) {
+  const event = normalizeAnalyticsEvent(payload);
+  if (!event) return null;
+  const nextEvents = [event, ...getLocalAnalyticsEvents()].slice(0, ANALYTICS_LOCAL_EVENT_LIMIT);
+  storageJsonSet(STORAGE_KEYS.analyticsEvents, nextEvents);
+  analyticsSummaryCache = null;
+  return event;
+}
+
+function buildAnalyticsEventPayload(route, action, options = {}) {
+  const routeView = getRouteView(route);
+  const language = normalizeLanguage(options.language || getCurrentLanguage());
+  const places = Array.isArray(options.places) && options.places.length
+    ? options.places.map(normalizeAnalyticsEventPlace).filter(Boolean)
+    : buildRouteAnalyticsPlaces(route);
+  return {
+    action,
+    routeId: route.id,
+    routeTitle: routeView.title || route.title || route.id,
+    language,
+    travelerType: options.travelerType || getTravelerTypeForLanguage(language),
+    places,
+    createdAt: new Date().toISOString()
+  };
+}
+
+async function createAnalyticsEventOnApi(payload, options = {}) {
+  return fetchJsonFromMaruApi(MARU_API_PATHS.analyticsEngagement, {
+    method: 'POST',
+    keepalive: Boolean(options.keepalive),
+    jsonBody: payload
+  });
+}
+
+async function trackRouteEngagement(route, action, options = {}) {
+  if (!route?.id || !ANALYTICS_ACTION_WEIGHTS[action]) return null;
+  const payload = buildAnalyticsEventPayload(route, action, options);
+  const localEvent = saveAnalyticsEventLocally(payload);
+  const result = await createAnalyticsEventOnApi(payload, options);
+  analyticsSummaryCache = null;
+  return result.ok ? (result.payload || localEvent) : localEvent;
+}
+
+function getTrackedRouteDetailIds() {
+  try {
+    const raw = sessionStorage.getItem(ANALYTICS_ROUTE_VIEW_SESSION_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed.filter((item) => typeof item === 'string') : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function wasRouteDetailTracked(routeId) {
+  return getTrackedRouteDetailIds().includes(routeId);
+}
+
+function markRouteDetailTracked(routeId) {
+  const tracked = new Set(getTrackedRouteDetailIds());
+  tracked.add(routeId);
+  try {
+    sessionStorage.setItem(ANALYTICS_ROUTE_VIEW_SESSION_KEY, JSON.stringify([...tracked].slice(-40)));
+  } catch (error) {
+    // Ignore sessionStorage errors and continue without dedupe persistence.
+  }
+}
+
+function ensureRouteDetailAnalyticsTracked(route) {
+  if (!route?.id || wasRouteDetailTracked(route.id)) return;
+  markRouteDetailTracked(route.id);
+  void trackRouteEngagement(route, 'detail_view', { keepalive: true });
+}
+
+function createEmptyAnalyticsCounter(overrides = {}) {
+  return {
+    totalSignals: 0,
+    todaySignals: 0,
+    recentSignals: 0,
+    foreignerSignals: 0,
+    detailViews: 0,
+    visitIntents: 0,
+    saves: 0,
+    recommends: 0,
+    lastEventAt: '',
+    ...overrides
+  };
+}
+
+function normalizeAnalyticsCount(value) {
+  const numeric = Number(value || 0);
+  if (!Number.isFinite(numeric)) return 0;
+  return Math.max(0, Math.round(numeric));
+}
+
+function normalizeAnalyticsCounter(raw, scope = 'route') {
+  const base = createEmptyAnalyticsCounter({
+    totalSignals: normalizeAnalyticsCount(raw?.totalSignals),
+    todaySignals: normalizeAnalyticsCount(raw?.todaySignals),
+    recentSignals: normalizeAnalyticsCount(raw?.recentSignals),
+    foreignerSignals: normalizeAnalyticsCount(raw?.foreignerSignals),
+    detailViews: normalizeAnalyticsCount(raw?.detailViews),
+    visitIntents: normalizeAnalyticsCount(raw?.visitIntents),
+    saves: normalizeAnalyticsCount(raw?.saves),
+    recommends: normalizeAnalyticsCount(raw?.recommends),
+    lastEventAt: String(raw?.lastEventAt || raw?.last_event_at || '').trim()
+  });
+
+  if (scope === 'place') {
+    return {
+      ...base,
+      placeId: String(raw?.placeId || raw?.place_id || raw?.id || '').trim(),
+      placeName: String(raw?.placeName || raw?.place_name || raw?.name || '').trim(),
+      routeId: String(raw?.routeId || raw?.route_id || '').trim()
+    };
+  }
+
+  return {
+    ...base,
+    routeId: String(raw?.routeId || raw?.route_id || raw?.id || '').trim(),
+    routeTitle: String(raw?.routeTitle || raw?.route_title || raw?.title || '').trim()
+  };
+}
+
+function sortAnalyticsCounters(items, labelKey) {
+  return [...items].sort((left, right) =>
+    (right.todaySignals - left.todaySignals)
+    || (right.recentSignals - left.recentSignals)
+    || (right.recommends - left.recommends)
+    || (right.saves - left.saves)
+    || (right.foreignerSignals - left.foreignerSignals)
+    || (right.totalSignals - left.totalSignals)
+    || String(left?.[labelKey] || '').localeCompare(String(right?.[labelKey] || ''))
+  );
+}
+
+function applyAnalyticsSignal(counter, action, createdAt, language, travelerType, now = new Date()) {
+  const created = new Date(createdAt || Date.now());
+  const safeCreated = Number.isNaN(created.getTime()) ? now : created;
+  const recentCutoff = now.getTime() - (ANALYTICS_RECENT_WINDOW_HOURS * 60 * 60 * 1000);
+
+  counter.totalSignals += 1;
+  if (getLocalDateKey(safeCreated) === getLocalDateKey(now)) counter.todaySignals += 1;
+  if (safeCreated.getTime() >= recentCutoff) counter.recentSignals += 1;
+  if (String(travelerType || '').trim() === 'foreigner' || normalizeLanguage(language || '') !== 'ko') counter.foreignerSignals += 1;
+
+  if (action === 'detail_view') counter.detailViews += 1;
+  if (action === 'visit_intent') counter.visitIntents += 1;
+  if (action === 'save') counter.saves += 1;
+  if (action === 'recommend') counter.recommends += 1;
+  if (!counter.lastEventAt || safeCreated.getTime() > new Date(counter.lastEventAt).getTime()) {
+    counter.lastEventAt = safeCreated.toISOString();
+  }
+}
+
+function createAnalyticsSummaryBase(source = 'browser-storage') {
+  return {
+    generatedAt: new Date().toISOString(),
+    today: getLocalDateKey(),
+    recentWindowHours: ANALYTICS_RECENT_WINDOW_HOURS,
+    source,
+    totals: {
+      events: 0,
+      routeEvents: 0,
+      placeEvents: 0
+    },
+    routes: [],
+    places: []
+  };
+}
+
+function buildAnalyticsSummaryFromEvents(events, source = 'browser-storage') {
+  const summary = createAnalyticsSummaryBase(source);
+  const routeMap = new Map();
+  const placeMap = new Map();
+  const now = new Date();
+
+  events.map(normalizeAnalyticsEvent).filter(Boolean).forEach((event) => {
+    summary.totals.events += 1;
+
+    if (event.routeId) {
+      summary.totals.routeEvents += 1;
+      if (!routeMap.has(event.routeId)) {
+        routeMap.set(event.routeId, createEmptyAnalyticsCounter({
+          routeId: event.routeId,
+          routeTitle: event.routeTitle || event.routeId
+        }));
+      }
+      applyAnalyticsSignal(routeMap.get(event.routeId), event.action, event.createdAt, event.language, event.travelerType, now);
+    }
+
+    event.places.forEach((place) => {
+      summary.totals.placeEvents += 1;
+      if (!placeMap.has(place.id)) {
+        placeMap.set(place.id, createEmptyAnalyticsCounter({
+          placeId: place.id,
+          placeName: place.name || place.id,
+          routeId: event.routeId
+        }));
+      }
+      applyAnalyticsSignal(placeMap.get(place.id), event.action, event.createdAt, event.language, event.travelerType, now);
+    });
+  });
+
+  summary.routes = sortAnalyticsCounters([...routeMap.values()], 'routeTitle');
+  summary.places = sortAnalyticsCounters([...placeMap.values()], 'placeName');
+  return summary;
+}
+
+function normalizeAnalyticsSummary(payload) {
+  if (!payload || typeof payload !== 'object') return null;
+
+  const summary = createAnalyticsSummaryBase(String(payload.source || 'api').trim() || 'api');
+  summary.generatedAt = String(payload.generatedAt || new Date().toISOString()).trim();
+  summary.today = String(payload.today || getLocalDateKey()).trim();
+  summary.recentWindowHours = normalizeAnalyticsCount(payload.recentWindowHours) || ANALYTICS_RECENT_WINDOW_HOURS;
+
+  const totals = payload.totals || {};
+  summary.totals = {
+    events: normalizeAnalyticsCount(totals.events),
+    routeEvents: normalizeAnalyticsCount(totals.routeEvents),
+    placeEvents: normalizeAnalyticsCount(totals.placeEvents)
+  };
+  summary.routes = Array.isArray(payload.routes)
+    ? sortAnalyticsCounters(payload.routes.map((item) => normalizeAnalyticsCounter(item, 'route')).filter((item) => item.routeId), 'routeTitle')
+    : [];
+  summary.places = Array.isArray(payload.places)
+    ? sortAnalyticsCounters(payload.places.map((item) => normalizeAnalyticsCounter(item, 'place')).filter((item) => item.placeId), 'placeName')
+    : [];
+
+  return summary;
+}
+
+async function getAnalyticsSummaryFromApi() {
+  const result = await fetchJsonFromMaruApi(MARU_API_PATHS.analyticsSummary);
+  return result.ok ? normalizeAnalyticsSummary(result.payload) : null;
+}
+
+async function getAnalyticsSummary(forceRefresh = false) {
+  if (!forceRefresh && analyticsSummaryCache) return analyticsSummaryCache;
+  if (!forceRefresh && analyticsSummaryPromise) return analyticsSummaryPromise;
+
+  analyticsSummaryPromise = (async () => {
+    const apiSummary = await getAnalyticsSummaryFromApi();
+    analyticsSummaryCache = apiSummary || buildAnalyticsSummaryFromEvents(getLocalAnalyticsEvents(), 'browser-storage');
+    return analyticsSummaryCache;
+  })();
+
+  try {
+    return await analyticsSummaryPromise;
+  } finally {
+    analyticsSummaryPromise = null;
+  }
+}
+
+function getPlaceAnalyticsStats(resource, summary = analyticsSummaryCache) {
+  const resourceView = getResourceView(resource);
+  const fallback = createEmptyAnalyticsCounter({
+    placeId: resource.id,
+    placeName: resourceView.displayName || resource.nameKo || resource.nameEn || resource.id
+  });
+  const rows = summary?.places || [];
+  return rows.find((item) => item.placeId === resource.id) || fallback;
+}
+
+function getAverageAnalyticsCounter(counters, overrides = {}) {
+  if (!counters.length) return createEmptyAnalyticsCounter(overrides);
+
+  const keys = ['totalSignals', 'todaySignals', 'recentSignals', 'foreignerSignals', 'detailViews', 'visitIntents', 'saves', 'recommends'];
+  const averaged = createEmptyAnalyticsCounter(overrides);
+  keys.forEach((key) => {
+    averaged[key] = Math.round(counters.reduce((sum, item) => sum + normalizeAnalyticsCount(item?.[key]), 0) / counters.length);
+  });
+  averaged.lastEventAt = counters.find((item) => item?.lastEventAt)?.lastEventAt || '';
+  return averaged;
+}
+
+function getRouteAnalyticsStats(route, summary = analyticsSummaryCache) {
+  const routeView = getRouteView(route);
+  const direct = (summary?.routes || []).find((item) => item.routeId === route.id) || createEmptyAnalyticsCounter({
+    routeId: route.id,
+    routeTitle: routeView.title || route.title || route.id
+  });
+  const placeStats = getRouteResources(route).map((resource) => getPlaceAnalyticsStats(resource, summary));
+  const placeAverage = getAverageAnalyticsCounter(placeStats);
+  const boost = 0.8;
+
+  return createEmptyAnalyticsCounter({
+    routeId: route.id,
+    routeTitle: direct.routeTitle || routeView.title || route.title || route.id,
+    totalSignals: direct.totalSignals + Math.round(placeAverage.totalSignals * boost),
+    todaySignals: direct.todaySignals + Math.round(placeAverage.todaySignals * boost),
+    recentSignals: direct.recentSignals + Math.round(placeAverage.recentSignals * boost),
+    foreignerSignals: direct.foreignerSignals + Math.round(placeAverage.foreignerSignals * boost),
+    detailViews: direct.detailViews + Math.round(placeAverage.detailViews * boost),
+    visitIntents: direct.visitIntents + Math.round(placeAverage.visitIntents * boost),
+    saves: direct.saves + Math.round(placeAverage.saves * boost),
+    recommends: direct.recommends + Math.round(placeAverage.recommends * boost),
+    lastEventAt: direct.lastEventAt || placeAverage.lastEventAt || ''
+  });
+}
+
+function getAnalyticsWeightedSignal(stats) {
+  return (
+    (normalizeAnalyticsCount(stats?.detailViews) * ANALYTICS_ACTION_WEIGHTS.detail_view)
+    + (normalizeAnalyticsCount(stats?.visitIntents) * ANALYTICS_ACTION_WEIGHTS.visit_intent)
+    + (normalizeAnalyticsCount(stats?.saves) * ANALYTICS_ACTION_WEIGHTS.save)
+    + (normalizeAnalyticsCount(stats?.recommends) * ANALYTICS_ACTION_WEIGHTS.recommend)
+    + (normalizeAnalyticsCount(stats?.foreignerSignals) * 1.4)
+  );
+}
+
+function getLiveResourceCrowdScore(resource, summary = analyticsSummaryCache) {
+  const base = estimateResourceCrowdScore(resource);
+  const stats = getPlaceAnalyticsStats(resource, summary);
+  const liveBoost = Math.min(26, (stats.todaySignals * 3.4) + (stats.recentSignals * 4.2) + (stats.visitIntents * 1.8) + (stats.detailViews * 1.1));
+  return Math.max(18, Math.min(98, Math.round(base + liveBoost)));
+}
+
+function getLiveRouteCrowdScore(route, summary = analyticsSummaryCache) {
+  const base = estimateRouteCrowdScore(route);
+  const routeStats = getRouteAnalyticsStats(route, summary);
+  const resources = getRouteResources(route);
+  const liveAverage = resources.length
+    ? resources.reduce((sum, resource) => sum + getLiveResourceCrowdScore(resource, summary), 0) / resources.length
+    : base;
+  const routeBoost = Math.min(18, (routeStats.todaySignals * 2.6) + (routeStats.recentSignals * 3.2) + (routeStats.visitIntents * 1.4));
+  return Math.max(18, Math.min(98, Math.round((base * 0.45) + (liveAverage * 0.55) + routeBoost)));
+}
+
+function getPlaceSatisfactionScore(resource, summary = analyticsSummaryCache) {
+  const stats = getPlaceAnalyticsStats(resource, summary);
+  const baseQuality = Number(resource.qualityScore || 4);
+  const positiveSignals = (stats.saves * 2.3) + (stats.recommends * 4.1) + (stats.foreignerSignals * 0.8) + (baseQuality * 2.4);
+  const demandSignals = Math.max(1, stats.detailViews + (stats.visitIntents * 1.2) + 1);
+  return Math.max(52, Math.min(99, Math.round((positiveSignals / demandSignals) * 18 + (baseQuality * 5))));
+}
+
+function scoreLiveForeignerPlace(resource, summary = analyticsSummaryCache) {
+  const stats = getPlaceAnalyticsStats(resource, summary);
+  const liveSignals = getAnalyticsWeightedSignal(stats);
+  const freshnessBoost = (stats.todaySignals * 3.1) + (stats.recentSignals * 2.6);
+  return Math.round(scoreForeignerPlace(resource) + (liveSignals * 2.7) + freshnessBoost);
+}
+
+function scoreLiveForeignerRoute(route, summary = analyticsSummaryCache) {
+  const stats = getRouteAnalyticsStats(route, summary);
+  const liveSignals = getAnalyticsWeightedSignal(stats);
+  const crowdBalance = getLiveRouteCrowdScore(route, summary) >= 84 ? -8 : 4;
+  return Math.round(scoreForeignerRoute(route) + (liveSignals * 2.4) + crowdBalance);
+}
+
+function scoreQuietRoute(route, summary = analyticsSummaryCache) {
+  const stats = getRouteAnalyticsStats(route, summary);
+  const crowdScore = getLiveRouteCrowdScore(route, summary);
+  const calmBase = Math.max(0, 100 - crowdScore);
+  const satisfaction = (stats.saves * 2.8) + (stats.recommends * 3.8);
+  const demandPenalty = (stats.todaySignals * 1.9) + (stats.recentSignals * 2.4);
+  return Math.round((calmBase * 1.3) + satisfaction + (route.score * 0.28) - demandPenalty);
+}
+
+function scoreHiddenGem(resource, summary = analyticsSummaryCache) {
+  const stats = getPlaceAnalyticsStats(resource, summary);
+  const satisfactionScore = getPlaceSatisfactionScore(resource, summary);
+  const lowTrafficBoost = Math.max(0, 16 - stats.totalSignals) * 3.4;
+  const qualityBoost = Number(resource.qualityScore || 0) * 3.2;
+  const uniquenessBoost = resource.foreignerPopular ? -8 : 10;
+  const crowdRelief = Math.max(0, 72 - getLiveResourceCrowdScore(resource, summary)) * 0.45;
+  const popularityPenalty = stats.totalSignals * 0.9;
+  return Math.round(satisfactionScore + lowTrafficBoost + qualityBoost + uniquenessBoost + crowdRelief - popularityPenalty);
+}
+
 function getRouteFromUrlOrStorage() {
   const params = new URLSearchParams(window.location.search);
   const routeId = params.get('id') || storageGet(STORAGE_KEYS.selectedRoute, '');
@@ -5462,37 +6074,140 @@ function renderForeignerRanking() {
   const section = qs('[data-foreigner-ranking-section]');
   if (!section) return;
 
-  setText('[data-foreigner-ranking-title]', ft('ranking.title', 'Foreigner Ranking'));
-  setText('[data-foreigner-ranking-body]', ft('ranking.body', 'This ranking blends foreigner appeal, English support, photogenic value, and accessibility.'));
-  setText('[data-foreigner-route-title]', ft('ranking.routes', 'Top Routes'));
-  setText('[data-foreigner-place-title]', ft('ranking.places', 'Top Places'));
+  const requestId = `${Date.now()}`;
+  section.dataset.analyticsRenderId = requestId;
 
-  const routeContainer = qs('[data-foreigner-route-ranking]', section);
-  const placeContainer = qs('[data-foreigner-place-ranking]', section);
+  const paint = (summary = analyticsSummaryCache) => {
+    const popularPlaces = getForeignerPlaceRanking(10, summary);
+    const quietRoutes = getQuietRouteRanking(10, summary);
+    const hiddenGems = getHiddenGemRanking(10, summary);
 
-  if (routeContainer) {
-    routeContainer.innerHTML = getForeignerRouteRanking().map(({ route, score }) => {
-      const routeView = getRouteView(route);
-      return renderRankingRow(
-        routeView.title,
-        score,
-        routeView.reason,
-        `route-detail.html?id=${encodeURIComponent(route.id)}`
-      );
-    }).join('');
-  }
+    section.innerHTML = `
+      <div class="section-heading compact">
+        <div>
+          <p class="eyebrow">Ranking</p>
+          <h2>${escapeHtml(getCurrentLanguage() === 'ko' ? '실시간 문화 랭킹' : 'Live Cultural Ranking')}</h2>
+          <p>${escapeHtml(getCurrentLanguage() === 'ko'
+            ? '앱 안에서 쌓이는 열람, 지도 열기, 저장, 추천 반응을 바탕으로 외국인 인기와 혼잡 흐름을 함께 봅니다.'
+            : 'This ranking blends live interactions such as opens, map launches, saves, and recommendations.')}</p>
+        </div>
+      </div>
+      <p class="ranking-status-note">${escapeHtml(getRankingStatusNote(summary))}</p>
+      <div class="ranking-grid ranking-grid-analytics">
+        <section class="ranking-block">
+          <div class="ranking-section-copy">
+            <h3>${escapeHtml(getCurrentLanguage() === 'ko' ? '외국인 관광 인기 명소 TOP 10' : 'Top 10 Foreign Visitor Spots')}</h3>
+            <p>${escapeHtml(getCurrentLanguage() === 'ko'
+              ? '영어 안내, 포토 스팟 성향, 외국인 반응 신호를 함께 반영합니다.'
+              : 'Blends English support, photo value, and foreign visitor signals.')}</p>
+          </div>
+          <div class="ranking-list">
+            ${renderRankingList(
+              popularPlaces,
+              ({ resource, stats, crowdScore, crowdLabel }, index) => {
+                const resourceView = getResourceView(resource);
+                return renderNumberedRankingRow({
+                  rank: index + 1,
+                  title: resourceView.displayName,
+                  meta: [resourceView.category, resourceView.region].filter(Boolean).join(' · '),
+                  body: resourceView.aiWhyItMatters || resourceView.aiSimpleExplanation || resourceView.aiVisitTip || resource.nameEn || resource.nameKo,
+                  chips: [
+                    `오늘 반응 ${stats.todaySignals}`,
+                    `외국인 ${stats.foreignerSignals}`,
+                    `추천 ${stats.recommends}`,
+                    `저장 ${stats.saves}`
+                  ],
+                  link: createMapPlaceUrl(getMapTargetForPlace(resource.nameKo)),
+                  actionLabel: getRankingActionLabel('place'),
+                  kind: 'place',
+                  crowdLabel,
+                  crowdScore,
+                  external: true
+                });
+              },
+              '아직 누적된 반응이 없어 기본 추천 순위로 대기 중입니다.'
+            )}
+          </div>
+        </section>
+        <section class="ranking-block">
+          <div class="ranking-section-copy">
+            <h3>${escapeHtml(getCurrentLanguage() === 'ko' ? '조용한 코스 추천 TOP 10' : 'Top Quiet Route Picks')}</h3>
+            <p>${escapeHtml(getCurrentLanguage() === 'ko'
+              ? `현재 등록된 ${ROUTE_DATA.length}개 코스 안에서 오늘의 혼잡 반응을 피해 추천합니다.`
+              : `Calculated across the ${ROUTE_DATA.length} currently registered routes.`)}</p>
+          </div>
+          <div class="ranking-list">
+            ${renderRankingList(
+              quietRoutes,
+              ({ route, stats, crowdScore, crowdLabel }, index) => {
+                const routeView = getRouteView(route);
+                return renderNumberedRankingRow({
+                  rank: index + 1,
+                  title: routeView.title,
+                  meta: `${routeView.time} · ${routeView.walking}`,
+                  body: routeView.reason || routeView.summary || routeView.subtitle,
+                  chips: [
+                    `오늘 반응 ${stats.todaySignals}`,
+                    `저장 ${stats.saves}`,
+                    `추천 ${stats.recommends}`,
+                    `${ft('ai.scoreLabel', 'Fit score')} ${route.score}`
+                  ],
+                  link: `route-detail.html?id=${encodeURIComponent(route.id)}`,
+                  actionLabel: getRankingActionLabel('route'),
+                  crowdLabel,
+                  crowdScore
+                });
+              },
+              '등록된 코스가 아직 부족해 조용한 코스 랭킹이 비어 있습니다.'
+            )}
+          </div>
+        </section>
+        <section class="ranking-block">
+          <div class="ranking-section-copy">
+            <h3>${escapeHtml(getCurrentLanguage() === 'ko' ? '숨은 명소 랭킹 TOP 10' : 'Top 10 Hidden Gems')}</h3>
+            <p>${escapeHtml(getCurrentLanguage() === 'ko'
+              ? '방문량은 많지 않아도 저장과 추천 비율이 좋은 장소를 우선으로 올립니다.'
+              : 'Favors places with lower traffic but stronger save and recommendation ratios.')}</p>
+          </div>
+          <div class="ranking-list">
+            ${renderRankingList(
+              hiddenGems,
+              ({ resource, stats, crowdScore, crowdLabel, satisfactionScore }, index) => {
+                const resourceView = getResourceView(resource);
+                return renderNumberedRankingRow({
+                  rank: index + 1,
+                  title: resourceView.displayName,
+                  meta: [resourceView.category, resourceView.region].filter(Boolean).join(' · '),
+                  body: resourceView.aiVisitTip || resourceView.aiSimpleExplanation || resourceView.aiWhyItMatters || resource.nameEn || resource.nameKo,
+                  chips: [
+                    `만족도 ${satisfactionScore}`,
+                    `추천 ${stats.recommends}`,
+                    `저장 ${stats.saves}`,
+                    `누적 반응 ${stats.totalSignals}`
+                  ],
+                  link: createMapPlaceUrl(getMapTargetForPlace(resource.nameKo)),
+                  actionLabel: getRankingActionLabel('place'),
+                  kind: 'place',
+                  crowdLabel,
+                  crowdScore,
+                  external: true
+                });
+              },
+              '저장과 추천이 쌓이면 숨은 명소 랭킹이 더 정확해집니다.'
+            )}
+          </div>
+        </section>
+      </div>
+    `;
+  };
 
-  if (placeContainer) {
-    placeContainer.innerHTML = getForeignerPlaceRanking().map(({ resource, score }) => {
-      const resourceView = getResourceView(resource);
-      return renderRankingRow(
-        resourceView.displayName,
-        score,
-        resourceView.aiWhyItMatters || resourceView.aiSimpleExplanation,
-        createMapPlaceUrl(getMapTargetForPlace(resource.nameKo))
-      );
-    }).join('');
-  }
+  paint(analyticsSummaryCache);
+
+  void (async () => {
+    const summary = await getAnalyticsSummary();
+    if (section.dataset.analyticsRenderId !== requestId) return;
+    paint(summary);
+  })();
 }
 
 function renderRecommendedPlaces() {
@@ -5672,6 +6387,7 @@ async function saveRouteToPassport(route) {
   const savedRoute = await createSavedRouteOnApi(route);
   rememberSavedRouteLocally(route.id);
   storageSet(STORAGE_KEYS.selectedRoute, route.id);
+  await trackRouteEngagement(route, 'save');
   return savedRoute;
 }
 
@@ -6150,6 +6866,30 @@ function renderRouteBundlePanel(route) {
   `;
 }
 
+function renderRouteFeedbackPanel(route) {
+  const sourceBox = qs('.source-box');
+  if (!sourceBox?.parentElement) return;
+
+  let panel = qs('[data-route-feedback-panel]');
+  if (!panel) {
+    panel = document.createElement('section');
+    panel.className = 'mobile-card route-feedback-card';
+    panel.setAttribute('data-route-feedback-panel', '');
+    sourceBox.parentElement.insertBefore(panel, sourceBox);
+  }
+
+  panel.innerHTML = `
+    <h2>${escapeHtml(getCurrentLanguage() === 'ko' ? '이 코스가 좋았다면' : 'If you liked this route')}</h2>
+    <p>${escapeHtml(getCurrentLanguage() === 'ko'
+      ? '추천과 저장 반응이 외국인 인기, 숨은 명소, 오늘의 혼잡도 랭킹 계산에 반영됩니다.'
+      : 'Recommendations and saves feed the popularity, hidden-gem, and crowd rankings.')}</p>
+    <div class="route-feedback-actions">
+      <button class="button button-secondary" type="button" data-route-action="recommend-current">${escapeHtml(getCurrentLanguage() === 'ko' ? '추천 남기기' : 'Recommend')}</button>
+      <span>${escapeHtml(getCurrentLanguage() === 'ko' ? '한 번의 추천도 실시간 데이터로 누적됩니다.' : 'Each recommendation becomes a live data signal.')}</span>
+    </div>
+  `;
+}
+
 function renderRouteDetail() {
   if (!qs('[data-detail-title]')) return;
   const route = getRouteFromUrlOrStorage();
@@ -6222,6 +6962,8 @@ function renderRouteDetail() {
   }
   setText('[data-detail-ai-title]', ft('ai.insightTitle', 'AI Recommendation Breakdown'));
   setText('[data-detail-ai-body]', ft('ai.insightBody', 'This recommendation combines travel preferences and data signals.'));
+  renderRouteFeedbackPanel(route);
+  ensureRouteDetailAnalyticsTracked(route);
   renderMap(route);
 }
 
@@ -6716,6 +7458,124 @@ function buildAriRecentText(messages = []) {
   return messages.map((item) => item.message).join(' ');
 }
 
+function buildAriChatReply(values, language = getCurrentLanguage(), fallback = '') {
+  return langPick(values, language, fallback);
+}
+
+function getAriLanguageTag(language = getCurrentLanguage()) {
+  if (language === 'ko') return 'ko-KR';
+  if (language === 'ja') return 'ja-JP';
+  if (language === 'zh') return 'zh-CN';
+  return 'en-US';
+}
+
+function buildAriLocalChatContext(context, message) {
+  return {
+    language: context.language || getCurrentLanguage(),
+    selectedRoute: findMatchingRoute(message, context.routes) || context.selectedRoute,
+    matchedResource: findMatchingResource(message, context.resources) || null,
+    rainyRoute: findRouteByHints(context.routes, ['rain', 'rainy', 'indoor', 'museum']) || context.selectedRoute,
+    easyRoute: findRouteByHints(context.routes, ['less walking', 'low walking', 'easy', 'quiet']) || context.selectedRoute,
+    foodRoute: findRouteByHints(context.routes, ['market', 'food', 'local life']) || context.selectedRoute,
+    foodPlace: findResourceByHints(context.resources, ['market', 'food', 'korea house']) || null,
+    liveTopPlaces: getForeignerPlaceRanking(10, liveRankingSummary),
+    quietRoutes: getQuietRouteRanking(10, liveRankingSummary),
+    hiddenGems: getHiddenGemRanking(10, liveRankingSummary),
+    routeRanking: getForeignerRouteRanking(Math.max(3, ROUTE_DATA.length), liveRankingSummary),
+    liveRankingSummary
+  };
+}
+
+function buildAriLocalSmallTalkReply(message, context, helperContext) {
+  const language = helperContext.language;
+  const reply = (values, fallback = '') => buildAriChatReply(values, language, fallback);
+  const normalized = normalizeSearchText(message);
+  const compact = normalized.replace(/\s+/g, '');
+
+  const has = (...terms) => terms.some((term) => normalized.includes(normalizeSearchText(term)) || compact.includes(normalizeSearchText(term).replace(/\s+/g, '')));
+
+  if (has('??', 'hello', 'hi', 'hey', '?????', '??')) {
+    return reply({
+      ko: `?????. ????. ?? ?? ?? ${helperContext.selectedRoute.title}?? ????? ?? ??, ??? ?? ???? ? ?? ? ??? ?? ???????.`,
+      en: `Hello, I am ARI. I can start with ${helperContext.selectedRoute.title}, or jump straight into live rankings and rainy-day alternatives.`,
+      ja: `???????????????? ${helperContext.selectedRoute.title} ??????????????????????????????????????????`,
+      zh: `?????ARI???????????? ${helperContext.selectedRoute.title} ??????????????????????`
+    });
+  }
+
+  if (has('???', '??', 'thanks', 'thank you', 'arigato', '??')) {
+    return reply({
+      ko: '????. ??? ?? ??? ? ??? ??? ?? ??????.',
+      en: 'You are welcome. I can also keep going with route reasons or quieter alternatives.',
+      ja: '??????????????????????????????????????',
+      zh: '???????????????????????????'
+    });
+  }
+
+  if (has('???', '??', 'hungry', '?????', '?')) {
+    return reply({
+      ko: `???? ?? ?? ?? ?? ??? ???. ??? ???? ??? ${helperContext.foodRoute.title} ??? ${helperContext.foodPlace?.displayName || '????'}?? ?? ?? ? ?? ?? ??? ???????.`,
+      en: `If you are hungry, grab something light first. If you want, I can steer you toward ${helperContext.foodRoute.title} or a food stop like ${helperContext.foodPlace?.displayName || 'Tongin Market'}.`,
+      ja: `??????????????????????????????? ${helperContext.foodRoute.title} ? ${helperContext.foodPlace?.displayName || '????'} ????????????????????`,
+      zh: `????????????????????????????? ${helperContext.foodRoute.title} ? ${helperContext.foodPlace?.displayName || '????'} ????????????`
+    });
+  }
+
+  if (has('??', '??', 'sleepy', 'tired', '??', '?')) {
+    return reply({
+      ko: `???? ?? ?????. ??? ?? ???? ? ?? ${helperContext.easyRoute.title} ??? ?? ??????.`,
+      en: `If you feel tired, take a short break first. I can switch you to an easier route like ${helperContext.easyRoute.title} right away.`,
+      ja: `????????????????????????? ${helperContext.easyRoute.title} ?????????????????????????????`,
+      zh: `?????????????????????????? ${helperContext.easyRoute.title} ?????????`
+    });
+  }
+
+  if (has('??', '? ?', '?? ?', 'wake me up', 'stay awake', '???', '??')) {
+    return reply({
+      ko: '?? ??? ? ? ? ??? ?? ??? ?????? ? ????. ??? ?? ??? ?? ??? ? ? ???.',
+      en: 'A glass of water, a short walk, and a quick stretch usually help first. Coffee or tea can also help if that works for you.',
+      ja: '?????????????????????????????????????????????????????????',
+      zh: '??????????????????????????????????????'
+    });
+  }
+
+  if (has('??', '? ?', '????', '?? ??', '?? ??', 'what time is it', 'time is it', '??', '??')) {
+    const now = new Date();
+    const timeText = new Intl.DateTimeFormat(getAriLanguageTag(language), { hour: 'numeric', minute: '2-digit' }).format(now);
+    return reply({
+      ko: `?? ??? ${timeText}??. ??? ? ???? ?? ??? ? ??? ?? ?? ??????.`,
+      en: `It is ${timeText} right now. If you want, I can suggest a route that fits this time of day.`,
+      ja: `????? ${timeText} ???????????? ?? ??? ?????????`,
+      zh: `????? ${timeText}??????????????????????????`
+    });
+  }
+
+  if (has('??? ??', '?? ??', '?? ??', 'live ranking', 'top ranking', '???????', '????')) {
+    const topPlacesText = helperContext.liveTopPlaces.slice(0, 3).map((item, index) => `${index + 1}. ${getResourceView(item.resource).displayName}`).join(', ');
+    const quietText = helperContext.quietRoutes.slice(0, 2).map((item, index) => `${index + 1}. ${getRouteView(item.route).title}`).join(', ');
+    const hiddenText = helperContext.hiddenGems.slice(0, 2).map((item, index) => `${index + 1}. ${getResourceView(item.resource).displayName}`).join(', ');
+    return reply({
+      ko: `?? ??? ?? ?? ??? ${topPlacesText || '?? ?? ?'}??. ??? ??? ${quietText || '?? ?? ?'}, ?? ??? ${hiddenText || '?? ?? ?'} ??? ?? ???.`,
+      en: `Right now, the top live places are ${topPlacesText || 'still being collected'}. Quiet routes are ${quietText || 'still being collected'}, and hidden gems are ${hiddenText || 'still being collected'}.`,
+      ja: `??????????????????? ${topPlacesText || '?????'} ?????????? ${quietText || '?????'}?????? ${hiddenText || '?????'} ???`,
+      zh: `???????????????? ${topPlacesText || '?????'}?????? ${quietText || '?????'}?????? ${hiddenText || '?????'}?`
+    });
+  }
+
+  if (has('??', '1?', 'rank', 'top place', 'top route')) {
+    const topPlace = helperContext.liveTopPlaces[0];
+    const quietRoute = helperContext.quietRoutes[0];
+    return reply({
+      ko: `?? 1? ?? ??? ${topPlace ? getResourceView(topPlace.resource).displayName : '?? ?? ?'}??, ?? ??? ?? ??? ${quietRoute ? getRouteView(quietRoute.route).title : '?? ?? ?'}??.`,
+      en: `The current number one place is ${topPlace ? getResourceView(topPlace.resource).displayName : 'still being collected'}, and the quietest route pick is ${quietRoute ? getRouteView(quietRoute.route).title : 'still being collected'}.`,
+      ja: `??1?????? ${topPlace ? getResourceView(topPlace.resource).displayName : '?????'}???????????????? ${quietRoute ? getRouteView(quietRoute.route).title : '?????'} ???`,
+      zh: `???????????? ${topPlace ? getResourceView(topPlace.resource).displayName : '?????'}?????????? ${quietRoute ? getRouteView(quietRoute.route).title : '?????'}?`
+    });
+  }
+
+  return '';
+}
+
 function routeSearchText(route) {
   return [
     route.id,
@@ -6872,6 +7732,13 @@ function fallbackAriReply(message, context) {
   const recentText = buildAriRecentText(context.recentMessages);
   const combinedMessage = `${recentText} ${message}`.trim();
   const normalizedMessage = ` ${normalizeSearchText(combinedMessage)} `;
+  const liveRankingSummary = analyticsSummaryCache || buildAnalyticsSummaryFromEvents(getLocalAnalyticsEvents(), 'browser-storage');
+  const helperContext = buildAriLocalChatContext(context, message);
+  const liveTopPlaces = helperContext.liveTopPlaces;
+  const quietRoutes = helperContext.quietRoutes;
+  const hiddenGems = helperContext.hiddenGems;
+  const smallTalkReply = buildAriLocalSmallTalkReply(message, context, helperContext);
+  if (smallTalkReply) return smallTalkReply;
   const route = findMatchingRoute(message, context.routes) || findMatchingRoute(combinedMessage, context.routes) || context.selectedRoute;
   const resource = findMatchingResource(message, context.resources) || findMatchingResource(combinedMessage, context.resources);
   const rainyRoute = findRouteByHints(context.routes, ['rain', 'rainy', '우천', '비 오는 날', '비오', '실내', 'indoor', 'museum', '박물관']) || context.selectedRoute;
@@ -7246,7 +8113,9 @@ async function askAri(message) {
       if (reply.trim()) return reply.trim();
     } catch (error) {
       if (settings.mode === 'openai-compatible') {
-        return `${fallbackAriReply(message, context)}\n\n${t('ari.fallbackSuffix')}`;
+        return `${fallbackAriReply(message, context)}
+
+${t('ari.fallbackSuffix')}`;
       }
     }
   }
@@ -7258,7 +8127,9 @@ async function askAri(message) {
     } catch (error) {
       ollamaHostUnavailable = true;
       if (settings.mode === 'ollama') {
-        return `${fallbackAriReply(message, context)}\n\n${t('ari.fallbackSuffix')}`;
+        return `${fallbackAriReply(message, context)}
+
+${t('ari.fallbackSuffix')}`;
       }
     }
   }
@@ -7298,94 +8169,7 @@ function applyAriTranslations() {
   const input = qs('[data-ari-input]', root);
   if (input) input.setAttribute('placeholder', t('ari.placeholder'));
   setText('[data-ari-send]', t('ari.send'));
-  setText('[data-ari-settings-toggle-label]', t('ari.settingsToggle', 'LLM'));
-  setText('[data-ari-settings-title]', t('ari.settingsTitle', '실시간 LLM 연결'));
-  setText('[data-ari-settings-body]', t('ari.settingsBody', 'OpenAI 호환 chat/completions 엔드포인트나 로컬 Ollama 모델을 연결할 수 있어요. GitHub Pages에서는 키가 이 브라우저에만 저장됩니다.'));
-  setText('[data-ari-provider-label]', t('ari.providerLabel', '응답 방식'));
-  setText('[data-ari-remote-endpoint-label]', t('ari.remoteEndpointLabel', 'OpenAI 호환 엔드포인트'));
-  setText('[data-ari-remote-model-label]', t('ari.remoteModelLabel', '모델 이름'));
-  setText('[data-ari-remote-key-label]', t('ari.remoteKeyLabel', 'API 키'));
-  setText('[data-ari-ollama-endpoint-label]', t('ari.ollamaEndpointLabel', 'Ollama 엔드포인트'));
-  setText('[data-ari-ollama-model-label]', t('ari.ollamaModelLabel', 'Ollama 모델'));
-  setText('[data-ari-provider-note]', t('ari.providerNote', '정식 공개 버전에서는 API 키를 서버 프록시로 옮기는 것이 안전합니다. 지금 방식은 데모나 개인 테스트용에 적합해요.'));
-  setText('[data-ari-provider-save]', t('ari.providerSave', 'LLM 설정 저장'));
-
-  const providerSelect = qs('[data-ari-provider-mode]', root);
-  if (providerSelect) {
-    const optionLabels = {
-      auto: t('ari.providerOptionAuto', '자동: 실시간 LLM → Ollama → MARU 데이터'),
-      'openai-compatible': t('ari.providerOptionRemote', 'OpenAI 호환 LLM만 사용'),
-      ollama: t('ari.providerOptionOllama', '로컬 Ollama만 사용'),
-      fallback: t('ari.providerOptionFallback', 'MARU 데이터만 사용')
-    };
-    Array.from(providerSelect.options).forEach((option) => {
-      option.textContent = optionLabels[option.value] || option.textContent;
-    });
-  }
-
-  populateAriProviderForm();
 }
-
-function setAriProviderStatus(message = '', tone = '') {
-  const status = qs('[data-ari-provider-status]');
-  if (!status) return;
-  status.textContent = message;
-  status.dataset.status = tone;
-}
-
-function syncAriProviderFieldVisibility() {
-  const mode = qs('[data-ari-provider-mode]')?.value || getAriProviderSettings().mode;
-  const remoteFields = qs('[data-ari-remote-fields]');
-  const ollamaFields = qs('[data-ari-ollama-fields]');
-  if (remoteFields) remoteFields.hidden = !(mode === 'auto' || mode === 'openai-compatible');
-  if (ollamaFields) ollamaFields.hidden = !(mode === 'auto' || mode === 'ollama');
-}
-
-function populateAriProviderForm(settings = getAriProviderSettings()) {
-  const modeField = qs('[data-ari-provider-mode]');
-  const remoteEndpointField = qs('[data-ari-remote-endpoint]');
-  const remoteModelField = qs('[data-ari-remote-model]');
-  const remoteKeyField = qs('[data-ari-remote-key]');
-  const ollamaEndpointField = qs('[data-ari-ollama-endpoint]');
-  const ollamaModelField = qs('[data-ari-ollama-model]');
-
-  if (modeField) modeField.value = settings.mode;
-  if (remoteEndpointField) remoteEndpointField.value = settings.remoteEndpoint;
-  if (remoteModelField) remoteModelField.value = settings.remoteModel;
-  if (remoteKeyField) remoteKeyField.value = settings.remoteApiKey;
-  if (ollamaEndpointField) ollamaEndpointField.value = settings.ollamaEndpoint;
-  if (ollamaModelField) ollamaModelField.value = settings.ollamaModel;
-
-  syncAriProviderFieldVisibility();
-}
-
-function readAriProviderForm() {
-  return sanitizeAriProviderSettings({
-    mode: qs('[data-ari-provider-mode]')?.value,
-    remoteEndpoint: qs('[data-ari-remote-endpoint]')?.value,
-    remoteModel: qs('[data-ari-remote-model]')?.value,
-    remoteApiKey: qs('[data-ari-remote-key]')?.value,
-    ollamaEndpoint: qs('[data-ari-ollama-endpoint]')?.value,
-    ollamaModel: qs('[data-ari-ollama-model]')?.value
-  });
-}
-
-function toggleAriSettings(forceOpen) {
-  const root = qs('[data-ari-root]');
-  const panel = qs('[data-ari-settings]', root);
-  const trigger = qs('[data-ari-settings-toggle]', root);
-  if (!root || !panel || !trigger) return;
-
-  const nextOpen = typeof forceOpen === 'boolean'
-    ? forceOpen
-    : !root.classList.contains('ari-settings-open');
-
-  root.classList.toggle('ari-settings-open', nextOpen);
-  panel.hidden = !nextOpen;
-  trigger.setAttribute('aria-expanded', nextOpen ? 'true' : 'false');
-  if (nextOpen) populateAriProviderForm();
-}
-
 function renderAriMessages() {
   const container = qs('[data-ari-messages]');
   if (!container) return;
@@ -7481,55 +8265,8 @@ function mountAriChat() {
               <strong>${escapeHtml(t('ari.profileTitle'))}</strong>
             </div>
           </div>
-          <button type="button" data-ari-close aria-label="${escapeHtml(t('ari.closeLabel'))}">×</button>
+          <button type="button" data-ari-close aria-label="${escapeHtml(t('ari.closeLabel'))}">?</button>
         </header>
-        <button type="button" class="ari-settings-toggle ari-settings-strip" data-ari-settings-toggle aria-expanded="false">
-          <span data-ari-settings-toggle-label>${escapeHtml(t('ari.settingsToggle', 'LLM'))}</span>
-        </button>
-        <section class="ari-settings" data-ari-settings hidden>
-          <div class="ari-settings-copy">
-            <strong data-ari-settings-title>${escapeHtml(t('ari.settingsTitle', '실시간 LLM 연결'))}</strong>
-            <p data-ari-settings-body>${escapeHtml(t('ari.settingsBody', 'OpenAI 호환 chat/completions 엔드포인트나 로컬 Ollama 모델을 연결할 수 있어요. GitHub Pages에서는 키가 이 브라우저에만 저장됩니다.'))}</p>
-          </div>
-          <label class="ari-settings-field">
-            <span data-ari-provider-label>${escapeHtml(t('ari.providerLabel', '응답 방식'))}</span>
-            <select data-ari-provider-mode>
-              <option value="auto">${escapeHtml(t('ari.providerOptionAuto', '자동: 실시간 LLM → Ollama → MARU 데이터'))}</option>
-              <option value="openai-compatible">${escapeHtml(t('ari.providerOptionRemote', 'OpenAI 호환 LLM만 사용'))}</option>
-              <option value="ollama">${escapeHtml(t('ari.providerOptionOllama', '로컬 Ollama만 사용'))}</option>
-              <option value="fallback">${escapeHtml(t('ari.providerOptionFallback', 'MARU 데이터만 사용'))}</option>
-            </select>
-          </label>
-          <div class="ari-settings-group" data-ari-remote-fields>
-            <label class="ari-settings-field">
-              <span data-ari-remote-endpoint-label>${escapeHtml(t('ari.remoteEndpointLabel', 'OpenAI 호환 엔드포인트'))}</span>
-              <input data-ari-remote-endpoint type="text" placeholder="https://api.openai.com/v1/chat/completions" autocomplete="off">
-            </label>
-            <label class="ari-settings-field">
-              <span data-ari-remote-model-label>${escapeHtml(t('ari.remoteModelLabel', '모델 이름'))}</span>
-              <input data-ari-remote-model type="text" placeholder="gpt-4.1-mini" autocomplete="off">
-            </label>
-            <label class="ari-settings-field">
-              <span data-ari-remote-key-label>${escapeHtml(t('ari.remoteKeyLabel', 'API 키'))}</span>
-              <input data-ari-remote-key type="password" placeholder="sk-..." autocomplete="off">
-            </label>
-          </div>
-          <div class="ari-settings-group" data-ari-ollama-fields hidden>
-            <label class="ari-settings-field">
-              <span data-ari-ollama-endpoint-label>${escapeHtml(t('ari.ollamaEndpointLabel', 'Ollama 엔드포인트'))}</span>
-              <input data-ari-ollama-endpoint type="text" placeholder="http://localhost:11434/api/chat" autocomplete="off">
-            </label>
-            <label class="ari-settings-field">
-              <span data-ari-ollama-model-label>${escapeHtml(t('ari.ollamaModelLabel', 'Ollama 모델'))}</span>
-              <input data-ari-ollama-model type="text" placeholder="llama3.2" autocomplete="off">
-            </label>
-          </div>
-          <p class="ari-settings-note" data-ari-provider-note>${escapeHtml(t('ari.providerNote', '정식 공개 버전에서는 API 키를 서버 프록시로 옮기는 것이 안전합니다. 지금 방식은 데모나 개인 테스트용에 적합해요.'))}</p>
-          <div class="ari-settings-actions">
-            <button type="button" data-ari-provider-save>${escapeHtml(t('ari.providerSave', 'LLM 설정 저장'))}</button>
-          </div>
-          <p class="ari-settings-status" data-ari-provider-status aria-live="polite"></p>
-        </section>
         <div class="ari-quick-list">
           ${quickQuestions.map((question) => `<button type="button" data-ari-quick="${escapeHtml(question)}">${escapeHtml(question)}</button>`).join('')}
         </div>
@@ -7547,17 +8284,6 @@ function mountAriChat() {
   renderAriMessages();
   qs('[data-ari-open]')?.addEventListener('click', openAriChat);
   qs('[data-ari-close]')?.addEventListener('click', closeAriChat);
-  qs('[data-ari-settings-toggle]')?.addEventListener('click', () => toggleAriSettings());
-  qs('[data-ari-provider-mode]')?.addEventListener('change', syncAriProviderFieldVisibility);
-  qs('[data-ari-provider-save]')?.addEventListener('click', () => {
-    const settings = saveAriProviderSettings(readAriProviderForm());
-    const usedRemote = isAriRemoteConfigured(settings);
-    const message = usedRemote
-      ? t('ari.providerSavedLive', '실시간 LLM 설정을 저장했어요. 연결 가능할 때 이 모델을 우선 사용합니다.')
-      : t('ari.providerSavedLocal', '설정을 저장했어요. 라이브 API 키가 없으면 Ollama 또는 MARU 데이터 답변으로 이어집니다.');
-    setAriProviderStatus(message, 'success');
-    showToast(t('ari.providerSavedToast', 'ARI LLM 설정을 저장했어요.'));
-  });
   qs('[data-ari-form]')?.addEventListener('submit', (event) => {
     event.preventDefault();
     sendAriMessage();
@@ -8247,6 +8973,29 @@ function bindMobileInteractions() {
       saveSelectedRoute(routeLink.dataset.routeLink || routeLink.dataset.mapLink);
     }
 
+    const mapOpenRouteButton = event.target.closest('[data-map-open-route]');
+    if (mapOpenRouteButton) {
+      const route = getRouteFromUrlOrStorage();
+      void trackRouteEngagement(route, 'visit_intent', { keepalive: true });
+    }
+
+    const placeMapLink = event.target.closest('.place-map-link');
+    if (placeMapLink) {
+      const route = qs('[data-detail-title]') ? getRouteFromUrlOrStorage() : null;
+      const resourceCard = placeMapLink.closest('[data-resource-card]');
+      const resource = resourceCard ? findResourceById(resourceCard.dataset.resourceCard) : null;
+      if (route && resource) {
+        const resourceView = getResourceView(resource);
+        void trackRouteEngagement(route, 'visit_intent', {
+          keepalive: true,
+          places: [{
+            id: resource.id,
+            name: resourceView.displayName || resource.nameKo || resource.nameEn || resource.id
+          }]
+        });
+      }
+    }
+
     const routeActionButton = event.target.closest('[data-route-action="save-current"], [data-route-action="passport-current"]');
     if (routeActionButton) {
       const route = getRouteFromUrlOrStorage();
@@ -8258,6 +9007,19 @@ function bindMobileInteractions() {
         renderSavedBundles();
       } finally {
         routeActionButton.disabled = false;
+      }
+    }
+
+    const recommendRouteButton = event.target.closest('[data-route-action="recommend-current"]');
+    if (recommendRouteButton) {
+      const route = getRouteFromUrlOrStorage();
+      recommendRouteButton.disabled = true;
+      try {
+        await trackRouteEngagement(route, 'recommend');
+        if (qs('[data-foreigner-ranking-section]')) renderForeignerRanking();
+        showToast(getCurrentLanguage() === 'ko' ? '추천이 랭킹 데이터에 반영되었습니다.' : 'Recommendation added to the ranking data.');
+      } finally {
+        recommendRouteButton.disabled = false;
       }
     }
 
