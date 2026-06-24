@@ -7,6 +7,7 @@
   <meta name="description" content="선택한 코스의 지도와 네이버지도, 카카오맵, Google Maps 링크">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body data-page="map">
@@ -26,6 +27,8 @@
       <section class="map-card">
         <div class="map-canvas" data-map-canvas aria-label="지도 목업"></div>
       </section>
+
+      <section class="mobile-card crowd-panel" data-map-crowd-panel></section>
 
       <section class="map-service-card" data-map-service-panel></section>
 
@@ -60,6 +63,7 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

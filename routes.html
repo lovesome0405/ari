@@ -28,6 +28,18 @@
         <strong data-condition-summary>종로구 · 2시간 · 궁궐 · 무료 위주</strong>
       </section>
 
+      <section class="mobile-card route-insight-panel" data-route-insight-panel>
+        <div class="section-heading compact">
+          <div>
+            <p class="eyebrow">AI Reasoning</p>
+            <h2 data-route-insight-title>AI 추천 분석</h2>
+            <p data-route-insight-body>선택 조건과 현재 데이터 점수를 함께 반영한 추천 근거입니다.</p>
+          </div>
+        </div>
+        <div data-route-insight-top></div>
+        <div class="ai-factor-list" data-route-factor-list></div>
+      </section>
+
       <section class="route-list" data-route-list></section>
 
       <section class="place-recommendation-section">
@@ -40,6 +52,26 @@
           <span data-place-count>0 추천 장소</span>
         </div>
         <div class="place-list" data-recommended-place-list></div>
+      </section>
+
+      <section class="mobile-card ranking-panel" data-foreigner-ranking-section id="foreigner-ranking">
+        <div class="section-heading compact">
+          <div>
+            <p class="eyebrow">Ranking</p>
+            <h2 data-foreigner-ranking-title>외국인 인기 랭킹</h2>
+            <p data-foreigner-ranking-body>외국인 반응, 영어 안내, 사진성, 접근성을 합쳐 계산한 상위 추천입니다.</p>
+          </div>
+        </div>
+        <div class="ranking-grid">
+          <section>
+            <h3 data-foreigner-route-title>인기 코스 TOP 3</h3>
+            <div class="ranking-list" data-foreigner-route-ranking></div>
+          </section>
+          <section>
+            <h3 data-foreigner-place-title>인기 장소 TOP 5</h3>
+            <div class="ranking-list" data-foreigner-place-ranking></div>
+          </section>
+        </div>
       </section>
     </main>
 
