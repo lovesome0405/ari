@@ -2978,7 +2978,14 @@ let routeLeafletLayer = null;
 let routeLeafletUserLayer = null;
 let aiPhotoDownloadUrl = '';
 let aiPhotoSelectedStyle = 'minhwa';
+let aiPhotoSegmenterPromise = null;
+const aiPhotoAssetCache = new Map();
 const memoryStorageFallback = {};
+
+const AI_PHOTO_VISION_BUNDLE_URL = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/vision_bundle.mjs';
+const AI_PHOTO_WASM_ROOT_URL = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm';
+const AI_PHOTO_SEGMENTER_MODEL_URL = 'https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_segmenter/float16/latest/selfie_segmenter.tflite';
+const AI_PHOTO_NIGHT_BACKGROUND_URL = 'assets/images/routes/course-night.webp';
 
 const GEOLOCATION_OPTIONS = {
   enableHighAccuracy: true,
@@ -3158,7 +3165,14 @@ const FEATURE_COPY = {
       download: '카드 다운로드',
       ready: '이미지를 선택하고 스타일을 고르면 브라우저 안에서 카드가 생성됩니다.',
       working: '브라우저에서 조선풍 카드 효과를 적용하고 있습니다.',
+      loadingModel: '인물 분리와 화풍 변환을 준비하고 있습니다.',
       done: '조선풍 카드가 준비되었습니다. 바로 다운로드할 수 있습니다.',
+      transformed: {
+        minhwa: '배경을 부드러운 전통 채색 분위기로 정리하고, 사진을 민화풍 색감으로 바꿨습니다.',
+        ink: '사진 전체를 저채도 수묵화 느낌과 먹선 표현으로 정리했습니다.',
+        night: '인물을 분리한 뒤 궁궐 야경 배경으로 다시 합성했습니다.'
+      },
+      fallback: '네트워크 또는 모델 로드가 어려워 브라우저 기본 화풍 변환으로 처리했습니다.',
       empty: '먼저 변환할 이미지를 선택하세요.',
       privacy: '브라우저 안에서만 처리되며, 업로드 없이 바로 저장할 수 있습니다.'
     }
@@ -3229,7 +3243,14 @@ const FEATURE_COPY = {
       download: 'Download Card',
       ready: 'Choose an image and style to generate a browser-side card.',
       working: 'Applying a Joseon-inspired card effect in the browser.',
+      loadingModel: 'Preparing subject separation and painterly rendering.',
       done: 'Your Joseon-style card is ready to download.',
+      transformed: {
+        minhwa: 'The background was softened into a traditional color-wash mood and the photo was restyled with a Minhwa palette.',
+        ink: 'The whole image was remapped into a low-saturation ink-painting look with darker brush edges.',
+        night: 'The subject was separated and recomposited over a palace night background.'
+      },
+      fallback: 'The segmentation model could not load, so MARU used the built-in browser art filter instead.',
       empty: 'Choose an image first.',
       privacy: 'Everything stays in the browser, so you can save the result without uploading the image.'
     }
@@ -7041,7 +7062,316 @@ function posterizeChannel(value, levels) {
   return Math.round(Math.round(value / step) * step);
 }
 
-function createJoseonPhotoCard(sourceImage, style = aiPhotoSelectedStyle) {
+function loadAiPhotoAsset(src) {
+  if (aiPhotoAssetCache.has(src)) return aiPhotoAssetCache.get(src);
+
+  const loader = new Promise((resolve, reject) => {
+    const image = new Image();
+    if (/^https?:/i.test(src)) image.crossOrigin = 'anonymous';
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error(`Failed to load image asset: ${src}`));
+    image.src = src;
+  });
+
+  aiPhotoAssetCache.set(src, loader);
+  return loader;
+}
+
+async function loadAiPhotoSegmenter() {
+  if (aiPhotoSegmenterPromise) return aiPhotoSegmenterPromise;
+
+  aiPhotoSegmenterPromise = (async () => {
+    const vision = await import(AI_PHOTO_VISION_BUNDLE_URL);
+    const filesetResolver = await vision.FilesetResolver.forVisionTasks(AI_PHOTO_WASM_ROOT_URL);
+    return vision.ImageSegmenter.createFromOptions(filesetResolver, {
+      baseOptions: {
+        modelAssetPath: AI_PHOTO_SEGMENTER_MODEL_URL
+      },
+      runningMode: 'IMAGE',
+      outputCategoryMask: true,
+      outputConfidenceMasks: false
+    });
+  })().catch((error) => {
+    aiPhotoSegmenterPromise = null;
+    throw error;
+  });
+
+  return aiPhotoSegmenterPromise;
+}
+
+function getSegmentMaskArray(categoryMask, width, height) {
+  if (!categoryMask) return null;
+  if (typeof categoryMask.getAsUint8Array === 'function') return categoryMask.getAsUint8Array();
+  if (typeof categoryMask.getAsFloat32Array === 'function') {
+    const values = categoryMask.getAsFloat32Array();
+    const converted = new Uint8ClampedArray(width * height);
+    for (let index = 0; index < converted.length; index += 1) {
+      const value = Math.max(0, Math.min(1, values[index] || 0));
+      converted[index] = Math.round(value * 255);
+    }
+    return converted;
+  }
+  return null;
+}
+
+function blurAlphaMask(alphaMask, width, height, radius = 2) {
+  if (!radius) return alphaMask;
+  const horizontal = new Uint8ClampedArray(alphaMask.length);
+  const vertical = new Uint8ClampedArray(alphaMask.length);
+
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      let total = 0;
+      let count = 0;
+      for (let offset = -radius; offset <= radius; offset += 1) {
+        const sampleX = x + offset;
+        if (sampleX < 0 || sampleX >= width) continue;
+        total += alphaMask[(y * width) + sampleX];
+        count += 1;
+      }
+      horizontal[(y * width) + x] = Math.round(total / Math.max(count, 1));
+    }
+  }
+
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      let total = 0;
+      let count = 0;
+      for (let offset = -radius; offset <= radius; offset += 1) {
+        const sampleY = y + offset;
+        if (sampleY < 0 || sampleY >= height) continue;
+        total += horizontal[(sampleY * width) + x];
+        count += 1;
+      }
+      vertical[(y * width) + x] = Math.round(total / Math.max(count, 1));
+    }
+  }
+
+  return vertical;
+}
+
+function buildForegroundAlphaMask(maskArray, width, height) {
+  let maxValue = 0;
+  for (let index = 0; index < maskArray.length; index += 1) {
+    if (maskArray[index] > maxValue) maxValue = maskArray[index];
+  }
+
+  const threshold = maxValue <= 3 ? 0.5 : Math.max(12, maxValue * 0.35);
+  const createCandidate = (invert = false) => {
+    const binary = new Uint8ClampedArray(width * height);
+    let foregroundCount = 0;
+
+    for (let index = 0; index < binary.length; index += 1) {
+      const value = maskArray[index];
+      const isForeground = invert ? value <= threshold : value > threshold;
+      if (isForeground) {
+        binary[index] = 255;
+        foregroundCount += 1;
+      }
+    }
+
+    return {
+      binary,
+      coverage: foregroundCount / Math.max(binary.length, 1)
+    };
+  };
+
+  const direct = createCandidate(false);
+  const inverted = createCandidate(true);
+  const scoreCoverage = (coverage) => {
+    if (coverage < 0.04 || coverage > 0.88) return 10 + Math.abs(coverage - 0.34);
+    return Math.abs(coverage - 0.34);
+  };
+  const selected = scoreCoverage(direct.coverage) <= scoreCoverage(inverted.coverage)
+    ? direct
+    : inverted;
+
+  return blurAlphaMask(selected.binary, width, height, 3);
+}
+
+function alphaMaskToCanvas(alphaMask, width, height) {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  const imageData = context.createImageData(width, height);
+  for (let index = 0; index < alphaMask.length; index += 1) {
+    const pixelIndex = index * 4;
+    imageData.data[pixelIndex] = 255;
+    imageData.data[pixelIndex + 1] = 255;
+    imageData.data[pixelIndex + 2] = 255;
+    imageData.data[pixelIndex + 3] = alphaMask[index];
+  }
+  canvas.width = width;
+  canvas.height = height;
+  context.putImageData(imageData, 0, 0);
+  return canvas;
+}
+
+async function segmentAiPhotoSubject(sourceImage, width, height) {
+  const inputCanvas = document.createElement('canvas');
+  const inputContext = inputCanvas.getContext('2d');
+  inputCanvas.width = width;
+  inputCanvas.height = height;
+  inputContext.drawImage(sourceImage, 0, 0, width, height);
+
+  const segmenter = await loadAiPhotoSegmenter();
+  const segmentation = await segmenter.segment(inputCanvas);
+  const rawMask = getSegmentMaskArray(segmentation?.categoryMask, width, height);
+  if (!rawMask) return null;
+  const alphaMask = buildForegroundAlphaMask(rawMask, width, height);
+  return {
+    alphaMask,
+    maskCanvas: alphaMaskToCanvas(alphaMask, width, height)
+  };
+}
+
+function drawCoverImage(context, image, x, y, width, height) {
+  const scale = Math.max(width / Math.max(image.naturalWidth || image.width, 1), height / Math.max(image.naturalHeight || image.height, 1));
+  const drawWidth = (image.naturalWidth || image.width) * scale;
+  const drawHeight = (image.naturalHeight || image.height) * scale;
+  const drawX = x + ((width - drawWidth) / 2);
+  const drawY = y + ((height - drawHeight) / 2);
+  context.drawImage(image, drawX, drawY, drawWidth, drawHeight);
+}
+
+function createPaintedPhotoCanvas(sourceImage, config, width, height, options = {}) {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d', { willReadFrequently: true });
+  const grainSeed = (width * 17) + (height * 13);
+  canvas.width = width;
+  canvas.height = height;
+
+  context.filter = config.filter;
+  context.drawImage(sourceImage, 0, 0, width, height);
+
+  const imageData = context.getImageData(0, 0, width, height);
+  const pixels = imageData.data;
+  const luminance = new Float32Array(width * height);
+
+  for (let index = 0; index < pixels.length; index += 4) {
+    const pixelIndex = index / 4;
+    const red = pixels[index];
+    const green = pixels[index + 1];
+    const blue = pixels[index + 2];
+    luminance[pixelIndex] = (red * 0.3) + (green * 0.59) + (blue * 0.11);
+  }
+
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const pixelIndex = (y * width) + x;
+      const index = pixelIndex * 4;
+      const red = pixels[index];
+      const green = pixels[index + 1];
+      const blue = pixels[index + 2];
+      const light = luminance[pixelIndex];
+      const left = luminance[Math.max(0, pixelIndex - 1)];
+      const right = luminance[Math.min(luminance.length - 1, pixelIndex + 1)];
+      const up = luminance[Math.max(0, pixelIndex - width)];
+      const down = luminance[Math.min(luminance.length - 1, pixelIndex + width)];
+      const edgeStrength = Math.min(255, Math.abs(left - right) + Math.abs(up - down));
+      const grain = ((((x * 13) + (y * 7) + grainSeed) % 17) - 8) * 1.4;
+      const edgeWeight = options.inkHeavy ? 0.44 : 0.26;
+
+      pixels[index] = Math.max(0, Math.min(255, posterizeChannel((red * 0.68) + (light * 0.24) + (config.tint[0] * 0.12) + grain - (edgeStrength * edgeWeight), config.levels)));
+      pixels[index + 1] = Math.max(0, Math.min(255, posterizeChannel((green * 0.7) + (light * 0.18) + (config.tint[1] * 0.1) + grain - (edgeStrength * edgeWeight), config.levels)));
+      pixels[index + 2] = Math.max(0, Math.min(255, posterizeChannel((blue * 0.66) + (light * 0.28) + (config.tint[2] * 0.12) + grain - (edgeStrength * (edgeWeight + 0.04)), config.levels)));
+    }
+  }
+
+  context.putImageData(imageData, 0, 0);
+
+  context.globalCompositeOperation = 'multiply';
+  const wash = context.createLinearGradient(0, 0, width, height);
+  wash.addColorStop(0, options.inkHeavy ? 'rgba(34, 44, 59, 0.18)' : 'rgba(180, 112, 49, 0.12)');
+  wash.addColorStop(1, options.inkHeavy ? 'rgba(212, 205, 193, 0.14)' : 'rgba(245, 224, 184, 0.18)');
+  context.fillStyle = wash;
+  context.fillRect(0, 0, width, height);
+  context.globalCompositeOperation = 'source-over';
+
+  return canvas;
+}
+
+function createMaskedCanvas(sourceCanvas, maskCanvas, width, height) {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  canvas.width = width;
+  canvas.height = height;
+  context.drawImage(sourceCanvas, 0, 0);
+  context.globalCompositeOperation = 'destination-in';
+  context.drawImage(maskCanvas, 0, 0);
+  context.globalCompositeOperation = 'source-over';
+  return canvas;
+}
+
+function drawNightBackground(context, width, height, backgroundImage) {
+  context.save();
+  context.filter = 'saturate(0.95) brightness(0.82)';
+  drawCoverImage(context, backgroundImage, 0, 0, width, height);
+  context.restore();
+
+  const overlay = context.createLinearGradient(0, 0, width, height);
+  overlay.addColorStop(0, 'rgba(8, 20, 44, 0.22)');
+  overlay.addColorStop(0.6, 'rgba(11, 18, 32, 0.16)');
+  overlay.addColorStop(1, 'rgba(2, 6, 23, 0.56)');
+  context.fillStyle = overlay;
+  context.fillRect(0, 0, width, height);
+
+  context.fillStyle = 'rgba(255, 235, 179, 0.9)';
+  context.beginPath();
+  context.arc(width - 118, 98, 34, 0, Math.PI * 2);
+  context.fill();
+
+  for (let index = 0; index < 18; index += 1) {
+    const x = 40 + ((index * 71) % Math.max(width - 80, 1));
+    const y = 26 + ((index * 37) % 128);
+    const radius = 1.2 + ((index % 3) * 0.45);
+    context.fillStyle = `rgba(255, 248, 220, ${0.32 + ((index % 4) * 0.11)})`;
+    context.beginPath();
+    context.arc(x, y, radius, 0, Math.PI * 2);
+    context.fill();
+  }
+}
+
+function drawForegroundShadow(context, maskCanvas, x, y, width, height) {
+  context.save();
+  context.globalAlpha = 0.26;
+  context.filter = 'blur(14px)';
+  context.drawImage(maskCanvas, x + 6, y + 14, width, height);
+  context.restore();
+}
+
+function drawNightSubjectGlow(context, maskCanvas, x, y, width, height) {
+  context.save();
+  context.globalAlpha = 0.34;
+  context.filter = 'blur(18px)';
+  context.drawImage(maskCanvas, x, y, width, height);
+  context.globalCompositeOperation = 'source-in';
+  const glow = context.createLinearGradient(x, y, x, y + height);
+  glow.addColorStop(0, 'rgba(255, 222, 163, 0.95)');
+  glow.addColorStop(1, 'rgba(120, 168, 255, 0.44)');
+  context.fillStyle = glow;
+  context.fillRect(x, y, width, height);
+  context.restore();
+}
+
+function drawMinhwaMotif(context, x, y, width, height) {
+  context.save();
+  context.strokeStyle = 'rgba(180, 83, 9, 0.34)';
+  context.lineWidth = 2;
+  context.beginPath();
+  context.moveTo(x + 28, y + height - 42);
+  context.quadraticCurveTo(x + 96, y + height - 116, x + 164, y + height - 126);
+  context.stroke();
+  for (let index = 0; index < 4; index += 1) {
+    const centerX = x + 138 + (index * 22);
+    const centerY = y + height - 130 + ((index % 2) * 6);
+    context.beginPath();
+    context.arc(centerX, centerY, 10, 0, Math.PI * 2);
+    context.stroke();
+  }
+  context.restore();
+}
+
+async function createJoseonPhotoCard(sourceImage, style = aiPhotoSelectedStyle) {
   const config = getAiPhotoStyleConfig(style);
   const maxWidth = 840;
   const scale = Math.min(1, maxWidth / Math.max(sourceImage.naturalWidth || sourceImage.width, 1));
@@ -7065,21 +7395,49 @@ function createJoseonPhotoCard(sourceImage, style = aiPhotoSelectedStyle) {
   context.fillStyle = background;
   context.fillRect(0, 0, cardWidth, cardHeight);
 
-  tempContext.filter = config.filter;
-  tempContext.drawImage(sourceImage, 0, 0, imageWidth, imageHeight);
+  const painterlyCanvas = createPaintedPhotoCanvas(sourceImage, config, imageWidth, imageHeight, {
+    inkHeavy: style === 'ink'
+  });
 
-  const imageData = tempContext.getImageData(0, 0, imageWidth, imageHeight);
-  const pixels = imageData.data;
-  for (let index = 0; index < pixels.length; index += 4) {
-    const red = pixels[index];
-    const green = pixels[index + 1];
-    const blue = pixels[index + 2];
-    const luminance = (red * 0.3) + (green * 0.59) + (blue * 0.11);
-    pixels[index] = Math.min(255, posterizeChannel((red * 0.72) + (luminance * 0.28) + (config.tint[0] * 0.08), config.levels));
-    pixels[index + 1] = Math.min(255, posterizeChannel((green * 0.72) + (luminance * 0.22) + (config.tint[1] * 0.08), config.levels));
-    pixels[index + 2] = Math.min(255, posterizeChannel((blue * 0.68) + (luminance * 0.3) + (config.tint[2] * 0.12), config.levels));
+  let transformNote = ft(`photo.transformed.${style}`, ft('photo.done', 'Your Joseon-style card is ready to download.'));
+  let usedFallback = false;
+
+  if (style === 'night') {
+    try {
+      const [nightBackground, segmentedSubject] = await Promise.all([
+        loadAiPhotoAsset(AI_PHOTO_NIGHT_BACKGROUND_URL),
+        segmentAiPhotoSubject(sourceImage, imageWidth, imageHeight)
+      ]);
+      if (!segmentedSubject?.maskCanvas) throw new Error('Subject mask unavailable');
+      const maskedSubject = createMaskedCanvas(painterlyCanvas, segmentedSubject.maskCanvas, imageWidth, imageHeight);
+      drawNightBackground(tempContext, imageWidth, imageHeight, nightBackground);
+      drawForegroundShadow(tempContext, segmentedSubject.maskCanvas, 0, 0, imageWidth, imageHeight);
+      drawNightSubjectGlow(tempContext, segmentedSubject.maskCanvas, 0, 0, imageWidth, imageHeight);
+      tempContext.drawImage(maskedSubject, 0, 0);
+    } catch (error) {
+      usedFallback = true;
+      tempContext.drawImage(painterlyCanvas, 0, 0);
+      tempContext.globalCompositeOperation = 'multiply';
+      const fallbackOverlay = tempContext.createLinearGradient(0, 0, imageWidth, imageHeight);
+      fallbackOverlay.addColorStop(0, 'rgba(15, 23, 42, 0.12)');
+      fallbackOverlay.addColorStop(1, 'rgba(30, 41, 59, 0.38)');
+      tempContext.fillStyle = fallbackOverlay;
+      tempContext.fillRect(0, 0, imageWidth, imageHeight);
+      tempContext.globalCompositeOperation = 'source-over';
+      transformNote = `${transformNote} ${ft('photo.fallback', 'The segmentation model could not load, so MARU used the built-in browser art filter instead.')}`;
+    }
+  } else {
+    tempContext.drawImage(painterlyCanvas, 0, 0);
+    if (style === 'minhwa') {
+      tempContext.globalCompositeOperation = 'screen';
+      const wash = tempContext.createRadialGradient(imageWidth * 0.16, imageHeight * 0.24, 20, imageWidth * 0.16, imageHeight * 0.24, imageWidth * 0.88);
+      wash.addColorStop(0, 'rgba(255, 242, 211, 0.42)');
+      wash.addColorStop(1, 'rgba(248, 221, 173, 0.08)');
+      tempContext.fillStyle = wash;
+      tempContext.fillRect(0, 0, imageWidth, imageHeight);
+      tempContext.globalCompositeOperation = 'source-over';
+    }
   }
-  tempContext.putImageData(imageData, 0, 0);
 
   drawRoundedRectPath(context, 26, 26, cardWidth - 52, cardHeight - 52, 28);
   context.fillStyle = 'rgba(255,255,255,0.26)';
@@ -7096,6 +7454,7 @@ function createJoseonPhotoCard(sourceImage, style = aiPhotoSelectedStyle) {
   context.stroke();
 
   context.drawImage(tempCanvas, 56, 68);
+  if (style === 'minhwa') drawMinhwaMotif(context, 56, 68, imageWidth, imageHeight);
 
   context.strokeStyle = config.border;
   context.lineWidth = 1.5;
@@ -7122,7 +7481,11 @@ function createJoseonPhotoCard(sourceImage, style = aiPhotoSelectedStyle) {
   context.lineTo(cardWidth - 76, 108);
   context.stroke();
 
-  return canvas;
+  return {
+    canvas,
+    transformNote,
+    usedFallback
+  };
 }
 
 function bindAiPhotoDemo() {
@@ -7200,31 +7563,38 @@ function bindAiPhotoDemo() {
     }
 
     const image = new Image();
-    image.onload = () => {
+    image.onload = async () => {
       if (!result) return;
       actionButton.disabled = true;
       actionButton.textContent = ft('photo.working', 'Applying a Joseon-inspired card effect in the browser.');
-      setStatus(ft('photo.working', 'Applying a Joseon-inspired card effect in the browser.'));
+      setStatus(aiPhotoSelectedStyle === 'night'
+        ? ft('photo.loadingModel', 'Preparing subject separation and painterly rendering.')
+        : ft('photo.working', 'Applying a Joseon-inspired card effect in the browser.'));
 
-      const canvas = createJoseonPhotoCard(image, aiPhotoSelectedStyle);
-      result.innerHTML = `
-        <article class="ai-photo-result-card ai-photo-canvas-card">
-          <div class="ai-photo-canvas-host"></div>
-          <div class="ai-photo-result-copy">
-            <strong>${escapeHtml(ft(`photo.styles.${aiPhotoSelectedStyle}`, aiPhotoSelectedStyle))}</strong>
-            <p>${escapeHtml(ft('photo.done', 'Your Joseon-style card is ready to download.'))}</p>
-            <small>${escapeHtml(ft('photo.privacy', 'Everything stays in the browser, so you can save the result without uploading the image.'))}</small>
-          </div>
-        </article>
-      `;
-      const host = qs('.ai-photo-canvas-host', result);
-      host?.appendChild(canvas);
-      result.classList.remove('is-hidden');
-      if (toolbar) toolbar.classList.remove('is-hidden');
-      aiPhotoDownloadUrl = canvas.toDataURL('image/png');
-      actionButton.disabled = false;
-      actionButton.textContent = ft('photo.action', 'Create Joseon Card');
-      setStatus(ft('photo.done', 'Your Joseon-style card is ready to download.'));
+      try {
+        const { canvas, transformNote, usedFallback } = await createJoseonPhotoCard(image, aiPhotoSelectedStyle);
+        result.innerHTML = `
+          <article class="ai-photo-result-card ai-photo-canvas-card">
+            <div class="ai-photo-canvas-host"></div>
+            <div class="ai-photo-result-copy">
+              <strong>${escapeHtml(ft(`photo.styles.${aiPhotoSelectedStyle}`, aiPhotoSelectedStyle))}</strong>
+              <p>${escapeHtml(transformNote || ft('photo.done', 'Your Joseon-style card is ready to download.'))}</p>
+              <small>${escapeHtml(ft('photo.privacy', 'Everything stays in the browser, so you can save the result without uploading the image.'))}</small>
+            </div>
+          </article>
+        `;
+        const host = qs('.ai-photo-canvas-host', result);
+        host?.appendChild(canvas);
+        result.classList.remove('is-hidden');
+        if (toolbar) toolbar.classList.remove('is-hidden');
+        aiPhotoDownloadUrl = canvas.toDataURL('image/png');
+        setStatus(usedFallback ? transformNote : ft('photo.done', 'Your Joseon-style card is ready to download.'));
+      } catch (error) {
+        setStatus(ft('photo.fallback', 'The segmentation model could not load, so MARU used the built-in browser art filter instead.'));
+      } finally {
+        actionButton.disabled = false;
+        actionButton.textContent = ft('photo.action', 'Create Joseon Card');
+      }
     };
     image.src = previewUrl;
   });
