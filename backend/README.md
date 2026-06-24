@@ -101,8 +101,9 @@ AI 이미지 변환 테스트:
 curl -X POST http://localhost:8080/api/ai-photo/transform `
   -F "image=@C:\path\to\photo.jpg" `
   -F "styleId=cinematic-drama" `
-  -F "backgroundId=palace-courtyard" `
-  -F "intensity=bold"
+  -F "backgroundId=royal-throne-room" `
+  -F "intensity=bold" `
+  -F "customPrompt=Create a photorealistic Joseon king portrait with black-and-gold crown, dark navy gonryongpo, gold dragon embroidery, carved throne, warm palace interior, and sunset palace roofs."
 ```
 
 개수만 빠르게 확인하려면:

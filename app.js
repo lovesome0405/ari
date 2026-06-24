@@ -3228,12 +3228,12 @@ const FEATURE_COPY = {
       },
       action: '조선풍 카드 만들기',
       download: '카드 다운로드',
-      ready: '이미지를 선택하고 스타일을 고르세요. 궁궐 야경은 서버 GPT 변환을 먼저 시도하고 실패하면 브라우저 변환으로 이어집니다.',
+      ready: '이미지를 선택하고 스타일을 고르세요. 궁궐 야경 왕실 사진풍은 AI 서버 연결이 필요합니다.',
       working: '브라우저에서 조선풍 카드 효과를 적용하고 있습니다.',
       loadingModel: '인물 분리와 화풍 변환을 준비하고 있습니다.',
       gptWorking: '서버에서 GPT 왕실 초상 변환을 생성하고 있습니다. 발표용 고품질 변환은 잠시 걸릴 수 있습니다.',
       gptDone: 'GPT 왕실 초상 변환이 완료되었습니다.',
-      gptFallback: '서버 GPT 변환을 사용할 수 없어 브라우저 변환으로 이어갑니다.',
+      gptFallback: 'AI 생성 서버에 연결되지 않았습니다. 백엔드 실행과 OPENAI_API_KEY 설정을 확인해 주세요.',
       done: '조선풍 카드가 준비되었습니다. 바로 다운로드할 수 있습니다.',
       transformed: {
         minhwa: '배경을 부드러운 전통 채색 분위기로 정리하고, 사진을 민화풍 색감으로 바꿨습니다.',
@@ -3310,12 +3310,12 @@ const FEATURE_COPY = {
       },
       action: 'Create Joseon Card',
       download: 'Download Card',
-      ready: 'Choose an image and style. Palace Night tries the server GPT transform first, then falls back to the browser card.',
+      ready: 'Choose an image and style. The royal Palace Night photo transform requires the AI server.',
       working: 'Applying a Joseon-inspired card effect in the browser.',
       loadingModel: 'Preparing subject separation and painterly rendering.',
       gptWorking: 'Generating a high-quality GPT royal portrait on the server. This can take a moment.',
       gptDone: 'The GPT royal portrait is ready to download.',
-      gptFallback: 'The server GPT transform is unavailable, so MARU will continue with the browser transform.',
+      gptFallback: 'The AI generation server is unavailable. Check the backend process and OPENAI_API_KEY setting.',
       done: 'Your Joseon-style card is ready to download.',
       transformed: {
         minhwa: 'The background was softened into a traditional color-wash mood and the photo was restyled with a Minhwa palette.',
@@ -8768,9 +8768,9 @@ async function createRoyalPortraitOnApi(file, style = aiPhotoSelectedStyle) {
   const formData = new FormData();
   formData.append('image', file, file.name || 'maru-photo.png');
   formData.append('styleId', style === 'night' ? 'cinematic-drama' : 'joseon-portrait');
-  formData.append('backgroundId', 'palace-courtyard');
+  formData.append('backgroundId', style === 'night' ? 'royal-throne-room' : 'palace-courtyard');
   formData.append('intensity', 'bold');
-  formData.append('customPrompt', 'Make this a high-end Joseon royal king portrait: dark navy gonryongpo, ornate gold dragon embroidery, black-and-gold crown, royal throne, warm palace interior, palace roofs at sunset, photorealistic editorial lighting.');
+  formData.append('customPrompt', 'Create a result like a luxury Joseon royal king portrait photo: preserve the exact person and front-facing gaze, add a black-and-gold royal crown, dark navy gonryongpo with raised gold dragon embroidery, ornate gold belt, carved dragon throne, warm palace interior, hanging bead ornaments, sunset palace roofs in the background, shallow depth of field, photorealistic skin, premium editorial lighting. This must be a full AI image edit, not a card frame, filter, sticker, or simple background swap.');
 
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), MARU_AI_PHOTO_TIMEOUT_MS);
@@ -8811,6 +8811,19 @@ function renderAiPhotoImageResult(result, payload, style = aiPhotoSelectedStyle)
       <div class="ai-photo-result-copy">
         <strong>${escapeHtml(ft(`photo.styles.${style}`, style))}</strong>
         <p>${escapeHtml(ft('photo.gptDone', 'The GPT royal portrait is ready to download.'))}</p>
+        <small>${escapeHtml(ft('photo.serverPrivacy', 'High-quality transforms are sent through the local server to the OpenAI Image API. The API key stays on the server.'))}</small>
+      </div>
+    </article>
+  `;
+}
+
+function renderAiPhotoServerRequired(result) {
+  if (!result) return;
+  result.innerHTML = `
+    <article class="ai-photo-result-card ai-photo-canvas-card">
+      <div class="ai-photo-result-copy">
+        <strong>${escapeHtml(ft('photo.styles.night', 'Palace Night'))}</strong>
+        <p>${escapeHtml(ft('photo.gptFallback', 'The AI generation server is unavailable. Check the backend process and OPENAI_API_KEY setting.'))}</p>
         <small>${escapeHtml(ft('photo.serverPrivacy', 'High-quality transforms are sent through the local server to the OpenAI Image API. The API key stays on the server.'))}</small>
       </div>
     </article>
@@ -8935,7 +8948,11 @@ function bindAiPhotoDemo() {
             return;
           }
 
-          setStatus(ft('photo.gptFallback', 'The server GPT transform is unavailable, so MARU will continue with the browser transform.'));
+          renderAiPhotoServerRequired(result);
+          result.classList.remove('is-hidden');
+          if (toolbar) toolbar.classList.add('is-hidden');
+          setStatus(ft('photo.gptFallback', 'The AI generation server is unavailable. Check the backend process and OPENAI_API_KEY setting.'));
+          return;
         }
 
         const { canvas, transformNote, usedFallback } = await createJoseonPhotoCard(image, aiPhotoSelectedStyle);

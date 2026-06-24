@@ -7,7 +7,9 @@ import com.lovesome.maru.dto.AiPhotoTransformResponse;
 import java.awt.Dimension;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -15,14 +17,10 @@ import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,7 +54,7 @@ public class AiPhotoService {
       "cinematic-drama",
       new Preset(
           "사극 스틸컷",
-          "Render the subject like a premium historical drama still with cinematic lighting, richly detailed costume design, believable skin detail, and a dignified Joseon atmosphere."
+          "Transform the subject into a photorealistic Joseon king portrait, like a premium editorial drama poster. Preserve the same face, gaze, expression, and hairstyle impression while replacing the outfit with a dark navy royal gonryongpo covered in intricate raised gold dragon embroidery, a white inner collar, ornate gold belt, and a black-and-gold royal crown."
       )
   );
 
@@ -65,6 +63,11 @@ public class AiPhotoService {
       new Preset(
           "궁궐 뜰",
           "Replace the background with a grand Joseon palace courtyard, tiled rooflines, stone pathways, and warm late-afternoon light."
+      ),
+      "royal-throne-room",
+      new Preset(
+          "Royal throne room",
+          "Place the subject seated in a richly decorated Joseon royal throne room with carved dark wood furniture, gold dragon ornaments, bead curtains, palace pillars, warm sunset light through the window, and softly blurred palace roofs outside."
       ),
       "hanok-garden",
       new Preset(
@@ -135,7 +138,7 @@ public class AiPhotoService {
     String prompt = buildPrompt(style, background, transformIntensity, customPrompt);
     String size = resolveOutputSize(imageBytes);
 
-    OpenAiImageResponse payload = requestEdit(image, imageBytes, prompt, size, true);
+    OpenAiImageResponse payload = requestEdit(imageBytes, image.getContentType(), prompt, size, true);
     if (payload == null || payload.data() == null || payload.data().isEmpty()) {
       throw new AiPhotoException(HttpStatus.BAD_GATEWAY, "provider_error", "이미지 변환 결과를 받지 못했습니다.");
     }
@@ -201,8 +204,8 @@ public class AiPhotoService {
   }
 
   private OpenAiImageResponse requestEdit(
-      MultipartFile image,
       byte[] imageBytes,
+      String contentType,
       String prompt,
       String size,
       boolean includeInputFidelity
@@ -211,8 +214,8 @@ public class AiPhotoService {
       return restClient.post()
           .uri("/images/edits")
           .header(HttpHeaders.AUTHORIZATION, "Bearer " + externalApiProperties.openai().apiKey())
-          .contentType(MediaType.MULTIPART_FORM_DATA)
-          .body(buildRequestBody(image, imageBytes, prompt, size, includeInputFidelity))
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(buildRequestBody(imageBytes, contentType, prompt, size, includeInputFidelity))
           .retrieve()
           .body(OpenAiImageResponse.class);
     } catch (RestClientResponseException exception) {
@@ -220,7 +223,7 @@ public class AiPhotoService {
       if (includeInputFidelity
           && exception.getStatusCode().value() == 400
           && responseBody.toLowerCase(Locale.ROOT).contains("input_fidelity")) {
-        return requestEdit(image, imageBytes, prompt, size, false);
+        return requestEdit(imageBytes, contentType, prompt, size, false);
       }
 
       throw new AiPhotoException(
@@ -237,61 +240,58 @@ public class AiPhotoService {
     }
   }
 
-  private MultiValueMap<String, Object> buildRequestBody(
-      MultipartFile image,
+  private Map<String, Object> buildRequestBody(
       byte[] imageBytes,
+      String contentType,
       String prompt,
       String size,
       boolean includeInputFidelity
   ) {
-    LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-    body.add("model", normalizeText(aiPhotoProperties.getModel(), "gpt-image-1.5"));
-    body.add("prompt", prompt);
-    body.add("size", size);
-    body.add("quality", normalizeText(aiPhotoProperties.getQuality(), "high"));
-    body.add("background", normalizeText(aiPhotoProperties.getBackground(), "opaque"));
-    body.add("output_format", normalizeOutputFormat(aiPhotoProperties.getOutputFormat()));
+    Map<String, Object> body = new LinkedHashMap<>();
+    body.put("model", normalizeText(aiPhotoProperties.getModel(), "gpt-image-1.5"));
+    body.put("images", List.of(Map.of("image_url", buildImageDataUrl(imageBytes, contentType))));
+    body.put("prompt", prompt);
+    body.put("size", size);
+    body.put("quality", normalizeText(aiPhotoProperties.getQuality(), "high"));
+    body.put("background", normalizeText(aiPhotoProperties.getBackground(), "opaque"));
+    body.put("output_format", normalizeOutputFormat(aiPhotoProperties.getOutputFormat()));
 
     String inputFidelity = normalizeText(aiPhotoProperties.getInputFidelity(), "");
     if (includeInputFidelity && !inputFidelity.isBlank()) {
-      body.add("input_fidelity", inputFidelity);
+      body.put("input_fidelity", inputFidelity);
     }
 
-    body.add("image[]", createImagePart(imageBytes, image.getOriginalFilename(), image.getContentType()));
     return body;
   }
 
-  private HttpEntity<ByteArrayResource> createImagePart(byte[] imageBytes, String filename, String contentType) {
-    ByteArrayResource resource = new ByteArrayResource(imageBytes) {
-      @Override
-      public String getFilename() {
-        return normalizeFilename(filename);
-      }
-    };
-
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.parseMediaType(normalizeText(contentType, MediaType.IMAGE_PNG_VALUE)));
-    headers.setContentDispositionFormData("image[]", resource.getFilename());
-    return new HttpEntity<>(resource, headers);
+  private String buildImageDataUrl(byte[] imageBytes, String contentType) {
+    String normalizedContentType = normalizeText(contentType, MediaType.IMAGE_PNG_VALUE).toLowerCase(Locale.ROOT);
+    if ("image/jpg".equals(normalizedContentType)) {
+      normalizedContentType = MediaType.IMAGE_JPEG_VALUE;
+    }
+    return "data:" + normalizedContentType + ";base64," + Base64.getEncoder().encodeToString(imageBytes);
   }
 
   private String buildPrompt(Preset style, Preset background, Preset intensity, String customPrompt) {
     StringBuilder prompt = new StringBuilder();
-    prompt.append("Transform the uploaded photo into a polished Joseon-era portrait or scene reinterpretation.\n");
+    prompt.append("Transform the uploaded photo into a high-end photorealistic Joseon royal portrait.\n");
     prompt.append("Subject preservation:\n");
     prompt.append("- Keep the same person recognizable, including face shape, eyes, nose, mouth, hairstyle silhouette, expression, gaze direction, and body proportions.\n");
-    prompt.append("- Preserve the original pose, camera angle, framing, and overall composition unless a slight crop is needed to keep the subject centered.\n");
+    prompt.append("- Keep the face natural and realistic. Do not beautify into a different person.\n");
+    prompt.append("- Preserve the original camera angle and direct front-facing portrait feeling, but crop and extend the body as needed for a royal half-body portrait.\n");
     prompt.append("- If multiple people are visible, transform them consistently.\n");
     prompt.append("- Keep hands natural and anatomically correct.\n");
     prompt.append("Transformation goals:\n");
     prompt.append("- ").append(style.prompt()).append('\n');
     prompt.append("- ").append(background.prompt()).append('\n');
     prompt.append("- ").append(intensity.prompt()).append('\n');
-    prompt.append("- Replace modern clothing with historically inspired Korean hanbok appropriate to the chosen style.\n");
+    prompt.append("- Replace all modern clothing with a dark navy Joseon king's gonryongpo, white inner collar, embroidered dragon chest panel, ornate gold belt, and black-and-gold royal crown.\n");
+    prompt.append("- Add premium royal details: raised gold embroidery, carved throne, dragon ornaments, bead curtains, lacquered palace pillars, warm sunset backlight, and softly blurred palace roofs outside.\n");
     prompt.append("- Remove obvious modern distractions such as signage, cars, office furniture, or contemporary branding when possible.\n");
     prompt.append("Quality requirements:\n");
-    prompt.append("- Produce a complete, coherent image with crisp facial detail, clean edges, believable lighting, and refined fabric texture.\n");
+    prompt.append("- Produce a complete, coherent, photorealistic image with crisp facial detail, clean edges, believable skin texture, cinematic warm lighting, and refined silk/gold fabric texture.\n");
     prompt.append("- Make the transformation clearly visible. Do not return a subtle filter pass that looks almost unchanged.\n");
+    prompt.append("- The final image should look like an AI-generated royal portrait photo, not a flat card, collage, sketch, simple background swap, or browser filter.\n");
     prompt.append("Constraints:\n");
     prompt.append("- No text, logos, watermark, frame overlay, duplicated limbs, extra fingers, broken anatomy, distorted eyes, blur, or collage artifacts.\n");
     prompt.append("- Do not imitate any living artist or specific commercial studio style.\n");
@@ -307,8 +307,8 @@ public class AiPhotoService {
 
   private String sanitizeCustomPrompt(String customPrompt) {
     String sanitized = normalizeText(customPrompt, "").replaceAll("\\s+", " ").trim();
-    if (sanitized.length() > 320) {
-      sanitized = sanitized.substring(0, 320).trim();
+    if (sanitized.length() > 1000) {
+      sanitized = sanitized.substring(0, 1000).trim();
     }
     return sanitized;
   }
@@ -328,30 +328,13 @@ public class AiPhotoService {
     }
 
     double aspectRatio = (double) dimension.width / (double) dimension.height;
-    if (aspectRatio > 3.0d || aspectRatio < (1.0d / 3.0d)) {
-      return dimension.width >= dimension.height ? DEFAULT_LANDSCAPE_SIZE : DEFAULT_PORTRAIT_SIZE;
+    if (aspectRatio > 1.15d) {
+      return DEFAULT_LANDSCAPE_SIZE;
     }
-
-    int longEdge = Math.max(1024, aiPhotoProperties.getPreferredLongEdge());
-    int width;
-    int height;
-
-    if (dimension.width >= dimension.height) {
-      width = longEdge;
-      height = (int) Math.round(longEdge / aspectRatio);
-    } else {
-      height = longEdge;
-      width = (int) Math.round(longEdge * aspectRatio);
+    if (aspectRatio < 0.85d) {
+      return DEFAULT_PORTRAIT_SIZE;
     }
-
-    width = clampToMultipleOf16(width);
-    height = clampToMultipleOf16(height);
-
-    if (width < 512 || height < 512) {
-      return dimension.width >= dimension.height ? DEFAULT_LANDSCAPE_SIZE : DEFAULT_PORTRAIT_SIZE;
-    }
-
-    return width + "x" + height;
+    return "1024x1024";
   }
 
   private Dimension readDimension(byte[] imageBytes) {
@@ -369,19 +352,6 @@ public class AiPhotoService {
     } catch (IOException exception) {
       return null;
     }
-  }
-
-  private int clampToMultipleOf16(int value) {
-    int rounded = Math.max(512, (int) Math.round(value / 16.0d) * 16);
-    return Math.min(rounded, 3840);
-  }
-
-  private String normalizeFilename(String filename) {
-    String normalized = normalizeText(filename, "upload.png")
-        .replace('\\', '-')
-        .replace('/', '-')
-        .trim();
-    return normalized.isBlank() ? "upload.png" : normalized;
   }
 
   private String extractProviderMessage(String responseBody, String fallback) {
