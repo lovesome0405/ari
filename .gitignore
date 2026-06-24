@@ -9,6 +9,11 @@ node_modules/
 dist/
 build/
 target/
+__pycache__/
+*.pyc
 
 # Logs
 *.log
+
+# Local dynamic backend runtime
+python-backend/runtime/
