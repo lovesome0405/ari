@@ -3022,13 +3022,11 @@ let routeLeafletUserLayer = null;
 let aiPhotoDownloadUrl = '';
 let aiPhotoSelectedStyle = 'minhwa';
 let aiPhotoSegmenterPromise = null;
-const aiPhotoAssetCache = new Map();
 const memoryStorageFallback = {};
 
 const AI_PHOTO_VISION_BUNDLE_URL = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/vision_bundle.mjs';
 const AI_PHOTO_WASM_ROOT_URL = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm';
 const AI_PHOTO_SEGMENTER_MODEL_URL = 'https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_segmenter/float16/latest/selfie_segmenter.tflite';
-const AI_PHOTO_NIGHT_BACKGROUND_URL = 'assets/images/routes/course-night.webp';
 
 const GEOLOCATION_OPTIONS = {
   enableHighAccuracy: true,
@@ -3213,9 +3211,9 @@ const FEATURE_COPY = {
       transformed: {
         minhwa: '배경을 부드러운 전통 채색 분위기로 정리하고, 사진을 민화풍 색감으로 바꿨습니다.',
         ink: '사진 전체를 저채도 수묵화 느낌과 먹선 표현으로 정리했습니다.',
-        night: '인물을 분리한 뒤 궁궐 야경 배경으로 다시 합성했습니다.'
+        night: '인물을 분리한 뒤 조선 왕실 궁궐 야경 배경을 생성해 다시 합성했습니다.'
       },
-      fallback: '네트워크 또는 모델 로드가 어려워 브라우저 기본 화풍 변환으로 처리했습니다.',
+      fallback: '네트워크 또는 모델 로드가 어려워 브라우저 기본 인물 마스크와 왕실 야경 배경으로 처리했습니다.',
       empty: '먼저 변환할 이미지를 선택하세요.',
       privacy: '브라우저 안에서만 처리되며, 업로드 없이 바로 저장할 수 있습니다.'
     }
@@ -3291,9 +3289,9 @@ const FEATURE_COPY = {
       transformed: {
         minhwa: 'The background was softened into a traditional color-wash mood and the photo was restyled with a Minhwa palette.',
         ink: 'The whole image was remapped into a low-saturation ink-painting look with darker brush edges.',
-        night: 'The subject was separated and recomposited over a palace night background.'
+        night: 'The subject was separated and recomposited over a generated Joseon royal palace night background.'
       },
-      fallback: 'The segmentation model could not load, so MARU used the built-in browser art filter instead.',
+      fallback: 'The segmentation model could not load, so MARU used a browser-side portrait mask with the generated royal night background.',
       empty: 'Choose an image first.',
       privacy: 'Everything stays in the browser, so you can save the result without uploading the image.'
     }
@@ -7633,12 +7631,12 @@ function getAiPhotoStyleConfig(style = aiPhotoSelectedStyle) {
       tint: [190, 190, 190]
     },
     night: {
-      paper: '#e6dcc8',
+      paper: '#e8dcc6',
       border: '#0f172a',
-      accent: '#c0841a',
-      filter: 'contrast(1.12) saturate(1.06) brightness(0.96)',
-      levels: 7,
-      tint: [178, 164, 126]
+      accent: '#d59c38',
+      filter: 'contrast(1.16) saturate(1.2) brightness(1.02)',
+      levels: 8,
+      tint: [202, 180, 137]
     }
   };
 
@@ -7648,21 +7646,6 @@ function getAiPhotoStyleConfig(style = aiPhotoSelectedStyle) {
 function posterizeChannel(value, levels) {
   const step = 255 / Math.max(2, levels - 1);
   return Math.round(Math.round(value / step) * step);
-}
-
-function loadAiPhotoAsset(src) {
-  if (aiPhotoAssetCache.has(src)) return aiPhotoAssetCache.get(src);
-
-  const loader = new Promise((resolve, reject) => {
-    const image = new Image();
-    if (/^https?:/i.test(src)) image.crossOrigin = 'anonymous';
-    image.onload = () => resolve(image);
-    image.onerror = () => reject(new Error(`Failed to load image asset: ${src}`));
-    image.src = src;
-  });
-
-  aiPhotoAssetCache.set(src, loader);
-  return loader;
 }
 
 async function loadAiPhotoSegmenter() {
@@ -7890,33 +7873,267 @@ function createMaskedCanvas(sourceCanvas, maskCanvas, width, height) {
   return canvas;
 }
 
-function drawNightBackground(context, width, height, backgroundImage) {
-  context.save();
-  context.filter = 'saturate(0.95) brightness(0.82)';
-  drawCoverImage(context, backgroundImage, 0, 0, width, height);
-  context.restore();
+function createFallbackPortraitMask(width, height) {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  canvas.width = width;
+  canvas.height = height;
 
-  const overlay = context.createLinearGradient(0, 0, width, height);
-  overlay.addColorStop(0, 'rgba(8, 20, 44, 0.22)');
-  overlay.addColorStop(0.6, 'rgba(11, 18, 32, 0.16)');
-  overlay.addColorStop(1, 'rgba(2, 6, 23, 0.56)');
-  context.fillStyle = overlay;
-  context.fillRect(0, 0, width, height);
-
-  context.fillStyle = 'rgba(255, 235, 179, 0.9)';
+  const centerX = width * 0.5;
+  const centerY = height * 0.47;
+  const radiusX = width * 0.28;
+  const radiusY = height * 0.42;
+  const gradient = context.createRadialGradient(centerX, centerY, Math.min(radiusX, radiusY) * 0.52, centerX, centerY, Math.max(radiusX, radiusY));
+  gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+  gradient.addColorStop(0.72, 'rgba(255, 255, 255, 0.96)');
+  gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+  context.fillStyle = gradient;
   context.beginPath();
-  context.arc(width - 118, 98, 34, 0, Math.PI * 2);
+  context.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
   context.fill();
 
-  for (let index = 0; index < 18; index += 1) {
-    const x = 40 + ((index * 71) % Math.max(width - 80, 1));
-    const y = 26 + ((index * 37) % 128);
-    const radius = 1.2 + ((index % 3) * 0.45);
-    context.fillStyle = `rgba(255, 248, 220, ${0.32 + ((index % 4) * 0.11)})`;
+  const shoulder = context.createRadialGradient(centerX, height * 0.72, width * 0.12, centerX, height * 0.76, width * 0.5);
+  shoulder.addColorStop(0, 'rgba(255, 255, 255, 0.88)');
+  shoulder.addColorStop(0.64, 'rgba(255, 255, 255, 0.46)');
+  shoulder.addColorStop(1, 'rgba(255, 255, 255, 0)');
+  context.fillStyle = shoulder;
+  context.beginPath();
+  context.ellipse(centerX, height * 0.76, width * 0.36, height * 0.22, 0, 0, Math.PI * 2);
+  context.fill();
+
+  return canvas;
+}
+
+function drawPalaceRoof(context, x, y, width, height, options = {}) {
+  const roofHeight = Math.max(34, height * 0.36);
+  const eave = Math.max(18, width * 0.07);
+  const roofTop = y;
+  const roofBase = y + roofHeight;
+  const bodyTop = roofBase - 6;
+  const bodyHeight = height - roofHeight;
+  const accent = options.accent || '#d69a38';
+  const roof = options.roof || '#14203a';
+  const body = options.body || '#7a1f23';
+
+  context.save();
+  context.shadowColor = options.shadow || 'rgba(0, 0, 0, 0.34)';
+  context.shadowBlur = options.shadowBlur || 16;
+  context.shadowOffsetY = options.shadowOffsetY || 8;
+
+  const roofGradient = context.createLinearGradient(x, roofTop, x, roofBase);
+  roofGradient.addColorStop(0, '#273856');
+  roofGradient.addColorStop(0.46, roof);
+  roofGradient.addColorStop(1, '#071121');
+  context.fillStyle = roofGradient;
+  context.beginPath();
+  context.moveTo(x - eave, roofBase);
+  context.quadraticCurveTo(x + width * 0.18, roofTop + roofHeight * 0.08, x + width * 0.5, roofTop);
+  context.quadraticCurveTo(x + width * 0.82, roofTop + roofHeight * 0.08, x + width + eave, roofBase);
+  context.quadraticCurveTo(x + width * 0.84, roofBase + roofHeight * 0.2, x + width * 0.5, roofBase + 2);
+  context.quadraticCurveTo(x + width * 0.16, roofBase + roofHeight * 0.2, x - eave, roofBase);
+  context.closePath();
+  context.fill();
+
+  context.shadowBlur = 0;
+  context.strokeStyle = 'rgba(245, 204, 116, 0.58)';
+  context.lineWidth = Math.max(2, width * 0.006);
+  context.beginPath();
+  context.moveTo(x - eave * 0.78, roofBase - 4);
+  context.quadraticCurveTo(x + width * 0.2, roofTop + roofHeight * 0.16, x + width * 0.5, roofTop + 6);
+  context.quadraticCurveTo(x + width * 0.8, roofTop + roofHeight * 0.16, x + width + eave * 0.78, roofBase - 4);
+  context.stroke();
+
+  const bodyGradient = context.createLinearGradient(x, bodyTop, x, y + height);
+  bodyGradient.addColorStop(0, '#a73531');
+  bodyGradient.addColorStop(0.45, body);
+  bodyGradient.addColorStop(1, '#311016');
+  context.fillStyle = bodyGradient;
+  context.fillRect(x + width * 0.08, bodyTop, width * 0.84, bodyHeight);
+
+  context.fillStyle = 'rgba(251, 221, 151, 0.88)';
+  const columnCount = options.columns || 5;
+  const columnWidth = Math.max(3, width * 0.025);
+  for (let index = 0; index < columnCount; index += 1) {
+    const ratio = columnCount === 1 ? 0.5 : 0.16 + ((0.68 * index) / Math.max(columnCount - 1, 1));
+    const columnX = x + width * ratio;
+    context.fillRect(columnX, bodyTop + 8, columnWidth, bodyHeight - 8);
+  }
+
+  context.fillStyle = 'rgba(255, 205, 111, 0.72)';
+  const windowCount = Math.max(3, columnCount - 1);
+  for (let index = 0; index < windowCount; index += 1) {
+    const ratio = windowCount === 1 ? 0.5 : 0.22 + ((0.56 * index) / Math.max(windowCount - 1, 1));
+    const windowX = x + width * ratio;
+    context.fillRect(windowX, bodyTop + bodyHeight * 0.28, width * 0.08, bodyHeight * 0.22);
+  }
+
+  context.strokeStyle = accent;
+  context.lineWidth = Math.max(2, width * 0.005);
+  context.beginPath();
+  context.moveTo(x + width * 0.06, bodyTop);
+  context.lineTo(x + width * 0.94, bodyTop);
+  context.moveTo(x + width * 0.1, bodyTop + bodyHeight * 0.74);
+  context.lineTo(x + width * 0.9, bodyTop + bodyHeight * 0.74);
+  context.stroke();
+
+  context.restore();
+}
+
+function drawRoyalCloud(context, x, y, width, alpha = 0.18) {
+  context.save();
+  context.fillStyle = `rgba(255, 239, 200, ${alpha})`;
+  context.beginPath();
+  context.ellipse(x, y, width * 0.42, width * 0.09, -0.08, 0, Math.PI * 2);
+  context.ellipse(x + width * 0.22, y + 2, width * 0.34, width * 0.07, 0.08, 0, Math.PI * 2);
+  context.ellipse(x - width * 0.24, y + 4, width * 0.26, width * 0.06, 0.12, 0, Math.PI * 2);
+  context.fill();
+  context.restore();
+}
+
+function drawRoyalPalaceNightBackground(context, width, height) {
+  const sky = context.createLinearGradient(0, 0, 0, height);
+  sky.addColorStop(0, '#071329');
+  sky.addColorStop(0.38, '#14294a');
+  sky.addColorStop(0.68, '#331b37');
+  sky.addColorStop(1, '#0b1020');
+  context.fillStyle = sky;
+  context.fillRect(0, 0, width, height);
+
+  const moonGlow = context.createRadialGradient(width * 0.78, height * 0.16, 8, width * 0.78, height * 0.16, width * 0.32);
+  moonGlow.addColorStop(0, 'rgba(255, 234, 180, 0.52)');
+  moonGlow.addColorStop(0.34, 'rgba(255, 211, 122, 0.18)');
+  moonGlow.addColorStop(1, 'rgba(255, 211, 122, 0)');
+  context.fillStyle = moonGlow;
+  context.fillRect(0, 0, width, height);
+
+  context.fillStyle = 'rgba(255, 238, 190, 0.94)';
+  context.beginPath();
+  context.arc(width * 0.78, height * 0.16, Math.max(22, width * 0.045), 0, Math.PI * 2);
+  context.fill();
+
+  context.fillStyle = 'rgba(10, 23, 41, 0.34)';
+  context.beginPath();
+  context.arc(width * 0.795, height * 0.15, Math.max(19, width * 0.04), 0, Math.PI * 2);
+  context.fill();
+
+  for (let index = 0; index < 34; index += 1) {
+    const x = 24 + ((index * 83) % Math.max(width - 48, 1));
+    const y = 18 + ((index * 47) % Math.max(height * 0.32, 1));
+    const radius = 0.8 + ((index % 4) * 0.42);
+    context.fillStyle = `rgba(255, 246, 214, ${0.2 + ((index % 5) * 0.08)})`;
     context.beginPath();
     context.arc(x, y, radius, 0, Math.PI * 2);
     context.fill();
   }
+
+  drawRoyalCloud(context, width * 0.3, height * 0.15, width * 0.42, 0.14);
+  drawRoyalCloud(context, width * 0.58, height * 0.25, width * 0.34, 0.12);
+  drawRoyalCloud(context, width * 0.16, height * 0.31, width * 0.32, 0.1);
+
+  const mountain = context.createLinearGradient(0, height * 0.3, 0, height * 0.62);
+  mountain.addColorStop(0, 'rgba(39, 69, 79, 0.5)');
+  mountain.addColorStop(1, 'rgba(8, 18, 33, 0.72)');
+  context.fillStyle = mountain;
+  context.beginPath();
+  context.moveTo(0, height * 0.52);
+  context.lineTo(width * 0.18, height * 0.34);
+  context.lineTo(width * 0.34, height * 0.5);
+  context.lineTo(width * 0.52, height * 0.29);
+  context.lineTo(width * 0.74, height * 0.51);
+  context.lineTo(width, height * 0.36);
+  context.lineTo(width, height * 0.72);
+  context.lineTo(0, height * 0.72);
+  context.closePath();
+  context.fill();
+
+  const courtyard = context.createLinearGradient(0, height * 0.68, 0, height);
+  courtyard.addColorStop(0, 'rgba(59, 39, 47, 0.94)');
+  courtyard.addColorStop(0.45, 'rgba(31, 27, 38, 0.96)');
+  courtyard.addColorStop(1, 'rgba(6, 10, 22, 0.98)');
+  context.fillStyle = courtyard;
+  context.fillRect(0, height * 0.66, width, height * 0.34);
+
+  drawPalaceRoof(context, width * 0.12, height * 0.42, width * 0.76, height * 0.26, {
+    columns: 7,
+    shadowBlur: 22,
+    shadowOffsetY: 10
+  });
+  drawPalaceRoof(context, width * -0.08, height * 0.5, width * 0.34, height * 0.18, {
+    columns: 3,
+    shadowBlur: 14,
+    accent: '#bf7e2b'
+  });
+  drawPalaceRoof(context, width * 0.74, height * 0.51, width * 0.32, height * 0.17, {
+    columns: 3,
+    shadowBlur: 14,
+    accent: '#bf7e2b'
+  });
+
+  const path = context.createLinearGradient(width * 0.5, height * 0.66, width * 0.5, height);
+  path.addColorStop(0, 'rgba(168, 111, 56, 0.26)');
+  path.addColorStop(1, 'rgba(236, 197, 116, 0.05)');
+  context.fillStyle = path;
+  context.beginPath();
+  context.moveTo(width * 0.42, height * 0.67);
+  context.lineTo(width * 0.58, height * 0.67);
+  context.lineTo(width * 0.82, height);
+  context.lineTo(width * 0.18, height);
+  context.closePath();
+  context.fill();
+
+  for (let index = 0; index < 8; index += 1) {
+    const x = width * (0.18 + (index * 0.09));
+    const y = height * (0.69 + ((index % 2) * 0.035));
+    const glow = context.createRadialGradient(x, y, 2, x, y, width * 0.055);
+    glow.addColorStop(0, 'rgba(255, 202, 104, 0.72)');
+    glow.addColorStop(0.34, 'rgba(255, 163, 70, 0.2)');
+    glow.addColorStop(1, 'rgba(255, 163, 70, 0)');
+    context.fillStyle = glow;
+    context.fillRect(x - width * 0.06, y - width * 0.06, width * 0.12, width * 0.12);
+    context.fillStyle = 'rgba(255, 214, 127, 0.86)';
+    context.fillRect(x - 3, y - 7, 6, 14);
+  }
+
+  context.globalCompositeOperation = 'soft-light';
+  for (let y = 0; y < height; y += 3) {
+    context.fillStyle = `rgba(255, 244, 218, ${0.018 + ((y % 9) * 0.002)})`;
+    context.fillRect(0, y, width, 1);
+  }
+  context.globalCompositeOperation = 'source-over';
+
+  const vignette = context.createRadialGradient(width * 0.5, height * 0.48, width * 0.2, width * 0.5, height * 0.5, width * 0.74);
+  vignette.addColorStop(0, 'rgba(255, 255, 255, 0)');
+  vignette.addColorStop(0.62, 'rgba(7, 16, 33, 0.08)');
+  vignette.addColorStop(1, 'rgba(2, 6, 23, 0.5)');
+  context.fillStyle = vignette;
+  context.fillRect(0, 0, width, height);
+}
+
+function applyRoyalAnimationFinish(context, width, height) {
+  context.save();
+  context.globalCompositeOperation = 'screen';
+  const warmBloom = context.createRadialGradient(width * 0.5, height * 0.62, width * 0.04, width * 0.5, height * 0.62, width * 0.64);
+  warmBloom.addColorStop(0, 'rgba(255, 206, 125, 0.22)');
+  warmBloom.addColorStop(0.46, 'rgba(246, 176, 103, 0.08)');
+  warmBloom.addColorStop(1, 'rgba(246, 176, 103, 0)');
+  context.fillStyle = warmBloom;
+  context.fillRect(0, 0, width, height);
+  context.restore();
+
+  context.save();
+  context.globalCompositeOperation = 'multiply';
+  const contrastWash = context.createLinearGradient(0, 0, 0, height);
+  contrastWash.addColorStop(0, 'rgba(12, 22, 41, 0.04)');
+  contrastWash.addColorStop(0.56, 'rgba(62, 30, 47, 0.04)');
+  contrastWash.addColorStop(1, 'rgba(2, 6, 23, 0.18)');
+  context.fillStyle = contrastWash;
+  context.fillRect(0, 0, width, height);
+  context.restore();
+}
+
+function drawNightBackground(context, width, height) {
+  drawRoyalPalaceNightBackground(context, width, height);
+  applyRoyalAnimationFinish(context, width, height);
 }
 
 function drawForegroundShadow(context, maskCanvas, x, y, width, height) {
@@ -7992,27 +8209,24 @@ async function createJoseonPhotoCard(sourceImage, style = aiPhotoSelectedStyle) 
 
   if (style === 'night') {
     try {
-      const [nightBackground, segmentedSubject] = await Promise.all([
-        loadAiPhotoAsset(AI_PHOTO_NIGHT_BACKGROUND_URL),
-        segmentAiPhotoSubject(sourceImage, imageWidth, imageHeight)
-      ]);
+      const segmentedSubject = await segmentAiPhotoSubject(sourceImage, imageWidth, imageHeight);
       if (!segmentedSubject?.maskCanvas) throw new Error('Subject mask unavailable');
       const maskedSubject = createMaskedCanvas(painterlyCanvas, segmentedSubject.maskCanvas, imageWidth, imageHeight);
-      drawNightBackground(tempContext, imageWidth, imageHeight, nightBackground);
+      drawNightBackground(tempContext, imageWidth, imageHeight);
       drawForegroundShadow(tempContext, segmentedSubject.maskCanvas, 0, 0, imageWidth, imageHeight);
       drawNightSubjectGlow(tempContext, segmentedSubject.maskCanvas, 0, 0, imageWidth, imageHeight);
       tempContext.drawImage(maskedSubject, 0, 0);
+      applyRoyalAnimationFinish(tempContext, imageWidth, imageHeight);
     } catch (error) {
       usedFallback = true;
-      tempContext.drawImage(painterlyCanvas, 0, 0);
-      tempContext.globalCompositeOperation = 'multiply';
-      const fallbackOverlay = tempContext.createLinearGradient(0, 0, imageWidth, imageHeight);
-      fallbackOverlay.addColorStop(0, 'rgba(15, 23, 42, 0.12)');
-      fallbackOverlay.addColorStop(1, 'rgba(30, 41, 59, 0.38)');
-      tempContext.fillStyle = fallbackOverlay;
-      tempContext.fillRect(0, 0, imageWidth, imageHeight);
-      tempContext.globalCompositeOperation = 'source-over';
-      transformNote = `${transformNote} ${ft('photo.fallback', 'The segmentation model could not load, so MARU used the built-in browser art filter instead.')}`;
+      const fallbackMask = createFallbackPortraitMask(imageWidth, imageHeight);
+      const maskedSubject = createMaskedCanvas(painterlyCanvas, fallbackMask, imageWidth, imageHeight);
+      drawNightBackground(tempContext, imageWidth, imageHeight);
+      drawForegroundShadow(tempContext, fallbackMask, 0, 0, imageWidth, imageHeight);
+      drawNightSubjectGlow(tempContext, fallbackMask, 0, 0, imageWidth, imageHeight);
+      tempContext.drawImage(maskedSubject, 0, 0);
+      applyRoyalAnimationFinish(tempContext, imageWidth, imageHeight);
+      transformNote = `${transformNote} ${ft('photo.fallback', 'The segmentation model could not load, so MARU used a browser-side portrait mask with the generated royal night background.')}`;
     }
   } else {
     tempContext.drawImage(painterlyCanvas, 0, 0);
@@ -8178,7 +8392,7 @@ function bindAiPhotoDemo() {
         aiPhotoDownloadUrl = canvas.toDataURL('image/png');
         setStatus(usedFallback ? transformNote : ft('photo.done', 'Your Joseon-style card is ready to download.'));
       } catch (error) {
-        setStatus(ft('photo.fallback', 'The segmentation model could not load, so MARU used the built-in browser art filter instead.'));
+        setStatus(ft('photo.fallback', 'The segmentation model could not load, so MARU used a browser-side portrait mask with the generated royal night background.'));
       } finally {
         actionButton.disabled = false;
         actionButton.textContent = ft('photo.action', 'Create Joseon Card');
