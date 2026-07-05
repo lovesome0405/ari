@@ -1,114 +1,129 @@
 [
   {
-    "id": "palace-history-course",
+    "id": "craft-design-intro-course",
     "title": {
-      "ko": "궁궐 역사 산책 코스",
-      "en": "Royal Palace History Walk"
+      "ko": "K-공예·디자인 입문 코스",
+      "en": "K-Craft and Design Intro Route"
     },
-    "theme": "palace",
-    "target": ["history", "architecture", "first-time-visitor", "royal-culture"],
-    "duration": "3-4 hours",
-    "budget": "low",
-    "indoorOutdoor": "outdoor",
+    "theme": "craft-design",
+    "target": ["공예 체험", "디자인 전시", "로컬 브랜드", "쇼핑", "first-time-visitor"],
+    "duration": "2-3 hours",
+    "budget": "medium",
+    "indoorOutdoor": "mixed",
     "recommendedTime": ["morning", "afternoon"],
-    "score": 94,
+    "score": 95,
     "walking": {
-      "ko": "보통",
-      "en": "Moderate"
+      "ko": "낮음~보통",
+      "en": "Low to moderate"
     },
     "fee": {
-      "ko": "저비용",
-      "en": "Low cost"
+      "ko": "무료 관람 + 유료 체험 선택 가능",
+      "en": "Free browsing with optional paid experiences"
     },
     "places": [
       {
-        "id": "national-palace-museum",
+        "id": "seoul-museum-of-craft-art",
         "name": {
-          "ko": "국립고궁박물관",
-          "en": "National Palace Museum"
+          "ko": "서울공예박물관",
+          "en": "Seoul Museum of Craft Art"
         },
-        "category": "museum",
-        "address": "서울특별시 종로구 효자로 12",
-        "lat": 37.5769,
-        "lng": 126.9749,
+        "category": "craft museum",
+        "categoryEn": "Craft museum",
+        "district": "종로구",
+        "address": "서울특별시 종로구 율곡로3길 4",
+        "lat": 37.576371,
+        "lng": 126.983395,
         "description": {
-          "ko": "조선 왕실 유물과 의례를 먼저 이해할 수 있는 박물관입니다.",
-          "en": "A museum that introduces Joseon royal artifacts and court rituals before the palace visit."
+          "ko": "한국 공예 재료와 생활 문화의 흐름을 먼저 이해하기 좋은 대표 박물관입니다.",
+          "en": "A strong starting point for understanding Korean craft materials and everyday design culture."
         },
-        "publicDataSource": "한국관광공사 TourAPI / 문화기관 공식 안내"
+        "visitTip": "기획전 일정과 체험 프로그램 운영 여부를 공식 안내에서 먼저 확인하세요.",
+        "visitTipEn": "Check special exhibitions and workshop availability through the official schedule.",
+        "publicDataSource": "서울공예박물관 공식 안내 / 한국디자인진흥원 공공데이터 해석"
       },
       {
-        "id": "gyeongbokgung-palace",
+        "id": "kcdf-gallery",
         "name": {
-          "ko": "경복궁",
-          "en": "Gyeongbokgung Palace"
+          "ko": "KCDF 갤러리",
+          "en": "KCDF Gallery"
         },
-        "category": "heritage",
-        "address": "서울특별시 종로구 사직로 161",
-        "lat": 37.579617,
-        "lng": 126.977041,
+        "category": "craft gallery",
+        "categoryEn": "Craft gallery",
+        "district": "종로구",
+        "address": "서울특별시 종로구 인사동11길 8",
+        "lat": 37.57374,
+        "lng": 126.98601,
         "description": {
-          "ko": "조선 왕조의 대표 궁궐로 왕실 의례와 궁궐 건축을 이해하기 좋습니다.",
-          "en": "A representative royal palace of the Joseon Dynasty, useful for understanding court rituals and palace architecture."
+          "ko": "공예 작가와 상품을 한 화면에서 비교하며 외국인에게 설명하기 좋은 공예 전시 공간입니다.",
+          "en": "A craft exhibition space that helps visitors compare makers, products, and stories in one stop."
         },
-        "publicDataSource": "국가유산청 문화재 공간정보 / 한국관광공사 TourAPI"
+        "visitTip": "전시 교체 주기가 빨라 방문 전 현재 전시와 판매 구성을 확인하는 편이 좋습니다.",
+        "visitTipEn": "Exhibitions rotate often, so it is best to check the current showcase before visiting.",
+        "publicDataSource": "KCDF 공식 안내 / 한국디자인진흥원_글로벌생활명품 선정기업 및 제품정보 목록"
       },
       {
-        "id": "national-folk-museum",
+        "id": "annyeong-insadong",
         "name": {
-          "ko": "국립민속박물관",
-          "en": "National Folk Museum of Korea"
+          "ko": "안녕인사동",
+          "en": "Anyoung Insadong"
         },
-        "category": "museum",
-        "address": "서울특별시 종로구 삼청로 37",
-        "lat": 37.5816,
-        "lng": 126.9787,
+        "category": "design mall",
+        "categoryEn": "Design mall",
+        "district": "종로구",
+        "address": "서울특별시 종로구 인사동길 49",
+        "lat": 37.57453,
+        "lng": 126.98346,
         "description": {
-          "ko": "왕실문화 이후 한국인의 생활문화와 민속을 이어서 볼 수 있습니다.",
-          "en": "A place to continue from royal culture into everyday Korean life and folk culture."
+          "ko": "전통 소재와 현대 취향을 결합한 브랜드, 굿즈, 선물 선택지를 한 번에 보기 좋은 복합 공간입니다.",
+          "en": "A compact stop for browsing brands, gifts, and goods that blend Korean craft with modern taste."
         },
-        "publicDataSource": "한국관광공사 TourAPI / 문화기관 공식 안내"
+        "visitTip": "선물 구매가 목적이라면 마지막 동선에 두는 편이 짐 관리에 유리합니다.",
+        "visitTipEn": "If buying gifts is the goal, keeping this stop for later usually makes the route easier.",
+        "publicDataSource": "현장 운영 정보 / 대한무역투자진흥공사_해외시장뉴스 해석"
       }
     ],
     "aiSummary": {
-      "ko": "조선 왕실 문화와 서울의 역사적 중심지를 자연스럽게 경험할 수 있는 첫 방문자용 대표 코스입니다.",
-      "en": "This route helps first-time visitors experience Joseon royal culture and Seoul's historical center."
+      "ko": "마루의 핵심 정체성을 가장 쉽게 보여주는 공예·디자인 입문 코스입니다. 먼저 이해하고, 보고, 마지막에 구매 동선까지 연결합니다.",
+      "en": "The clearest first route for MARU: understand Korean craft, see live examples, and end with a purchase-friendly stop."
     },
     "reason": {
-      "ko": "박물관에서 배경지식을 얻고 경복궁에서 실제 공간을 본 뒤 민속박물관으로 생활문화를 확장해 이해할 수 있습니다.",
-      "en": "Visitors can learn the context in a museum, read the palace space on site, and then expand into everyday folk culture."
+      "ko": "산업통상부 공공데이터가 설명하는 한국 디자인 기업·상품성·해외 수요 맥락을, 서울공예박물관과 공예 전시 공간, 구매 가능한 브랜드 공간으로 순서 있게 연결할 수 있습니다.",
+      "en": "It turns industrial public data about design firms, product quality, and overseas demand into an easy on-site story with exhibition and buying stops."
     },
     "tip": {
-      "ko": "궁궐 휴궁일, 해설 시간, 박물관 운영시간은 방문 전 공식 출처에서 확인하세요.",
-      "en": "Check palace closing days, guided tour times, and museum hours through official sources before visiting."
+      "ko": "발표에서는 '공공데이터로 설명하고 현장에서 소비로 이어지는 구조'를 가장 분명하게 보여주는 코스로 소개하면 좋습니다.",
+      "en": "For demos, present this as the clearest route from public-data explanation to real on-site consumption."
     },
     "keywords": [
       {
-        "name": "Joseon Dynasty",
+        "name": "K-Craft Entry",
         "description": {
-          "ko": "조선 왕실문화와 국가 질서를 이해하는 핵심 키워드입니다.",
-          "en": "A key lens for understanding royal culture and state order."
+          "ko": "처음 방문한 외국인도 한국 공예와 디자인의 차이를 쉽게 이해하도록 돕는 입문 축입니다.",
+          "en": "An entry lens that helps first-time visitors quickly understand Korean craft and design."
         }
       },
       {
-        "name": "Royal Ritual",
+        "name": "Brand Discovery",
         "description": {
-          "ko": "궁궐 공간이 단순한 건물이 아니라 의례와 권위의 무대였음을 설명합니다.",
-          "en": "Explains how palace space worked as a stage for ritual and authority."
+          "ko": "전시 감상에서 끝나지 않고 실제 브랜드 발견과 구매로 이어지는 흐름을 뜻합니다.",
+          "en": "Moves beyond viewing into actual brand discovery and purchase intent."
         }
       },
       {
-        "name": "Palace Architecture",
+        "name": "Public Data Story",
         "description": {
-          "ko": "지붕선, 문, 마당 배치를 통해 전통 건축의 질서를 볼 수 있습니다.",
-          "en": "Rooflines, gates, and courtyards reveal the order of traditional architecture."
+          "ko": "기업·제품·해외 수요 데이터를 현장 방문 이유로 풀어내는 방식입니다.",
+          "en": "Uses firm, product, and export-demand data as a reason to visit physical spaces."
         }
       }
     ],
-    "image": "assets/images/routes/course-palace.webp",
-    "imagePrompt": "A refined visual guide illustration of a Joseon royal palace walk in Seoul, elegant rooflines, morning light, warm paper texture, no text, no logos.",
-    "publicDataSource": "국가유산청 문화재 공간정보 / 한국관광공사 TourAPI / 문화기관 공식 안내",
-    "source": "공공문화데이터 기반 샘플 추천 코스",
+    "imagePrompt": "A refined editorial travel illustration of Seoul craft and design exploration, museum to gallery to concept mall, elegant warm tones, no text, no logos.",
+    "sourceNames": [
+      "한국디자인진흥원_산업디자인전문회사",
+      "한국디자인진흥원_글로벌생활명품 선정기업 및 제품정보 목록",
+      "대한무역투자진흥공사_해외시장뉴스"
+    ],
+    "source": "산업통상부 산하 공공데이터와 서울 현장 공간 정보를 함께 읽어 구성한 K-공예·디자인 입문 코스입니다. 현재 버전은 GitHub Pages용 정적 JSON 시드 데이터이며, 운영 전 공식 정보 재확인이 필요합니다.",
     "mapLinks": {
       "google": "",
       "naver": "",
@@ -116,108 +131,122 @@
     }
   },
   {
-    "id": "bukchon-hanok-culture-course",
+    "id": "samcheong-design-story-course",
     "title": {
-      "ko": "북촌 한옥 문화 코스",
-      "en": "Bukchon Hanok Culture Walk"
+      "ko": "삼청·안국 디자인 스토리 코스",
+      "en": "Samcheong and Anguk Design Story Route"
     },
-    "theme": "hanok",
-    "target": ["hanok", "architecture", "slow-walk", "photo-spot", "local-culture"],
-    "duration": "2-3 hours",
-    "budget": "low",
+    "theme": "design-story",
+    "target": ["디자인 전시", "공예 체험", "실내 전시", "first-time-visitor"],
+    "duration": "3-4 hours",
+    "budget": "medium",
     "indoorOutdoor": "mixed",
     "recommendedTime": ["morning", "afternoon"],
-    "score": 90,
+    "score": 92,
     "walking": {
       "ko": "보통",
       "en": "Moderate"
     },
     "fee": {
-      "ko": "무료 중심",
-      "en": "Mostly free"
+      "ko": "전시 중심 / 일부 유료",
+      "en": "Exhibition-focused / some paid entries"
     },
     "places": [
       {
-        "id": "bukchon-hanok-village",
+        "id": "mmca-seoul",
+        "name": {
+          "ko": "국립현대미술관 서울",
+          "en": "MMCA Seoul"
+        },
+        "category": "design museum",
+        "categoryEn": "Design museum",
+        "district": "종로구",
+        "address": "서울특별시 종로구 삼청로 30",
+        "lat": 37.57863,
+        "lng": 126.9806,
+        "description": {
+          "ko": "현대 디자인 감각과 전시 연출을 통해 한국 시각문화의 현재형을 읽기 좋은 공간입니다.",
+          "en": "A strong place to read contemporary Korean visual culture through exhibition design and curation."
+        },
+        "visitTip": "전시는 교체되므로 당일 주요 전시 주제를 먼저 확인하면 추천 설명이 더 자연스럽습니다.",
+        "visitTipEn": "Check the current exhibition theme first so the route explanation feels more precise.",
+        "publicDataSource": "국립현대미술관 공식 안내 / 대한무역투자진흥공사_해외시장뉴스 해석"
+      },
+      {
+        "id": "seoul-museum-of-craft-art-story",
+        "name": {
+          "ko": "서울공예박물관",
+          "en": "Seoul Museum of Craft Art"
+        },
+        "category": "craft museum",
+        "categoryEn": "Craft museum",
+        "district": "종로구",
+        "address": "서울특별시 종로구 율곡로3길 4",
+        "lat": 37.576371,
+        "lng": 126.983395,
+        "description": {
+          "ko": "전통 공예 재료와 생활 도구가 오늘의 디자인 감각으로 이어지는 지점을 설명하기 좋습니다.",
+          "en": "Useful for explaining how historical craft materials connect to today’s design sensibility."
+        },
+        "visitTip": "도슨트 시간대가 맞으면 공예 설명 흐름이 훨씬 선명해집니다.",
+        "visitTipEn": "A docent session can make the craft-to-design story much clearer.",
+        "publicDataSource": "서울공예박물관 공식 안내 / 한국디자인진흥원 공공데이터 해석"
+      },
+      {
+        "id": "bukchon-hanok-village-design",
         "name": {
           "ko": "북촌한옥마을",
           "en": "Bukchon Hanok Village"
         },
-        "category": "hanok-village",
+        "category": "design street",
+        "categoryEn": "Design street",
+        "district": "종로구",
         "address": "서울특별시 종로구 계동길 일대",
         "lat": 37.582604,
         "lng": 126.983998,
         "description": {
-          "ko": "전통 한옥 주거지의 골목과 지붕선을 볼 수 있는 서울 대표 한옥 마을입니다.",
-          "en": "A signature Seoul hanok neighborhood where visitors can see traditional alleys and rooflines."
+          "ko": "건축, 재료, 골목 스케일을 통해 한국 생활 디자인의 분위기를 현장에서 체감하는 마무리 구간입니다.",
+          "en": "A final walk that lets visitors feel Korean lifestyle design through architecture, materials, and alley scale."
         },
-        "publicDataSource": "한국관광공사 TourAPI / 서울 관광정보"
-      },
-      {
-        "id": "changdeokgung-palace",
-        "name": {
-          "ko": "창덕궁",
-          "en": "Changdeokgung Palace"
-        },
-        "category": "heritage",
-        "address": "서울특별시 종로구 율곡로 99",
-        "lat": 37.5794,
-        "lng": 126.991,
-        "description": {
-          "ko": "자연 지형과 궁궐 건축이 조화롭게 이어지는 유네스코 세계유산입니다.",
-          "en": "A UNESCO World Heritage palace known for harmony between terrain and architecture."
-        },
-        "publicDataSource": "국가유산청 문화재 공간정보 / 한국관광공사 TourAPI"
-      },
-      {
-        "id": "unhyeongung",
-        "name": {
-          "ko": "운현궁",
-          "en": "Unhyeongung"
-        },
-        "category": "royal-residence",
-        "address": "서울특별시 종로구 삼일대로 464",
-        "lat": 37.5761,
-        "lng": 126.987,
-        "description": {
-          "ko": "궁궐 밖 왕실가의 생활 분위기와 한옥 공간 구성을 볼 수 있습니다.",
-          "en": "A royal residence that shows elite life and hanok space beyond the palace."
-        },
-        "publicDataSource": "국가유산청 문화재 공간정보 / 문화기관 공식 안내"
+        "visitTip": "주민 생활 공간인 만큼 짧고 조용하게 보는 동선으로 설명하는 편이 좋습니다.",
+        "visitTipEn": "Keep the stop short and respectful because the area is still residential.",
+        "publicDataSource": "서울 관광 정보 / 한국디자인진흥원_산업디자인전문회사 해석"
       }
     ],
     "aiSummary": {
-      "ko": "한옥 골목, 궁궐, 왕실가 생활 공간을 연결해 전통 주거문화와 건축미를 읽는 코스입니다.",
-      "en": "This route connects hanok alleys, a palace, and a royal residence to interpret Korean residential culture and architectural beauty."
+      "ko": "전시 해석, 공예 재료, 생활 공간 감각을 순서대로 읽으며 한국 디자인 스토리를 설명하는 코스입니다.",
+      "en": "A route that interprets Korean design through exhibitions, craft materials, and lived-in spatial mood."
     },
     "reason": {
-      "ko": "북촌의 실제 골목과 창덕궁의 궁궐 건축, 운현궁의 생활 공간을 비교하면 한옥이 단순한 사진 명소가 아니라 생활과 질서의 공간임을 이해할 수 있습니다.",
-      "en": "By comparing Bukchon alleys, Changdeokgung architecture, and Unhyeongung living spaces, visitors understand hanok as a lived cultural form."
+      "ko": "디자인 기업과 상품 데이터를 단순 목록으로 보여주지 않고, 전시-공예-생활공간 순서로 풀어 외국인이 '왜 한국 디자인이 다르게 느껴지는지' 설명하기 좋습니다.",
+      "en": "Instead of showing firms and products as a list, it explains why Korean design feels distinctive through exhibition, craft, and lived space."
     },
     "tip": {
-      "ko": "북촌은 실제 주민이 사는 공간이므로 조용히 이동하고, 사진 촬영 안내 표지를 지켜주세요.",
-      "en": "Bukchon is a residential area, so keep noise low and follow photo guidance signs."
+      "ko": "공예와 디자인의 차이를 묻는 사용자에게 가장 설명력이 높은 코스입니다.",
+      "en": "This is the strongest route when a visitor asks how Korean craft and design differ."
     },
     "keywords": [
       {
-        "name": "Hanok",
+        "name": "Design Narrative",
         "description": {
-          "ko": "목재, 마당, 처마, 온돌 등 한국 전통 주거문화의 요소를 담은 건축입니다.",
-          "en": "Traditional Korean architecture shaped by wood, courtyards, eaves, and ondol heating."
+          "ko": "전시와 공간 경험을 통해 한국 디자인을 이야기처럼 이해하는 방식입니다.",
+          "en": "A story-driven way to understand Korean design through exhibitions and spaces."
         }
       },
       {
-        "name": "Living Heritage",
+        "name": "Material Culture",
         "description": {
-          "ko": "문화유산이 전시물이 아니라 오늘의 도시 생활 속에 이어지는 방식을 뜻합니다.",
-          "en": "Heritage that continues within everyday urban life rather than only as an exhibit."
+          "ko": "재료와 생활 도구가 디자인 언어로 이어지는 흐름을 뜻합니다.",
+          "en": "Shows how materials and everyday tools evolve into a design language."
         }
       }
     ],
-    "image": "assets/images/routes/course-hanok.webp",
-    "imagePrompt": "A warm visual guide illustration of Bukchon hanok alleys in Seoul, tiled roofs, quiet morning atmosphere, soft ink-and-color texture, no text, no logos.",
-    "publicDataSource": "한국관광공사 TourAPI / 국가유산청 문화재 공간정보 / 서울 관광정보",
-    "source": "공공문화데이터 기반 샘플 추천 코스",
+    "imagePrompt": "An atmospheric route illustration around Samcheong and Anguk, museum interiors, craft artifacts, hanok alleys, soft editorial travel poster style.",
+    "sourceNames": [
+      "한국디자인진흥원_산업디자인전문회사",
+      "대한무역투자진흥공사_해외시장뉴스"
+    ],
+    "source": "산업부 공공데이터를 디자인 해설의 근거로 삼고, 서울 북촌·삼청 권역의 전시와 공간 경험을 연결한 스토리형 코스입니다. 현재는 정적 JSON 시드 데이터 기반입니다.",
     "mapLinks": {
       "google": "",
       "naver": "",
@@ -225,42 +254,46 @@
     }
   },
   {
-    "id": "insadong-craft-course",
+    "id": "insadong-brand-buying-course",
     "title": {
-      "ko": "인사동 전통공예 코스",
-      "en": "Insadong Traditional Craft Course"
+      "ko": "인사동 브랜드 발견·구매 코스",
+      "en": "Insadong Brand Discovery and Buying Route"
     },
-    "theme": "craft",
-    "target": ["craft", "shopping", "culture-experience", "indoor", "first-time-visitor"],
+    "theme": "brand-shopping",
+    "target": ["로컬 브랜드", "쇼핑", "공예 체험", "gift-buying"],
     "duration": "2-3 hours",
     "budget": "medium",
     "indoorOutdoor": "mixed",
     "recommendedTime": ["afternoon", "evening"],
-    "score": 88,
+    "score": 93,
     "walking": {
       "ko": "낮음",
       "en": "Low"
     },
     "fee": {
-      "ko": "무료 관람 + 유료 체험 가능",
-      "en": "Free browsing with paid workshops available"
+      "ko": "무료 관람 + 구매 선택",
+      "en": "Free browsing with optional purchases"
     },
     "places": [
       {
-        "id": "insadong",
+        "id": "kcdf-gallery-buying",
         "name": {
-          "ko": "인사동",
-          "en": "Insadong"
+          "ko": "KCDF 갤러리",
+          "en": "KCDF Gallery"
         },
-        "category": "traditional-street",
-        "address": "서울특별시 종로구 인사동길 일대",
-        "lat": 37.5718,
-        "lng": 126.986,
+        "category": "craft gallery",
+        "categoryEn": "Craft gallery",
+        "district": "종로구",
+        "address": "서울특별시 종로구 인사동11길 8",
+        "lat": 37.57374,
+        "lng": 126.98601,
         "description": {
-          "ko": "전통 공예품, 서화, 찻집이 모여 있는 서울의 대표 전통문화 거리입니다.",
-          "en": "A representative traditional culture street with crafts, calligraphy, galleries, and teahouses."
+          "ko": "공예 작가성과 상품성을 같이 읽기 좋은 출발점으로, 선물용 추천 설명에도 유리합니다.",
+          "en": "A strong starting point for explaining both craft value and gift-ready product quality."
         },
-        "publicDataSource": "한국관광공사 TourAPI / 서울 관광정보"
+        "visitTip": "작가전과 상품전의 차이를 함께 설명하면 브랜드 추천 이유가 더 분명해집니다.",
+        "visitTipEn": "Explaining the difference between artist-led shows and product-led displays helps the recommendation feel clearer.",
+        "publicDataSource": "KCDF 공식 안내 / 한국디자인진흥원_글로벌생활명품 선정기업 및 제품정보 목록"
       },
       {
         "id": "ssamziegil",
@@ -268,65 +301,76 @@
           "ko": "쌈지길",
           "en": "Ssamziegil"
         },
-        "category": "craft-market",
+        "category": "design mall",
+        "categoryEn": "Design mall",
+        "district": "종로구",
         "address": "서울특별시 종로구 인사동길 44",
-        "lat": 37.574,
-        "lng": 126.9849,
+        "lat": 37.57403,
+        "lng": 126.98527,
         "description": {
-          "ko": "현대적으로 재해석된 공예 상점과 체험 공간을 둘러볼 수 있습니다.",
-          "en": "A craft-focused complex where visitors can browse contemporary reinterpretations of traditional goods."
+          "ko": "소규모 공예 상품과 개성 있는 선물 아이템을 비교하기 좋은 대표 구매 스팟입니다.",
+          "en": "A compact buying spot for comparing smaller craft products and giftable Korean design items."
         },
-        "publicDataSource": "서울 관광정보 / 문화공간 공식 안내"
+        "visitTip": "구매를 목적으로 하면 층별로 빠르게 둘러보고 마지막에 다시 내려오는 동선이 효율적입니다.",
+        "visitTipEn": "If the goal is shopping, it is efficient to browse quickly upward and return to the best stops later.",
+        "publicDataSource": "현장 운영 정보 / 한국디자인진흥원_우수디자인전문회사 해석"
       },
       {
-        "id": "seoul-craft-museum",
+        "id": "annyeong-insadong-buying",
         "name": {
-          "ko": "서울공예박물관",
-          "en": "Seoul Museum of Craft Art"
+          "ko": "안녕인사동",
+          "en": "Anyoung Insadong"
         },
-        "category": "museum",
-        "address": "서울특별시 종로구 율곡로3길 4",
-        "lat": 37.5765,
-        "lng": 126.9839,
+        "category": "brand complex",
+        "categoryEn": "Brand complex",
+        "district": "종로구",
+        "address": "서울특별시 종로구 인사동길 49",
+        "lat": 37.57453,
+        "lng": 126.98346,
         "description": {
-          "ko": "공예의 역사와 재료, 제작 과정을 전시로 이해할 수 있는 박물관입니다.",
-          "en": "A museum for understanding craft history, materials, and making processes."
+          "ko": "전통 소재를 현대적으로 풀어낸 브랜드, 라이프스타일 제품, 식음 공간을 함께 둘러볼 수 있습니다.",
+          "en": "Combines modernized traditional-material brands, lifestyle goods, and browsing-friendly rest stops."
         },
-        "publicDataSource": "전통문화포털 전통문화 데이터 / 서울시 문화시설 정보"
+        "visitTip": "사용자 예산이 낮으면 먼저 구경 위주로, 예산이 있으면 마지막에 선물 구매까지 연결하는 식으로 설명하세요.",
+        "visitTipEn": "When budget is limited, frame this as browsing first and gift buying last if there is room.",
+        "publicDataSource": "현장 운영 정보 / 대한무역투자진흥공사_4대 소비재 국가별 수출금액 해석"
       }
     ],
     "aiSummary": {
-      "ko": "전통 공예를 거리, 상점, 박물관 관점에서 입체적으로 이해하는 체험형 코스입니다.",
-      "en": "This experience route helps visitors understand traditional craft through streets, shops, and museum interpretation."
+      "ko": "전시 감상에서 끝나지 않고 실제 선물 구매와 브랜드 발견까지 이어지는 외국인 소비 전환형 코스입니다.",
+      "en": "A route built not just for viewing but for real brand discovery and gift-oriented purchases."
     },
     "reason": {
-      "ko": "외국인 관광객이 기념품 쇼핑을 넘어 공예의 재료, 상징, 현대적 재해석까지 자연스럽게 이해할 수 있습니다.",
-      "en": "Visitors can move beyond souvenir shopping and understand craft materials, symbols, and modern reinterpretations."
+      "ko": "마루의 핵심 차별점인 '방문-이해-구매 연결'을 가장 직접적으로 보여주는 코스이며, 산업부 공공데이터의 상품성 설명과 잘 맞습니다.",
+      "en": "This is the clearest route for MARU’s visit-to-understanding-to-purchase value, matching industrial data about product competitiveness."
     },
     "tip": {
-      "ko": "공예 체험은 현장 접수 또는 사전 예약 여부가 다르므로 방문 전 공식 안내를 확인하세요.",
-      "en": "Craft workshops may require on-site registration or advance booking, so check official guidance before visiting."
+      "ko": "발표에서 사업화 가능성을 설명할 때 가장 쓰기 좋은 소비 전환형 코스입니다.",
+      "en": "This is the best route to use when explaining commercialization potential in the presentation."
     },
     "keywords": [
       {
-        "name": "Traditional Craft",
+        "name": "Gift Conversion",
         "description": {
-          "ko": "손기술, 재료, 문양이 결합된 한국 전통문화의 생활형 표현입니다.",
-          "en": "A living expression of Korean tradition shaped by hand skills, materials, and patterns."
+          "ko": "체험과 감상이 실제 선물 구매로 이어지는 장면을 의미합니다.",
+          "en": "Describes the point where cultural browsing turns into a real gift purchase."
         }
       },
       {
-        "name": "Pattern",
+        "name": "Local Brand Search",
         "description": {
-          "ko": "문양은 복, 장수, 자연, 계절 같은 상징을 시각적으로 전달합니다.",
-          "en": "Patterns communicate symbols such as fortune, longevity, nature, and seasons."
+          "ko": "대형 관광지보다 작지만 설명 가능한 브랜드를 발견하는 흐름입니다.",
+          "en": "Focuses on discovering smaller but more explainable local brands."
         }
       }
     ],
-    "image": "assets/images/routes/course-craft.webp",
-    "imagePrompt": "A Korean traditional craft street visual guide, ceramic bowls, paper craft, textile patterns, warm gallery light, refined paper texture, no text, no logos.",
-    "publicDataSource": "전통문화포털 전통문화 데이터 / 한국관광공사 TourAPI / 서울시 문화시설 정보",
-    "source": "공공문화데이터 기반 샘플 추천 코스",
+    "imagePrompt": "A stylish Seoul craft-shopping route illustration in Insadong, galleries, gift stores, modern traditional goods, editorial guide aesthetics.",
+    "sourceNames": [
+      "한국디자인진흥원_우수디자인전문회사",
+      "한국디자인진흥원_글로벌생활명품 선정기업 및 제품정보 목록",
+      "대한무역투자진흥공사_4대 소비재 국가별 수출금액"
+    ],
+    "source": "산업통상부 공공데이터가 설명하는 상품성·브랜드 신뢰도·국가별 수요 맥락을 인사동 구매 동선과 연결한 코스입니다. 현재는 정적 JSON 시드 데이터 기반입니다.",
     "mapLinks": {
       "google": "",
       "naver": "",
@@ -334,108 +378,123 @@
     }
   },
   {
-    "id": "traditional-market-food-course",
+    "id": "seongsu-local-brand-course",
     "title": {
-      "ko": "전통시장 미식 코스",
-      "en": "Traditional Market Food Course"
+      "ko": "성수 로컬 브랜드 탐색 코스",
+      "en": "Seongsu Local Brand Discovery Route"
     },
-    "theme": "market",
-    "target": ["food", "traditional-market", "local-life", "budget-friendly", "group"],
-    "duration": "3 hours",
-    "budget": "low",
+    "theme": "local-brand",
+    "target": ["로컬 브랜드", "쇼핑", "야간 무드", "photo-friendly"],
+    "duration": "3-4 hours",
+    "budget": "medium",
     "indoorOutdoor": "mixed",
     "recommendedTime": ["afternoon", "evening"],
-    "score": 87,
+    "score": 91,
     "walking": {
       "ko": "보통",
       "en": "Moderate"
     },
     "fee": {
-      "ko": "저비용",
-      "en": "Low cost"
+      "ko": "구매 선택형",
+      "en": "Purchase-optional"
     },
     "places": [
       {
-        "id": "tongin-market",
+        "id": "seongsu-yeonbang",
         "name": {
-          "ko": "통인시장",
-          "en": "Tongin Market"
+          "ko": "성수연방",
+          "en": "Seongsu Yeonbang"
         },
-        "category": "traditional-market",
-        "address": "서울특별시 종로구 자하문로15길 일대",
-        "lat": 37.5808,
-        "lng": 126.9697,
+        "category": "brand complex",
+        "categoryEn": "Brand complex",
+        "district": "성동구",
+        "address": "서울특별시 성동구 아차산로5길 10",
+        "lat": 37.54152,
+        "lng": 127.05697,
         "description": {
-          "ko": "도시락 카페 등 시장 체험형 동선으로 전통시장 문화를 쉽게 접할 수 있습니다.",
-          "en": "A market known for approachable food experiences that help visitors understand local market culture."
+          "ko": "로컬 브랜드와 라이프스타일 상점이 밀집해 있어 외국인 취향 탐색에 유리한 복합 공간입니다.",
+          "en": "A clustered lifestyle and local-brand complex that works well for visitor taste discovery."
         },
-        "publicDataSource": "서울시 전통시장 정보 / 한국관광공사 TourAPI"
+        "visitTip": "브랜드 종류가 많아 사용자의 예산과 관심사를 먼저 좁혀 설명하는 편이 좋습니다.",
+        "visitTipEn": "Because there are many brands, it helps to narrow by taste and budget first.",
+        "publicDataSource": "현장 운영 정보 / 대한무역투자진흥공사_해외시장뉴스 해석"
       },
       {
-        "id": "gwangjang-market",
+        "id": "lcdc-seoul",
         "name": {
-          "ko": "광장시장",
-          "en": "Gwangjang Market"
+          "ko": "LCDC SEOUL",
+          "en": "LCDC SEOUL"
         },
-        "category": "traditional-market",
-        "address": "서울특별시 종로구 창경궁로 88",
-        "lat": 37.5701,
-        "lng": 126.9996,
+        "category": "design showroom",
+        "categoryEn": "Design showroom",
+        "district": "성동구",
+        "address": "서울특별시 성동구 연무장17길 10",
+        "lat": 37.54158,
+        "lng": 127.06146,
         "description": {
-          "ko": "빈대떡, 마약김밥 등 대중적인 시장 음식을 통해 서울의 생활문화를 경험할 수 있습니다.",
-          "en": "A popular market where visitors can experience Seoul's everyday food culture."
+          "ko": "브랜드 편집과 공간 연출을 함께 보여줘 '한국 취향의 현재형'을 설명하기 좋은 쇼룸입니다.",
+          "en": "A showroom where brand editing and spatial staging make today’s Korean taste easy to explain."
         },
-        "publicDataSource": "서울시 전통시장 정보 / 한국관광공사 TourAPI"
+        "visitTip": "전시형 공간이라 빠른 구매보다 브랜드 설명 중심으로 접근하는 편이 좋습니다.",
+        "visitTipEn": "Treat it more as a brand-story stop than a fast purchase stop.",
+        "publicDataSource": "현장 운영 정보 / 한국디자인진흥원_우수디자인전문회사 해석"
       },
       {
-        "id": "namdaemun-market",
+        "id": "seongsu-yeonmujang-gil",
         "name": {
-          "ko": "남대문시장",
-          "en": "Namdaemun Market"
+          "ko": "성수 연무장길",
+          "en": "Seongsu Yeonmujang-gil"
         },
-        "category": "traditional-market",
-        "address": "서울특별시 중구 남대문시장4길 일대",
-        "lat": 37.5592,
-        "lng": 126.9777,
+        "category": "design street",
+        "categoryEn": "Design street",
+        "district": "성동구",
+        "address": "서울특별시 성동구 연무장길 일대",
+        "lat": 37.5423,
+        "lng": 127.0586,
         "description": {
-          "ko": "오래된 상권과 먹거리 골목을 통해 서울 상업문화의 흐름을 볼 수 있습니다.",
-          "en": "A long-running commercial district where visitors can read the flow of Seoul's market culture."
+          "ko": "팝업, 편집숍, 카페, 사진 포인트가 섞여 있어 로컬 브랜드 거리 분위기를 체감하기 좋습니다.",
+          "en": "Blends pop-ups, select shops, cafes, and photo moments into a strong local-brand district mood."
         },
-        "publicDataSource": "서울시 전통시장 정보 / 한국관광공사 TourAPI"
+        "visitTip": "주말 혼잡이 큰 편이어서 여유로운 설명이 필요하면 평일 오후나 초저녁이 더 좋습니다.",
+        "visitTipEn": "Weekends can be busy, so weekday afternoons or early evenings work better for calmer demos.",
+        "publicDataSource": "성수동 현장 운영 정보 / 대한무역투자진흥공사_4대 소비재 국가별 수출금액 해석"
       }
     ],
     "aiSummary": {
-      "ko": "전통시장의 먹거리와 생활문화를 연결해 서울 사람들의 일상 속 전통을 체험하는 코스입니다.",
-      "en": "This route connects traditional market food and local life so visitors can experience tradition within everyday Seoul."
+      "ko": "외국인에게 '지금 서울에서 감도 높은 한국 브랜드를 어디서 볼 수 있느냐'를 답하기 좋은 탐색형 코스입니다.",
+      "en": "A strong route for answering where visitors can see Seoul’s current local brand scene."
     },
     "reason": {
-      "ko": "궁궐이나 박물관 중심의 전통문화와 달리 시장에서는 지금도 이어지는 생활문화, 가격 흥정, 골목 미식 경험을 볼 수 있습니다.",
-      "en": "Unlike palace or museum heritage, markets show living culture through food, bargaining, and neighborhood movement."
+      "ko": "산업부 공공데이터의 수출 가능성과 해외 수요 맥락을, 서울 안에서 감도 높은 브랜드 거리 경험과 연결해 보여줄 수 있습니다.",
+      "en": "It connects industrial data about export potential and overseas demand with a recognizable local-brand district experience."
     },
     "tip": {
-      "ko": "혼잡한 시간대에는 소지품을 조심하고, 카드 결제 가능 여부와 휴무일을 현장에서 확인하세요.",
-      "en": "During crowded hours, keep belongings safe and check card payment availability and holidays on site."
+      "ko": "전통성보다 '현재 한국 취향'과 브랜드 발견을 강조하고 싶을 때 적합합니다.",
+      "en": "Best when the goal is to emphasize current Korean taste rather than heritage alone."
     },
     "keywords": [
       {
-        "name": "Market Food",
+        "name": "Local Brand Cluster",
         "description": {
-          "ko": "시장 음식은 지역의 생활 리듬과 사람들의 교류 방식을 보여줍니다.",
-          "en": "Market food reveals local rhythms and everyday social exchange."
+          "ko": "한 지역 안에서 브랜드, 편집숍, 팝업이 밀집해 발견 경험이 쉬운 구조를 말합니다.",
+          "en": "Describes a district where brands, pop-ups, and curated stores cluster together."
         }
       },
       {
-        "name": "Local Life",
+        "name": "Taste Translation",
         "description": {
-          "ko": "관광 명소 밖에서 오늘의 서울 사람들이 전통을 소비하고 이어가는 방식입니다.",
-          "en": "How people in Seoul continue and consume tradition outside formal tourist sites."
+          "ko": "외국인에게 한국 취향을 공간과 상품으로 번역해 보여주는 방식을 뜻합니다.",
+          "en": "Explains Korean taste to visitors through space, selection, and product context."
         }
       }
     ],
-    "image": "assets/images/routes/course-market.webp",
-    "imagePrompt": "A lively Seoul traditional market food visual guide, warm stalls, Korean street food, local life atmosphere, respectful documentary illustration, no text, no logos.",
-    "publicDataSource": "서울시 전통시장 정보 / 한국관광공사 TourAPI / 서울 실시간 도시데이터",
-    "source": "공공문화데이터 기반 샘플 추천 코스",
+    "imagePrompt": "A modern Seoul local-brand route illustration in Seongsu, showrooms, select shops, industrial-chic streets, editorial design travel vibe.",
+    "sourceNames": [
+      "한국디자인진흥원_우수디자인전문회사",
+      "대한무역투자진흥공사_해외시장뉴스",
+      "대한무역투자진흥공사_4대 소비재 국가별 수출금액"
+    ],
+    "source": "산업부 공공데이터가 설명하는 글로벌 수요와 브랜드 경쟁력 맥락을 성수 로컬 브랜드 거리 경험과 연결한 코스입니다. 현재는 정적 JSON 시드 데이터 기반입니다.",
     "mapLinks": {
       "google": "",
       "naver": "",
@@ -443,108 +502,122 @@
     }
   },
   {
-    "id": "night-traditional-culture-course",
+    "id": "ddp-night-design-course",
     "title": {
-      "ko": "야간 전통문화 코스",
-      "en": "Night Traditional Culture Course"
+      "ko": "DDP 야간 디자인 무드 코스",
+      "en": "DDP Night Design Mood Route"
     },
-    "theme": "night",
-    "target": ["night", "performance", "palace", "romantic-walk", "photo-spot"],
-    "duration": "3 hours",
+    "theme": "night-design",
+    "target": ["디자인 전시", "야간 무드", "쇼핑", "실내 전시"],
+    "duration": "2-3 hours",
     "budget": "medium",
     "indoorOutdoor": "mixed",
     "recommendedTime": ["evening", "night"],
-    "score": 89,
+    "score": 90,
     "walking": {
       "ko": "낮음~보통",
       "en": "Low to moderate"
     },
     "fee": {
-      "ko": "유료 가능",
-      "en": "Paid options"
+      "ko": "전시 선택형",
+      "en": "Exhibition optional"
     },
     "places": [
       {
-        "id": "deoksugung-palace",
+        "id": "ddp",
         "name": {
-          "ko": "덕수궁",
-          "en": "Deoksugung Palace"
+          "ko": "동대문디자인플라자",
+          "en": "Dongdaemun Design Plaza"
         },
-        "category": "heritage",
-        "address": "서울특별시 중구 세종대로 99",
-        "lat": 37.5658,
-        "lng": 126.9751,
+        "category": "design landmark",
+        "categoryEn": "Design landmark",
+        "district": "중구",
+        "address": "서울특별시 중구 을지로 281",
+        "lat": 37.56719,
+        "lng": 127.01049,
         "description": {
-          "ko": "야간 개장이나 조명 산책과 연결하기 좋은 도심 궁궐입니다.",
-          "en": "A central palace that works well with evening walks and seasonal night openings."
+          "ko": "서울 디자인 이미지를 가장 직관적으로 보여주는 대표 랜드마크이자 야간 동선의 중심입니다.",
+          "en": "The clearest Seoul landmark for design identity and a strong anchor for night exploration."
         },
-        "publicDataSource": "국가유산청 문화재 공간정보 / 한국관광공사 TourAPI"
+        "visitTip": "전시가 없더라도 외관과 광장 동선만으로 설명력이 있으므로 야간 코스 시작점으로 안정적입니다.",
+        "visitTipEn": "Even without a special show, the exterior and plaza still make it a reliable night-route anchor.",
+        "publicDataSource": "DDP 공식 안내 / 한국디자인진흥원 공공데이터 해석"
       },
       {
-        "id": "deoksugung-stonewall-road",
+        "id": "ddp-design-store",
         "name": {
-          "ko": "덕수궁 돌담길",
-          "en": "Deoksugung Stonewall Road"
+          "ko": "DDP 디자인 스토어",
+          "en": "DDP Design Store"
         },
-        "category": "historic-walk",
-        "address": "서울특별시 중구 정동 일대",
-        "lat": 37.5662,
-        "lng": 126.9748,
+        "category": "design store",
+        "categoryEn": "Design store",
+        "district": "중구",
+        "address": "서울특별시 중구 을지로 281",
+        "lat": 37.56719,
+        "lng": 127.01049,
         "description": {
-          "ko": "궁궐 담장과 근대 건축의 분위기가 밤 산책에 잘 어울리는 길입니다.",
-          "en": "A historic walking street where palace walls and modern architecture create an evening atmosphere."
+          "ko": "전시 감상 후 바로 상품과 디자인 굿즈를 비교해볼 수 있어 소비 전환 설명에 좋습니다.",
+          "en": "A convenient bridge from exhibition mood into actual design goods and purchase comparison."
         },
-        "publicDataSource": "서울 관광정보 / 서울시 문화공간 정보"
+        "visitTip": "기념품보다는 디자인 굿즈 관점으로 설명하면 공모전 방향성과 더 잘 맞습니다.",
+        "visitTipEn": "Frame it as design-goods discovery rather than only souvenir shopping.",
+        "publicDataSource": "DDP 공식 안내 / 한국디자인진흥원_글로벌생활명품 선정기업 및 제품정보 목록"
       },
       {
-        "id": "national-jeongdong-theater",
+        "id": "euljiro-lighting-street",
         "name": {
-          "ko": "국립정동극장",
-          "en": "National Jeongdong Theater"
+          "ko": "을지로 조명거리",
+          "en": "Euljiro Lighting Street"
         },
-        "category": "performance",
-        "address": "서울특별시 중구 정동길 43",
-        "lat": 37.5664,
-        "lng": 126.9729,
+        "category": "night design street",
+        "categoryEn": "Night design street",
+        "district": "중구",
+        "address": "서울특별시 중구 을지로3가 272-1 일대",
+        "lat": 37.5666,
+        "lng": 126.9917,
         "description": {
-          "ko": "전통공연과 문화예술 프로그램을 저녁 일정으로 연결할 수 있습니다.",
-          "en": "A theater where traditional performance can be connected to an evening itinerary."
+          "ko": "빛, 간판, 산업 재료가 어우러져 서울의 도시 디자인 감각을 밤에 체감하기 좋은 거리입니다.",
+          "en": "A street where lighting, signage, and industrial materials make Seoul’s urban design mood easy to feel at night."
         },
-        "publicDataSource": "서울시 문화행사 정보 / 공연장 공식 안내"
+        "visitTip": "늦은 밤보다는 해 진 직후가 사진과 이동 모두에 가장 안정적입니다.",
+        "visitTipEn": "Right after sunset is the most reliable time for both photos and movement.",
+        "publicDataSource": "현장 공간 정보 / 대한무역투자진흥공사_해외시장뉴스 해석"
       }
     ],
     "aiSummary": {
-      "ko": "도심 궁궐의 밤 분위기, 돌담길 산책, 전통공연을 연결하는 야간형 코스입니다.",
-      "en": "This night route connects a palace atmosphere, stonewall walk, and traditional performance."
+      "ko": "전시, 상품, 야간 거리 무드를 한 번에 묶어 한국 디자인의 현재형을 감성적으로 보여주는 코스입니다.",
+      "en": "A route that packages exhibition, product, and night-street mood into a contemporary Korean design experience."
     },
     "reason": {
-      "ko": "낮의 관람형 전통문화와 달리 밤에는 조명, 산책, 공연이 결합되어 감성적인 체험을 만들 수 있습니다.",
-      "en": "At night, lighting, walking, and performance turn heritage into a more atmospheric experience."
+      "ko": "서울의 야간 디자인 이미지를 활용해 발표 임팩트가 좋고, 전시 관람에서 상품 탐색, 도시 감각 설명까지 흐름이 자연스럽습니다.",
+      "en": "It carries strong presentation impact and naturally moves from exhibitions to products to urban design mood."
     },
     "tip": {
-      "ko": "야간 개장과 공연은 날짜별 운영 여부가 다르므로 서울시 문화행사 정보와 공식 예매 안내를 확인하세요.",
-      "en": "Night openings and performances vary by date, so check event data and official booking guidance."
+      "ko": "사진과 발표 시연용 임팩트를 원하면 이 코스를 추천 카드 상위에 두기 좋습니다.",
+      "en": "This route is a strong top-card candidate when visual presentation impact matters."
     },
     "keywords": [
       {
-        "name": "Night Palace",
+        "name": "Night Design Mood",
         "description": {
-          "ko": "조명과 시간대가 궁궐의 분위기를 새롭게 해석하게 합니다.",
-          "en": "Lighting and time of day allow visitors to reinterpret palace space."
+          "ko": "야간 조명과 도시 재료감으로 한국 디자인의 분위기를 체감하는 흐름입니다.",
+          "en": "Uses lighting and material texture to create a night-time design impression."
         }
       },
       {
-        "name": "Performing Heritage",
+        "name": "Urban Consumption",
         "description": {
-          "ko": "전통예술을 무대 경험으로 만나는 문화유산입니다.",
-          "en": "Traditional arts experienced through the stage."
+          "ko": "전시 감상 뒤 상품 탐색으로 이어지는 도심형 소비 동선을 뜻합니다.",
+          "en": "Describes an urban route that moves from exhibition viewing into product exploration."
         }
       }
     ],
-    "image": "assets/images/routes/course-night.webp",
-    "imagePrompt": "A calm night visual guide of a Korean palace wall walk and traditional performance mood, warm lantern light, navy sky, refined paper texture, no text, no logos.",
-    "publicDataSource": "서울시 문화행사 정보 / 국가유산청 문화재 공간정보 / 한국관광공사 TourAPI",
-    "source": "공공문화데이터 기반 샘플 추천 코스",
+    "imagePrompt": "A sleek night route illustration around DDP and Euljiro, glowing architecture, design store interiors, urban lighting details, no text.",
+    "sourceNames": [
+      "한국디자인진흥원_글로벌생활명품 선정기업 및 제품정보 목록",
+      "대한무역투자진흥공사_해외시장뉴스"
+    ],
+    "source": "산업부 공공데이터의 상품성·해외 수요 해석을 서울 야간 디자인 동선과 연결한 감성형 코스입니다. 현재는 정적 JSON 시드 데이터 기반입니다.",
     "mapLinks": {
       "google": "",
       "naver": "",
@@ -552,108 +625,123 @@
     }
   },
   {
-    "id": "rainy-day-indoor-heritage",
+    "id": "rainy-day-indoor-design-course",
     "title": {
-      "ko": "비 오는 날 실내 전통문화 코스",
-      "en": "Rainy-Day Indoor Traditional Culture Course"
+      "ko": "비 오는 날 실내 디자인 코스",
+      "en": "Rainy-Day Indoor Design Route"
     },
     "theme": "rainy-indoor",
-    "target": ["rainy-day", "museum", "low-walking", "family", "indoor"],
+    "target": ["실내 전시", "공예 체험", "쇼핑", "low-walking"],
     "duration": "2-3 hours",
-    "budget": "low",
+    "budget": "medium",
     "indoorOutdoor": "indoor",
     "recommendedTime": ["morning", "afternoon"],
-    "score": 86,
+    "score": 94,
     "walking": {
       "ko": "낮음",
       "en": "Low"
     },
     "fee": {
-      "ko": "무료 중심",
-      "en": "Mostly free"
+      "ko": "무료~유료 선택",
+      "en": "Free to paid options"
     },
     "places": [
       {
-        "id": "national-palace-museum",
+        "id": "seoul-craft-rainy",
         "name": {
-          "ko": "국립고궁박물관",
-          "en": "National Palace Museum"
+          "ko": "서울공예박물관",
+          "en": "Seoul Museum of Craft Art"
         },
-        "category": "museum",
-        "address": "서울특별시 종로구 효자로 12",
-        "lat": 37.5769,
-        "lng": 126.9749,
+        "category": "craft museum",
+        "categoryEn": "Craft museum",
+        "district": "종로구",
+        "address": "서울특별시 종로구 율곡로3길 4",
+        "lat": 37.576371,
+        "lng": 126.983395,
         "description": {
-          "ko": "왕실 유물과 의례를 실내에서 이해할 수 있는 박물관입니다.",
-          "en": "An indoor museum for understanding royal artifacts and court rituals."
+          "ko": "실내 체류 안정성이 높아 우천 시에도 공예 설명력을 유지하기 좋습니다.",
+          "en": "A reliable indoor anchor that keeps the craft explanation strong even on rainy days."
         },
-        "publicDataSource": "한국관광공사 TourAPI / 문화기관 공식 안내"
+        "visitTip": "우천 시에는 이동보다 전시 해설 시간을 조금 더 길게 잡는 편이 만족도가 높습니다.",
+        "visitTipEn": "On rainy days, extending the explanation time here usually works better than rushing the movement.",
+        "publicDataSource": "서울공예박물관 공식 안내 / 한국디자인진흥원 공공데이터 해석"
       },
       {
-        "id": "seoul-museum-of-history",
+        "id": "mmca-seoul-rainy",
         "name": {
-          "ko": "서울역사박물관",
-          "en": "Seoul Museum of History"
+          "ko": "국립현대미술관 서울",
+          "en": "MMCA Seoul"
         },
-        "category": "museum",
-        "address": "서울특별시 종로구 새문안로 55",
-        "lat": 37.5704,
-        "lng": 126.9707,
+        "category": "design museum",
+        "categoryEn": "Design museum",
+        "district": "종로구",
+        "address": "서울특별시 종로구 삼청로 30",
+        "lat": 37.57863,
+        "lng": 126.9806,
         "description": {
-          "ko": "서울의 도시 변화와 생활문화 흐름을 실내 전시로 이해할 수 있습니다.",
-          "en": "Indoor exhibitions for understanding Seoul's urban change and everyday culture."
+          "ko": "비 오는 날에도 전시 몰입도를 유지하며 현대 디자인 감각을 설명하기 좋습니다.",
+          "en": "Keeps visitors immersed indoors while extending the route into contemporary design language."
         },
-        "publicDataSource": "서울시 문화시설 정보 / 서울 관광정보"
+        "visitTip": "관람 시간이 길어질 수 있으니 한두 개 전시에 집중해 설명하는 구성이 좋습니다.",
+        "visitTipEn": "Because stays can run long, focusing on one or two exhibitions is often the best approach.",
+        "publicDataSource": "국립현대미술관 공식 안내 / 대한무역투자진흥공사_해외시장뉴스 해석"
       },
       {
-        "id": "namsangol-hanok-village",
+        "id": "ddp-design-store-rainy",
         "name": {
-          "ko": "남산골한옥마을",
-          "en": "Namsangol Hanok Village"
+          "ko": "DDP 디자인 스토어",
+          "en": "DDP Design Store"
         },
-        "category": "hanok-village",
-        "address": "서울특별시 중구 퇴계로34길 28",
-        "lat": 37.5593,
-        "lng": 126.9945,
+        "category": "design store",
+        "categoryEn": "Design store",
+        "district": "중구",
+        "address": "서울특별시 중구 을지로 281",
+        "lat": 37.56719,
+        "lng": 127.01049,
         "description": {
-          "ko": "한옥과 전통생활문화를 비교적 짧은 동선으로 살펴볼 수 있는 공간입니다.",
-          "en": "A compact place to explore hanok and traditional living culture."
+          "ko": "전시 기반 설명을 실제 상품 탐색으로 이어주기 좋아 우천 대안 코스의 마무리로 적합합니다.",
+          "en": "A strong final indoor stop that turns exhibition context into real product exploration."
         },
-        "publicDataSource": "한국관광공사 TourAPI / 서울 관광정보"
+        "visitTip": "이동이 길다고 느껴지면 이 구간은 선택형으로 설명해도 자연스럽습니다.",
+        "visitTipEn": "If the movement feels long, present this stop as optional without breaking the route story.",
+        "publicDataSource": "DDP 공식 안내 / 한국디자인진흥원_글로벌생활명품 선정기업 및 제품정보 목록"
       }
     ],
     "aiSummary": {
-      "ko": "비가 오거나 더운 날에도 실내 전시와 짧은 동선 중심으로 전통문화를 이해할 수 있는 대체 코스입니다.",
-      "en": "This backup route helps visitors understand Korean tradition through indoor exhibitions and short movements during rain or heat."
+      "ko": "우천 상황에서도 해설력, 실내 안정성, 상품 탐색 가능성을 유지하는 실내 중심 코스입니다.",
+      "en": "An indoor-first route that keeps explanation quality, weather stability, and product exploration intact."
     },
     "reason": {
-      "ko": "우천 시 이동 부담을 줄이면서 왕실문화, 도시사, 한옥 생활문화를 끊기지 않는 해설 흐름으로 연결합니다.",
-      "en": "It reduces rainy-day travel burden while connecting royal culture, urban history, and hanok living culture."
+      "ko": "GitHub Pages 기반 데모에서도 우천 대응 로직을 설명하기 좋고, 실내 전시와 디자인 스토어를 함께 묶어 서비스 완성도를 보여주기 쉽습니다.",
+      "en": "It clearly demonstrates rainy-day support while still connecting exhibitions and a design store into one complete service story."
     },
     "tip": {
-      "ko": "비가 심한 날에는 지하철역과 가까운 박물관부터 방문하고, 야외 구간은 날씨가 잦아든 뒤 이동하세요.",
-      "en": "On heavy rain days, start with museums near subway stations and move outdoor sections only when weather improves."
+      "ko": "날씨 화면과 챗봇 데모를 함께 보여줄 때 가장 활용도가 높은 코스입니다.",
+      "en": "This is the best route to pair with weather and chatbot demos."
     },
     "keywords": [
       {
-        "name": "Indoor Heritage",
+        "name": "Indoor Resilience",
         "description": {
-          "ko": "날씨 영향을 줄이면서 전시와 해설로 문화를 이해하는 방식입니다.",
-          "en": "A way to understand heritage through exhibits while reducing weather impact."
+          "ko": "날씨 변수에도 일정이 무너지지 않도록 실내 비중을 높인 구조입니다.",
+          "en": "Raises indoor coverage so the plan stays stable even when the weather shifts."
         }
       },
       {
-        "name": "Rainy-Day Plan",
+        "name": "Rainy-Day Conversion",
         "description": {
-          "ko": "우천 시 외국인 방문객이 이동 부담을 줄일 수 있는 대체 동선입니다.",
-          "en": "A backup route that reduces travel burden on rainy days."
+          "ko": "우천 대안이 단순 회피가 아니라 여전히 브랜드 발견과 구매로 이어지는 흐름을 뜻합니다.",
+          "en": "Means a rainy-day alternative still leads to brand discovery and possible purchases."
         }
       }
     ],
-    "image": "assets/images/routes/course-rainy.webp",
-    "imagePrompt": "A rainy-day indoor Korean heritage visual guide, museum displays, hanok window silhouette, soft paper background, calm warm lighting, no text, no logos.",
-    "publicDataSource": "서울 실시간 도시데이터 / 한국관광공사 TourAPI / 서울시 문화시설 정보",
-    "source": "공공문화데이터 기반 샘플 추천 코스",
+    "imagePrompt": "A rainy-day Seoul design route illustration, museum interiors, craft displays, design store lighting, umbrellas outside, refined guide style.",
+    "sourceNames": [
+      "한국디자인진흥원_산업디자인전문회사",
+      "한국디자인진흥원_글로벌생활명품 선정기업 및 제품정보 목록",
+      "대한무역투자진흥공사_해외시장뉴스"
+    ],
+    "source": "산업부 공공데이터를 근거로 실내 전시와 상품 탐색을 연결한 우천 대응 코스입니다. 현재 버전은 GitHub Pages용 정적 JSON 시드 데이터이며, 기기 공통 실시간 데이터는 사용하지 않습니다.",
     "mapLinks": {
       "google": "",
       "naver": "",

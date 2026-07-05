@@ -1,152 +1,77 @@
 [
   {
-    "id": "gyeongbokgung-palace",
-    "name": {
-      "ko": "경복궁",
-      "en": "Gyeongbokgung Palace"
-    },
-    "heritageType": "palace",
-    "district": "종로구",
-    "address": "서울특별시 종로구 사직로 161",
-    "lat": 37.579617,
-    "lng": 126.977041,
-    "interpretationKeywords": ["Joseon Dynasty", "Royal Palace", "Royal Ritual"],
-    "publicDataSource": "국가유산청 문화재 공간정보 / 한국관광공사 TourAPI",
-    "aiInterpretationRole": "조선 왕실문화와 궁궐 건축의 의미를 외국인에게 쉽게 설명"
-  },
-  {
-    "id": "changdeokgung-palace",
-    "name": {
-      "ko": "창덕궁",
-      "en": "Changdeokgung Palace"
-    },
-    "heritageType": "palace-unesco",
-    "district": "종로구",
-    "address": "서울특별시 종로구 율곡로 99",
-    "lat": 37.5794,
-    "lng": 126.991,
-    "interpretationKeywords": ["UNESCO", "Palace Garden", "Architecture"],
-    "publicDataSource": "국가유산청 문화재 공간정보 / 한국관광공사 TourAPI",
-    "aiInterpretationRole": "자연 지형과 전통 궁궐 건축이 조화되는 방식을 코스 해설로 연결"
-  },
-  {
-    "id": "deoksugung-palace",
-    "name": {
-      "ko": "덕수궁",
-      "en": "Deoksugung Palace"
-    },
-    "heritageType": "palace-modern-heritage",
-    "district": "중구",
-    "address": "서울특별시 중구 세종대로 99",
-    "lat": 37.5658,
-    "lng": 126.9751,
-    "interpretationKeywords": ["Korean Empire", "Modern Seoul", "Palace Architecture"],
-    "publicDataSource": "국가유산청 문화재 공간정보 / 한국관광공사 TourAPI",
-    "aiInterpretationRole": "전통 왕실 공간과 근대 서울이 만나는 흐름을 해설"
-  },
-  {
-    "id": "unhyeongung",
-    "name": {
-      "ko": "운현궁",
-      "en": "Unhyeongung"
-    },
-    "heritageType": "royal-residence",
-    "district": "종로구",
-    "address": "서울특별시 종로구 삼일대로 464",
-    "lat": 37.5761,
-    "lng": 126.987,
-    "interpretationKeywords": ["Royal Residence", "Hanok", "Local Heritage"],
-    "publicDataSource": "국가유산청 문화재 공간정보 / 문화기관 공식 안내",
-    "aiInterpretationRole": "궁궐 밖 왕실가 생활문화와 한옥 공간 구성을 설명"
-  },
-  {
-    "id": "bukchon-hanok-village",
-    "name": {
-      "ko": "북촌한옥마을",
-      "en": "Bukchon Hanok Village"
-    },
-    "heritageType": "hanok-cultural-landscape",
-    "district": "종로구",
-    "address": "서울특별시 종로구 계동길 일대",
-    "lat": 37.582604,
-    "lng": 126.983998,
-    "interpretationKeywords": ["Hanok", "Residential Culture", "Living Heritage"],
-    "publicDataSource": "서울 관광정보 / 한국관광공사 TourAPI / 국가유산청 문화재 공간정보 참고",
-    "aiInterpretationRole": "한옥 주거문화와 주민 생활공간 방문 예절을 함께 안내"
-  },
-  {
-    "id": "insadong",
-    "name": {
-      "ko": "인사동",
-      "en": "Insadong"
-    },
-    "heritageType": "traditional-culture-street",
-    "district": "종로구",
-    "address": "서울특별시 종로구 인사동길 일대",
-    "lat": 37.5718,
-    "lng": 126.986,
-    "interpretationKeywords": ["Craft", "Calligraphy", "Traditional Street"],
-    "publicDataSource": "한국관광공사 TourAPI / 전통문화포털 전통문화 데이터",
-    "aiInterpretationRole": "공예, 서화, 찻집 문화를 외국인용 전통문화 키워드로 풀어 설명"
-  },
-  {
-    "id": "seoul-craft-museum",
+    "id": "seoul-museum-of-craft-art",
     "name": {
       "ko": "서울공예박물관",
       "en": "Seoul Museum of Craft Art"
     },
-    "heritageType": "craft-museum",
+    "heritageType": "craft-museum-history",
     "district": "종로구",
     "address": "서울특별시 종로구 율곡로3길 4",
-    "lat": 37.5765,
-    "lng": 126.9839,
-    "interpretationKeywords": ["Craft", "Material Culture", "Pattern"],
-    "publicDataSource": "서울시 문화시설 정보 / 전통문화포털 전통문화 데이터",
-    "aiInterpretationRole": "공예 재료와 문양을 AI 문화 해설 및 이미지 프롬프트 소재로 연결"
+    "lat": 37.576371,
+    "lng": 126.983395,
+    "interpretationKeywords": ["Craft Materials", "Public Data Story", "Lifestyle Design"],
+    "publicDataSource": "서울공예박물관 공식 안내 / 한국디자인진흥원 공공데이터 해석",
+    "aiInterpretationRole": "공예 재료와 생활 디자인의 연결을 외국인에게 쉽게 풀어 설명하는 보조 해설 데이터"
   },
   {
-    "id": "namsangol-hanok-village",
+    "id": "kcdf-gallery",
     "name": {
-      "ko": "남산골한옥마을",
-      "en": "Namsangol Hanok Village"
+      "ko": "KCDF 갤러리",
+      "en": "KCDF Gallery"
     },
-    "heritageType": "hanok-village",
+    "heritageType": "craft-curation-context",
+    "district": "종로구",
+    "address": "서울특별시 종로구 인사동길 8",
+    "lat": 37.57374,
+    "lng": 126.98601,
+    "interpretationKeywords": ["Craft Brand", "Curation", "Product Story"],
+    "publicDataSource": "KCDF 공식 안내 / 한국디자인진흥원 디자인 기업 데이터",
+    "aiInterpretationRole": "작가·상품·브랜드 서사를 공예 큐레이션 맥락으로 정리해 주는 보조 해설 데이터"
+  },
+  {
+    "id": "bukchon-hanok-village-design",
+    "name": {
+      "ko": "북촌한옥마을",
+      "en": "Bukchon Hanok Village"
+    },
+    "heritageType": "material-landscape-context",
+    "district": "종로구",
+    "address": "서울특별시 종로구 계동길 일대",
+    "lat": 37.582604,
+    "lng": 126.983998,
+    "interpretationKeywords": ["Hanok Material", "Spatial Mood", "Lifestyle Design"],
+    "publicDataSource": "서울 관광 정보 / 공예·디자인 공간 해설 보조 데이터",
+    "aiInterpretationRole": "한옥을 관광지로 소비하기보다 재료감과 공간감 중심의 생활 디자인 맥락으로 짧게 설명"
+  },
+  {
+    "id": "ddp",
+    "name": {
+      "ko": "동대문디자인플라자",
+      "en": "Dongdaemun Design Plaza"
+    },
+    "heritageType": "design-architecture-landmark",
     "district": "중구",
-    "address": "서울특별시 중구 퇴계로34길 28",
-    "lat": 37.5593,
-    "lng": 126.9945,
-    "interpretationKeywords": ["Hanok", "Traditional Living", "Folk Culture"],
-    "publicDataSource": "한국관광공사 TourAPI / 서울 관광정보",
-    "aiInterpretationRole": "전통 생활문화와 한옥 구조를 짧은 동선의 실내외 해설로 연결"
+    "address": "서울특별시 중구 을지로 281",
+    "lat": 37.566526,
+    "lng": 127.009223,
+    "interpretationKeywords": ["Design Architecture", "Night Program", "Retail Flow"],
+    "publicDataSource": "DDP 공식 안내 / 한국디자인진흥원 디자인 산업 데이터 해석",
+    "aiInterpretationRole": "전시와 리테일, 야간 동선을 함께 설명하는 디자인 랜드마크 보조 해설 데이터"
   },
   {
-    "id": "national-palace-museum",
+    "id": "seongsu-yeonmujang-gil",
     "name": {
-      "ko": "국립고궁박물관",
-      "en": "National Palace Museum"
+      "ko": "성수 연무장길",
+      "en": "Seongsu Yeonmujang-gil"
     },
-    "heritageType": "royal-museum",
-    "district": "종로구",
-    "address": "서울특별시 종로구 효자로 12",
-    "lat": 37.5769,
-    "lng": 126.9749,
-    "interpretationKeywords": ["Royal Artifacts", "Court Ritual", "Museum"],
-    "publicDataSource": "문화기관 공식 안내 / 한국관광공사 TourAPI",
-    "aiInterpretationRole": "왕실 유물과 의례를 궁궐 방문 전 배경지식으로 설명"
-  },
-  {
-    "id": "seoul-museum-of-history",
-    "name": {
-      "ko": "서울역사박물관",
-      "en": "Seoul Museum of History"
-    },
-    "heritageType": "urban-history-museum",
-    "district": "종로구",
-    "address": "서울특별시 종로구 새문안로 55",
-    "lat": 37.5704,
-    "lng": 126.9707,
-    "interpretationKeywords": ["Urban History", "Seoul", "Everyday Life"],
-    "publicDataSource": "서울시 문화시설 정보 / 서울 관광정보",
-    "aiInterpretationRole": "서울의 도시 변화와 생활문화를 비 오는 날 실내 코스 해설로 연결"
+    "heritageType": "industrial-conversion-street",
+    "district": "성동구",
+    "address": "서울특별시 성동구 연무장길 일대",
+    "lat": 37.54331,
+    "lng": 127.05668,
+    "interpretationKeywords": ["Local Brand", "Industrial Regeneration", "Showroom Walk"],
+    "publicDataSource": "서울 로컬 상권 정보 / KOTRA 해외시장뉴스 해석",
+    "aiInterpretationRole": "지역 브랜드 노출과 산업 공간 재해석을 외국인 소비 동선 언어로 설명하는 보조 데이터"
   }
 ]

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>문화데이터 | 마루</title>
-  <meta name="description" content="공공 문화데이터 활용 현황과 추천 로직 설명">
+  <title>공공데이터 | 마루</title>
+  <meta name="description" content="산업통상부 공공데이터 활용 현황과 추천 로직 설명">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
@@ -14,7 +14,7 @@
     <header class="app-header">
       <a class="brand" href="about.html">
         <span class="brand-mark back-mark">‹</span>
-        <span><strong>마루</strong><small>문화데이터</small></span>
+        <span><strong>마루</strong><small>공공데이터</small></span>
       </a>
       <a class="header-pill" href="about.html">소개</a>
     </header>
@@ -22,36 +22,36 @@
     <main class="app-main">
       <section class="page-title-card">
         <p class="eyebrow">Data Dashboard</p>
-        <h1>공공 문화데이터 확장 구조</h1>
-        <p>현재 버전은 GitHub Pages에 배포 가능한 정적 웹앱으로 <code>ari_culture_resources_appjs.json</code>, <code>data/courses.json</code>, JavaScript 추천 로직으로 추천 카드와 코스를 구성합니다. 운영 전 운영시간·요금·예약 여부·좌표·영어 안내 가능 여부는 공식 출처 기준으로 재검증이 필요합니다.</p>
+        <h1>산업통상부 공공데이터 활용 구조</h1>
+        <p>현재 버전은 GitHub Pages에 배포 가능한 정적 웹앱으로 <code>data/courses.json</code>과 <code>data/public-data-sources.json</code>을 읽어 K-공예·디자인 코스, 브랜드 발견 흐름, 공공데이터 설명을 동적으로 구성합니다. 이 화면의 핵심은 관광 정보가 아니라 산업부 계열 공공데이터가 서비스 중심축이라는 점을 보여주는 것입니다.</p>
       </section>
 
       <section class="metric-grid" data-culture-metrics></section>
 
       <section class="mobile-card">
         <h2>추천 요소</h2>
-        <div class="factor-row"><span>전통성 점수</span><strong>30%</strong></div>
-        <div class="factor-row"><span>외국인 친화도</span><strong>25%</strong></div>
-        <div class="factor-row"><span>숨은 문화 가치</span><strong>20%</strong></div>
+        <div class="factor-row"><span>산업부 데이터 적합도</span><strong>30%</strong></div>
+        <div class="factor-row"><span>외국인 체험 친화도</span><strong>25%</strong></div>
+        <div class="factor-row"><span>구매·체험 전환 가능성</span><strong>20%</strong></div>
         <div class="factor-row"><span>도보 편의성</span><strong>15%</strong></div>
-        <div class="factor-row"><span>예산·실내 적합도</span><strong>10%</strong></div>
+        <div class="factor-row"><span>실내·날씨 적합도</span><strong>10%</strong></div>
       </section>
 
       <section class="mobile-card">
-        <h2>데이터 소스 확장 계획</h2>
+        <h2>산업부 데이터 소스 계획</h2>
         <div class="data-source-grid" data-source-list></div>
       </section>
 
       <section class="mobile-card">
-        <h2>생성형 AI 체험 연결</h2>
-        <p>공공문화데이터로 코스를 설명하고, 생성형 AI는 추천 이유와 문화 해설, 코스 이미지, 전통 포토카드 체험으로 확장됩니다.</p>
-        <a class="button button-primary button-block data-demo-link" href="ai-photo.html">AI 조선풍 포토카드 열기</a>
+        <h2>AI 가이드형 해설 연결</h2>
+        <p>산업부 공공데이터와 현장 보조 데이터를 함께 읽어 추천 이유와 코스 설명을 만듭니다. 현재는 브라우저 내 추천 인터페이스와 규칙 기반 해설 중심이며, 별도 서버형 LLM을 전제하지 않습니다.</p>
+        <a class="button button-primary button-block data-demo-link" href="ai-photo.html">AI 스타일 포토카드 열기</a>
       </section>
 
       <section class="logic-stack">
-        <article><span>DB</span><strong>검증된 문화 사실</strong><p>현재는 JSON seed data로 유지하며, 향후 공식 출처와 운영 정보를 저장할 수 있습니다.</p></article>
-        <article><span>Server</span><strong>필터링과 추천 점수</strong><p>현재는 JavaScript가 조건과 추천 점수를 계산하며, 향후 서버에서 확장할 수 있습니다.</p></article>
-        <article><span>AI</span><strong>쉬운 문화 해설</strong><p>현재는 앱 데이터 기반 문화 해설을 제공하며, AI는 검증된 사실을 쉽게 설명하는 역할입니다.</p></article>
+        <article><span>DB</span><strong>산업부 공공데이터</strong><p>현재는 JSON 시드 구조로 유지하며, 한국디자인진흥원과 KOTRA 데이터를 코스 설명과 브랜드 발견 로직의 근거로 사용합니다.</p></article>
+        <article><span>Client</span><strong>브라우저 내 추천 계산</strong><p>현재는 JavaScript가 조건 필터링, 코스 점수, 로컬 반응 기반 랭킹 시뮬레이션을 계산합니다. 기기 공통 실시간 집계는 하지 않습니다.</p></article>
+        <article><span>AI</span><strong>공예·디자인 해설 인터페이스</strong><p>현재는 검증된 앱 데이터를 쉬운 추천 문장과 방문 팁으로 바꾸는 역할이며, 이후 서버 연동 시 더 정교한 모델로 확장할 수 있습니다.</p></article>
       </section>
 
       <section class="mobile-card">

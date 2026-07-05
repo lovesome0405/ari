@@ -1,116 +1,116 @@
 [
   {
-    "id": "palace-cultural-program-sample",
+    "id": "craft-museum-workshop-sample",
     "title": {
-      "ko": "궁궐 문화해설 프로그램 샘플",
-      "en": "Palace Cultural Interpretation Program Sample"
-    },
-    "category": "heritage-program",
-    "district": "종로구",
-    "venue": {
-      "ko": "경복궁 및 국립고궁박물관 일대",
-      "en": "Gyeongbokgung Palace and National Palace Museum area"
-    },
-    "dateType": "variable",
-    "recommendedFor": ["palace", "history", "royal-culture", "first-time-visitor"],
-    "relatedCourseIds": ["palace-history-course"],
-    "relatedPlaceIds": ["gyeongbokgung-palace", "national-palace-museum"],
-    "publicDataSource": "서울시 문화행사 정보 / 한국관광공사 TourAPI / 문화기관 공식 안내",
-    "aiUse": "궁궐 역사 산책 코스에서 행사 일정 확인 필요성을 안내하고 추천 이유를 보강"
-  },
-  {
-    "id": "bukchon-hanok-culture-walk-sample",
-    "title": {
-      "ko": "북촌 한옥 문화산책 샘플",
-      "en": "Bukchon Hanok Culture Walk Sample"
-    },
-    "category": "walking-tour",
-    "district": "종로구",
-    "venue": {
-      "ko": "북촌한옥마을 및 계동길 일대",
-      "en": "Bukchon Hanok Village and Gyedong-gil area"
-    },
-    "dateType": "seasonal",
-    "recommendedFor": ["hanok", "architecture", "slow-walk", "local-culture"],
-    "relatedCourseIds": ["bukchon-hanok-culture-course"],
-    "relatedPlaceIds": ["bukchon-hanok-village", "changdeokgung-palace", "unhyeongung"],
-    "publicDataSource": "서울시 문화행사 정보 / 서울 관광정보",
-    "aiUse": "한옥 주거문화와 조용한 방문 예절을 외국인용 해설로 연결"
-  },
-  {
-    "id": "insadong-craft-experience-sample",
-    "title": {
-      "ko": "인사동 전통공예 체험 샘플",
-      "en": "Insadong Traditional Craft Experience Sample"
+      "ko": "서울공예박물관 워크숍 샘플",
+      "en": "Seoul Museum of Craft Art Workshop Sample"
     },
     "category": "craft-workshop",
     "district": "종로구",
     "venue": {
-      "ko": "인사동 및 서울공예박물관 일대",
-      "en": "Insadong and Seoul Museum of Craft Art area"
+      "ko": "서울공예박물관 및 안국권",
+      "en": "Seoul Museum of Craft Art and Anguk area"
     },
-    "dateType": "ongoing-or-seasonal",
-    "recommendedFor": ["craft", "culture-experience", "indoor", "shopping"],
-    "relatedCourseIds": ["insadong-craft-course"],
-    "relatedPlaceIds": ["insadong", "ssamziegil", "seoul-craft-museum"],
-    "publicDataSource": "서울시 문화행사 정보 / 전통문화포털 전통문화 데이터",
-    "aiUse": "공예 키워드, 문양, 재료 설명을 Ari 문화 해설과 이미지 프롬프트에 활용"
+    "dateType": "ongoing-or-sample",
+    "recommendedFor": ["craft", "design", "indoor", "first-time-visitor"],
+    "relatedCourseIds": ["craft-design-intro-course", "samcheong-design-story-course", "rainy-day-indoor-design-course"],
+    "relatedPlaceIds": ["seoul-museum-of-craft-art", "mmca-seoul"],
+    "publicDataSource": "서울공예박물관 공식 안내 / 서울시 문화행사 정보 / 한국디자인진흥원 공공데이터 해석",
+    "aiUse": "공예 재료와 생활 디자인 설명 뒤에 체험형 정차지를 붙여 추천 이유를 보강하는 샘플 일정입니다."
   },
   {
-    "id": "traditional-market-food-event-sample",
+    "id": "kcdf-brand-showcase-sample",
     "title": {
-      "ko": "전통시장 먹거리 체험 샘플",
-      "en": "Traditional Market Food Experience Sample"
+      "ko": "KCDF 브랜드 큐레이션 샘플",
+      "en": "KCDF Brand Curation Sample"
     },
-    "category": "local-food",
-    "district": "종로구 / 중구",
+    "category": "brand-showcase",
+    "district": "종로구",
     "venue": {
-      "ko": "통인시장, 광장시장, 남대문시장",
-      "en": "Tongin Market, Gwangjang Market, Namdaemun Market"
+      "ko": "KCDF 갤러리 및 인사동권",
+      "en": "KCDF Gallery and Insadong area"
     },
-    "dateType": "daily-or-market-day",
-    "recommendedFor": ["market", "food", "traditional-market", "local-life"],
-    "relatedCourseIds": ["traditional-market-food-course"],
-    "relatedPlaceIds": ["tongin-market", "gwangjang-market", "namdaemun-market"],
-    "publicDataSource": "서울시 문화행사 정보 / 서울시 전통시장 정보 / 한국관광공사 TourAPI",
-    "aiUse": "시장 혼잡도와 영업일 확인 필요성을 코스 팁과 Ari 답변에 연결"
+    "dateType": "rotating-or-sample",
+    "recommendedFor": ["brand", "craft", "gift", "indoor"],
+    "relatedCourseIds": ["craft-design-intro-course", "insadong-brand-buying-course"],
+    "relatedPlaceIds": ["kcdf-gallery", "annyeong-insadong", "ssamziegil"],
+    "publicDataSource": "KCDF 공식 안내 / 한국디자인진흥원 디자인 기업 데이터 / 서울시 문화행사 정보",
+    "aiUse": "브랜드 발견과 선물 구매 가능성을 함께 설명하는 전시·큐레이션 예시로 사용합니다."
   },
   {
-    "id": "jeongdong-culture-night-sample",
+    "id": "insadong-gift-pick-sample",
     "title": {
-      "ko": "정동 문화 야행 샘플",
-      "en": "Jeongdong Culture Night Sample"
+      "ko": "인사동 선물 큐레이션 샘플",
+      "en": "Insadong Gift Curation Sample"
     },
-    "category": "festival",
+    "category": "gift-curation",
+    "district": "종로구",
+    "venue": {
+      "ko": "안녕인사동, 쌈지길 일대",
+      "en": "Anyoung Insadong and Ssamziegil area"
+    },
+    "dateType": "sample-schedule",
+    "recommendedFor": ["shopping", "gift", "brand", "low-walking"],
+    "relatedCourseIds": ["insadong-brand-buying-course"],
+    "relatedPlaceIds": ["annyeong-insadong", "ssamziegil", "kcdf-gallery"],
+    "publicDataSource": "인사동권 운영 안내 / 서울시 문화행사 정보 / KOTRA 해외시장뉴스 해석",
+    "aiUse": "예산과 선물 목적을 말하면 브랜드 비교와 구매 동선까지 자연스럽게 연결하는 시연용 샘플입니다."
+  },
+  {
+    "id": "seongsu-local-brand-popup-sample",
+    "title": {
+      "ko": "성수 로컬 브랜드 팝업 샘플",
+      "en": "Seongsu Local Brand Pop-up Sample"
+    },
+    "category": "popup-market",
+    "district": "성동구",
+    "venue": {
+      "ko": "성수연방, LCDC SEOUL, 연무장길 일대",
+      "en": "Seongsu Yeonbang, LCDC SEOUL, and Yeonmujang-gil area"
+    },
+    "dateType": "ongoing-or-sample",
+    "recommendedFor": ["local brand", "showroom", "shopping", "hidden gem"],
+    "relatedCourseIds": ["seongsu-local-brand-course"],
+    "relatedPlaceIds": ["seongsu-yeonbang", "lcdc-seoul", "seongsu-yeonmujang-gil"],
+    "publicDataSource": "성수권 운영 안내 / KOTRA 해외시장뉴스 / 서울 로컬 상권 정보",
+    "aiUse": "지역 브랜드 노출과 방문 동선, 소비 전환 가능성을 함께 설명하는 성수형 샘플 데이터입니다."
+  },
+  {
+    "id": "ddp-night-design-sample",
+    "title": {
+      "ko": "DDP 야간 디자인 프로그램 샘플",
+      "en": "DDP Night Design Program Sample"
+    },
+    "category": "night-design",
     "district": "중구",
     "venue": {
-      "ko": "덕수궁, 정동길, 국립정동극장 일대",
-      "en": "Deoksugung Palace, Jeongdong-gil, and National Jeongdong Theater area"
+      "ko": "동대문디자인플라자 및 을지로권",
+      "en": "Dongdaemun Design Plaza and Euljiro area"
     },
-    "dateType": "seasonal",
-    "recommendedFor": ["night", "evening", "performance", "palace", "modern-history"],
-    "relatedCourseIds": ["night-traditional-culture-course"],
-    "relatedPlaceIds": ["deoksugung-palace", "deoksugung-stonewall-road", "national-jeongdong-theater"],
-    "publicDataSource": "서울시 문화행사 정보 / 국가유산청 문화재 공간정보",
-    "aiUse": "야간 전통문화 코스에서 궁궐 야간 관람과 공연 일정 확인을 안내"
+    "dateType": "seasonal-or-sample",
+    "recommendedFor": ["night", "design", "retail", "photo"],
+    "relatedCourseIds": ["ddp-night-design-course"],
+    "relatedPlaceIds": ["ddp", "ddp-design-store", "euljiro-lighting-street"],
+    "publicDataSource": "DDP 공식 안내 / 서울시 문화행사 정보 / 한국디자인진흥원 디자인 산업 데이터 해석",
+    "aiUse": "야간에도 전시, 리테일, 거리 무드가 이어진다는 점을 설명하는 발표형 샘플 프로그램입니다."
   },
   {
-    "id": "rainy-day-museum-program-sample",
+    "id": "rainy-day-indoor-design-sample",
     "title": {
-      "ko": "비 오는 날 박물관 전시 프로그램 샘플",
-      "en": "Rainy-Day Museum Program Sample"
+      "ko": "실내 디자인 대체 일정 샘플",
+      "en": "Indoor Design Backup Schedule Sample"
     },
-    "category": "museum-exhibition",
+    "category": "indoor-backup",
     "district": "종로구 / 중구",
     "venue": {
-      "ko": "국립고궁박물관, 서울역사박물관, 남산골한옥마을",
-      "en": "National Palace Museum, Seoul Museum of History, and Namsangol Hanok Village"
+      "ko": "서울공예박물관, 국립현대미술관 서울, DDP 디자인 스토어",
+      "en": "Seoul Museum of Craft Art, MMCA Seoul, and DDP Design Store"
     },
-    "dateType": "ongoing-or-seasonal",
-    "recommendedFor": ["rainy-indoor", "rainy-day", "museum", "indoor", "family"],
-    "relatedCourseIds": ["rainy-day-indoor-heritage"],
-    "relatedPlaceIds": ["national-palace-museum", "seoul-museum-of-history", "namsangol-hanok-village"],
-    "publicDataSource": "서울시 문화행사 정보 / 서울 실시간 도시데이터 / 서울시 문화시설 정보",
-    "aiUse": "우천 시 실내 대체 코스와 전시 중심 해설을 생성하는 데 활용"
+    "dateType": "sample-schedule",
+    "recommendedFor": ["rainy day", "indoor", "museum", "shopping"],
+    "relatedCourseIds": ["rainy-day-indoor-design-course"],
+    "relatedPlaceIds": ["seoul-museum-of-craft-art", "mmca-seoul", "ddp-design-store"],
+    "publicDataSource": "서울시 문화행사 정보 / 각 기관 공식 안내 / 공공데이터 기반 실내 대체 동선 가공",
+    "aiUse": "날씨 악화 시에도 서비스 정체성이 흔들리지 않도록 실내 중심 추천 흐름을 유지하는 샘플입니다."
   }
 ]

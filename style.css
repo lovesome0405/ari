@@ -484,6 +484,27 @@ p {
   color: rgba(255, 255, 255, 0.78);
 }
 
+.home-proof-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.home-proof-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  padding: 0 12px;
+  color: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
 .night-hero.compact {
   min-height: 260px;
 }

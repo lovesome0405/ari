@@ -11,16 +11,16 @@ const HOME_TIME_IMAGES = {
       'assets/images/home/day-4.webp'
     ],
     title: {
-      KR: '외국인을 위한 서울 전통문화 AI 가이드',
-      EN: 'Seoul Heritage Guide for Global Travelers',
-      JP: '外国人のためのソウル伝統文化AIガイド',
-      CN: '面向外国游客的首尔传统文化AI指南'
+      KR: '산업부 공공데이터 기반 K-공예·디자인 탐색',
+      EN: 'Industrial Public-Data K-Craft and Design Guide',
+      JP: '産業公共データベースのK-工芸・デザインガイド',
+      CN: '基于产业公共数据的 K-工艺与设计向导'
     },
     description: {
-      KR: '궁궐, 한옥, 사찰, 역사 공간을 여행자의 시간·날씨·관심사에 맞춰 이야기 흐름으로 추천합니다.',
-      EN: 'MARU recommends palaces, hanok villages, temples, and historic spaces around your time, weather, and interests.',
-      JP: '宮殿、韓屋、寺院、歴史空間を、時間・天気・関心に合わせて物語の流れで推薦します。',
-      CN: '根据时间、天气和兴趣，以故事路线推荐宫殿、韩屋、寺庙与历史空间。'
+      KR: '외국인 방문객이 한국의 공예·디자인 브랜드와 체험을 발견하고 방문·구매 동선까지 연결하도록 돕습니다.',
+      EN: 'Helps global visitors discover Korean craft and design brands, then connect those discoveries to visits and purchases.',
+      JP: '外国人訪問者が韓国の工芸・デザインブランドと体験を見つけ、訪問と購入動線までつなげられるよう助けます。',
+      CN: '帮助外国访客发现韩国工艺与设计品牌和体验，并进一步连接到访问与购买动线。'
     }
   },
   evening: {
@@ -32,16 +32,16 @@ const HOME_TIME_IMAGES = {
       'assets/images/home/evening-4.webp'
     ],
     title: {
-      KR: '아리가 당신의 서울 전통문화 여정을 도와드릴게요',
-      EN: 'ARI will guide your Seoul heritage route',
-      JP: 'ARIがソウル伝統文化の旅を案内します',
-      CN: 'ARI将为你引导首尔传统文化路线'
+      KR: '브랜드와 체험을 연결하는 K-디자인 가이드',
+      EN: 'A K-Design Guide Linking Brands and Experiences',
+      JP: 'ブランドと体験をつなぐK-デザインガイド',
+      CN: '连接品牌与体验的 K-设计向导'
     },
     description: {
-      KR: '저녁 시간에는 산책길과 공연을 연결한 문화 흐름을 부드럽게 보여줍니다.',
-      EN: 'In the evening, MARU highlights gentle walks and performance-friendly routes.',
-      JP: '夕方には散策路や公演とつながる文化の流れをやさしく提案します。',
-      CN: '傍晚时，MARU会优先呈现适合散步和演出的文化路线。'
+      KR: '공공데이터 해설, 전시 동선, 로컬 브랜드 방문 흐름을 저녁 일정에 맞춰 자연스럽게 이어줍니다.',
+      EN: 'Connects public-data explanation, exhibition flow, and local-brand stops into an easy evening route.',
+      JP: '公共データの解説、展示動線、ローカルブランド訪問の流れを夕方の 일정에 맞게自然につなげます。',
+      CN: '把公共数据解说、展览动线与本地品牌访问流自然地连接成适合傍晚的路线。'
     }
   },
   night: {
@@ -53,16 +53,16 @@ const HOME_TIME_IMAGES = {
       'assets/images/home/night-4.webp'
     ],
     title: {
-      KR: '밤에도 이어지는 서울 전통문화 이야기',
-      EN: 'Seoul Heritage Stories After Dark',
-      JP: '夜にも続くソウル伝統文化の物語',
-      CN: '夜晚继续展开的首尔传统文化故事'
+      KR: '밤에도 이어지는 로컬 브랜드·디자인 동선',
+      EN: 'Night Routes for Local Brands and Design',
+      JP: '夜にも続くローカルブランドとデザイン動線',
+      CN: '夜晚继续延伸的本地品牌与设计动线'
     },
     description: {
-      KR: '궁궐 야경과 조용한 한옥 분위기에 맞춰 차분한 화면으로 전환됩니다.',
-      EN: 'At night, the interface shifts into a calmer palace and hanok mood.',
-      JP: '宮殿の夜景や静かな韓屋の雰囲気に合わせて落ち着いた表示に変わります。',
-      CN: '夜晚会切换为更适合宫殿夜景和安静韩屋氛围的画面。'
+      KR: '야간 전시, 쇼룸, 구매 동선을 통해 공공데이터 기반 추천이 하루 일정 끝까지 이어지도록 보여줍니다.',
+      EN: 'Shows how public-data-based recommendations can continue through night exhibitions, showrooms, and late buying stops.',
+      JP: '夜間展示、ショールーム、購入動線まで公共データベースの推薦が続くことを見せます。',
+      CN: '展示夜间展览、展厅与购买动线如何把公共数据型推荐延续到一天结束。'
     }
   },
   JP: {
@@ -288,12 +288,12 @@ const ARI_CHARACTER_IMAGE = 'assets/images/ari/ari1.webp';
 
 const ARI_SYSTEM_PROMPT = `
 너는 아리(ARI)다.
-아리는 마루 앱 안에서 서울 전통문화 코스를 안내하는 AI 가이드다.
+아리는 마루 앱 안에서 K-공예·디자인 코스와 브랜드 발견 동선을 안내하는 AI 가이드다.
 사용자에게 앱 이름을 말해야 할 때는 마루 또는 MARU라고 부른다.
 ARI를 앱 이름처럼 말하지 않는다.
 
 역할:
-- 한국 전통문화, 궁궐, 한옥, 전통시장, 정원, 연못, 누각, 문화체험을 친절하게 설명한다.
+- 한국의 공예·디자인 브랜드, 전시, 공예 체험, 로컬 스토어, 구매 동선을 친절하게 설명한다.
 - 외국인 방문객도 이해하기 쉬운 말로 설명한다.
 - 사용자의 언어 선택에 맞춰 가능한 범위에서 답한다.
 - 현재 앱의 추천 코스와 장소 데이터를 바탕으로 답한다.
@@ -304,11 +304,11 @@ ARI를 앱 이름처럼 말하지 않는다.
 - 모르는 정보는 공식 출처 확인이 필요하다고 말한다.
 - 길찾기는 사용자가 선택한 지도 서비스 버튼을 사용하라고 안내한다.
 - 응급상황, 분실물, 관광불편은 여행자 지원 메뉴를 안내한다.
-- AI는 사실을 새로 만들어내는 것이 아니라, 검증된 문화데이터를 쉽게 설명하는 역할이다.
+- AI는 사실을 새로 만들어내는 것이 아니라, 산업부 공공데이터와 검증된 앱 데이터를 쉽게 설명하는 역할이다.
 `;
 
 const ARI_LLM_SYSTEM_PROMPT = `
-You are ARI, the heritage guide inside the MARU app.
+You are ARI, the craft-and-design guide inside the MARU app.
 MARU is the app name. ARI is the guide character, not the service name.
 
 Behavior:
@@ -328,11 +328,11 @@ Answer style:
 `;
 
 const ARI_QUICK_QUESTIONS = [
-  '처음 서울 오는데 어디부터 가면 좋아?',
-  '이 코스가 왜 추천됐어?',
-  '비 오는 날 어디가 좋아?',
-  '많이 걷지 않는 코스도 있어?',
-  '영어 안내 가능한 곳 있어?'
+  '처음 서울 왔는데 공예·디자인 코스는 어디부터 가면 좋아?',
+  '이 브랜드 발견 코스가 왜 추천됐어?',
+  '비 오는 날엔 어떤 실내 코스가 좋아?',
+  '선물 사기 좋은 코스도 있어?',
+  '영어로 설명하기 쉬운 장소가 어디야?'
 ];
 
 const CULTURE_RESOURCE_DATA_URL = 'ari_culture_resources_appjs.json';
@@ -381,359 +381,646 @@ let HERITAGE_DATA = [];
 let analyticsSummaryCache = null;
 let analyticsSummaryPromise = null;
 
-// Fallback seed data only. The primary static dataset is ari_culture_resources_appjs.json.
+// Contest-oriented fallback seed data only. The primary static datasets are data/courses.json and ari_culture_resources_appjs.json.
 let CULTURE_RESOURCES = [
   {
-    id: 'gyeongbokgung-palace',
-    nameKo: '경복궁',
-    nameEn: 'Gyeongbokgung Palace',
-    region: '종로구',
-    category: '궁궐',
-    address: '서울특별시 종로구 사직로 161',
-    latitude: 37.5796,
-    longitude: 126.9770,
-    feeType: '유료',
-    openingHours: '공식 출처 확인 필요',
-    indoorOutdoor: '실외',
-    walkingLevel: '보통',
+    id: 'seoul-museum-of-craft-art',
+    nameKo: '서울공예박물관',
+    nameEn: 'Seoul Museum of Craft Art',
+    region: '서울',
+    district: '종로구',
+    category: '공예 박물관',
+    categoryEn: 'Craft museum',
+    address: '서울특별시 종로구 율곡로3길 4',
+    latitude: 37.576371,
+    longitude: 126.983395,
+    feeType: '무료',
+    openingHours: '공식 확인 필요',
+    indoorOutdoor: '실내',
+    indoorOutdoorEn: 'Indoor',
+    walkingLevel: '낮음',
+    walkingLevelEn: 'Low',
     languageSupport: ['English'],
     englishAvailable: true,
     foreignerPopular: true,
     foreignerPopularityScore: 5,
     reservationRequired: false,
     reservationUrl: '',
-    bookingNote: '일반 관람은 현장 방문 가능하나 특별 프로그램은 사전 확인이 필요합니다.',
-    sourceName: 'National Heritage / palace official guide placeholder',
-    sourceUrl: 'source URL placeholder',
-    verifiedStatus: '공식 확인 필요',
-    lastVerifiedAt: 'YYYY-MM-DD',
-    traditionScore: 5,
-    foreignerScore: 5,
-    hiddenScore: 2,
-    aiSimpleExplanation: '조선의 대표 궁궐로 왕실문화와 궁궐 건축을 이해하기 좋은 장소입니다.',
-    aiWhyItMatters: '한국 왕실문화의 중심 공간을 직접 걸으며 건축과 의례의 의미를 배울 수 있습니다.',
-    aiVisitTip: '입장 시간, 휴궁일, 특별 관람 여부는 방문 전 공식 출처에서 확인하세요.',
-    aiCulturalKeywords: ['Joseon Dynasty', 'Royal Palace'],
-    imageUrl: '',
-    imageAlt: '경복궁 궁궐문화 안내 AI 이미지',
-    imageType: 'ai_generated',
-    imagePrompt: 'A clean mobile guide illustration of Gyeongbokgung palace at night, deep navy sky, warm palace lights, elegant Korean rooflines, no text, no logos'
-  },
-  {
-    id: 'national-palace-museum',
-    nameKo: '국립고궁박물관',
-    nameEn: 'National Palace Museum',
-    region: '종로구',
-    category: '박물관',
-    address: '서울특별시 종로구 효자로 12',
-    latitude: 37.5769,
-    longitude: 126.9749,
-    feeType: '무료',
-    openingHours: '공식 출처 확인 필요',
-    indoorOutdoor: '실내',
-    walkingLevel: '낮음',
-    languageSupport: ['English'],
-    englishAvailable: true,
-    foreignerPopular: true,
-    foreignerPopularityScore: 4,
-    reservationRequired: false,
-    reservationUrl: '',
-    bookingNote: '전시와 교육 프로그램은 일정별 사전 확인이 필요합니다.',
-    sourceName: 'museum official guide placeholder',
-    sourceUrl: 'source URL placeholder',
-    verifiedStatus: '공식 확인 필요',
-    lastVerifiedAt: 'YYYY-MM-DD',
-    traditionScore: 5,
-    foreignerScore: 4,
-    hiddenScore: 2,
-    aiSimpleExplanation: '조선 왕실 유물과 의례 문화를 쉽게 이해할 수 있는 박물관입니다.',
-    aiWhyItMatters: '궁궐 방문 전에 왕실 유물의 의미를 먼저 익힐 수 있습니다.',
-    aiVisitTip: '왕실 의례와 상징 관련 전시를 먼저 보면 궁궐 동선이 더 잘 이해됩니다.',
-    aiCulturalKeywords: ['Royal Artifacts', 'Court Ritual'],
-    imageUrl: '',
-    imageAlt: '국립고궁박물관 왕실 유물 AI 이미지',
-    imageType: 'ai_generated',
-    imagePrompt: 'A clean mobile guide illustration of Korean royal artifacts in a museum, ivory display, warm gold light, no text, no logos'
-  },
-  {
-    id: 'national-folk-museum',
-    nameKo: '국립민속박물관',
-    nameEn: 'National Folk Museum',
-    region: '종로구',
-    category: '박물관',
-    address: '서울특별시 종로구 삼청로 37',
-    latitude: 37.5816,
-    longitude: 126.9790,
-    feeType: '무료',
-    openingHours: '공식 출처 확인 필요',
-    indoorOutdoor: '실내',
-    walkingLevel: '낮음',
-    languageSupport: ['English'],
-    englishAvailable: true,
-    foreignerPopular: true,
-    foreignerPopularityScore: 4,
-    reservationRequired: false,
-    reservationUrl: '',
-    bookingNote: '전시 운영 시간은 방문 전 공식 출처에서 확인하세요.',
-    sourceName: 'museum official guide placeholder',
-    sourceUrl: 'source URL placeholder',
-    verifiedStatus: '공식 확인 필요',
-    lastVerifiedAt: 'YYYY-MM-DD',
-    traditionScore: 5,
-    foreignerScore: 4,
+    bookingNote: '기획전과 체험 프로그램은 일정별 확인이 필요합니다.',
+    sourceName: '서울공예박물관 공식 안내 / 한국디자인진흥원 공공데이터 해석',
+    sourceUrl: '',
+    verifiedStatus: '정적 시드 데이터 / 공식 확인 필요',
+    lastVerifiedAt: '2026-07-05',
+    qualityScore: 94,
+    traditionScore: 88,
+    foreignerScore: 91,
     hiddenScore: 3,
-    aiSimpleExplanation: '한국인의 생활문화와 민속을 이해할 수 있는 박물관입니다.',
-    aiWhyItMatters: '왕실문화와 일상문화의 차이를 비교할 수 있습니다.',
-    aiVisitTip: '생활사 전시를 중심으로 보면 전통문화가 더 쉽게 연결됩니다.',
-    aiCulturalKeywords: ['Folk Culture', 'Everyday Life'],
+    photoSpotScore: 4,
+    rainyDayScore: 5,
+    globalTags: ['craft', 'design', 'museum', 'indoor exhibition', 'first-time-visitor'],
+    aiSimpleExplanation: '한국 공예 재료와 생활 문화가 오늘의 디자인 감각으로 이어지는 흐름을 이해하기 좋은 박물관입니다.',
+    aiWhyItMatters: '산업부 공공데이터가 설명하는 디자인 상품성과 현장 공예 해설을 연결하는 시작점 역할을 합니다.',
+    aiVisitTip: '기획전 주제와 체험 프로그램 유무를 먼저 확인하면 추천 설명이 더 자연스럽습니다.',
     imageUrl: '',
-    imageAlt: '국립민속박물관 생활문화 AI 이미지',
+    imageAlt: '서울공예박물관 공예·디자인 가이드 이미지',
     imageType: 'ai_generated',
-    imagePrompt: 'A clean mobile guide illustration of Korean folk museum objects and everyday culture, warm ivory and navy, no text, no logos'
+    imagePrompt: 'A refined editorial illustration of a Korean craft museum interior with materials, objects, and calm exhibition lighting, no text, no logos.'
   },
   {
-    id: 'tongin-market',
-    nameKo: '통인시장',
-    nameEn: 'Tongin Market',
-    region: '종로구',
-    category: '전통시장',
-    address: '서울특별시 종로구 자하문로15길 일대',
-    latitude: 37.5808,
-    longitude: 126.9697,
-    feeType: '선택 지출',
-    openingHours: '공식 출처 확인 필요',
-    indoorOutdoor: '실내외',
+    id: 'kcdf-gallery',
+    nameKo: 'KCDF 갤러리',
+    nameEn: 'KCDF Gallery',
+    region: '서울',
+    district: '종로구',
+    category: '공예 갤러리',
+    categoryEn: 'Craft gallery',
+    address: '서울특별시 종로구 인사동11길 8',
+    latitude: 37.57374,
+    longitude: 126.98601,
+    feeType: '무료',
+    openingHours: '공식 확인 필요',
+    indoorOutdoor: '실내',
+    indoorOutdoorEn: 'Indoor',
     walkingLevel: '낮음',
-    languageSupport: [],
-    englishAvailable: false,
+    walkingLevelEn: 'Low',
+    languageSupport: ['English'],
+    englishAvailable: true,
     foreignerPopular: true,
     foreignerPopularityScore: 4,
     reservationRequired: false,
     reservationUrl: '',
-    bookingNote: '운영 시간과 휴무일은 방문 전 공식 안내를 확인하세요.',
-    sourceName: 'market official guide placeholder',
-    sourceUrl: 'source URL placeholder',
-    verifiedStatus: '공식 확인 필요',
-    lastVerifiedAt: 'YYYY-MM-DD',
-    traditionScore: 4,
-    foreignerScore: 4,
-    hiddenScore: 3,
-    aiSimpleExplanation: '지역 시장 문화를 통해 전통이 오늘의 생활과 만나는 장면을 볼 수 있습니다.',
-    aiWhyItMatters: '전통문화가 현재의 생활문화로 이어지는 흐름을 보여줍니다.',
-    aiVisitTip: '시장 운영 시간과 체험 가능 여부를 미리 확인하세요.',
-    aiCulturalKeywords: ['Traditional Market', 'Local Life'],
-    imageUrl: '',
-    imageAlt: '통인시장 생활문화 AI 이미지',
-    imageType: 'ai_generated',
-    imagePrompt: 'A clean mobile guide illustration of a small Korean traditional market street at evening, warm lights, no text, no logos'
-  },
-  {
-    id: 'unhyeongung',
-    nameKo: '운현궁',
-    nameEn: 'Unhyeongung',
-    region: '종로구',
-    category: '왕실가 유적',
-    address: '서울특별시 종로구 삼일대로 일대',
-    latitude: 37.5761,
-    longitude: 126.9870,
-    feeType: '무료',
-    openingHours: '공식 출처 확인 필요',
-    indoorOutdoor: '실내외',
-    walkingLevel: '낮음',
-    languageSupport: ['English'],
-    englishAvailable: true,
-    foreignerPopular: false,
-    foreignerPopularityScore: 3,
-    reservationRequired: false,
-    reservationUrl: '',
-    bookingNote: '행사와 체험 프로그램은 사전 확인이 필요합니다.',
-    sourceName: 'official guide placeholder',
-    sourceUrl: 'source URL placeholder',
-    verifiedStatus: '공식 확인 필요',
-    lastVerifiedAt: 'YYYY-MM-DD',
-    traditionScore: 4,
-    foreignerScore: 3,
+    bookingNote: '전시 교체 주기가 빨라 현재 전시 구성을 확인하는 편이 좋습니다.',
+    sourceName: 'KCDF 공식 안내 / 한국디자인진흥원_글로벌생활명품 선정기업 및 제품정보 목록',
+    sourceUrl: '',
+    verifiedStatus: '정적 시드 데이터 / 공식 확인 필요',
+    lastVerifiedAt: '2026-07-05',
+    qualityScore: 91,
+    traditionScore: 86,
+    foreignerScore: 88,
     hiddenScore: 4,
-    aiSimpleExplanation: '궁궐 밖 왕실가의 생활 분위기를 느낄 수 있는 공간입니다.',
-    aiWhyItMatters: '왕실문화가 궁궐 밖 생활 공간과도 연결된다는 점을 보여줍니다.',
-    aiVisitTip: '내부 전시와 행사 일정을 함께 확인하세요.',
-    aiCulturalKeywords: ['Royal Residence', 'Local Heritage'],
+    photoSpotScore: 3,
+    rainyDayScore: 5,
+    globalTags: ['craft', 'gallery', 'brand discovery', 'gift', 'indoor'],
+    aiSimpleExplanation: '공예 작가성과 상품성을 함께 보여주는 전시 공간으로 브랜드 설명에 유리합니다.',
+    aiWhyItMatters: '한국디자인진흥원 데이터가 말하는 공예 상품성을 방문객이 현장에서 체감하도록 도와줍니다.',
+    aiVisitTip: '선물 추천이 목적이면 작품 감상보다 상품 중심 섹션을 먼저 보는 편이 효율적입니다.',
     imageUrl: '',
-    imageAlt: '운현궁 왕실가 공간 AI 이미지',
+    imageAlt: 'KCDF 갤러리 공예 브랜드 이미지',
     imageType: 'ai_generated',
-    imagePrompt: 'A clean mobile guide illustration of a quiet Korean royal residence courtyard, hanok rooflines, evening mood, no text, no logos'
+    imagePrompt: 'An elegant craft gallery illustration with Korean objects, display shelves, and refined neutral lighting, no text.'
   },
   {
-    id: 'seoul-folk-music-museum',
-    nameKo: '서울우리소리박물관',
-    nameEn: 'Seoul Museum of Korean Folk Music',
-    region: '종로구',
-    category: '박물관',
-    address: '서울특별시 종로구 율곡로 일대',
-    latitude: 37.5759,
-    longitude: 126.9902,
-    feeType: '무료',
-    openingHours: '공식 출처 확인 필요',
-    indoorOutdoor: '실내',
+    id: 'anyoung-insadong',
+    nameKo: '안녕인사동',
+    nameEn: 'Anyoung Insadong',
+    region: '서울',
+    district: '종로구',
+    category: '브랜드 복합공간',
+    categoryEn: 'Brand complex',
+    address: '서울특별시 종로구 인사동길 49',
+    latitude: 37.57453,
+    longitude: 126.98346,
+    feeType: '선택 지출',
+    openingHours: '공식 확인 필요',
+    indoorOutdoor: '실내외',
+    indoorOutdoorEn: 'Indoor/outdoor',
     walkingLevel: '낮음',
-    languageSupport: [],
-    englishAvailable: false,
-    foreignerPopular: false,
-    foreignerPopularityScore: 3,
-    reservationRequired: false,
-    reservationUrl: '',
-    bookingNote: '체험 프로그램은 일정별 확인이 필요합니다.',
-    sourceName: 'museum official guide placeholder',
-    sourceUrl: 'source URL placeholder',
-    verifiedStatus: '공식 확인 필요',
-    lastVerifiedAt: 'YYYY-MM-DD',
-    traditionScore: 4,
-    foreignerScore: 3,
-    hiddenScore: 5,
-    aiSimpleExplanation: '한국 전통 소리와 민요를 접할 수 있는 작은 박물관입니다.',
-    aiWhyItMatters: '전통문화를 소리와 감각으로 이해하게 합니다.',
-    aiVisitTip: '청음형 전시를 천천히 체험하세요.',
-    aiCulturalKeywords: ['Gugak', 'Folk Sound'],
-    imageUrl: '',
-    imageAlt: '서울우리소리박물관 소리문화 AI 이미지',
-    imageType: 'ai_generated',
-    imagePrompt: 'A clean mobile guide illustration of Korean folk sound culture, sound wave motif, museum interior, no text, no logos'
-  },
-  {
-    id: 'deoksugung-palace',
-    nameKo: '덕수궁',
-    nameEn: 'Deoksugung Palace',
-    region: '중구',
-    category: '궁궐',
-    address: '서울특별시 중구 세종대로 일대',
-    latitude: 37.5658,
-    longitude: 126.9751,
-    feeType: '유료',
-    openingHours: '공식 출처 확인 필요',
-    indoorOutdoor: '실외',
-    walkingLevel: '낮음',
+    walkingLevelEn: 'Low',
     languageSupport: ['English'],
     englishAvailable: true,
     foreignerPopular: true,
     foreignerPopularityScore: 4,
     reservationRequired: false,
     reservationUrl: '',
-    bookingNote: '특별 관람과 행사는 사전 확인이 필요합니다.',
-    sourceName: 'official guide placeholder',
-    sourceUrl: 'source URL placeholder',
-    verifiedStatus: '공식 확인 필요',
-    lastVerifiedAt: 'YYYY-MM-DD',
-    traditionScore: 4,
-    foreignerScore: 4,
-    hiddenScore: 2,
-    aiSimpleExplanation: '대한제국과 근대 서울의 분위기를 느낄 수 있는 궁궐입니다.',
-    aiWhyItMatters: '전통 왕실문화와 근대 도시의 변화가 만나는 장소입니다.',
-    aiVisitTip: '석조전과 돌담길 동선을 함께 계획하세요.',
-    aiCulturalKeywords: ['Korean Empire', 'Modern Heritage'],
+    bookingNote: '선물 구매가 목적이라면 마지막 동선에 두는 편이 짐 관리에 유리합니다.',
+    sourceName: '현장 운영 정보 / 대한무역투자진흥공사_해외시장뉴스 해석',
+    sourceUrl: '',
+    verifiedStatus: '정적 시드 데이터 / 공식 확인 필요',
+    lastVerifiedAt: '2026-07-05',
+    qualityScore: 89,
+    traditionScore: 74,
+    foreignerScore: 87,
+    hiddenScore: 3,
+    photoSpotScore: 4,
+    rainyDayScore: 4,
+    globalTags: ['local brand', 'shopping', 'gift', 'lifestyle', 'design goods'],
+    aiSimpleExplanation: '전통 소재를 현대 취향으로 풀어낸 브랜드와 라이프스타일 상품을 함께 볼 수 있는 복합 공간입니다.',
+    aiWhyItMatters: '방문이 실제 구매로 이어지는 흐름을 보여주기 좋아 공모전형 서비스 가치 설명에 유리합니다.',
+    aiVisitTip: '예산이 적다면 둘러보기 중심으로, 예산이 있으면 마지막에 선물 구매를 연결하는 식으로 설명하세요.',
     imageUrl: '',
-    imageAlt: '덕수궁 근대유산 AI 이미지',
+    imageAlt: '안녕인사동 로컬 브랜드 이미지',
     imageType: 'ai_generated',
-    imagePrompt: 'A clean mobile guide illustration of Deoksugung palace and modern Seoul heritage, deep navy and gold, no text, no logos'
+    imagePrompt: 'A contemporary Korean lifestyle mall illustration with gift items, warm storefronts, and curated local-brand mood, no text.'
+  },
+  {
+    id: 'mmca-seoul',
+    nameKo: '국립현대미술관 서울',
+    nameEn: 'MMCA Seoul',
+    region: '서울',
+    district: '종로구',
+    category: '디자인 전시관',
+    categoryEn: 'Design museum',
+    address: '서울특별시 종로구 삼청로 30',
+    latitude: 37.57863,
+    longitude: 126.9806,
+    feeType: '유료 가능',
+    openingHours: '공식 확인 필요',
+    indoorOutdoor: '실내',
+    indoorOutdoorEn: 'Indoor',
+    walkingLevel: '낮음',
+    walkingLevelEn: 'Low',
+    languageSupport: ['English'],
+    englishAvailable: true,
+    foreignerPopular: true,
+    foreignerPopularityScore: 5,
+    reservationRequired: false,
+    reservationUrl: '',
+    bookingNote: '기획전 티켓과 현재 전시 주제는 방문 전 확인이 필요합니다.',
+    sourceName: '국립현대미술관 공식 안내 / 대한무역투자진흥공사_해외시장뉴스 해석',
+    sourceUrl: '',
+    verifiedStatus: '정적 시드 데이터 / 공식 확인 필요',
+    lastVerifiedAt: '2026-07-05',
+    qualityScore: 92,
+    traditionScore: 72,
+    foreignerScore: 90,
+    hiddenScore: 2,
+    photoSpotScore: 4,
+    rainyDayScore: 5,
+    globalTags: ['design exhibition', 'museum', 'indoor', 'visual culture', 'brand story'],
+    aiSimpleExplanation: '현대 전시 연출과 시각문화 흐름을 통해 한국 디자인의 현재형을 읽기 좋은 공간입니다.',
+    aiWhyItMatters: '공예에서 시작한 설명을 현대 디자인 감각으로 확장할 수 있어 K-디자인 탐색 서비스 정체성을 강화합니다.',
+    aiVisitTip: '전시가 많을 때는 한두 개 전시에 집중해 설명하는 편이 오히려 이해가 쉽습니다.',
+    imageUrl: '',
+    imageAlt: '국립현대미술관 서울 디자인 전시 이미지',
+    imageType: 'ai_generated',
+    imagePrompt: 'A sleek modern museum illustration with Korean design exhibition lighting and calm visitors, no text.'
+  },
+  {
+    id: 'bukchon-hanok-village-design',
+    nameKo: '북촌한옥마을',
+    nameEn: 'Bukchon Hanok Village',
+    region: '서울',
+    district: '종로구',
+    category: '생활 디자인 거리',
+    categoryEn: 'Lifestyle design street',
+    address: '서울특별시 종로구 계동길 일대',
+    latitude: 37.582604,
+    longitude: 126.983998,
+    feeType: '무료',
+    openingHours: '공식 확인 필요',
+    indoorOutdoor: '실외',
+    indoorOutdoorEn: 'Outdoor',
+    walkingLevel: '보통',
+    walkingLevelEn: 'Moderate',
+    languageSupport: ['English'],
+    englishAvailable: true,
+    foreignerPopular: true,
+    foreignerPopularityScore: 4,
+    reservationRequired: false,
+    reservationUrl: '',
+    bookingNote: '주민 생활 공간이므로 조용한 이동이 필요합니다.',
+    sourceName: '서울 관광 정보 / 한국디자인진흥원_산업디자인전문회사 해석',
+    sourceUrl: '',
+    verifiedStatus: '정적 시드 데이터 / 공식 확인 필요',
+    lastVerifiedAt: '2026-07-05',
+    qualityScore: 86,
+    traditionScore: 84,
+    foreignerScore: 86,
+    hiddenScore: 3,
+    photoSpotScore: 5,
+    rainyDayScore: 2,
+    globalTags: ['hanok', 'lifestyle design', 'architecture', 'photo-friendly', 'walking'],
+    aiSimpleExplanation: '건축 재료와 골목 스케일을 통해 한국 생활 디자인의 분위기를 체감할 수 있는 거리입니다.',
+    aiWhyItMatters: '단순 관광 포인트가 아니라 공간과 생활 감각이 어떻게 디자인 언어로 읽히는지 보여주는 역할을 합니다.',
+    aiVisitTip: '주민 공간이어서 짧고 조용한 동선으로 보는 편이 가장 적절합니다.',
+    imageUrl: '',
+    imageAlt: '북촌한옥마을 생활 디자인 이미지',
+    imageType: 'ai_generated',
+    imagePrompt: 'A warm hanok alley illustration focused on material texture, rooftops, and residential calm, no text.'
+  },
+  {
+    id: 'ssamziegil',
+    nameKo: '쌈지길',
+    nameEn: 'Ssamziegil',
+    region: '서울',
+    district: '종로구',
+    category: '디자인 쇼핑몰',
+    categoryEn: 'Design mall',
+    address: '서울특별시 종로구 인사동길 44',
+    latitude: 37.57403,
+    longitude: 126.98527,
+    feeType: '선택 지출',
+    openingHours: '공식 확인 필요',
+    indoorOutdoor: '실내외',
+    indoorOutdoorEn: 'Indoor/outdoor',
+    walkingLevel: '낮음',
+    walkingLevelEn: 'Low',
+    languageSupport: ['English'],
+    englishAvailable: true,
+    foreignerPopular: true,
+    foreignerPopularityScore: 4,
+    reservationRequired: false,
+    reservationUrl: '',
+    bookingNote: '층별 매장 구성은 변동 가능하므로 방문 전 안내가 필요합니다.',
+    sourceName: '현장 운영 정보 / 한국디자인진흥원_우수디자인전문회사 해석',
+    sourceUrl: '',
+    verifiedStatus: '정적 시드 데이터 / 공식 확인 필요',
+    lastVerifiedAt: '2026-07-05',
+    qualityScore: 88,
+    traditionScore: 75,
+    foreignerScore: 86,
+    hiddenScore: 3,
+    photoSpotScore: 4,
+    rainyDayScore: 4,
+    globalTags: ['shopping', 'gift', 'craft goods', 'local brand', 'design mall'],
+    aiSimpleExplanation: '공예 상품과 개성 있는 선물 아이템을 비교하기 좋은 대표 구매 스팟입니다.',
+    aiWhyItMatters: '공공데이터 기반 브랜드 설명이 현장 구매 행동으로 이어지는 지점을 보여줍니다.',
+    aiVisitTip: '시간이 짧으면 전체를 다 보기보다 관심 카테고리 층을 먼저 정해 보는 편이 좋습니다.',
+    imageUrl: '',
+    imageAlt: '쌈지길 공예 쇼핑 이미지',
+    imageType: 'ai_generated',
+    imagePrompt: 'A layered Korean design shopping complex illustration with ramps, gift shops, and craft goods, no text.'
+  },
+  {
+    id: 'seongsu-yeonbang',
+    nameKo: '성수연방',
+    nameEn: 'Seongsu Yeonbang',
+    region: '서울',
+    district: '성동구',
+    category: '로컬 브랜드 복합공간',
+    categoryEn: 'Local-brand complex',
+    address: '서울특별시 성동구 아차산로5길 10',
+    latitude: 37.54152,
+    longitude: 127.05697,
+    feeType: '선택 지출',
+    openingHours: '공식 확인 필요',
+    indoorOutdoor: '실내외',
+    indoorOutdoorEn: 'Indoor/outdoor',
+    walkingLevel: '보통',
+    walkingLevelEn: 'Moderate',
+    languageSupport: ['English'],
+    englishAvailable: true,
+    foreignerPopular: true,
+    foreignerPopularityScore: 4,
+    reservationRequired: false,
+    reservationUrl: '',
+    bookingNote: '공간 내 매장 교체가 있을 수 있어 방문 전 기본 구성을 확인하세요.',
+    sourceName: '현장 운영 정보 / 대한무역투자진흥공사_해외시장뉴스 해석',
+    sourceUrl: '',
+    verifiedStatus: '정적 시드 데이터 / 공식 확인 필요',
+    lastVerifiedAt: '2026-07-05',
+    qualityScore: 90,
+    traditionScore: 68,
+    foreignerScore: 87,
+    hiddenScore: 4,
+    photoSpotScore: 5,
+    rainyDayScore: 3,
+    globalTags: ['local brand', 'shopping', 'lifestyle', 'seongsu', 'photo-friendly'],
+    aiSimpleExplanation: '로컬 브랜드와 라이프스타일 상점이 밀집해 있어 외국인 취향 탐색에 유리한 복합 공간입니다.',
+    aiWhyItMatters: 'KOTRA 데이터가 설명하는 글로벌 수요 가능성을 서울의 현재형 브랜드 거리 경험과 연결하는 데 유리합니다.',
+    aiVisitTip: '브랜드 종류가 많으니 예산과 취향을 먼저 좁혀 설명하면 훨씬 자연스럽습니다.',
+    imageUrl: '',
+    imageAlt: '성수연방 로컬 브랜드 이미지',
+    imageType: 'ai_generated',
+    imagePrompt: 'A stylish local-brand complex illustration in Seongsu with brick textures, curated stores, and calm people, no text.'
+  },
+  {
+    id: 'lcdc-seoul',
+    nameKo: 'LCDC SEOUL',
+    nameEn: 'LCDC SEOUL',
+    region: '서울',
+    district: '성동구',
+    category: '디자인 쇼룸',
+    categoryEn: 'Design showroom',
+    address: '서울특별시 성동구 연무장17길 10',
+    latitude: 37.54158,
+    longitude: 127.06146,
+    feeType: '무료',
+    openingHours: '공식 확인 필요',
+    indoorOutdoor: '실내',
+    indoorOutdoorEn: 'Indoor',
+    walkingLevel: '낮음',
+    walkingLevelEn: 'Low',
+    languageSupport: ['English'],
+    englishAvailable: true,
+    foreignerPopular: true,
+    foreignerPopularityScore: 4,
+    reservationRequired: false,
+    reservationUrl: '',
+    bookingNote: '공간 연출과 전시성 비중이 높아 구매보다 설명 중심으로 접근하는 편이 좋습니다.',
+    sourceName: '현장 운영 정보 / 한국디자인진흥원_우수디자인전문회사 해석',
+    sourceUrl: '',
+    verifiedStatus: '정적 시드 데이터 / 공식 확인 필요',
+    lastVerifiedAt: '2026-07-05',
+    qualityScore: 91,
+    traditionScore: 64,
+    foreignerScore: 86,
+    hiddenScore: 4,
+    photoSpotScore: 5,
+    rainyDayScore: 5,
+    globalTags: ['design showroom', 'local brand', 'seongsu', 'indoor exhibition', 'taste'],
+    aiSimpleExplanation: '브랜드 편집과 공간 연출을 함께 보여줘 오늘의 한국 취향을 설명하기 좋은 쇼룸입니다.',
+    aiWhyItMatters: '단순 쇼핑 공간이 아니라 브랜드 감도와 공간 연출이 함께 작동하는 K-디자인 설명 지점입니다.',
+    aiVisitTip: '빠른 구매보다 브랜드 맥락과 공간 연출을 같이 풀어주는 식으로 안내하는 편이 좋습니다.',
+    imageUrl: '',
+    imageAlt: 'LCDC SEOUL 디자인 쇼룸 이미지',
+    imageType: 'ai_generated',
+    imagePrompt: 'A curated design showroom illustration with minimalist interiors, objects, and modern Korean taste, no text.'
+  },
+  {
+    id: 'ddp',
+    nameKo: '동대문디자인플라자',
+    nameEn: 'Dongdaemun Design Plaza',
+    region: '서울',
+    district: '중구',
+    category: '디자인 랜드마크',
+    categoryEn: 'Design landmark',
+    address: '서울특별시 중구 을지로 281',
+    latitude: 37.56719,
+    longitude: 127.01049,
+    feeType: '전시 선택',
+    openingHours: '공식 확인 필요',
+    indoorOutdoor: '실내외',
+    indoorOutdoorEn: 'Indoor/outdoor',
+    walkingLevel: '낮음~보통',
+    walkingLevelEn: 'Low to moderate',
+    languageSupport: ['English'],
+    englishAvailable: true,
+    foreignerPopular: true,
+    foreignerPopularityScore: 5,
+    reservationRequired: false,
+    reservationUrl: '',
+    bookingNote: '전시 일정과 야간 개방 구역은 방문 전 확인이 필요합니다.',
+    sourceName: 'DDP 공식 안내 / 한국디자인진흥원 공공데이터 해석',
+    sourceUrl: '',
+    verifiedStatus: '정적 시드 데이터 / 공식 확인 필요',
+    lastVerifiedAt: '2026-07-05',
+    qualityScore: 95,
+    traditionScore: 62,
+    foreignerScore: 92,
+    hiddenScore: 2,
+    photoSpotScore: 5,
+    rainyDayScore: 4,
+    globalTags: ['design landmark', 'night mood', 'exhibition', 'urban design', 'shopping'],
+    aiSimpleExplanation: '서울 디자인 이미지를 가장 직관적으로 보여주는 대표 랜드마크이자 야간 코스의 중심입니다.',
+    aiWhyItMatters: '산업부 공공데이터 기반 설명을 도시 디자인 이미지와 연결해 발표 임팩트를 높여줍니다.',
+    aiVisitTip: '전시가 없더라도 외관과 광장 동선만으로 설명력이 있으니 야간 시작점으로 안정적입니다.',
+    imageUrl: '',
+    imageAlt: '동대문디자인플라자 야간 디자인 이미지',
+    imageType: 'ai_generated',
+    imagePrompt: 'A futuristic night illustration of DDP with curved architecture, soft glow, and urban design atmosphere, no text.'
+  },
+  {
+    id: 'ddp-design-store',
+    nameKo: 'DDP 디자인 스토어',
+    nameEn: 'DDP Design Store',
+    region: '서울',
+    district: '중구',
+    category: '디자인 스토어',
+    categoryEn: 'Design store',
+    address: '서울특별시 중구 을지로 281',
+    latitude: 37.56719,
+    longitude: 127.01049,
+    feeType: '선택 지출',
+    openingHours: '공식 확인 필요',
+    indoorOutdoor: '실내',
+    indoorOutdoorEn: 'Indoor',
+    walkingLevel: '낮음',
+    walkingLevelEn: 'Low',
+    languageSupport: ['English'],
+    englishAvailable: true,
+    foreignerPopular: true,
+    foreignerPopularityScore: 4,
+    reservationRequired: false,
+    reservationUrl: '',
+    bookingNote: '상품 구성과 팝업 여부는 시기별로 달라질 수 있습니다.',
+    sourceName: 'DDP 공식 안내 / 한국디자인진흥원_글로벌생활명품 선정기업 및 제품정보 목록',
+    sourceUrl: '',
+    verifiedStatus: '정적 시드 데이터 / 공식 확인 필요',
+    lastVerifiedAt: '2026-07-05',
+    qualityScore: 90,
+    traditionScore: 60,
+    foreignerScore: 88,
+    hiddenScore: 3,
+    photoSpotScore: 3,
+    rainyDayScore: 5,
+    globalTags: ['design store', 'shopping', 'gift', 'indoor', 'brand discovery'],
+    aiSimpleExplanation: '전시 감상 뒤 바로 디자인 상품을 비교해볼 수 있어 소비 전환 설명에 좋습니다.',
+    aiWhyItMatters: '산업부 공공데이터가 설명하는 상품성과 현장 구매 선택지를 자연스럽게 연결합니다.',
+    aiVisitTip: '기념품이 아니라 디자인 굿즈와 브랜드 편집 관점으로 설명하면 공모전 방향성과 더 잘 맞습니다.',
+    imageUrl: '',
+    imageAlt: 'DDP 디자인 스토어 상품 이미지',
+    imageType: 'ai_generated',
+    imagePrompt: 'A polished design store illustration with curated shelves, Korean design goods, and exhibition-like lighting, no text.'
+  },
+  {
+    id: 'euljiro-lighting-street',
+    nameKo: '을지로 조명거리',
+    nameEn: 'Euljiro Lighting Street',
+    region: '서울',
+    district: '중구',
+    category: '야간 디자인 거리',
+    categoryEn: 'Night design street',
+    address: '서울특별시 중구 을지로3가 272-1 일대',
+    latitude: 37.5666,
+    longitude: 126.9917,
+    feeType: '무료',
+    openingHours: '공식 확인 필요',
+    indoorOutdoor: '실외',
+    indoorOutdoorEn: 'Outdoor',
+    walkingLevel: '보통',
+    walkingLevelEn: 'Moderate',
+    languageSupport: ['English'],
+    englishAvailable: true,
+    foreignerPopular: false,
+    foreignerPopularityScore: 3,
+    reservationRequired: false,
+    reservationUrl: '',
+    bookingNote: '야간 이동 시간과 주변 영업 시간을 함께 보는 편이 좋습니다.',
+    sourceName: '현장 공간 정보 / 대한무역투자진흥공사_해외시장뉴스 해석',
+    sourceUrl: '',
+    verifiedStatus: '정적 시드 데이터 / 공식 확인 필요',
+    lastVerifiedAt: '2026-07-05',
+    qualityScore: 84,
+    traditionScore: 58,
+    foreignerScore: 82,
+    hiddenScore: 5,
+    photoSpotScore: 5,
+    rainyDayScore: 1,
+    globalTags: ['night', 'lighting', 'urban design', 'photo-friendly', 'walk'],
+    aiSimpleExplanation: '빛과 산업 재료가 어우러져 서울의 도시 디자인 감각을 밤에 체감하기 좋은 거리입니다.',
+    aiWhyItMatters: '전시와 상품만이 아니라 도시 무드까지 K-디자인 탐색의 일부로 확장해 보여줍니다.',
+    aiVisitTip: '늦은 밤보다는 해 진 직후가 사진과 이동 모두에 가장 안정적입니다.',
+    imageUrl: '',
+    imageAlt: '을지로 조명거리 야간 무드 이미지',
+    imageType: 'ai_generated',
+    imagePrompt: 'A cinematic night street illustration with Korean lighting shops, glowing signs, and urban industrial mood, no text.'
+  },
+  {
+    id: 'seongsu-yeonmujang-gil',
+    nameKo: '성수 연무장길',
+    nameEn: 'Seongsu Yeonmujang-gil',
+    region: '서울',
+    district: '성동구',
+    category: '브랜드 거리',
+    categoryEn: 'Brand street',
+    address: '서울특별시 성동구 연무장길 일대',
+    latitude: 37.5423,
+    longitude: 127.0586,
+    feeType: '무료',
+    openingHours: '공식 확인 필요',
+    indoorOutdoor: '실외',
+    indoorOutdoorEn: 'Outdoor',
+    walkingLevel: '보통',
+    walkingLevelEn: 'Moderate',
+    languageSupport: ['English'],
+    englishAvailable: true,
+    foreignerPopular: true,
+    foreignerPopularityScore: 4,
+    reservationRequired: false,
+    reservationUrl: '',
+    bookingNote: '주말 혼잡도가 높은 편이라 평일 오후가 더 설명하기 좋습니다.',
+    sourceName: '성수 현장 정보 / 대한무역투자진흥공사_4대 소비재 국가별 수출금액 해석',
+    sourceUrl: '',
+    verifiedStatus: '정적 시드 데이터 / 공식 확인 필요',
+    lastVerifiedAt: '2026-07-05',
+    qualityScore: 87,
+    traditionScore: 60,
+    foreignerScore: 85,
+    hiddenScore: 4,
+    photoSpotScore: 5,
+    rainyDayScore: 2,
+    globalTags: ['local brand', 'street', 'shopping', 'photo-friendly', 'seongsu'],
+    aiSimpleExplanation: '팝업과 편집숍이 이어지는 거리라 한국의 현재형 로컬 브랜드 분위기를 체감하기 좋습니다.',
+    aiWhyItMatters: '지역 브랜드 노출과 방문 동선을 동시에 설명하기 좋아 공모전 문제 정의와 잘 맞습니다.',
+    aiVisitTip: '브랜드 설명 위주 데모라면 주말보다 평일 오후가 훨씬 안정적입니다.',
+    imageUrl: '',
+    imageAlt: '성수 연무장길 로컬 브랜드 거리 이미지',
+    imageType: 'ai_generated',
+    imagePrompt: 'A trendy Seoul street illustration with pop-up stores, select shops, and modern local-brand atmosphere, no text.'
   }
 ];
 
-// Fallback route data. The primary routes are generated from CULTURE_RESOURCES after JSON load.
+// Contest-oriented fallback route data. Used only if JSON loading fails.
 let ROUTE_DATA = [
   {
-    id: 'royal-culture-local-life',
-    title: '왕실문화에서 생활문화로 이어지는 코스',
-    englishTitle: 'Royal Culture to Local Life',
-    score: 87,
-    time: '약 3시간',
-    walking: '보통',
-    fee: '저비용',
-    resourceIds: ['national-palace-museum', 'gyeongbokgung-palace', 'national-folk-museum', 'tongin-market'],
-    flow: ['국립고궁박물관', '경복궁', '국립민속박물관', '통인시장'],
-    reason: '왕실문화에서 전통시장까지 이어져 한국 전통문화를 처음 접하는 방문객에게 적합합니다.',
-    tags: ['왕실문화', '박물관', '전통시장'],
-    convenience: {
-      englishAvailable: true,
-      foreignerPopular: true,
-      reservationRequired: false,
-      labels: ['영어 안내 가능', '외국인 인기', '예약 불필요']
-    },
-    imageUrl: 'assets/images/routes/course-palace.webp',
-    imageAlt: '왕실문화에서 생활문화로 이어지는 코스 이미지',
-    imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 코스 이해를 돕는 시각 가이드',
-    imagePrompt: 'A clean mobile travel guide illustration showing Korean royal culture flowing into local traditional market life, inspired by Joseon palace architecture, royal artifacts, folk museum objects, and a small traditional market street, deep navy night mood, warm gold lights, subtle cyan accents, elegant Korean heritage style, not photorealistic, no text, no logos',
-    summary: '조선 왕실 유물에서 시작해 궁궐, 민속문화, 전통시장으로 이어지는 흐름을 하나의 이야기로 이해할 수 있습니다.',
-    englishExplanation: 'This route helps visitors understand Korean royal culture and everyday local culture as one story. It begins with royal artifacts, continues through the palace and folk culture, and ends at a traditional market.',
-    tip: '운영시간, 요금, 예약 여부는 방문 전 공식 출처에서 확인하세요.',
-    source: 'Seed data based on public cultural source structure. Official source verification is required before production use.',
-    keywords: [
-      { name: 'Joseon Dynasty', description: '조선 시대 왕실문화와 국가 질서를 이해하는 핵심 키워드입니다.' },
-      { name: 'Royal Palace', description: '왕실 의례, 건축, 상징을 볼 수 있는 전통문화 공간입니다.' },
-      { name: 'Folk Culture', description: '일상생활과 민속 신앙, 생활 도구를 포함하는 문화입니다.' },
-      { name: 'Traditional Market', description: '전통이 오늘의 생활과 만나는 지역 문화 공간입니다.' }
-    ]
-  },
-  {
-    id: 'hidden-sounds-hanok-streets',
-    title: '숨은 소리문화와 한옥 골목 코스',
-    englishTitle: 'Hidden Sounds and Hanok Streets',
-    score: 81,
-    time: '약 2.5시간',
+    id: 'craft-design-intro-course',
+    title: 'K-공예·디자인 입문 코스',
+    englishTitle: 'K-Craft and Design Intro Route',
+    score: 95,
+    time: '약 2~3시간',
+    timeEn: '2 to 3 hours',
     walking: '낮음~보통',
-    fee: '무료 중심',
-    resourceIds: ['unhyeongung', 'seoul-folk-music-museum'],
-    flow: ['운현궁', '서울우리소리박물관', '익선동 한옥거리'],
-    reason: '짧은 동선 안에서 한옥과 전통 소리문화를 함께 경험할 수 있습니다.',
-    tags: ['한옥', '국악', '숨은문화'],
-    convenience: {
-      englishAvailable: true,
-      foreignerPopular: false,
-      reservationRequired: false,
-      labels: ['일부 영어 안내', '숨은 문화자원', '예약 불필요']
-    },
-    imageUrl: 'assets/images/routes/course-hanok.webp',
-    imageAlt: '숨은 소리문화와 한옥 골목 코스 이미지',
-    imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 코스 이해를 돕는 시각 가이드',
-    imagePrompt: 'A clean mobile travel guide illustration of a quiet Korean hanok alley and traditional folk sound culture, showing hanok rooflines, a small museum-like interior, sound wave motif, calm evening atmosphere, deep navy, ivory, warm gold, subtle cyan, elegant Korean heritage app style, not photorealistic, no text, no logos',
-    summary: '왕실가의 생활 공간에서 시작해 한국의 소리문화를 듣고, 한옥 골목의 분위기로 마무리하는 코스입니다.',
-    englishExplanation: 'This route introduces traditional Korean sound culture and hanok streets in a compact walking path.',
-    tip: '박물관 프로그램 시간과 골목 혼잡도를 미리 확인하면 좋습니다.',
-    source: 'Seed data based on public cultural source structure. Official source verification is required before production use.',
-    keywords: [
-      { name: 'Gugak', description: '한국 전통음악과 소리문화를 뜻합니다.' },
-      { name: 'Hanok Alley', description: '전통 주거 양식과 도시 골목이 만나는 공간입니다.' },
-      { name: 'Local Heritage', description: '잘 알려진 명소 밖에 있는 지역 문화자원입니다.' }
-    ]
-  },
-  {
-    id: 'modern-seoul-performing-heritage',
-    title: '근대 서울과 전통예술 코스',
-    englishTitle: 'Modern Seoul and Performing Heritage',
-    score: 83,
-    time: '약 3시간',
-    walking: '낮음',
-    fee: '유료 가능',
-    resourceIds: ['deoksugung-palace'],
-    flow: ['덕수궁', '덕수궁 돌담길', '국립정동극장'],
-    reason: '근대 서울의 역사와 전통공연을 함께 즐길 수 있어 저녁 코스로 좋습니다.',
-    tags: ['근대유산', '공연', '중구'],
+    walkingEn: 'Low to moderate',
+    fee: '무료 관람 + 유료 체험 선택 가능',
+    feeEn: 'Free browsing with optional paid experiences',
+    resourceIds: ['seoul-museum-of-craft-art', 'kcdf-gallery', 'anyoung-insadong'],
+    flow: ['서울공예박물관', 'KCDF 갤러리', '안녕인사동'],
+    reason: '산업통상부 공공데이터가 설명하는 공예 상품성과 디자인 브랜드 맥락을 이해하고, 마지막에 실제 구매 동선까지 연결하기 좋은 대표 코스입니다.',
+    reasonEn: 'A strong entry route that turns industrial public-data context into a clear sequence of understanding, browsing, and possible buying.',
+    summary: '마루의 핵심 정체성을 가장 쉽게 보여주는 공예·디자인 입문 코스입니다.',
+    englishExplanation: 'The clearest first route for understanding MARU as a craft-and-design discovery service.',
+    tags: ['공예 체험', '디자인 전시', '로컬 브랜드', '쇼핑'],
+    target: ['공예 체험', '디자인 전시', '로컬 브랜드', '쇼핑'],
+    theme: 'craft-design',
+    recommendedTime: ['morning', 'afternoon'],
     convenience: {
       englishAvailable: true,
       foreignerPopular: true,
-      reservationRequired: true,
-      labels: ['영어 안내 가능', '외국인 인기', '공연 예약 확인']
+      reservationRequired: false,
+      labels: ['공공데이터 기반', '구매 동선 연결', '실내 중심']
     },
-    imageUrl: 'assets/images/routes/course-night.webp',
-    imageAlt: '근대 서울과 전통예술 코스 이미지',
+    convenienceLabelsEn: ['Public-data based', 'Purchase-connected', 'Indoor-friendly'],
+    imageUrl: 'assets/images/routes/course-craft.webp',
+    imageAlt: 'K-공예·디자인 입문 코스 이미지',
     imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 코스 이해를 돕는 시각 가이드',
-    imagePrompt: 'A clean mobile travel guide illustration connecting modern Seoul heritage and traditional performing arts, Deoksugung-inspired stonewall road, warm theater lights, traditional performance stage mood, deep navy and gold, premium Korean cultural travel app style, not photorealistic, no text, no logos',
-    summary: '덕수궁에서 근대 서울의 흐름을 보고, 돌담길 산책 후 전통공연으로 마무리합니다.',
-    englishExplanation: 'This route connects modern Seoul history with traditional performing arts in a walkable district.',
-    tip: '공연 티켓은 미리 예매하고 돌담길 산책 시간을 여유 있게 잡으세요.',
-    source: 'Seed data based on public cultural source structure. Official source verification is required before production use.',
+    imagePrompt: 'A refined editorial travel illustration of a Korean craft and design route from museum to gallery to concept mall, no text.',
+    tip: '발표에서는 공공데이터 설명이 실제 방문과 구매로 이어지는 구조를 보여주는 대표 코스로 소개하면 좋습니다.',
+    tipEn: 'Use this in demos to show the clearest path from public-data explanation to real on-site exploration and buying.',
+    source: 'Contest-oriented fallback seed built from industrial public-data storytelling and Seoul craft/design route structure.',
     keywords: [
-      { name: 'Korean Empire', description: '근대 전환기 왕실문화와 서울을 이해하는 키워드입니다.' },
-      { name: 'Historic Walk', description: '도시 길 위에서 역사적 층위를 읽는 방식입니다.' },
-      { name: 'Performing Heritage', description: '전통예술을 무대 경험으로 만나는 문화유산입니다.' }
+      { name: 'Brand Discovery', description: '전시 감상에서 끝나지 않고 브랜드 발견과 구매로 이어지는 흐름입니다.' },
+      { name: 'Public Data Story', description: '기업·상품·수요 데이터를 현장 방문 이유로 풀어내는 방식입니다.' }
+    ]
+  },
+  {
+    id: 'insadong-brand-buying-course',
+    title: '인사동 브랜드 발견·구매 코스',
+    englishTitle: 'Insadong Brand Discovery and Buying Route',
+    score: 93,
+    time: '약 2~3시간',
+    timeEn: '2 to 3 hours',
+    walking: '낮음',
+    walkingEn: 'Low',
+    fee: '무료 관람 + 구매 선택',
+    feeEn: 'Free browsing with optional purchases',
+    resourceIds: ['kcdf-gallery', 'ssamziegil', 'anyoung-insadong'],
+    flow: ['KCDF 갤러리', '쌈지길', '안녕인사동'],
+    reason: '전시 감상에서 끝나지 않고 선물 구매와 브랜드 발견까지 이어지는 외국인 소비 전환형 코스입니다.',
+    reasonEn: 'A route built not just for viewing, but for turning brand discovery into real gift-oriented buying.',
+    summary: '브랜드 발견과 선물 구매를 함께 보여주기 좋은 인사동 중심 코스입니다.',
+    englishExplanation: 'An Insadong-centered route for showing brand discovery and purchase flow together.',
+    tags: ['로컬 브랜드', '쇼핑', '공예 체험', 'gift-buying'],
+    target: ['로컬 브랜드', '쇼핑', '공예 체험'],
+    theme: 'brand-shopping',
+    recommendedTime: ['afternoon', 'evening'],
+    convenience: {
+      englishAvailable: true,
+      foreignerPopular: true,
+      reservationRequired: false,
+      labels: ['브랜드 발견', '선물 구매', '도보 부담 낮음']
+    },
+    convenienceLabelsEn: ['Brand discovery', 'Gift buying', 'Low walking'],
+    imageUrl: 'assets/images/routes/course-craft.webp',
+    imageAlt: '인사동 브랜드 발견·구매 코스 이미지',
+    imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 코스 이해를 돕는 시각 가이드',
+    imagePrompt: 'A stylish Seoul craft-shopping route illustration around Insadong galleries and gift stores, no text.',
+    tip: '사업화 가능성을 설명할 때 가장 쓰기 좋은 소비 전환형 코스입니다.',
+    tipEn: 'This is the strongest route when discussing commercialization potential.',
+    source: 'Contest-oriented fallback seed focused on gift buying and local-brand discovery.',
+    keywords: [
+      { name: 'Gift Conversion', description: '체험과 감상이 실제 선물 구매로 이어지는 장면을 의미합니다.' },
+      { name: 'Local Brand Search', description: '설명 가능한 작은 브랜드를 발견하는 흐름입니다.' }
+    ]
+  },
+  {
+    id: 'rainy-day-indoor-design-course',
+    title: '비 오는 날 실내 디자인 코스',
+    englishTitle: 'Rainy-Day Indoor Design Route',
+    score: 94,
+    time: '약 2~3시간',
+    timeEn: '2 to 3 hours',
+    walking: '낮음',
+    walkingEn: 'Low',
+    fee: '무료~유료 선택',
+    feeEn: 'Free to paid options',
+    resourceIds: ['seoul-museum-of-craft-art', 'mmca-seoul', 'ddp-design-store'],
+    flow: ['서울공예박물관', '국립현대미술관 서울', 'DDP 디자인 스토어'],
+    reason: '우천 상황에서도 해설력, 실내 안정성, 상품 탐색 가능성을 유지하는 실내 중심 코스입니다.',
+    reasonEn: 'An indoor-first route that keeps explanation quality, weather stability, and product exploration intact.',
+    summary: '날씨가 나빠도 공예·디자인 탐색 경험을 유지하는 실내 대체 코스입니다.',
+    englishExplanation: 'A rainy-day alternative that keeps the craft-and-design experience intact indoors.',
+    tags: ['실내 전시', '공예 체험', '쇼핑', 'low-walking'],
+    target: ['실내 전시', '공예 체험', '쇼핑'],
+    theme: 'rainy-indoor',
+    recommendedTime: ['morning', 'afternoon'],
+    convenience: {
+      englishAvailable: true,
+      foreignerPopular: true,
+      reservationRequired: false,
+      labels: ['우천 대응', '실내 중심', '브랜드 탐색 유지']
+    },
+    convenienceLabelsEn: ['Rainy-day fit', 'Indoor-first', 'Brand exploration kept'],
+    imageUrl: 'assets/images/routes/course-rainy.webp',
+    imageAlt: '비 오는 날 실내 디자인 코스 이미지',
+    imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 코스 이해를 돕는 시각 가이드',
+    imagePrompt: 'A rainy-day indoor Korean design route illustration with museums and a design store, no text.',
+    tip: '날씨 화면과 챗봇 데모를 함께 보여줄 때 가장 안정적인 fallback 코스입니다.',
+    tipEn: 'This is the most stable fallback route for weather and chatbot demos.',
+    source: 'Contest-oriented fallback seed for indoor route continuity without shared real-time data claims.',
+    keywords: [
+      { name: 'Indoor Resilience', description: '날씨 변수에도 일정이 무너지지 않도록 실내 비중을 높인 구조입니다.' },
+      { name: 'Rainy-Day Conversion', description: '우천 대안도 브랜드 발견과 구매 흐름을 유지하는 것을 뜻합니다.' }
     ]
   }
 ];
@@ -742,7 +1029,7 @@ let ROUTE_DATA = [
 const USER_PREFERENCE = {
   region: '종로구',
   time: '2시간',
-  interests: ['궁궐'],
+  interests: ['공예 체험'],
   people: '1명',
   groupType: '혼자',
   budget: '무료 위주',
@@ -891,6 +1178,8 @@ const ROUTE_IMAGE_ASSETS = {
   rainy: 'assets/images/routes/course-rainy.webp'
 };
 
+const CONTEST_ROUTE_OVERRIDES = {};
+
 const UI_COPY = {
   KR: {
     tabs: {
@@ -901,20 +1190,21 @@ const UI_COPY = {
       passport: '저장'
     },
     home: {
-      timeEyebrow: '서울 시간대 추천',
+      timeEyebrow: '산업부 공공데이터 기반 추천',
       languageConfirm: '한국어로 시작합니다.',
-      introTitle: '마루 맞춤 전통문화 코스',
-      introBody: '마루가 공식 문화데이터 구조를 바탕으로 당신에게 맞는 전통문화 스토리 코스를 추천합니다.',
-      principles: ['DB = 검증된 문화 사실', 'Server = 조건 필터링과 추천 점수', 'AI = 쉬운 문화 해설'],
+      introTitle: '산업부 공공데이터 기반 K-디자인 탐색',
+      introBody: '마루는 산업통상부 공공데이터를 바탕으로 외국인 방문객이 한국의 공예·디자인 브랜드와 체험을 발견하고, 방문·구매 동선까지 연결하도록 돕는 K-디자인 AI 가이드입니다.',
+      principles: ['DB = 산업부 공공데이터 + 현장 정보', 'Logic = 조건 필터링과 추천 점수', 'Guide = 쉬운 공예·디자인 해설'],
+      proofPoints: ['산업통상부 공공데이터 기반', '외국인 대상 K-공예·디자인 탐색', '로컬 브랜드 노출 + 방문·구매 동선 연결'],
       quickLabel: '빠른 시작',
-      todayRoute: '오늘 추천 코스',
-      todayRouteDesc: '대표 스토리 코스 먼저 보기',
-      rainyRoute: '비 오는 날 코스',
-      rainyRouteDesc: '실내 중심 대체 코스',
+      todayRoute: '대표 탐색 코스',
+      todayRouteDesc: '공예·디자인·구매 동선 먼저 보기',
+      rainyRoute: '우천 대체 코스',
+      rainyRouteDesc: '실내 중심 보조 동선',
       support: '여행자 지원',
       supportDesc: '긴급·분실·번역 도움',
       about: '서비스 소개',
-      data: '공공데이터 활용 보기',
+      data: '산업부 데이터 근거 보기',
       start: '시작하기'
     },
     routes: {
@@ -922,8 +1212,8 @@ const UI_COPY = {
       headerSub: '추천 코스',
       edit: '조건 수정',
       eyebrow: 'Recommended Routes',
-      title: '추천 전통문화 코스',
-      body: '선택한 조건을 바탕으로 이해하기 쉬운 스토리형 코스를 추천합니다.',
+      title: '추천 K-공예·디자인 코스',
+      body: '선택한 조건을 바탕으로 공예 체험, 디자인 전시, 로컬 브랜드 발견, 방문·구매 동선을 하나의 흐름으로 추천합니다.',
       condition: '선택 조건',
       reason: '추천 이유',
       select: '이 코스 선택하기',
@@ -931,8 +1221,8 @@ const UI_COPY = {
       map: '지도 열기'
     },
     places: {
-      title: '서울 전통문화 장소 추천',
-      body: '실제 데이터에서 좌표와 설명 품질이 좋은 장소를 우선 정렬했습니다.',
+      title: '서울 공예·디자인 장소 추천',
+      body: '산업부 공공데이터와 연결해 설명하기 좋은 공예·디자인 공간을 우선 정렬했습니다.',
       count: '추천 장소',
       reason: '외국인 추천 이유',
       tip: '방문 팁',
@@ -951,14 +1241,14 @@ const UI_COPY = {
       reason: '추천 이유',
       mapButton: '선택한 지도에서 길찾기',
       flow: '코스 흐름',
-      aiGuide: 'AI 쉬운 문화 해설',
-      keywords: '문화 키워드',
+      aiGuide: 'AI형 공예·디자인 해설',
+      keywords: '탐색 키워드',
       visitTip: '방문 팁',
       why: '왜 중요한가:',
       tip: '방문 팁:',
       booking: '예약 안내:',
       warning: '운영시간, 요금, 예약 여부는 방문 전 공식 출처에서 확인하세요.',
-      passport: '문화여행 기록에 저장'
+      passport: '탐색 기록에 저장'
     },
     map: {
       header: '마루',
@@ -966,7 +1256,7 @@ const UI_COPY = {
       changeRoute: '코스 변경',
       eyebrow: 'Route Map',
       fallbackTitle: '선택한 코스',
-      body: '현재 위치를 허용하면 가까운 서울 전통문화 장소를 거리순으로 추천합니다. 위치 정보는 저장하지 않으며, 선택한 지도 서비스로 코스와 이동 순서도 열 수 있습니다.',
+      body: '현재 위치를 허용하면 가까운 서울 공예·디자인 장소를 거리순으로 추천합니다. 위치 정보는 저장하지 않으며, 선택한 지도 서비스로 코스와 이동 순서도 열 수 있습니다.',
       selector: '지도 선택',
       selectorHint: '선택한 지도 서비스는 다음 방문에도 유지됩니다.',
       openRoute: '선택한 지도에서 열기',
@@ -980,7 +1270,7 @@ const UI_COPY = {
       rainyIndoorToast: '비 오는 날 실내 코스 조건이 선택되었습니다.',
       nearbyToast: '현재 위치로 가까운 장소를 찾습니다.',
       savedToast: '지도 서비스가 저장되었습니다.',
-      nearbyTitle: '내 주변 전통문화 장소',
+      nearbyTitle: '내 주변 공예·디자인 장소',
       nearbyButton: '현재 위치로 가까운 코스 찾기',
       nearbyNotice: '위치 정보는 가까운 장소 추천에만 사용되며 저장되지 않습니다.',
       nearbyLoading: '현재 위치를 확인하고 가까운 장소를 찾고 있어요.',
@@ -1007,19 +1297,19 @@ const UI_COPY = {
     },
     planner: {
       eyebrow: 'Route Planner',
-      title: '나에게 맞는 전통문화 코스 찾기',
-      body: '한 화면에 하나씩 선택하면 추천 조건이 저장됩니다.',
+      title: '나에게 맞는 K-공예·디자인 코스 찾기',
+      body: '공예 체험, 디자인 전시, 로컬 브랜드 발견, 구매 동선을 기준으로 추천 조건을 정리합니다.',
       stepLabel: 'Step',
       steps: [
         { title: '지역과 시간', body: '어디에서 얼마나 여행하나요?' },
-        { title: '관심사', body: '어떤 전통문화를 보고 싶나요?' },
+        { title: '관심사', body: '어떤 공예·디자인 경험을 원하나요?' },
         { title: '동행 정보', body: '누구와 함께 여행하나요?' },
         { title: '여행 스타일', body: '어떤 방식으로 여행하고 싶나요?' },
         { title: '추가 요청', body: '원하는 조건이 더 있나요?' }
       ],
       optionLabels: ['지역', '시간', '인원', '여행 형태', '예산', '이동 부담', '실내/실외'],
       requestLabel: '자연어 요청',
-      requestPlaceholder: '종로에서 3시간 정도 전통문화 코스를 추천해줘. 너무 많이 걷지 않는 코스면 좋겠어.',
+      requestPlaceholder: '성수에서 3시간 정도 로컬 브랜드와 쇼핑이 같이 있는 코스를 추천해줘. 비 오면 실내 전시 위주면 좋겠어.',
       summaryPlaceholder: '선택한 조건이 여기에 표시됩니다.',
       prev: '이전',
       next: '다음',
@@ -1030,7 +1320,7 @@ const UI_COPY = {
       imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 코스 이해를 돕는 시각 가이드',
       imageMissing: '이미지 준비 중',
       savedRouteToast: '코스가 선택되었습니다.',
-      passportToast: '문화여행 기록에 저장되었습니다.'
+      passportToast: '탐색 기록에 저장되었습니다.'
     }
   },
   EN: {
@@ -1042,20 +1332,21 @@ const UI_COPY = {
       passport: 'Saved'
     },
     home: {
-      timeEyebrow: 'Seoul Time Mood',
+      timeEyebrow: 'Industrial Public-Data Recommendation',
       languageConfirm: 'Starting in English.',
-      introTitle: 'The easiest way to understand Korean heritage',
-      introBody: 'MARU recommends traditional culture routes based on structured cultural data and visitor needs.',
-      principles: ['DB = verified cultural facts', 'Server = filters and recommendation score', 'AI = simple cultural interpretation'],
+      introTitle: 'Industrial-data-based K-design exploration',
+      introBody: 'MARU helps global visitors discover Korean craft, design brands, and purchase-friendly routes using industrial public data.',
+      principles: ['DB = industrial public data + field info', 'Logic = filters and recommendation score', 'Guide = simple craft and design interpretation'],
+      proofPoints: ['Industrial public-data based', 'K-craft and design discovery for global visitors', 'Local-brand exposure plus visit and purchase flow'],
       quickLabel: 'Quick start',
       todayRoute: "Today's Routes",
-      todayRouteDesc: 'Browse representative story routes',
+      todayRouteDesc: 'Browse representative craft and design routes',
       rainyRoute: 'Rainy Day Route',
       rainyRouteDesc: 'Indoor-focused alternatives',
       support: 'Traveler Help',
       supportDesc: 'Emergency, lost items, translation',
       about: 'About the service',
-      data: 'View public data usage',
+      data: 'View industry public data',
       start: 'Get Started'
     },
     routes: {
@@ -1063,8 +1354,8 @@ const UI_COPY = {
       headerSub: 'Recommended Routes',
       edit: 'Edit filters',
       eyebrow: 'Recommended Routes',
-      title: 'Traditional Culture Routes',
-      body: 'MARU recommends story-based routes that are easy for international visitors to understand.',
+      title: 'K-Craft and Design Routes',
+      body: 'MARU recommends story-based routes across experiences, exhibitions, brands, and local buying spots.',
       condition: 'Selected filters',
       reason: 'Why this route',
       select: 'Choose this route',
@@ -1072,8 +1363,8 @@ const UI_COPY = {
       map: 'Open map'
     },
     places: {
-      title: 'Recommended Seoul Heritage Places',
-      body: 'Places are sorted by coordinates, data quality, tradition score, visitor-friendly explanations, and independent travel value.',
+      title: 'Recommended Seoul Craft and Design Places',
+      body: 'Places are sorted by industrial-data fit, coordinates, data quality, visitor-friendly explanations, and travel value.',
       count: 'places',
       reason: 'Why recommended',
       tip: 'Visit tip',
@@ -1092,7 +1383,7 @@ const UI_COPY = {
       reason: 'Why this route',
       mapButton: 'Open with selected map',
       flow: 'Route Flow',
-      aiGuide: 'Simple AI Culture Guide',
+      aiGuide: 'Simple AI Craft and Design Guide',
       keywords: 'Culture Keywords',
       visitTip: 'Visit Tip',
       why: 'Why it matters:',
@@ -1107,7 +1398,7 @@ const UI_COPY = {
       changeRoute: 'Change route',
       eyebrow: 'Route Map',
       fallbackTitle: 'Selected Route',
-      body: 'Allow location access to find nearby Seoul heritage places by distance. Your location is not saved, and you can also open the route with your selected map service.',
+      body: 'Allow location access to find nearby Seoul craft and design places by distance. Your location is not saved, and you can also open the route with your selected map service.',
       selector: 'Choose Map',
       selectorHint: 'Your selected map service is saved for next time.',
       openRoute: 'Open in selected map',
@@ -1119,9 +1410,9 @@ const UI_COPY = {
       nearby: 'Find routes near me',
       lessWalkingToast: 'Check less-walking options inside your selected map service.',
       rainyIndoorToast: 'Rainy-day indoor route conditions were selected.',
-      nearbyToast: 'Finding nearby heritage places from your current location.',
+      nearbyToast: 'Finding nearby craft and design places from your current location.',
       savedToast: 'Map service saved.',
-      nearbyTitle: 'Heritage Places Near Me',
+      nearbyTitle: 'Craft and Design Places Near Me',
       nearbyButton: 'Find routes near me',
       nearbyNotice: 'Your location is only used to find nearby places and is not saved.',
       nearbyLoading: 'Checking your location and finding nearby places.',
@@ -1148,19 +1439,19 @@ const UI_COPY = {
     },
     planner: {
       eyebrow: 'Route Planner',
-      title: 'Find a heritage route that fits you',
+      title: 'Find a craft and design route that fits you',
       body: 'Choose one item at a time and MARU will save your route preferences.',
       stepLabel: 'Step',
       steps: [
         { title: 'Area and Time', body: 'Where and how long will you travel?' },
-        { title: 'Interests', body: 'What kind of heritage do you want to see?' },
+        { title: 'Interests', body: 'What kind of craft, design, or local-brand experience do you want?' },
         { title: 'Travel Party', body: 'Who are you traveling with?' },
         { title: 'Travel Style', body: 'How would you like to explore?' },
         { title: 'Extra Request', body: 'Any extra conditions?' }
       ],
       optionLabels: ['Area', 'Time', 'People', 'Group type', 'Budget', 'Walking', 'Indoor/Outdoor'],
       requestLabel: 'Free-text request',
-      requestPlaceholder: 'Recommend a 3-hour heritage route around Jongno. I prefer less walking.',
+      requestPlaceholder: 'Recommend a 3-hour craft and design route around Jongno. I prefer less walking.',
       summaryPlaceholder: 'Your selected filters will appear here.',
       prev: 'Back',
       next: 'Next',
@@ -1183,11 +1474,12 @@ const UI_COPY = {
       passport: '保存'
     },
     home: {
-      timeEyebrow: 'ソウル時間のムード',
+      timeEyebrow: '産業公共データベースの推薦',
       languageConfirm: '日本語で始めます。',
-      introTitle: 'MARU カスタム伝統文化コース',
-      introBody: 'MARUは文化データと旅行者の条件をもとに、理解しやすい伝統文化ルートを推薦します。',
-      principles: ['DB = 検証された文化情報', 'Server = 条件フィルターと推薦スコア', 'AI = わかりやすい文化解説'],
+      introTitle: '産業公共データベースのK-工芸・デザインガイド',
+      introBody: 'MARUは産業通商資源部系の公共データをもとに、外国人訪問者が韓国の工芸・デザインブランドと体験を見つけ、訪問と購入動線までつなげられるよう助けるガイドです。',
+      principles: ['DB = 産業公共データ + 現場情報', 'Logic = 条件フィルターと推薦スコア', 'Guide = わかりやすい工芸・デザイン解説'],
+      proofPoints: ['産業公共データベース', '外国人向けK-工芸・デザイン探索', 'ローカルブランド露出と訪問・購入動線連結'],
       quickLabel: 'クイックスタート',
       todayRoute: '今日のおすすめコース',
       todayRouteDesc: '代表的なストーリールートを見る',
@@ -1260,9 +1552,9 @@ const UI_COPY = {
       nearby: '現在地から近いコースを探す',
       lessWalkingToast: '少なめに歩く移動は、選択した地図サービスの経路オプションで確認してください。',
       rainyIndoorToast: '雨の日の屋内条件を選択しました。',
-      nearbyToast: '現在地から近い文化スポットを探します。',
+      nearbyToast: '現在地から近い工芸・デザインスポットを探します。',
       savedToast: '地図サービスを保存しました。',
-      nearbyTitle: '現在地周辺の伝統文化スポット',
+      nearbyTitle: '現在地周辺の工芸・デザインスポット',
       nearbyButton: '現在地から近いコースを探す',
       nearbyNotice: '位置情報は近くの場所を探すためだけに使用され、保存されません。',
       nearbyLoading: '現在地を確認し、近くの場所を探しています。',
@@ -1324,11 +1616,12 @@ const UI_COPY = {
       passport: '保存'
     },
     home: {
-      timeEyebrow: '首尔时间氛围',
+      timeEyebrow: '基于产业公共数据的推荐',
       languageConfirm: '将以中文开始。',
-      introTitle: 'MARU 定制传统文化路线',
-      introBody: 'MARU根据文化数据和旅行者条件，推荐容易理解的韩国传统文化路线。',
-      principles: ['DB = 已验证的文化信息', 'Server = 条件筛选与推荐分数', 'AI = 简明文化解读'],
+      introTitle: '基于产业公共数据的 K-工艺与设计向导',
+      introBody: 'MARU以产业通商资源部系公共数据为基础，帮助外国访客发现韩国工艺与设计品牌和体验，并连接到访问与购买动线。',
+      principles: ['DB = 产业公共数据 + 现场信息', 'Logic = 条件筛选与推荐分数', 'Guide = 易懂工艺与设计解说'],
+      proofPoints: ['基于产业公共数据', '面向外国访客的 K-工艺与设计探索', '本地品牌曝光与访问购买动线连接'],
       quickLabel: '快速开始',
       todayRoute: '今日推荐路线',
       todayRouteDesc: '查看代表性故事路线',
@@ -1401,9 +1694,9 @@ const UI_COPY = {
       nearby: '查找附近路线',
       lessWalkingToast: '少步行路线请在所选地图服务的路线选项中确认。',
       rainyIndoorToast: '已选择雨天室内路线条件。',
-      nearbyToast: '正在根据当前位置查找附近文化地点。',
+      nearbyToast: '正在根据当前位置查找附近工艺与设计地点。',
       savedToast: '地图服务已保存。',
-      nearbyTitle: '当前位置附近的传统文化地点',
+      nearbyTitle: '当前位置附近的工艺与设计地点',
       nearbyButton: '查找附近路线',
       nearbyNotice: '位置信息仅用于查找附近地点，不会被保存。',
       nearbyLoading: '正在确认当前位置并查找附近地点。',
@@ -1468,21 +1761,21 @@ const translations = {
 const EXTENDED_UI_COPY = {
   ko: {
     pageMeta: {
-      home: { title: '마루 | 서울 전통문화 AI 가이드', description: '마루, 외국인을 위한 서울 전통문화 AI 가이드' },
-      planner: { title: '조건 선택 | 마루', description: '여행 조건을 단계별로 선택해 전통문화 스토리 코스를 추천받습니다.' },
-      routes: { title: '추천 코스 | 마루', description: '선택 조건에 맞춘 한국 전통문화 스토리 코스 추천' },
-      routeDetail: { title: '코스 상세 | 마루', description: '선택한 전통문화 스토리 코스 상세와 지도 서비스 길찾기' },
+      home: { title: '마루 | K-공예·디자인 AI 가이드', description: '마루, 외국인을 위한 K-공예·디자인 AI 가이드' },
+      planner: { title: '조건 선택 | 마루', description: '여행 조건을 단계별로 선택해 K-공예·디자인 스토리 코스를 추천받습니다.' },
+      routes: { title: '추천 코스 | 마루', description: '선택 조건에 맞춘 K-공예·디자인 스토리 코스 추천' },
+      routeDetail: { title: '코스 상세 | 마루', description: '선택한 K-공예·디자인 스토리 코스 상세와 지도 서비스 길찾기' },
       map: { title: '지도 | 마루', description: '선택한 코스의 지도와 네이버지도, 카카오맵, Google Maps 링크' },
-      weather: { title: '서울 날씨 | 마루', description: '서울 날씨와 날씨 기반 전통문화 코스 추천' },
+      weather: { title: '서울 날씨 | 마루', description: '서울 날씨를 바탕으로 실내 중심 보조 동선을 보여주는 마루의 이동 편의 화면' },
       support: { title: '여행자 지원 | 마루', description: '외국인 여행자를 위한 긴급, 분실, 관광 안내, 안전, 번역 도움' },
-      passport: { title: '문화여행 기록 | 마루', description: '마루에서 저장한 코스와 전통문화 스탬프를 확인하는 문화여행 기록' },
-      about: { title: '서비스 소개 | 마루', description: '마루 서비스 개념과 확장 계획' },
-      cultureData: { title: '문화데이터 | 마루', description: '공공 문화데이터 활용 현황과 추천 로직 설명' },
+      passport: { title: '문화여행 기록 | 마루', description: '마루에서 저장한 코스와 공예·디자인 스탬프를 확인하는 문화여행 기록' },
+      about: { title: '서비스 소개 | 마루', description: '산업통상부 공공데이터 기반 K-공예·디자인 탐색 서비스 마루 소개' },
+      cultureData: { title: '공공데이터 | 마루', description: '산업통상부 공공데이터 활용 근거와 현재 정적 웹앱 구조 설명' },
       aiPhoto: { title: 'AI 포토카드 | 마루', description: '조선풍 전통 포토카드 체험' }
     },
     home: {
-      headerSub: 'Seoul Heritage Guide',
-      heroAria: '서울 시간대 추천 이미지',
+      headerSub: 'K-Craft Discovery Guide',
+      heroAria: '서울 공예·디자인 추천 이미지',
       languageAria: '언어 선택'
     },
     planner: {
@@ -1492,18 +1785,18 @@ const EXTENDED_UI_COPY = {
     },
     common: {
       bottomTabsAria: '하단 탭',
-      timeImageAlt: '시간대 전통문화 추천 이미지'
+      timeImageAlt: '시간대 공예·디자인 추천 이미지'
     },
     weather: {
       header: '마루',
       headerSub: '서울 날씨',
       action: '코스 보기',
       eyebrow: 'Weather Insight',
-      title: '날씨 기반 추천 코스',
-      summary: '서울 날씨와 혼잡도를 바탕으로 바깥 코스와 실내 대안을 함께 보여줍니다.',
-      todayLabel: '오늘의 추천',
-      todayTitle: '궁궐·한옥 산책 코스',
-      todayBody: '맑은 날에는 궁궐 외부 동선과 한옥 골목을 함께 걷기 좋습니다.',
+      title: '날씨 기반 보조 코스',
+      summary: '이 화면은 핵심 서비스가 아니라 이동 편의를 위한 보조 기능입니다. 서울 날씨와 예상 혼잡 흐름을 참고해 실내 중심 대안을 함께 보여줍니다.',
+      todayLabel: '오늘의 보조 추천',
+      todayTitle: '공예·디자인 이동 보정 코스',
+      todayBody: '맑은 날에는 야외 동선을 살리고, 비가 오면 실내 전시와 디자인 스토어 비중을 높이는 식으로 조정합니다.',
       routeButton: '추천 코스 보기',
       forecastTitle: '3일 예보',
       airTitle: '대기 정보',
@@ -1523,9 +1816,9 @@ const EXTENDED_UI_COPY = {
         '구름': '구름'
       },
       suggestions: [
-        { label: '맑은 날 추천', title: '궁궐·한옥 산책 코스', toast: '맑은 날 추천 코스가 선택되었습니다.' },
-        { label: '비 오는 날 추천', title: '박물관·공연 실내 코스', toast: '비 오는 날 실내 코스가 선택되었습니다.' },
-        { label: '더운 날 추천', title: '실내 전시·시장 중심 코스', toast: '더운 날 실내 중심 코스가 선택되었습니다.' }
+        { label: '맑은 날 보조', title: '야외 디자인 산책 비중 확대', toast: '맑은 날 보조 코스가 선택되었습니다.' },
+        { label: '비 오는 날 보조', title: '실내 전시·디자인 스토어 중심', toast: '비 오는 날 실내 보조 코스가 선택되었습니다.' },
+        { label: '더운 날 보조', title: '실내 체류 비중 확대', toast: '더운 날 실내 보조 코스가 선택되었습니다.' }
       ]
     },
     passport: {
@@ -1534,94 +1827,94 @@ const EXTENDED_UI_COPY = {
       action: '새 코스',
       eyebrow: 'Saved Routes',
       title: '나의 문화여행 기록',
-      body: '방문한 전통문화 코스를 저장하고 스탬프로 기록합니다.',
+      body: '방문한 공예·디자인 코스를 저장하고 관심 키워드를 기록합니다.',
       savedLabel: '저장한 코스',
       empty: '아직 저장한 코스가 없습니다.',
       choose: '추천 코스에서 선택하기',
       again: '다시 보기',
-      stampsTitle: '문화 스탬프',
+      stampsTitle: '탐색 키워드',
       nextLabel: '다음 추천',
-      nextTitle: '숨은 소리문화와 한옥 골목 코스',
-      nextBody: '궁궐문화 다음에는 한옥과 국악의 조용한 분위기를 경험해 보세요.',
+      nextTitle: '성수 로컬 브랜드 탐색 코스',
+      nextBody: '전시와 공예 입문 다음에는 로컬 브랜드와 쇼핑 흐름을 연결해 보세요.',
       view: '코스 보기',
       status: { completed: 'Completed', locked: 'Locked' },
-      stamps: ['왕실문화', '전통시장', '한옥거리', '국악공연', '공예체험', '근대유산']
+      stamps: ['공예 체험', '디자인 전시', '로컬 브랜드', '쇼핑', '야간 무드', '실내 전시']
     },
     about: {
       header: '마루',
       headerSub: 'About MARU',
       action: '데이터',
       eyebrow: 'About',
-      title: '외국인 여행자를 위한 전통문화 해설 앱',
-      body: '마루는 일반 관광지가 아니라 전통문화의 의미와 흐름을 이해하도록 돕는 모바일 여행 동반 앱입니다.',
+      title: '산업부 공공데이터 기반 K-공예·디자인 탐색 서비스',
+      body: '마루는 산업통상부 공공데이터를 바탕으로 외국인 방문객이 한국의 공예·디자인 브랜드와 체험을 발견하고, 방문·구매 동선까지 연결하도록 돕는 K-디자인 AI 가이드입니다.',
       articles: [
-        { title: '공공데이터 확장', body: '현재 버전은 GitHub Pages에 배포 가능한 정적 웹앱으로, 문화자원 JSON 데이터와 JavaScript 추천 로직으로 핵심 흐름을 구현했습니다. 이후 서버 연동 시 공식 데이터 동기화와 실시간 추천으로 확장할 수 있습니다.' },
-        { title: '편의 정보 제공', body: '영어 안내 가능 여부, 외국인 인기 여부, 예약 필요 여부를 함께 제공해 외국인 방문객의 현장 의사결정을 돕습니다.' },
-        { title: 'AI 이미지 정책', body: 'AI 이미지는 공식 장소 사진이 아니라 이해를 돕는 시각 가이드입니다. 실제 운영에서는 공식 사진 사용 권한 또는 자체 제작 이미지를 별도로 관리해야 합니다.' },
-        { title: '일반 여행 앱과의 차이', body: '맛집·명소 나열이 아니라 궁궐, 민속, 시장, 공연을 이야기 흐름으로 연결합니다.' },
-        { title: 'AI 사용 원칙', body: 'AI는 검증되지 않은 사실을 만들지 않고 DB의 사실을 쉬운 해설, 키워드, 방문 팁으로 바꿉니다.' },
-        { title: '파트너십 아님', body: '서울 열린데이터광장, 한국관광공사, 국가유산청, Visit Seoul 등은 데이터 소스 참고명으로만 사용하며 공식 제휴를 주장하지 않습니다.' }
+        { title: '공모전 적합성 중심 구조', body: '현재 버전은 관광지 나열 앱이 아니라 산업통상부 산하 공공기관 데이터를 중심축으로 잡고, 서울 현장 공간과 이동 동선을 보조 데이터로 연결하는 제출형 정적 웹앱입니다.' },
+        { title: '방문과 구매를 함께 연결', body: '전시 감상에서 끝나지 않고 공예 체험, 로컬 브랜드 발견, 선물 구매까지 이어지도록 코스를 구성해 외국인 방문객의 소비 의사결정을 돕습니다.' },
+        { title: 'AI 가이드 표현 원칙', body: '현재 마루의 챗봇과 추천 해설은 브라우저 내 규칙 기반 AI 가이드형 인터페이스에 가깝습니다. 별도 서버형 LLM을 운영하지 않는 만큼, 가능한 범위와 한계를 과장하지 않습니다.' },
+        { title: '일반 관광 앱과의 차이', body: '맛집·명소 나열이 아니라 산업부 공공데이터가 설명하는 기업·브랜드·상품성 맥락을 현장 방문과 구매 동선으로 번역한다는 점이 핵심 차이입니다.' },
+        { title: '공공데이터 활용 방식', body: '한국디자인진흥원과 KOTRA 데이터를 핵심 근거로 사용하고, 서울 현장 공간 정보는 이를 보여주기 위한 보조 레이어로만 사용합니다.' },
+        { title: '파트너십 아님', body: '한국디자인진흥원, 대한무역투자진흥공사, 각 전시·공간 운영기관은 공공데이터 및 현장 정보 출처로만 참조하며 공식 제휴를 주장하지 않습니다.' }
       ],
-      links: ['문화데이터 활용 보기', 'AI 이미지 프롬프트 보기']
+      links: ['산업부 공공데이터 활용 보기', 'AI 이미지 프롬프트 보기']
     },
     cultureData: {
       header: '마루',
-      headerSub: '문화데이터',
+      headerSub: '공공데이터',
       action: '소개',
       eyebrow: 'Data Dashboard',
-      title: '공공 문화데이터 확장 구조',
-      body: '현재 버전은 GitHub Pages에 배포 가능한 정적 웹앱으로 <code>ari_culture_resources_appjs.json</code>과 <code>data/*.json</code>(<code>data/courses.json</code> 포함)을 함께 읽어 추천 카드, 코스, 지원 정보를 동적으로 구성합니다. 운영 전 운영시간·요금·예약 여부·좌표·영어 안내 가능 여부는 공식 출처 기준으로 재검증이 필요합니다.',
+      title: '산업통상부 공공데이터 활용 구조',
+      body: '현재 버전은 GitHub Pages에 배포 가능한 정적 웹앱으로 <code>data/courses.json</code>과 <code>data/public-data-sources.json</code>을 함께 읽어 K-공예·디자인 코스, 브랜드 발견 흐름, 공공데이터 설명을 동적으로 구성합니다. 이 화면의 핵심은 관광 정보가 아니라 산업부 계열 공공데이터가 서비스 중심축이라는 점을 보여주는 것입니다.',
       factorsTitle: '추천 요소',
-      factors: ['전통성 점수', '외국인 친화도', '숨은 문화 가치', '도보 편의성', '예산·실내 적합도'],
-      sourcesTitle: '데이터 소스 확장 계획',
+      factors: ['산업부 데이터 적합도', '외국인 체험 친화도', '구매·체험 전환 가능성', '도보 편의성', '실내·날씨 적합도'],
+      sourcesTitle: '산업부 데이터 소스 계획',
       futureApiTitle: '향후 API',
-      metrics: ['서울 장소 데이터', '추천 코스', '영어 안내 가능', '외국인 인기', '예약 필요', '이미지 URL', '데이터 상태'],
+      metrics: ['K-디자인 장소 데이터', '추천 코스', '영어 설명 가능', '브랜드 연결', '구매 연결성', '이미지 URL', '데이터 상태'],
       status: { loaded: '로드됨', fallback: '기본 데이터', seed: '시드 데이터' },
       sourceStatus: { loaded: 'JSON 데이터 로드 완료', fallback: '기본 데이터 준비 완료', seed: '시드 데이터 사용 중' },
-      sources: ['서울 열린데이터광장', '한국관광공사 TourAPI / 관광정보 데이터', '국가유산청 / 국가유산 관련 데이터', '공공데이터포털', '문화기관 공식 홈페이지', '박물관 / 공연장 / 전통시장 공식 안내자료'],
-      sourceNote: '현재 데이터는 서울 전통문화 운영용 시드 데이터이며, 운영 전 공식 정보 확인이 필요합니다.',
+      sources: ['한국디자인진흥원 / 산업디자인전문회사', '한국디자인진흥원 / 우수디자인전문회사', '한국디자인진흥원 / 글로벌생활명품 선정기업 및 제품정보', '대한무역투자진흥공사 / 해외시장뉴스', '대한무역투자진흥공사 / 4대 소비재 국가별 수출금액'],
+      sourceNote: '현재 데이터는 산업통상부 공공데이터 중심의 제출용 시드 구조이며, GitHub Pages 기반 정적 웹앱에서 동작합니다. 기기 공통 실시간 집계는 포함하지 않습니다.',
       logic: [
-        { label: 'DB', title: '검증된 문화 사실', body: '현재는 JSON 시드 데이터를 기반으로 하며, 향후 공식 출처, 장소, 분류, 비용, 실내외, 영어 안내, 예약 필요 여부를 저장할 수 있습니다.' },
-        { label: 'Server', title: '필터링과 추천 점수', body: '현재는 JavaScript가 조건과 추천 점수를 계산하며, 향후 서버에서 방문 조건, 외국인 친화도, 예약 부담, 날씨 적합도를 계산할 수 있습니다.' },
-        { label: 'AI', title: '쉬운 문화 해설', body: '현재는 앱 데이터 기반 문화 해설을 제공하며, AI는 검증된 사실을 쉬운 설명, 키워드, 방문 팁으로 바꾸는 역할입니다.' }
+        { label: 'DB', title: '산업부 공공데이터', body: '현재는 JSON 시드 데이터를 기반으로 하며, 한국디자인진흥원과 KOTRA 데이터를 코스 설명과 브랜드 발견 로직의 근거로 사용합니다.' },
+        { label: 'Client', title: '브라우저 내 추천 계산', body: '현재는 JavaScript가 조건 필터링, 코스 점수, 로컬 반응 기반 랭킹 시뮬레이션을 계산합니다. 기기 공통 실시간 집계는 하지 않습니다.' },
+        { label: 'AI', title: '공예·디자인 해설 인터페이스', body: '현재는 검증된 앱 데이터를 쉬운 추천 문장과 방문 팁으로 바꾸는 역할이며, 이후 서버 연동 시 더 정교한 모델로 확장할 수 있습니다.' }
       ]
     },
     ari: {
       fabLabel: '아리 챗봇 열기',
-      dialogLabel: '아리 전통문화 AI 가이드',
+      dialogLabel: '아리 공예·디자인 AI 가이드',
       avatarAlt: '아리 캐릭터',
       name: '아리',
       profileName: '아리(ARI)',
-      profileTitle: '전통문화 AI 가이드',
+      profileTitle: '공예·디자인 추천 가이드',
       closeLabel: '아리 챗봇 닫기',
-      greeting: '안녕하세요. 아리예요. 서울 전통문화 코스 추천, 장소 설명, 비 오는 날 대안, 영어 안내 여부까지 자연스럽게 도와드릴게요.',
+      greeting: '안녕하세요. 아리예요. 공예·디자인 코스 추천, 브랜드 설명, 구매 동선, 비 오는 날 대안까지 앱 데이터 기준으로 자연스럽게 도와드릴게요.',
       roleUser: '나',
       roleAssistant: '아리',
-      placeholder: '처음 서울에 왔어, 비 오면 어디가 좋아?처럼 편하게 물어보세요.',
+      placeholder: '처음 서울에 왔어, 공예 체험은 어디가 좋아?처럼 편하게 물어보세요.',
       send: '보내기',
       busy: '아리가 내용을 정리하고 있어요.',
-      error: '지금 답변 연결이 잠시 불안정해요. 앱 데이터 기준으로 다시 안내해볼게요.',
-      fallbackSuffix: '실시간 모델 연결이 없어 앱 데이터 기반 안내로 답변했습니다.',
-      quickQuestions: ['처음 서울 오는데 어디부터 가면 좋아?', '이 코스가 왜 추천됐어?', '비 오는 날 어디가 좋아?', '많이 걷지 않는 코스도 있어?', '영어 안내 가능한 곳 있어?']
+      error: '지금 답변 연결이 잠시 불안정해요. 앱 데이터 기준 추천 가이드로 다시 안내해볼게요.',
+      fallbackSuffix: '별도 모델 연결 없이 앱 데이터 기반 추천 가이드로 답변했습니다.',
+      quickQuestions: ['처음 서울 왔는데 공예·디자인 코스는 어디부터 가면 좋아?', '이 브랜드 발견 코스가 왜 추천됐어?', '비 오는 날엔 어떤 실내 코스가 좋아?', '선물 사기 좋은 코스도 있어?', '영어로 설명하기 쉬운 장소가 어디야?']
     }
   },
   en: {
     pageMeta: {
-      home: { title: 'MARU | Seoul Heritage AI Guide', description: 'MARU, a Seoul heritage AI guide for global travelers' },
-      planner: { title: 'Route Planner | MARU', description: 'Choose travel conditions step by step and receive a Seoul heritage story route.' },
-      routes: { title: 'Recommended Routes | MARU', description: 'Traditional culture story routes matched to your selected conditions' },
-      routeDetail: { title: 'Route Detail | MARU', description: 'Details and map links for your selected heritage story route' },
+      home: { title: 'MARU | K-Craft and Design AI Guide', description: 'MARU, a K-craft and design AI guide for global travelers' },
+      planner: { title: 'Route Planner | MARU', description: 'Choose travel conditions step by step and receive a K-craft and design route.' },
+      routes: { title: 'Recommended Routes | MARU', description: 'K-craft and design story routes matched to your selected conditions' },
+      routeDetail: { title: 'Route Detail | MARU', description: 'Details and map links for your selected craft and design route' },
       map: { title: 'Map | MARU', description: 'Map links for Naver Map, Kakao Map, and Google Maps' },
-      weather: { title: 'Seoul Weather | MARU', description: 'Seoul weather and weather-based heritage route suggestions' },
+      weather: { title: 'Seoul Weather | MARU', description: 'Seoul weather and weather-based craft and design route suggestions' },
       support: { title: 'Traveler Support | MARU', description: 'Emergency, lost items, tourist information, safety, and translation help for visitors' },
-      passport: { title: 'Saved Routes | MARU', description: 'Saved MARU routes and Seoul heritage stamps' },
+      passport: { title: 'Saved Routes | MARU', description: 'Saved MARU routes and craft and design stamps' },
       about: { title: 'About | MARU', description: 'MARU service concept and expansion plan' },
-      cultureData: { title: 'Culture Data | MARU', description: 'Public culture data usage and recommendation logic' },
+      cultureData: { title: 'Public Data | MARU', description: 'Industrial public data usage and recommendation logic' },
       aiPhoto: { title: 'AI Photo Card | MARU', description: 'Joseon-inspired traditional photo card experience' }
     },
     home: {
-      headerSub: 'Seoul Heritage Guide',
-      heroAria: 'Seoul time-based heritage image',
+      headerSub: 'K-Craft Discovery Guide',
+      heroAria: 'Seoul time-based craft and design image',
       languageAria: 'Language selection'
     },
     planner: {
@@ -1631,18 +1924,18 @@ const EXTENDED_UI_COPY = {
     },
     common: {
       bottomTabsAria: 'Bottom navigation',
-      timeImageAlt: 'Time-based Korean heritage mood image'
+      timeImageAlt: 'Time-based Korean craft and design mood image'
     },
     weather: {
       header: 'MARU',
       headerSub: 'Seoul Weather',
       action: 'View Routes',
       eyebrow: 'Weather Insight',
-      title: 'Weather-Based Route Guide',
-      summary: 'This screen combines Seoul weather and expected crowd levels to show outdoor picks and indoor alternatives.',
-      todayLabel: "Today's Pick",
-      todayTitle: 'Palace and Hanok Walk',
-      todayBody: 'On a clear day, palace courtyards and hanok alleys make a comfortable outdoor route.',
+      title: 'Weather-Based Support Guide',
+      summary: 'This screen is a support layer for movement planning. It uses Seoul weather and local crowd estimates to suggest indoor alternatives.',
+      todayLabel: "Today's Support Pick",
+      todayTitle: 'Craft and Design Route Adjustment',
+      todayBody: 'On a clear day, MARU keeps more outdoor design walks. When it rains, it shifts toward exhibitions and design stores.',
       routeButton: 'See recommended routes',
       forecastTitle: '3-Day Forecast',
       airTitle: 'Air Quality',
@@ -1662,9 +1955,9 @@ const EXTENDED_UI_COPY = {
         '구름': 'Cloud'
       },
       suggestions: [
-        { label: 'Clear-day route', title: 'Palace and Hanok Walk', toast: 'Clear-day route selected.' },
-        { label: 'Rainy-day route', title: 'Museums and Indoor Performances', toast: 'Rainy-day indoor route selected.' },
-        { label: 'Hot-day route', title: 'Indoor Exhibitions and Markets', toast: 'Hot-day indoor route selected.' }
+        { label: 'Clear-day support', title: 'More outdoor design walking', toast: 'Clear-day support route selected.' },
+        { label: 'Rainy-day support', title: 'Indoor exhibitions and design stores', toast: 'Rainy-day indoor support route selected.' },
+        { label: 'Hot-day support', title: 'Longer indoor stays', toast: 'Hot-day indoor support route selected.' }
       ]
     },
     passport: {
@@ -1672,68 +1965,68 @@ const EXTENDED_UI_COPY = {
       headerSub: 'Saved Routes',
       action: 'New Route',
       eyebrow: 'Saved Routes',
-      title: 'My Heritage Travel Record',
-      body: 'Save traditional culture routes and keep track of your heritage stamps.',
+      title: 'My Craft and Design Record',
+      body: 'Save craft and design routes and keep track of your discovery keywords.',
       savedLabel: 'Saved route',
       empty: 'No saved route yet.',
       choose: 'Choose from recommended routes',
       again: 'View again',
-      stampsTitle: 'Heritage Stamps',
+      stampsTitle: 'Discovery Keywords',
       nextLabel: 'Next Pick',
-      nextTitle: 'Hidden Sounds and Hanok Streets',
-      nextBody: 'After royal culture, try a quieter route through hanok streets and Korean traditional sounds.',
+      nextTitle: 'Seongsu Local Brand Discovery',
+      nextBody: 'After museum-led routes, try a stronger local-brand and shopping flow.',
       view: 'View route',
       status: { completed: 'Completed', locked: 'Locked' },
-      stamps: ['Royal Culture', 'Traditional Market', 'Hanok Street', 'Gugak Performance', 'Craft Experience', 'Modern Heritage']
+      stamps: ['Craft Experience', 'Design Exhibition', 'Local Brand', 'Shopping', 'Night Mood', 'Indoor Exhibition']
     },
     about: {
       header: 'MARU',
       headerSub: 'About MARU',
       action: 'Data',
       eyebrow: 'About',
-      title: 'A heritage interpretation app for global travelers',
-      body: 'MARU is a mobile travel companion that helps visitors understand the meaning and flow of Korean heritage, not just a list of tourist spots.',
+      title: 'A K-craft and design interpretation app for global travelers',
+      body: 'MARU is a mobile travel companion that connects craft experiences, design spots, and local buying journeys instead of listing tourist spots.',
       articles: [
-        { title: 'Public Data Expansion', body: 'The current version is a deployable static web app for GitHub Pages. It already uses culture-resource JSON data and JavaScript recommendation logic for the core flow, and can later expand into official data synchronization and live scoring through a server layer.' },
-        { title: 'Visitor Convenience', body: 'English support, visitor popularity, and reservation needs are shown together to help international visitors decide on site.' },
+        { title: 'Industry-Data Expansion', body: 'The current version is a submission-focused prototype that uses industrial public data as the main axis and connects on-site Seoul route context as supporting data. It can later expand into official synchronization and live scoring through a server layer.' },
+        { title: 'Visit and Purchase Together', body: 'English support, visitor popularity, experience readiness, and buying-conversion signals are shown together to help international visitors decide on site.' },
         { title: 'AI Image Policy', body: 'AI images are visual guides for understanding, not official place photos. A real service should separately manage official photo rights or original image production.' },
-        { title: 'Different From Generic Travel Apps', body: 'MARU connects palaces, folk culture, markets, and performances as a story flow instead of listing restaurants and attractions.' },
-        { title: 'AI Use Principle', body: 'AI does not invent unverified facts. It turns verified database facts into simple explanations, keywords, and visit tips.' },
-        { title: 'Not an Official Partnership', body: 'Seoul Open Data, Korea Tourism Organization, National Heritage Administration, Visit Seoul, and similar names are referenced only as data sources, not as official partnerships.' }
+        { title: 'Different From Generic Travel Apps', body: 'MARU connects craft experiences, design brands, local stores, and exhibitions as a story flow instead of listing restaurants and attractions.' },
+        { title: 'AI Use Principle', body: 'AI does not invent unverified facts. It turns industrial public data and field information into simple explanations, keywords, and visit tips.' },
+        { title: 'Not an Official Partnership', body: 'Korea Institute of Design Promotion and KOTRA are referenced only as public-data sources, not as official partnerships.' }
       ],
-      links: ['View culture data usage', 'View AI image prompts']
+      links: ['View industrial public data usage', 'View AI image prompts']
     },
     cultureData: {
       header: 'MARU',
-      headerSub: 'Culture Data',
+      headerSub: 'Public Data',
       action: 'About',
       eyebrow: 'Data Dashboard',
-      title: 'Public Culture Data Expansion Structure',
-      body: 'The current version is a deployable static web app for GitHub Pages. It reads <code>ari_culture_resources_appjs.json</code> and <code>data/*.json</code>, including <code>data/courses.json</code>, to build routes, recommendation cards, and support information dynamically. Hours, prices, reservations, coordinates, and English-support status must be rechecked against official sources before operation.',
+      title: 'Industrial Public Data Expansion Structure',
+      body: 'The current version is a deployable static web app for GitHub Pages. It reads <code>data/courses.json</code> and <code>data/public-data-sources.json</code> to build craft and design routes, recommendation cards, and support information dynamically. Hours, experience availability, brand information, and English-support status must be rechecked against official sources before operation.',
       factorsTitle: 'Recommendation Factors',
-      factors: ['Tradition score', 'Visitor friendliness', 'Hidden cultural value', 'Walking convenience', 'Budget and indoor fit'],
-      sourcesTitle: 'Data Source Expansion Plan',
+      factors: ['Industrial-data fit', 'Visitor experience friendliness', 'Buy/experience conversion', 'Walking convenience', 'Indoor and weather fit'],
+      sourcesTitle: 'Industrial Data Source Plan',
       futureApiTitle: 'Future API',
-      metrics: ['Seoul place data', 'Recommended routes', 'English support', 'Visitor favorite', 'Reservation needed', 'Image URLs', 'Data status'],
+      metrics: ['Seoul place data', 'Recommended routes', 'English support', 'Visitor favorite', 'Brand linkage', 'Image URLs', 'Data status'],
       status: { loaded: 'Loaded', fallback: 'Base data', seed: 'Seed data' },
       sourceStatus: { loaded: 'JSON data loaded', fallback: 'Base data ready', seed: 'Seed data active' },
-      sources: ['Seoul Open Data Plaza', 'Korea Tourism Organization TourAPI / tourism data', 'National Heritage Administration / heritage data', 'Public Data Portal', 'Official cultural institution websites', 'Official guides from museums, theaters, and traditional markets'],
-      sourceNote: 'The current dataset is Seoul heritage seed data for operation planning, and official information must be checked before launch.',
+      sources: ['KIDP / Industrial Design Firms', 'KIDP / Excellent Design Firms', 'KIDP / Global Premium Product Companies and Products', 'KOTRA / Overseas Market News', 'KOTRA / Country-Level Export Value for Consumer Goods'],
+      sourceNote: 'The current dataset is a submission-oriented seed structure centered on industrial public data, and official information should be checked before launch.',
       logic: [
-        { label: 'DB', title: 'Verified Cultural Facts', body: 'The current app uses JSON seed data, and a future backend can store official sources, places, categories, cost, indoor/outdoor status, English support, and reservation requirements.' },
-        { label: 'Server', title: 'Filtering and Scores', body: 'JavaScript currently calculates filters and scores; a future server can calculate visit conditions, visitor friendliness, reservation burden, and weather fit.' },
-        { label: 'AI', title: 'Simple Culture Guide', body: 'The current app provides data-based culture guidance, and AI should turn verified facts into simple explanations, keywords, and visit tips.' }
+        { label: 'DB', title: 'Industrial Public Data', body: 'The current app uses JSON seed data, and a future backend can store official company, product, market, and experience metadata based on primary public sources.' },
+        { label: 'Server', title: 'Filtering and Scores', body: 'JavaScript currently calculates filters and scores; a future server can calculate conversion likelihood, country-level demand, visit conditions, and weather fit.' },
+        { label: 'AI', title: 'Simple Craft and Design Guide', body: 'The current app provides data-based craft and design guidance, and AI should turn verified data into simple explanations, keywords, and visit tips.' }
       ]
     },
     ari: {
       fabLabel: 'Open ARI chatbot',
-      dialogLabel: 'ARI heritage AI guide',
+      dialogLabel: 'ARI craft and design AI guide',
       avatarAlt: 'ARI character',
       name: 'ARI',
       profileName: 'ARI',
-      profileTitle: 'Heritage AI Guide',
+      profileTitle: 'Craft and Design AI Guide',
       closeLabel: 'Close ARI chatbot',
-      greeting: 'Hello, I am ARI. I can naturally guide you through Seoul heritage routes, place meanings, rainy-day alternatives, and English-friendly options using MARU data.',
+      greeting: 'Hello, I am ARI. I can naturally guide you through Seoul craft and design routes, place meanings, rainy-day alternatives, and English-friendly options using MARU data.',
       roleUser: 'Me',
       roleAssistant: 'ARI',
       placeholder: 'Ask naturally, like: It is my first time in Seoul, where should I start?',
@@ -1771,7 +2064,7 @@ const EXTENDED_UI_COPY = {
       map: { title: '地図 | MARU', description: 'Naver Map、Kakao Map、Google Mapsで開ける地図リンク' },
       weather: { title: 'ソウル天気 | MARU', description: 'ソウルの天気と天気別伝統文化コース推薦' },
       support: { title: '旅行者サポート | MARU', description: '緊急、紛失、観光案内、安全、翻訳サポート' },
-      passport: { title: '保存したコース | MARU', description: 'MARUで保存したコースと伝統文化スタンプ' },
+      passport: { title: '保存したコース | MARU', description: 'MARUで保存したコースと工芸・デザイン探索キーワード' },
       about: { title: 'サービス紹介 | MARU', description: 'MARUのサービス概念と拡張計画' },
       cultureData: { title: '文化データ | MARU', description: '公共文化データ活用状況と推薦ロジック' },
       aiPhoto: { title: 'AIフォトカード | MARU', description: '朝鮮時代風の伝統フォトカード体験' }
@@ -1829,19 +2122,19 @@ const EXTENDED_UI_COPY = {
       headerSub: '保存したコース',
       action: '新しいコース',
       eyebrow: 'Saved Routes',
-      title: '私の文化旅行記録',
-      body: '訪問した伝統文化コースを保存し、スタンプで記録します。',
+      title: '私の工芸・デザイン探索記録',
+      body: '訪問した工芸・デザインコースを保存し、探索キーワードを記録します。',
       savedLabel: '保存したコース',
       empty: 'まだ保存したコースはありません。',
       choose: 'おすすめコースから選ぶ',
       again: 'もう一度見る',
-      stampsTitle: '文化スタンプ',
+      stampsTitle: '探索キーワード',
       nextLabel: '次のおすすめ',
-      nextTitle: '隠れた音と韓屋の路地',
-      nextBody: '宮殿文化の次は、韓屋と国楽の静かな雰囲気を体験してみましょう。',
+      nextTitle: '聖水ローカルブランド探索コース',
+      nextBody: '展示中心ルートの次は、ローカルブランドとショッピング動線を強めたコースへ広げてみましょう。',
       view: 'コースを見る',
       status: { completed: '完了', locked: 'ロック中' },
-      stamps: ['王室文化', '伝統市場', '韓屋通り', '国楽公演', '工芸体験', '近代遺産']
+      stamps: ['工芸体験', 'デザイン展示', 'ローカルブランド', 'ショッピング', 'ナイトムード', '屋内展示']
     },
     about: {
       header: 'MARU',
@@ -1910,7 +2203,7 @@ const EXTENDED_UI_COPY = {
       map: { title: '地图 | MARU', description: '可用Naver Map、Kakao Map和Google Maps打开的地图链接' },
       weather: { title: '首尔天气 | MARU', description: '首尔天气和按天气推荐的传统文化路线' },
       support: { title: '旅行者帮助 | MARU', description: '面向外国游客的紧急、遗失、旅游咨询、安全和翻译帮助' },
-      passport: { title: '已保存路线 | MARU', description: '在MARU保存的路线和传统文化印章' },
+      passport: { title: '已保存路线 | MARU', description: '在MARU保存的路线与工艺设计探索关键词' },
       about: { title: '服务介绍 | MARU', description: 'MARU服务概念和扩展计划' },
       cultureData: { title: '文化数据 | MARU', description: '公共文化数据使用情况和推荐逻辑说明' },
       aiPhoto: { title: 'AI照片卡 | MARU', description: '朝鲜时代风传统照片卡体验' }
@@ -1968,19 +2261,19 @@ const EXTENDED_UI_COPY = {
       headerSub: '已保存路线',
       action: '新路线',
       eyebrow: 'Saved Routes',
-      title: '我的文化旅行记录',
-      body: '保存参观过的传统文化路线，并用印章记录。',
+      title: '我的工艺与设计探索记录',
+      body: '保存参观过的工艺与设计路线，并记录探索关键词。',
       savedLabel: '已保存路线',
       empty: '还没有保存的路线。',
       choose: '从推荐路线中选择',
       again: '再次查看',
-      stampsTitle: '文化印章',
+      stampsTitle: '探索关键词',
       nextLabel: '下一条推荐',
-      nextTitle: '隐藏的声音与韩屋街巷',
-      nextBody: '体验王室文化之后，可以感受韩屋和国乐的安静氛围。',
+      nextTitle: '圣水本地品牌探索路线',
+      nextBody: '看完展览后，可以继续走向更强的本地品牌与购物动线。',
       view: '查看路线',
       status: { completed: '已完成', locked: '未解锁' },
-      stamps: ['王室文化', '传统市场', '韩屋街', '国乐演出', '工艺体验', '近代遗产']
+      stamps: ['工艺体验', '设计展览', '本地品牌', '购物', '夜间氛围', '室内展览']
     },
     about: {
       header: 'MARU',
@@ -2113,127 +2406,127 @@ const CONVENIENCE_TRANSLATIONS = {
 
 const GENERATED_ROUTE_TRANSLATIONS = {
   ja: {
-    'first-visit-seoul-heritage': {
-      title: '初めてのソウル伝統文化コース',
-      subtitle: '宮殿・韓屋・伝統通りを一度に理解する入門ルート',
-      reason: 'ソウルの代表的な伝統文化シーンを無理なくつなげて見られます。',
-      summary: '宮殿、韓屋の街並み、伝統通りをつなぐ初訪問者向けのコースです。',
-      tip: '景福宮周辺は歩く時間が多いので、歩きやすい靴がおすすめです。',
-      time: '約3〜4時間',
-      walking: '普通',
-      fee: '低予算'
+    'craft-design-intro-course': {
+      title: 'K-工芸・デザイン入門コース',
+      subtitle: '工芸博物館、ギャラリー、購入動線を短くつなぐ基本ルート',
+      reason: '公共データで説明できる企業・商品性の文脈を、展示と購入動線で最もわかりやすく体験できます。',
+      summary: '理解、比較、ギフト購入までを一度に見せやすい入門コースです。',
+      tip: '発表では「公共データから現場消費までつながる最短ルート」として見せると伝わりやすいです。',
+      time: '約2〜3時間',
+      walking: '少なめ〜普通',
+      fee: '無料見学 + 一部有料体験'
     },
-    'rainy-day-indoor-heritage': {
-      title: '雨の日おすすめコース',
-      subtitle: '博物館と屋内文化施設を中心に巡るルート',
-      reason: '天気の負担を減らしながら、展示と文化施設で伝統文化の流れを追えます。',
-      summary: '雨の日でも安定して楽しめる屋内中心の文化コースです。',
-      tip: '博物館の休館日と公演・体験の予約情報を先に確認してください。',
+    'samcheong-design-story-course': {
+      title: '三清デザイン・ストーリーコース',
+      subtitle: '韓屋景観を補助文脈にしながら工芸と現代デザインを読む散策ルート',
+      reason: '歴史的な街並みを背景にしつつ、工芸解釈と現代デザイン展示を一つのストーリーでつなげられます。',
+      summary: '景観、展示、ギャラリー解説が自然につながる散策型コースです。',
+      tip: '写真よりも「なぜここで工芸とデザインを一緒に説明できるのか」を中心に案内すると効果的です。',
       time: '約3時間',
-      walking: '少なめ',
-      fee: '無料〜有料'
-    },
-    'photo-spot-heritage-walk': {
-      title: '写真スポットコース',
-      subtitle: '宮殿・韓屋・城郭の景色を楽しむルート',
-      reason: '写真に残しやすいソウル伝統文化の代表的な場面を自然につなげます。',
-      summary: '視覚的に印象的な場所を中心に構成した散策コースです。',
-      tip: '夕方は城郭や石垣道が特にきれいです。雨の日は屋内コースに切り替えましょう。',
-      time: '約3〜4時間',
       walking: '普通',
-      fee: '低予算'
+      fee: '無料〜一部有料'
     },
-    'deep-history-route': {
-      title: '歴史を深く見るコース',
-      subtitle: '王室儀礼・近現代史・都市史をつなぐルート',
-      reason: '王室文化から近現代の記憶まで続くソウルの歴史の流れを見られます。',
-      summary: '儀礼、近現代史、城門、都市史を深く理解するコースです。',
-      tip: '展示解説を読む時間を考え、訪問地を増やしすぎないのがおすすめです。',
-      time: '半日',
-      walking: '普通',
-      fee: '無料〜有料'
-    },
-    'easy-walking-heritage': {
-      title: '気軽に歩くコース',
-      subtitle: '歩行負担が少ない近距離の伝統文化散策',
-      reason: '移動の負担を抑えながら、寺院、韓屋、伝統通り、小さな博物館を体験できます。',
-      summary: '近い場所をつなぐ、軽めの伝統文化散策コースです。',
-      tip: '益善洞と仁寺洞は混雑することがあるため、午前か早い夕方が歩きやすいです。',
+    'insadong-brand-buying-course': {
+      title: '仁寺洞ブランド発見・購入コース',
+      subtitle: '工芸ブランド比較とギフト購入に強い都心ルート',
+      reason: '外国人がその場で比較しやすいブランド、ギャラリー、複合商業空間を短距離でまとめています。',
+      summary: '展示説明から実際の購入判断まで流れを切らずに見せられるコースです。',
+      tip: 'ギフト予算や好みを先に聞いてから案内すると、購買導線の説得力が上がります。',
       time: '約2〜3時間',
       walking: '少なめ',
-      fee: '無料中心'
+      fee: '購入可変'
     },
-    'southern-heritage-extension': {
-      title: 'ソウル南部の伝統遺産コース',
-      subtitle: '王陵・寺院・古墳をつなぐ拡張ルート',
-      reason: '都心の宮殿以外にも、ソウル南部で王陵、寺院、古代遺跡を一緒に見られます。',
-      summary: '江南・松坡エリアの伝統遺産を短くまとめた拡張コースです。',
-      tip: '場所同士の距離があるため、公共交通やタクシー移動を前提に余裕を持って計画してください。',
-      time: '半日',
+    'seongsu-local-brand-course': {
+      title: '聖水ローカルブランド探索コース',
+      subtitle: 'ショールームと感度の高いローカルブランドをめぐるルート',
+      reason: '公共データが説明するデザイン企業・商品性を、今の消費空間と結びつけて見せやすいエリアです。',
+      summary: 'ローカルブランド発見、ショールーム体験、ショッピング動線をまとめたコースです。',
+      tip: '平日午後の方が比較的動きやすく、ブランドの違いも説明しやすいです。',
+      time: '約3〜4時間',
       walking: '普通',
+      fee: '購入可変'
+    },
+    'ddp-night-design-course': {
+      title: 'DDPナイトデザインコース',
+      subtitle: '夜間展示とデザインストア、照明街をつなぐコース',
+      reason: '夜にもデザイン消費が続く流れを見せやすく、視覚的なデモ効果も強いです。',
+      summary: 'DDPを中心に展示、購入、夜景ムードを一度に体験するコースです。',
+      tip: '夜間営業とイベント日程を先に確認すると、デモの安定性が上がります。',
+      time: '約3時間',
+      walking: '少なめ〜普通',
+      fee: '無料〜有料'
+    },
+    'rainy-day-indoor-design-course': {
+      title: '雨の日の屋内デザインコース',
+      subtitle: '博物館とギャラリー、屋内展示を中心に回る安定ルート',
+      reason: '天気変数を抑えながらも工芸・デザイン解説と購入接点を維持できます。',
+      summary: '雨の日でも説明品質を落とさずに見せやすい屋内中心コースです。',
+      tip: '休館日だけ先に確認しておけば、発表用デモもかなり安定します。',
+      time: '約2〜3時間',
+      walking: '少なめ',
       fee: '無料〜有料'
     }
   },
   zh: {
-    'first-visit-seoul-heritage': {
-      title: '首次到访推荐路线',
-      subtitle: '一次理解宫殿、韩屋与传统街区的入门路线',
-      reason: '适合外国游客轻松串联首尔传统文化的代表场景。',
-      summary: '连接宫殿、韩屋街区和传统街道的首尔传统文化入门路线。',
-      tip: '景福宫周边步行较多，建议穿舒适的鞋。',
-      time: '约3–4小时',
-      walking: '普通',
-      fee: '低预算'
+    'craft-design-intro-course': {
+      title: 'K-工艺与设计入门路线',
+      subtitle: '把工艺博物馆、画廊与购买动线连成一条的基础路线',
+      reason: '最适合把公共数据里的企业与商品故事，转化成现场展览与购买体验。',
+      summary: '从理解韩国工艺，到比较品牌，再到礼物购买都能顺着看完。',
+      tip: '演示时可以把它定位成“从公共数据走到现场消费”的最短说明路线。',
+      time: '约2-3小时',
+      walking: '较少到中等',
+      fee: '免费浏览 + 部分付费体验'
     },
-    'rainy-day-indoor-heritage': {
-      title: '雨天推荐路线',
-      subtitle: '以博物馆和室内文化空间为主的路线',
-      reason: '以室内展览和文化设施为中心，降低天气影响并延续传统文化脉络。',
-      summary: '雨天也能稳定参观的室内文化路线。',
-      tip: '请先确认博物馆闭馆日以及演出、体验是否需要预约。',
+    'samcheong-design-story-course': {
+      title: '三清设计故事路线',
+      subtitle: '以韩屋街景为辅助背景，连接工艺与当代设计的散步路线',
+      reason: '可以一边借助历史街区氛围，一边讲清工艺解读与当代设计展示的关系。',
+      summary: '风景、展览与画廊解说连接自然，适合讲故事式介绍。',
+      tip: '介绍时重点放在“为什么这里能同时讲工艺与设计”，会比单纯观光更贴题。',
       time: '约3小时',
+      walking: '中等',
+      fee: '免费到部分付费'
+    },
+    'insadong-brand-buying-course': {
+      title: '仁寺洞品牌发现与购买路线',
+      subtitle: '适合比较工艺品牌与礼物购买的市中心路线',
+      reason: '把外国访客容易理解和比较的品牌、画廊与复合商业空间压缩在短动线里。',
+      summary: '从展览理解一路延续到实际购买判断，不容易中断。',
+      tip: '如果先问预算和送礼对象，再带看品牌，会更像真实消费引导。',
+      time: '约2-3小时',
       walking: '较少',
-      fee: '免费至付费'
+      fee: '按购买决定'
     },
-    'photo-spot-heritage-walk': {
-      title: '摄影名胜路线',
-      subtitle: '围绕宫殿、韩屋、城墙和散步路的视觉路线',
-      reason: '自然串联适合拍照留念的首尔传统文化代表场景。',
-      summary: '以视觉印象强的地点为中心设计的传统文化散步路线。',
-      tip: '傍晚时城墙和石墙路尤其适合拍照；下雨时建议改为室内路线。',
-      time: '约3–4小时',
-      walking: '普通',
-      fee: '低预算'
+    'seongsu-local-brand-course': {
+      title: '圣水本地品牌探索路线',
+      subtitle: '围绕展厅与高感度本地品牌的探索路线',
+      reason: '很适合把公共数据里的设计企业与商品价值，连接到当下的本地消费空间。',
+      summary: '本地品牌发现、展厅体验与购物动线能一次展示出来。',
+      tip: '工作日下午通常更顺，讲品牌风格差异也更轻松。',
+      time: '约3-4小时',
+      walking: '中等',
+      fee: '按购买决定'
     },
-    'deep-history-route': {
-      title: '深度历史路线',
-      subtitle: '连接王室礼仪、近现代史和城市史的路线',
-      reason: '可以看到首尔传统文化从王室文化延伸到近现代记忆的脉络。',
-      summary: '深入理解王室礼仪、近现代史、城门与城市历史的路线。',
-      tip: '建议预留阅读展览说明的时间，不要安排过多地点。',
-      time: '半天',
-      walking: '普通',
-      fee: '免费至付费'
+    'ddp-night-design-course': {
+      title: 'DDP 夜间设计路线',
+      subtitle: '连接夜间展览、设计商店与照明街的路线',
+      reason: '适合展示“设计消费在夜间也持续发生”的场景，视觉演示效果也更强。',
+      summary: '围绕 DDP 一次体验展览、购买与夜景氛围。',
+      tip: '先确认夜间营业和活动安排，演示稳定性会更高。',
+      time: '约3小时',
+      walking: '较少到中等',
+      fee: '免费到付费'
     },
-    'easy-walking-heritage': {
-      title: '轻松步行路线',
-      subtitle: '步行难度较低、地点相近的传统文化散步',
-      reason: '减少移动负担，同时体验寺庙、韩屋、传统街道和小型博物馆。',
-      summary: '串联相近地点的轻量传统文化散步路线。',
-      tip: '益善洞和仁寺洞可能较拥挤，上午或傍晚较早时段更舒适。',
-      time: '约2–3小时',
+    'rainy-day-indoor-design-course': {
+      title: '雨天室内设计路线',
+      subtitle: '以博物馆、画廊和室内展览为主的稳定路线',
+      reason: '在降低天气变量的同时，仍能保留工艺与设计解说以及购买连接。',
+      summary: '雨天也能稳定展示的室内型说明路线。',
+      tip: '只要先确认闭馆日，现场演示会稳定很多。',
+      time: '约2-3小时',
       walking: '较少',
-      fee: '以免费为主'
-    },
-    'southern-heritage-extension': {
-      title: '首尔南部传统遗产路线',
-      subtitle: '连接王陵、寺庙和古坟的扩展路线',
-      reason: '除了市中心宫殿，也可以在首尔南部串联王陵、寺庙和古代遗址。',
-      summary: '围绕江南和松坡传统遗产设计的短途扩展路线。',
-      tip: '地点之间距离较远，建议预留交通时间并结合地铁或出租车移动。',
-      time: '半天',
-      walking: '普通',
-      fee: '免费至付费'
+      fee: '免费到付费'
     }
   }
 };
@@ -2290,57 +2583,77 @@ const ROUTE_PLACE_COORDS = {
 };
 
 const EN_ROUTE_TRANSLATIONS = {
-  'royal-culture-local-life': {
-    title: 'Royal Culture to Local Life',
-    subtitle: '왕실문화에서 생활문화로 이어지는 코스',
+  'craft-design-intro-course': {
+    title: 'K-Craft and Design Intro Route',
+    subtitle: 'A clear first route connecting museum context, gallery comparison, and gift buying',
+    time: 'About 2-3 hours',
+    walking: 'Low to moderate',
+    fee: 'Free browsing with optional paid experiences',
+    reason: 'This route translates industrial public data into a simple on-site story with craft interpretation, design comparison, and a purchase-friendly ending.',
+    summary: 'Start with craft context, compare exhibition spaces, and finish with a brand and gift stop.',
+    tip: 'For demos, frame this as the clearest route from public-data explanation to real visitor spending.',
+    flow: ['Seoul Museum of Craft Art', 'KCDF Gallery', 'Anyoung Insadong'],
+    convenienceLabels: ['Public-data based', 'Purchase-linked', 'English-friendly']
+  },
+  'samcheong-design-story-course': {
+    title: 'Samcheong Design Story Route',
+    subtitle: 'A walk that uses hanok scenery as context while focusing on craft and design explanation',
     time: 'About 3 hours',
     walking: 'Moderate',
-    fee: 'Low cost',
-    reason: 'A friendly first route that connects royal culture, palace architecture, folk life, and a traditional market.',
-    summary: 'Start with royal artifacts, walk through palace and folk culture, then finish with local market life as one connected story.',
-    tip: 'Check official sources for hours, fees, reservations, and closures before visiting.',
-    flow: ['National Palace Museum', 'Gyeongbokgung Palace', 'National Folk Museum', 'Tongin Market'],
-    convenienceLabels: ['English available', 'Popular with visitors', 'No reservation needed'],
-    keywords: [
-      { name: 'Joseon Dynasty', description: 'A key lens for understanding royal culture and state order.' },
-      { name: 'Royal Palace', description: 'A heritage space for royal ritual, architecture, and symbols.' },
-      { name: 'Folk Culture', description: 'Everyday customs, tools, beliefs, and ways of life.' },
-      { name: 'Traditional Market', description: 'A local space where heritage meets daily life.' }
-    ]
+    fee: 'Free to partially paid',
+    reason: 'It uses a familiar Seoul streetscape as a supporting layer while keeping the recommendation centered on craft, exhibition, and design interpretation.',
+    summary: 'Scenery, exhibitions, and gallery storytelling connect naturally in one route.',
+    tip: 'Guide this route as a design narrative, not as a generic sightseeing walk.',
+    flow: ['Bukchon Hanok Village', 'Seoul Museum of Craft Art', 'MMCA Seoul', 'KCDF Gallery'],
+    convenienceLabels: ['Story-focused', 'Photo-friendly', 'Exhibition-linked']
   },
-  'hidden-sounds-hanok-streets': {
-    title: 'Hidden Sounds and Hanok Streets',
-    subtitle: '숨은 소리문화와 한옥 골목 코스',
-    time: 'About 2.5 hours',
-    walking: 'Low to moderate',
-    fee: 'Mostly free',
-    reason: 'A compact route for experiencing hanok atmosphere and traditional Korean sound culture without a long walk.',
-    summary: 'Begin at a royal residence, listen to Korean folk sound culture, and end in a quiet hanok street atmosphere.',
-    tip: 'Check museum program times and hanok street crowd levels before visiting.',
-    flow: ['Unhyeongung', 'Seoul Museum of Korean Folk Music', 'Ikseon-dong Hanok Street'],
-    convenienceLabels: ['Some English available', 'Hidden culture resource', 'No reservation needed'],
-    keywords: [
-      { name: 'Gugak', description: 'Traditional Korean music and sound culture.' },
-      { name: 'Hanok Alley', description: 'A place where traditional housing and city streets meet.' },
-      { name: 'Local Heritage', description: 'Cultural value found beyond the most famous landmarks.' }
-    ]
-  },
-  'modern-seoul-performing-heritage': {
-    title: 'Modern Seoul and Performing Heritage',
-    subtitle: '근대 서울과 전통예술 코스',
-    time: 'About 3 hours',
+  'insadong-brand-buying-course': {
+    title: 'Insadong Brand Discovery and Buying Route',
+    subtitle: 'A short central route built for comparing craft brands and buying gifts',
+    time: 'About 2-3 hours',
     walking: 'Low',
-    fee: 'Paid options',
-    reason: 'A good evening route that connects modern Seoul history with traditional performing arts.',
-    summary: 'See the modern layers of Seoul at Deoksugung, walk the stonewall road, then finish with a traditional performance.',
-    tip: 'Reserve performance tickets in advance and leave enough time for the stonewall walk.',
-    flow: ['Deoksugung Palace', 'Deoksugung Stonewall Road', 'National Jeongdong Theater'],
-    convenienceLabels: ['English available', 'Popular with visitors', 'Check performance booking'],
-    keywords: [
-      { name: 'Korean Empire', description: 'A keyword for understanding royal culture during Korea’s modern transition.' },
-      { name: 'Historic Walk', description: 'A way to read Seoul’s history through city streets.' },
-      { name: 'Performing Heritage', description: 'Traditional arts experienced through the stage.' }
-    ]
+    fee: 'Flexible by purchase',
+    reason: 'It keeps brand comparison, gallery interpretation, and gift shopping close together for foreign visitors.',
+    summary: 'A compact route for moving from explanation to purchase without breaking the flow.',
+    tip: 'Ask about budget and gift style first, then use the stops to narrow the brand fit.',
+    flow: ['KCDF Gallery', 'Anyoung Insadong', 'Ssamziegil'],
+    convenienceLabels: ['Gift-friendly', 'Low walking', 'Brand comparison']
+  },
+  'seongsu-local-brand-course': {
+    title: 'Seongsu Local Brand Discovery Route',
+    subtitle: 'A showroom and local-brand route for visitors who want stronger consumer signals',
+    time: 'About 3-4 hours',
+    walking: 'Moderate',
+    fee: 'Flexible by purchase',
+    reason: 'Seongsu is the strongest area for turning design-company and product-story data into a contemporary local-brand experience.',
+    summary: 'Explore showrooms, concept spaces, and shopping streets shaped by local-brand culture.',
+    tip: 'Weekday afternoons tend to be easier for browsing and explaining brand differences.',
+    flow: ['Seongsu Yeonbang', 'LCDC SEOUL', 'Seongsu Yeonmujang-gil'],
+    convenienceLabels: ['Local-brand focused', 'Showroom route', 'Shopping-linked']
+  },
+  'ddp-night-design-course': {
+    title: 'DDP Night Design Route',
+    subtitle: 'A night route linking design exhibitions, stores, and urban lighting mood',
+    time: 'About 3 hours',
+    walking: 'Low to moderate',
+    fee: 'Free to paid',
+    reason: 'It shows that design discovery and consumption continue into the evening, which is useful for a stronger demo moment.',
+    summary: 'Use DDP, its design store, and nearby lighting streets as a clear night-design story.',
+    tip: 'Check night opening hours and current events before relying on this route for a presentation.',
+    flow: ['Dongdaemun Design Plaza', 'DDP Design Store', 'Euljiro Lighting Street'],
+    convenienceLabels: ['Night mood', 'Design retail', 'Presentation-friendly']
+  },
+  'rainy-day-indoor-design-course': {
+    title: 'Rainy-Day Indoor Design Route',
+    subtitle: 'An indoor-safe route centered on museums, galleries, and controlled demo flow',
+    time: 'About 2-3 hours',
+    walking: 'Low',
+    fee: 'Free to paid',
+    reason: 'It keeps weather risk low while preserving craft explanation, gallery comparison, and purchase-oriented stops.',
+    summary: 'A stable indoor route for rainy days and presentation environments.',
+    tip: 'If the weather changes, this is the easiest route to pivot to without changing the service story.',
+    flow: ['Seoul Museum of Craft Art', 'MMCA Seoul', 'KCDF Gallery', 'Dongdaemun Design Plaza'],
+    convenienceLabels: ['Indoor-safe', 'Weather backup', 'Data story intact']
   }
 };
 
@@ -2382,7 +2695,7 @@ const EN_RESOURCE_TRANSLATIONS = {
     bookingNote: 'Check official sources for exhibition hours before visiting.',
     aiSimpleExplanation: 'A museum for understanding Korean everyday life and folk culture.',
     aiWhyItMatters: 'It helps compare royal culture with everyday culture.',
-    aiVisitTip: 'Focus on daily-life exhibits to connect traditional culture more easily.'
+    aiVisitTip: 'Focus on everyday-life exhibits to connect Korean craft and design context more easily.'
   },
   'tongin-market': {
     category: 'Traditional Market',
@@ -2394,7 +2707,7 @@ const EN_RESOURCE_TRANSLATIONS = {
     verifiedStatus: 'Official check needed',
     bookingNote: 'Check opening hours and holidays before visiting.',
     aiSimpleExplanation: 'A place where local market culture shows how tradition meets daily life today.',
-    aiWhyItMatters: 'It shows how traditional culture continues as living local culture.',
+    aiWhyItMatters: 'It shows how local craft sensibility continues through everyday goods and market culture.',
     aiVisitTip: 'Check market hours and available experiences in advance.'
   },
   unhyeongung: {
@@ -2798,17 +3111,18 @@ const PREFERENCE_TRANSLATIONS = {
   EN: {
     '종로구': 'Jongno-gu',
     '중구': 'Jung-gu',
+    '성동구': 'Seongdong-gu',
     '종로+중구': 'Jongno + Jung-gu',
     '2시간': '2 hours',
     '3시간': '3 hours',
     '반나절': 'Half day',
     '하루': 'Full day',
-    '궁궐': 'Palace',
-    '한옥': 'Hanok',
-    '전통시장': 'Traditional market',
-    '공예': 'Craft',
-    '공연': 'Performance',
-    '박물관': 'Museum',
+    '공예 체험': 'Craft experience',
+    '디자인 전시': 'Design exhibition',
+    '로컬 브랜드': 'Local brand',
+    '쇼핑': 'Shopping',
+    '실내 전시': 'Indoor exhibition',
+    '야간 무드': 'Night mood',
     '무료 위주': 'Mostly free',
     '유료 가능': 'Paid options',
     '상관없음': 'Any',
@@ -2821,17 +3135,18 @@ const PREFERENCE_TRANSLATIONS = {
   JP: {
     '종로구': '鍾路区',
     '중구': '中区',
+    '성동구': '城東区',
     '종로+중구': '鍾路区+中区',
     '2시간': '2時間',
     '3시간': '3時間',
     '반나절': '半日',
     '하루': '1日',
-    '궁궐': '宮殿',
-    '한옥': '韓屋',
-    '전통시장': '伝統市場',
-    '공예': '工芸',
-    '공연': '公演',
-    '박물관': '博物館',
+    '공예 체험': '工芸体験',
+    '디자인 전시': 'デザイン展示',
+    '로컬 브랜드': 'ローカルブランド',
+    '쇼핑': 'ショッピング',
+    '실내 전시': '屋内展示',
+    '야간 무드': '夜のムード',
     '무료 위주': '主に無料',
     '유료 가능': '有料可',
     '상관없음': '指定なし',
@@ -2844,17 +3159,18 @@ const PREFERENCE_TRANSLATIONS = {
   CN: {
     '종로구': '钟路区',
     '중구': '中区',
+    '성동구': '城东区',
     '종로+중구': '钟路区+中区',
     '2시간': '2小时',
     '3시간': '3小时',
     '반나절': '半天',
     '하루': '一天',
-    '궁궐': '宫殿',
-    '한옥': '韩屋',
-    '전통시장': '传统市场',
-    '공예': '工艺',
-    '공연': '演出',
-    '박물관': '博物馆',
+    '공예 체험': '工艺体验',
+    '디자인 전시': '设计展览',
+    '로컬 브랜드': '本地品牌',
+    '쇼핑': '购物',
+    '실내 전시': '室内展览',
+    '야간 무드': '夜间氛围',
     '무료 위주': '以免费为主',
     '유료 가능': '可付费',
     '상관없음': '不限',
@@ -2874,23 +3190,19 @@ const MAP_POSITIONS = [
 ];
 
 const PRIORITY_PLACE_NAMES = [
-  '경복궁',
-  '창덕궁',
-  '덕수궁',
-  '종묘',
+  '서울공예박물관',
+  'KCDF 갤러리',
+  '안녕인사동',
+  '국립현대미술관 서울',
+  '동대문디자인플라자',
+  'DDP 디자인 스토어',
+  '성수연방',
+  'LCDC SEOUL',
+  '쌈지길',
+  '성수 연무장길',
+  '을지로 조명거리',
   '북촌한옥마을',
-  '인사동',
-  '남산골한옥마을',
-  '조계사',
-  '국립민속박물관',
-  '국립고궁박물관',
-  '서울역사박물관',
-  '서대문형무소역사관',
-  '숭례문',
-  '한양도성',
-  '운현궁',
-  '선릉과 정릉',
-  '석촌동 고분군'
+  '인사동'
 ];
 
 const DETAIL_STORY_PATTERNS = [
@@ -2909,110 +3221,111 @@ const DETAIL_STORY_PATTERNS = [
 
 let ROUTE_BLUEPRINTS = [
   {
-    id: 'first-visit-seoul-heritage',
-    title: '첫 방문자 추천 코스',
-    englishTitle: 'First-Time Seoul Heritage Route',
-    summary: '왕실 유물, 궁궐, 생활문화, 한옥, 전통거리를 한 번에 이해하는 입문 코스입니다.',
-    englishExplanation: 'A first-time route connecting royal artifacts, a palace, folk culture, hanok, and a traditional street.',
-    reason: '품질·전통성·외국인 친화 점수가 높은 대표 장소를 묶어 서울 전통문화의 큰 흐름을 가장 쉽게 보여줍니다.',
-    reasonEn: 'This route combines high-quality, high-tradition, visitor-friendly places to show the core flow of Seoul heritage.',
-    tip: '경복궁 권역은 걸을 구간이 많으니 편한 신발을 준비하고, 박물관을 먼저 보면 궁궐 해석이 쉬워집니다.',
-    tipEn: 'Wear comfortable shoes around Gyeongbokgung. Starting with the museums makes the palace easier to understand.',
-    tags: ['궁궐', '왕실문화', '한옥', '전통거리'],
-    preferredNames: ['국립고궁박물관', '경복궁', '국립민속박물관', '북촌한옥마을', '인사동'],
-    fallbackTags: ['first visit', 'palace', 'hanok'],
-    time: '약 3~4시간',
-    walking: '보통',
-    fee: '저비용'
-  },
-  {
-    id: 'rainy-day-indoor-heritage',
-    title: '비 오는 날 추천 코스',
-    englishTitle: 'Rainy-Day Indoor Heritage Route',
-    summary: '우천 점수가 높은 박물관, 체험 공간, 공연장을 중심으로 비 오는 날에도 안정적으로 둘러보는 코스입니다.',
-    englishExplanation: 'An indoor-focused route built from rainy-day-friendly museums, cultural experience spaces, and performance venues.',
-    reason: 'rainyDayScore가 높은 실내 장소를 우선 연결해 날씨 영향을 줄이고, 왕실문화·생활문화·공연 경험을 이어갑니다.',
-    reasonEn: 'It prioritizes high rainy-day-score indoor places and connects royal culture, everyday heritage, and performance experiences.',
-    tip: '박물관 휴관일과 한국의집·정동극장 공연 또는 체험 예약 여부를 먼저 확인하세요.',
-    tipEn: 'Check museum closing days and reservation needs for Korea House or Jeongdong Theater programs.',
-    tags: ['실내', '박물관', '공연', '우천'],
-    preferredNames: ['국립고궁박물관', '국립민속박물관', '서울역사박물관', '한국의집', '국립정동극장'],
-    fallbackTags: ['rainy day', 'museum', 'performance'],
-    preferIndoor: true,
-    time: '약 3시간',
-    walking: '낮음',
-    fee: '무료~유료 가능'
-  },
-  {
-    id: 'photo-spot-heritage-walk',
-    title: '사진 명소 코스',
-    englishTitle: 'Photo Spot Heritage Walk',
-    summary: '사진 명소 점수가 높은 궁궐, 한옥마을, 한옥거리, 전통거리를 종로권 중심으로 묶은 코스입니다.',
-    englishExplanation: 'A visual Jongno-centered route built from high photo-spot-score palaces, hanok streets, and traditional streets.',
-    reason: 'photoSpotScore가 높은 장소 중 실제로 함께 걷기 좋은 종로권 장소를 우선 배치했습니다.',
-    reasonEn: 'It prioritizes high photo-spot-score places that still work as a walkable Jongno-area route.',
-    tip: '오전에는 북촌 골목이 비교적 걷기 편하고, 늦은 오후에는 궁궐과 한옥 지붕선이 사진에 잘 담깁니다.',
-    tipEn: 'Bukchon is easier in the morning, while late afternoon light works well for palace and hanok rooflines.',
-    tags: ['사진명소', '궁궐', '한옥', '전통거리'],
-    preferredNames: ['경복궁', '북촌한옥마을', '창덕궁', '익선동 한옥거리', '인사동'],
-    fallbackTags: ['photo spot', 'sunset', 'hanok'],
-    preferPhoto: true,
-    time: '약 3~4시간',
-    walking: '보통',
-    fee: '저비용'
-  },
-  {
-    id: 'deep-history-route',
-    title: '역사 깊이 보기 코스',
-    englishTitle: 'Deep History Route',
-    summary: '왕실 의례, 궁궐, 도시사, 근현대사의 기억을 이어 깊게 보는 코스입니다.',
-    englishExplanation: 'A deeper route connecting royal rituals, palaces, urban history, and modern historical memory.',
-    reason: '전통성 점수가 높은 왕실 유산에서 시작해 서울의 도시사와 근현대사까지 이어지는 학습형 동선입니다.',
-    reasonEn: 'It begins with high-tradition royal heritage and expands into Seoul urban history and modern historical memory.',
-    tip: '종묘와 박물관은 해설을 읽는 시간이 중요하므로 이동 장소를 너무 늘리지 마세요.',
-    tipEn: 'Leave time to read interpretation at Jongmyo and the museums rather than adding too many stops.',
-    tags: ['왕실', '궁궐', '근현대사', '유적지'],
-    preferredNames: ['종묘', '창덕궁', '창경궁', '서울역사박물관', '서대문형무소역사관'],
-    fallbackTags: ['history', 'modern history', 'royal ritual'],
-    time: '반나절',
-    walking: '보통',
-    fee: '무료~유료 가능'
-  },
-  {
-    id: 'easy-walking-heritage',
-    title: '가볍게 걷는 코스',
-    englishTitle: 'Easy Walking Heritage Route',
-    summary: '도보 난이도 낮음으로 표시된 가까운 장소를 묶은 부담 적은 종로 산책 코스입니다.',
-    englishExplanation: 'A lighter Jongno walking route linking nearby places marked with low walking difficulty.',
-    reason: 'walkingLevel이 낮은 장소를 중심으로 운현궁, 소리문화, 한옥거리, 전통거리, 사찰을 짧게 연결합니다.',
-    reasonEn: 'It connects low-walking-difficulty places: a royal residence, sound culture, hanok streets, a traditional street, and a temple.',
-    tip: '익선동과 인사동은 붐빌 수 있어 오전이나 이른 저녁이 편하고, 중간에 카페 휴식을 넣기 좋습니다.',
-    tipEn: 'Ikseon-dong and Insadong can get crowded, so morning or early evening is more comfortable.',
-    tags: ['가벼운 산책', '한옥', '전통거리', '사찰'],
-    preferredNames: ['운현궁', '서울우리소리박물관', '익선동 한옥거리', '인사동', '조계사'],
-    fallbackTags: ['walking', 'quiet stop', 'low'],
-    preferEasy: true,
+    id: 'craft-design-intro-course',
+    title: 'K-공예·디자인 입문 코스',
+    englishTitle: 'K-Craft and Design Intro Route',
+    summary: '공예 박물관, 갤러리, 구매 가능한 브랜드 공간을 짧고 명확하게 연결하는 대표 입문 코스입니다.',
+    englishExplanation: 'A concise starter route linking a craft museum, a gallery, and a purchase-friendly brand stop.',
+    reason: '산업부 공공데이터가 설명하는 디자인 기업·상품성 맥락을 전시 해설과 구매 동선으로 가장 쉽게 번역할 수 있습니다.',
+    reasonEn: 'It is the clearest route for turning industrial public-data stories into on-site explanation and purchase flow.',
+    tip: '발표에서는 공공데이터 설명이 현장 방문과 소비 연결로 이어진다는 점을 가장 분명하게 보여주기 좋습니다.',
+    tipEn: 'Use this route in demos when you want the clearest link from public data to on-site spending.',
+    tags: ['공예 체험', '디자인 전시', '로컬 브랜드', '쇼핑'],
+    preferredNames: ['서울공예박물관', 'KCDF 갤러리', '안녕인사동'],
+    fallbackTags: ['craft', 'design', 'first visit', 'brand'],
     time: '약 2~3시간',
-    walking: '낮음',
-    fee: '무료 중심'
+    walking: '낮음~보통',
+    fee: '무료 관람 + 유료 체험 선택 가능'
   },
   {
-    id: 'southern-heritage-extension',
-    title: '서울 남부 전통유산 코스',
-    englishTitle: 'Southern Seoul Heritage Extension',
-    summary: '강남·송파권 데이터에 포함된 왕릉, 사찰, 고분을 묶은 도심 밖 확장 코스입니다.',
-    englishExplanation: 'An extension route using the Gangnam and Songpa heritage data: royal tombs, a temple, and ancient tombs.',
-    reason: '업데이트된 데이터에 포함된 강남·송파권 장소를 별도 코스로 묶어, 종로·중구 중심 추천에서 놓치기 쉬운 전통유산을 보여줍니다.',
-    reasonEn: 'It uses the updated Gangnam and Songpa data to show heritage places that can be missed in Jongno/Jung-gu-centered routes.',
-    tip: '장소 간 거리가 있어 도보 코스보다는 지하철·택시 이동을 전제로 반나절 정도 여유를 두세요.',
-    tipEn: 'These places are spread out, so plan a half day with subway or taxi transfers rather than a pure walking route.',
-    tags: ['왕릉', '사찰', '고분', '확장 코스'],
-    preferredNames: ['선릉과 정릉', '봉은사', '석촌동 고분군'],
-    fallbackTags: ['royal tomb', 'temple', 'ancient tomb'],
-    time: '반나절',
+    id: 'samcheong-design-story-course',
+    title: '삼청 디자인 스토리 코스',
+    englishTitle: 'Samcheong Design Story Route',
+    summary: '한옥 경관을 보조 맥락으로 두고 공예와 현대 디자인 해설을 한 흐름으로 묶는 산책형 코스입니다.',
+    englishExplanation: 'A walk that uses hanok scenery as supporting context while keeping the focus on craft and design interpretation.',
+    reason: '역사 경관을 관광 포인트가 아니라 보조 설명 레이어로 활용해 공예·디자인의 스토리텔링 밀도를 높입니다.',
+    reasonEn: 'It treats historic scenery as a supporting layer so the route can stay centered on craft and design storytelling.',
+    tip: '사진 명소 소개보다 왜 이 구간에서 공예와 디자인을 함께 설명할 수 있는지에 초점을 맞추면 공모전형 메시지가 더 선명합니다.',
+    tipEn: 'Keep the narration on why this area works for craft-and-design interpretation rather than generic sightseeing.',
+    tags: ['디자인 전시', '사진 포인트', '산책', '스토리텔링'],
+    preferredNames: ['북촌한옥마을', '서울공예박물관', '국립현대미술관 서울', 'KCDF 갤러리'],
+    fallbackTags: ['samcheong', 'design story', 'gallery', 'photo'],
+    time: '약 3시간',
     walking: '보통',
     fee: '무료~유료 가능',
-    maxStops: 3
+    preferPhoto: true
+  },
+  {
+    id: 'insadong-brand-buying-course',
+    title: '인사동 브랜드 발견·구매 코스',
+    englishTitle: 'Insadong Brand Discovery and Buying Route',
+    summary: '공예 브랜드 비교, 선물 구매, 외국인 설명 편의성이 높은 도심형 코스입니다.',
+    englishExplanation: 'A central route optimized for craft-brand comparison, gift buying, and visitor-friendly explanation.',
+    reason: '짧은 이동으로 브랜드와 상품을 비교할 수 있어 외국인 소비 연결성을 설명하기 가장 쉬운 구간입니다.',
+    reasonEn: 'Its short distances and dense brand mix make it easy to explain consumer conversion for foreign visitors.',
+    tip: '예산, 선물 목적, 취향 키워드를 먼저 물은 뒤 코스를 보여주면 추천 설득력이 올라갑니다.',
+    tipEn: 'Ask about budget, gift goals, and taste before walking through the route so the recommendation feels more precise.',
+    tags: ['로컬 브랜드', '쇼핑', '선물', '실내 전시'],
+    preferredNames: ['KCDF 갤러리', '안녕인사동', '쌈지길'],
+    fallbackTags: ['brand', 'shopping', 'gift', 'insadong'],
+    time: '약 2~3시간',
+    walking: '낮음',
+    fee: '구매 선택에 따라 변동',
+    preferEasy: true
+  },
+  {
+    id: 'seongsu-local-brand-course',
+    title: '성수 로컬 브랜드 탐색 코스',
+    englishTitle: 'Seongsu Local Brand Discovery Route',
+    summary: '쇼룸, 편집 공간, 로컬 브랜드 거리를 중심으로 현재형 소비 흐름을 보여주는 코스입니다.',
+    englishExplanation: 'A showroom- and local-brand-focused route that highlights contemporary consumer flow.',
+    reason: '공공데이터로 설명한 디자인 기업과 상품성을 현재의 로컬 브랜드 소비 공간에 연결해 보여주기 좋습니다.',
+    reasonEn: 'It makes it easy to connect public-data-backed brand stories to contemporary local-brand consumption spaces.',
+    tip: '발표에서는 성수를 관광지보다 브랜드 소비 실험장이자 현장 검증 구간으로 설명하는 편이 더 적합합니다.',
+    tipEn: 'Describe Seongsu as a brand-consumption testbed rather than as a generic tourist district.',
+    tags: ['로컬 브랜드', '쇼핑', '쇼룸', '사진 포인트'],
+    preferredNames: ['성수연방', 'LCDC SEOUL', '성수 연무장길'],
+    fallbackTags: ['local brand', 'showroom', 'shopping', 'seongsu'],
+    time: '약 3~4시간',
+    walking: '보통',
+    fee: '구매 선택에 따라 변동',
+    preferPhoto: true
+  },
+  {
+    id: 'ddp-night-design-course',
+    title: 'DDP 나이트 디자인 코스',
+    englishTitle: 'DDP Night Design Route',
+    summary: '야간 전시, 디자인 스토어, 조명 거리를 연결해 밤에도 이어지는 디자인 소비 흐름을 보여주는 코스입니다.',
+    englishExplanation: 'A night route linking exhibitions, design retail, and lighting streets into one design-consumption story.',
+    reason: '야간 시간대에도 K-디자인 탐색과 구매 연결이 가능하다는 점을 시각적으로 강하게 보여줄 수 있습니다.',
+    reasonEn: 'It demonstrates that design discovery and purchase flow continue into the evening.',
+    tip: '시연 전 야간 운영 시간만 확인하면 발표 임팩트가 가장 큰 코스 중 하나입니다.',
+    tipEn: 'This can become one of the strongest demo routes if night opening hours are checked in advance.',
+    tags: ['야간 무드', '디자인 전시', '쇼핑', '도시 디자인'],
+    preferredNames: ['동대문디자인플라자', 'DDP 디자인 스토어', '을지로 조명거리'],
+    fallbackTags: ['night', 'ddp', 'design store', 'lighting'],
+    time: '약 3시간',
+    walking: '낮음~보통',
+    fee: '무료~유료 가능',
+    preferPhoto: true
+  },
+  {
+    id: 'rainy-day-indoor-design-course',
+    title: '비 오는 날 실내 디자인 코스',
+    englishTitle: 'Rainy-Day Indoor Design Route',
+    summary: '비나 더위에도 설명 흐름이 흔들리지 않도록 실내 전시와 갤러리 중심으로 구성한 안정형 코스입니다.',
+    englishExplanation: 'A stable indoor route built to preserve the service story even in rain or extreme weather.',
+    reason: '날씨 리스크를 줄이면서도 공예·디자인 해설, 브랜드 발견, 구매 연결성을 유지할 수 있습니다.',
+    reasonEn: 'It lowers weather risk without losing craft interpretation, brand discovery, or purchase links.',
+    tip: '정적 웹앱 데모에서는 날씨 변수에 가장 덜 흔들리는 기본 안전 코스로 설명하기 좋습니다.',
+    tipEn: 'For static-web demos, this is the safest route to keep the story consistent when the weather changes.',
+    tags: ['실내 전시', '우천', '공예 체험', '디자인 전시'],
+    preferredNames: ['서울공예박물관', '국립현대미술관 서울', 'KCDF 갤러리', '동대문디자인플라자'],
+    fallbackTags: ['rainy day', 'indoor', 'museum', 'gallery'],
+    preferIndoor: true,
+    time: '약 2~3시간',
+    walking: '낮음',
+    fee: '무료~유료 가능'
   }
 ];
 
@@ -3167,7 +3480,7 @@ const FEATURE_COPY = {
     },
     ai: {
       insightTitle: 'AI 추천 분석',
-      insightBody: '선택 조건, 장소 성격, 이동 부담, 날씨 적합도를 함께 반영한 추천 근거입니다.',
+      insightBody: '선택 조건과 산업부 공공데이터 기반 코스 특성을 함께 반영한 추천 근거입니다.',
       topRouteLabel: '현재 가장 잘 맞는 코스',
       factorLabel: '추천에 반영된 요인',
       scoreLabel: '추천 적합도',
@@ -3176,7 +3489,7 @@ const FEATURE_COPY = {
     },
     crowd: {
       title: '혼잡도 기반 대체 추천',
-      body: '현재 시간, 날씨, 장소 인기도를 합쳐 예상 혼잡도를 계산했습니다.',
+      body: '현재 시간, 날씨, 장소 특성을 합쳐 예상 혼잡 흐름을 계산했습니다. 기기 공통 실시간 수집값은 아닙니다.',
       current: '현재 코스',
       alternative: '대체 코스',
       low: '여유',
@@ -3196,9 +3509,9 @@ const FEATURE_COPY = {
       open: '코스 열기'
     },
     ranking: {
-      nav: '외국인 인기 랭킹',
-      title: '외국인 인기 랭킹',
-      body: '외국인 반응, 영어 안내, 사진성, 접근성을 합쳐 계산한 상위 추천입니다.',
+      nav: '브라우저 반응 기반 랭킹',
+      title: '브라우저 반응 기반 랭킹',
+      body: '현재 기기에 저장된 열람, 저장, 추천 반응과 기본 점수를 합쳐 계산한 시뮬레이션 랭킹입니다.',
       routes: '인기 코스 TOP 3',
       places: '인기 장소 TOP 5',
       score: '인기도',
@@ -3245,7 +3558,7 @@ const FEATURE_COPY = {
     },
     ai: {
       insightTitle: 'AI Recommendation Breakdown',
-      insightBody: 'This recommendation combines travel preferences, place type, walking effort, and weather fit.',
+      insightBody: 'This recommendation blends travel preferences with MARU’s industrial public-data route structure.',
       topRouteLabel: 'Best route right now',
       factorLabel: 'Signals used',
       scoreLabel: 'Fit score',
@@ -3254,7 +3567,7 @@ const FEATURE_COPY = {
     },
     crowd: {
       title: 'Crowd-Aware Alternatives',
-      body: 'Expected crowd is estimated from time, weather, and place popularity.',
+      body: 'Expected crowd is estimated from time, weather, and place patterns. It is not a shared live crowd feed.',
       current: 'Current route',
       alternative: 'Alternative route',
       low: 'Relaxed',
@@ -3274,9 +3587,9 @@ const FEATURE_COPY = {
       open: 'Open route'
     },
     ranking: {
-      nav: 'Foreigner Ranking',
-      title: 'Foreigner Ranking',
-      body: 'This ranking blends foreigner appeal, English support, photogenic value, and accessibility.',
+      nav: 'Browser-Based Ranking',
+      title: 'Browser-Based Ranking',
+      body: 'This simulated ranking blends local interactions stored on this device with MARU base scores.',
       routes: 'Top 3 Routes',
       places: 'Top 5 Places',
       score: 'Score',
@@ -3534,7 +3847,7 @@ function normalizeCultureResource(raw, index = 0) {
     nameEn,
     region: /구$/.test(raw.region || '') ? '서울' : (raw.region || '서울'),
     district,
-    category: raw.category || raw.type || '전통문화 장소',
+    category: raw.category || raw.type || '공예·디자인 장소',
     categoryEn: raw.categoryEn || raw.category_en || raw.category || 'Heritage Place',
     address: raw.address || raw.addr || '',
     latitude: hasCoordinates ? latitude : undefined,
@@ -3561,7 +3874,7 @@ function normalizeCultureResource(raw, index = 0) {
     reservationRequired: toBoolean(raw.reservationRequired, false),
     isIndependentSite: !isDetailStoryOnlyResource(raw) && toBoolean(raw.isIndependentSite, true),
     isDetailStoryOnly: isDetailStoryOnlyResource(raw),
-    imageAlt: raw.imageAlt || `${nameKo || '서울 전통문화 장소'} 이미지`,
+    imageAlt: raw.imageAlt || `${nameKo || '서울 공예·디자인 장소'} 이미지`,
     feeType: raw.feeType || raw.fee || '공식 확인 필요',
     bookingNote: raw.bookingNote || '운영시간, 요금, 예약 여부는 방문 전 공식 정보를 확인하세요.',
     sourceName: raw.sourceName || raw.source || CULTURE_RESOURCE_DATA_URL,
@@ -3589,7 +3902,7 @@ function recommendationPriority(resource) {
     resource.foreignerScore * 0.35 +
     (hasText ? 30 : 0) +
     (resource.photoSpotScore >= 4 ? 10 : 0) +
-    (/palace|궁궐|hanok|한옥|temple|사찰|museum|박물관|history|역사/i.test(`${resource.category} ${tagText}`) ? 12 : 0) +
+    (/craft|공예|design|디자인|gallery|갤러리|museum|박물관|exhibition|전시|showroom|스토어|brand|브랜드/i.test(`${resource.category} ${tagText}`) ? 12 : 0) +
     detailPenalty
   );
 }
@@ -3659,7 +3972,7 @@ function buildRouteFromResources(blueprint, routeResources) {
       englishAvailable: routeResources.some((resource) => resource.englishAvailable),
       foreignerPopular: average('foreignerScore') >= 80,
       reservationRequired: routeResources.some((resource) => resource.reservationRequired),
-      labels: ['실제 데이터 기반', '서울 전통문화', `${routeResources.length}개 장소`]
+      labels: ['실제 데이터 기반', 'K-공예·디자인', `${routeResources.length}개 장소`]
     },
     imageUrl: inferRouteImage(blueprint),
     imageAlt: `${blueprint.title} 대표 이미지`,
@@ -3759,7 +4072,7 @@ function normalizeCoursePlaceResource(rawPlace = {}, index = 0, course = {}) {
     nameEn,
     region: '서울',
     district: rawPlace.district || extractDistrictFromAddress(rawPlace.address),
-    category: rawPlace.category || '전통문화 장소',
+    category: rawPlace.category || '공예·디자인 장소',
     categoryEn: rawPlace.categoryEn || rawPlace.category || 'Heritage Place',
     address: rawPlace.address || '',
     latitude,
@@ -3834,38 +4147,58 @@ function normalizeCourseKeywords(rawKeywords = [], fallbackTags = []) {
 }
 
 function normalizeCourseRoute(rawCourse = {}, index = 0) {
-  const places = Array.isArray(rawCourse.places) ? rawCourse.places : [];
+  const override = CONTEST_ROUTE_OVERRIDES[rawCourse.id] || null;
+  const course = override
+    ? {
+        ...rawCourse,
+        ...override,
+        title: override.title || rawCourse.title,
+        aiSummary: override.aiSummary || rawCourse.aiSummary,
+        reason: override.reason || rawCourse.reason,
+        tip: override.tip || rawCourse.tip,
+        keywords: override.keywords || rawCourse.keywords,
+        target: override.target || rawCourse.target,
+        recommendedTime: override.recommendedTime || rawCourse.recommendedTime,
+        places: override.places || rawCourse.places
+      }
+    : rawCourse;
+  const places = Array.isArray(course.places) ? course.places : [];
   const routeResources = places.map(findResourceForCoursePlace).filter(Boolean);
   const flow = places
     .map((place) => findResourceForCoursePlace(place)?.nameKo || getLocalizedValue(place.name, 'ko') || place.nameKo)
     .filter(Boolean);
   const resourceIds = routeResources.map((resource) => resource.id);
-  const targetTags = [...new Set([rawCourse.theme, ...toArray(rawCourse.target)].filter(Boolean))];
-  const keywords = normalizeCourseKeywords(rawCourse.keywords, targetTags);
-  const sources = [...new Set(places.map((place) => place.publicDataSource).filter(Boolean))];
-  const score = toNumber(rawCourse.score, Math.min(99, Math.max(75, Math.round(
+  const targetTags = [...new Set([course.theme, ...toArray(course.target)].filter(Boolean))];
+  const keywords = normalizeCourseKeywords(course.keywords, targetTags);
+  const sources = [...new Set(
+    (Array.isArray(course.sourceNames) && course.sourceNames.length
+      ? course.sourceNames
+      : places.map((place) => place.publicDataSource)
+    ).filter(Boolean)
+  )];
+  const score = toNumber(course.score, Math.min(99, Math.max(75, Math.round(
     routeResources.reduce((sum, resource) => sum + toNumber(resource.qualityScore, 80), 0) / Math.max(routeResources.length, 1)
   ))));
-  const titleKo = getLocalizedValue(rawCourse.title, 'ko') || rawCourse.titleKo || `추천 코스 ${index + 1}`;
-  const titleEn = getLocalizedValue(rawCourse.title, 'en') || rawCourse.titleEn || rawCourse.englishTitle || titleKo;
-  const summaryKo = getLocalizedValue(rawCourse.aiSummary, 'ko') || getLocalizedValue(rawCourse.summary, 'ko') || '';
-  const summaryEn = getLocalizedValue(rawCourse.aiSummary, 'en') || getLocalizedValue(rawCourse.summary, 'en') || summaryKo;
-  const reasonKo = getLocalizedValue(rawCourse.reason, 'ko') || summaryKo;
-  const reasonEn = getLocalizedValue(rawCourse.reason, 'en') || summaryEn;
-  const tipKo = getLocalizedValue(rawCourse.tip, 'ko') || '운영시간, 요금, 예약 여부는 방문 전 공식 출처에서 확인하세요.';
-  const tipEn = getLocalizedValue(rawCourse.tip, 'en') || 'Check official hours, fees, and reservations before visiting.';
+  const titleKo = getLocalizedValue(course.title, 'ko') || course.titleKo || `추천 코스 ${index + 1}`;
+  const titleEn = getLocalizedValue(course.title, 'en') || course.titleEn || course.englishTitle || titleKo;
+  const summaryKo = getLocalizedValue(course.aiSummary, 'ko') || getLocalizedValue(course.summary, 'ko') || '';
+  const summaryEn = getLocalizedValue(course.aiSummary, 'en') || getLocalizedValue(course.summary, 'en') || summaryKo;
+  const reasonKo = getLocalizedValue(course.reason, 'ko') || summaryKo;
+  const reasonEn = getLocalizedValue(course.reason, 'en') || summaryEn;
+  const tipKo = getLocalizedValue(course.tip, 'ko') || '운영시간, 요금, 예약 여부는 방문 전 공식 출처에서 확인하세요.';
+  const tipEn = getLocalizedValue(course.tip, 'en') || 'Check official hours, fees, and reservations before visiting.';
 
   return {
-    id: rawCourse.id || `public-data-course-${index + 1}`,
+    id: course.id || `public-data-course-${index + 1}`,
     title: titleKo,
     englishTitle: titleEn,
     score,
-    time: getLocalizedValue(rawCourse.durationLabel, 'ko') || normalizeCourseDuration(rawCourse.duration, 'ko'),
-    timeEn: getLocalizedValue(rawCourse.durationLabel, 'en') || normalizeCourseDuration(rawCourse.duration, 'en'),
-    walking: getLocalizedValue(rawCourse.walking, 'ko') || indoorOutdoorLabel(rawCourse.indoorOutdoor, 'ko') || '보통',
-    walkingEn: getLocalizedValue(rawCourse.walking, 'en') || indoorOutdoorLabel(rawCourse.indoorOutdoor, 'en') || 'Moderate',
-    fee: getLocalizedValue(rawCourse.fee, 'ko') || budgetLabel(rawCourse.budget, 'ko') || '공식 확인 필요',
-    feeEn: getLocalizedValue(rawCourse.fee, 'en') || budgetLabel(rawCourse.budget, 'en') || 'Check official source',
+    time: getLocalizedValue(course.durationLabel, 'ko') || normalizeCourseDuration(course.duration, 'ko'),
+    timeEn: getLocalizedValue(course.durationLabel, 'en') || normalizeCourseDuration(course.duration, 'en'),
+    walking: getLocalizedValue(course.walking, 'ko') || indoorOutdoorLabel(course.indoorOutdoor, 'ko') || '보통',
+    walkingEn: getLocalizedValue(course.walking, 'en') || indoorOutdoorLabel(course.indoorOutdoor, 'en') || 'Moderate',
+    fee: getLocalizedValue(course.fee, 'ko') || budgetLabel(course.budget, 'ko') || '공식 확인 필요',
+    feeEn: getLocalizedValue(course.fee, 'en') || budgetLabel(course.budget, 'en') || 'Check official source',
     resourceIds,
     flow,
     reason: reasonKo,
@@ -3875,27 +4208,27 @@ function normalizeCourseRoute(rawCourse = {}, index = 0) {
       englishAvailable: routeResources.some((resource) => resource.englishAvailable),
       foreignerPopular: true,
       reservationRequired: /performance|booking|reservation|공연|예약/i.test(targetTags.join(' ')),
-      labels: ['공공데이터 기반', `${flow.length}개 장소`, indoorOutdoorLabel(rawCourse.indoorOutdoor, 'ko') || '추천 코스']
+      labels: ['공공데이터 기반', `${flow.length}개 장소`, indoorOutdoorLabel(course.indoorOutdoor, 'ko') || '추천 코스']
     },
-    convenienceLabelsEn: ['Public-data seed', `${flow.length} stops`, indoorOutdoorLabel(rawCourse.indoorOutdoor, 'en') || 'Recommended route'],
-    imageUrl: rawCourse.image || rawCourse.imageUrl || inferRouteImage(rawCourse),
+    convenienceLabelsEn: ['Public-data seed', `${flow.length} stops`, indoorOutdoorLabel(course.indoorOutdoor, 'en') || 'Recommended route'],
+    imageUrl: course.image || course.imageUrl || inferRouteImage(course),
     imageAlt: rawCourse.imageAlt || `${titleKo} 대표 이미지`,
     imageNotice: 'AI 생성 이미지 · 실제 장소 사진이 아닌 코스 이해를 돕는 시각 가이드',
-    imagePrompt: rawCourse.imagePrompt || '',
+    imagePrompt: course.imagePrompt || '',
     summary: summaryKo,
     englishExplanation: summaryEn,
     tip: tipKo,
     tipEn,
-    source: `${COURSE_DATA_URL} 기반 샘플 추천 코스입니다.${sources.length ? ` 참고 출처: ${sources.join(', ')}.` : ''} 운영 정보는 방문 전 공식 출처 확인이 필요합니다.`,
+    source: course.source || `${COURSE_DATA_URL} 기반 샘플 추천 코스입니다.${sources.length ? ` 참고 출처: ${sources.join(', ')}.` : ''} 운영 정보는 방문 전 공식 출처 확인이 필요합니다.`,
     keywords,
     keywordsEn: keywords.map((keyword) => ({
       name: keyword.name,
       description: keyword.descriptionEn || keyword.description
     })),
-    theme: rawCourse.theme,
-    target: toArray(rawCourse.target),
-    recommendedTime: toArray(rawCourse.recommendedTime),
-    mapLinks: rawCourse.mapLinks || {}
+    theme: course.theme,
+    target: toArray(course.target),
+    recommendedTime: toArray(course.recommendedTime),
+    mapLinks: course.mapLinks || {}
   };
 }
 
@@ -4152,12 +4485,12 @@ function routeSearchText(route, resources = getRouteResources(route)) {
 function matchesPreferenceInterest(resource, interest) {
   const text = resourceSearchText(resource);
   const keywordMap = {
-    궁궐: ['궁궐', 'palace', 'royal'],
-    한옥: ['한옥', 'hanok'],
-    전통시장: ['전통시장', '시장', 'market', 'local life'],
-    공예: ['공예', 'craft', 'museum of craft', 'traditional street'],
-    공연: ['공연', 'theater', 'performance', '국악'],
-    박물관: ['박물관', 'museum', 'exhibition']
+    '공예 체험': ['공예', 'craft', 'workshop', 'maker', 'craft museum', '체험'],
+    '디자인 전시': ['디자인', 'design', 'gallery', 'museum', 'exhibition', 'show'],
+    '로컬 브랜드': ['브랜드', 'brand', 'local brand', 'showroom', 'flagship', '편집숍'],
+    쇼핑: ['쇼핑', 'shopping', 'store', 'shop', 'gift', 'buy'],
+    '실내 전시': ['실내', 'indoor', 'gallery', 'museum', 'exhibition', 'design store'],
+    '야간 무드': ['야간', 'night', 'evening', 'lighting', 'late', 'night design']
   };
 
   return (keywordMap[interest] || [interest]).some((keyword) => text.includes(String(keyword).toLowerCase()));
@@ -4213,14 +4546,14 @@ function scoreResourceForPreference(resource, preference = loadUserPreference())
 
   if (preference?.groupType === '커플' && resource.photoSpotScore >= 4) score += 12;
   if ((preference?.groupType === '가족' || preference?.groupType === '아이 동반' || preference?.groupType === '부모님 동반') && (isLowWalkingResource(resource) || isIndoorResource(resource))) score += 14;
-  if (preference?.groupType === '친구와' && /(market|시장|performance|공연|street|거리)/i.test(text)) score += 10;
-  if (preference?.groupType === '혼자' && /(museum|박물관|history|역사|palace|궁궐)/i.test(text)) score += 10;
+  if (preference?.groupType === '친구와' && /(store|shop|brand|거리|street|popup|showroom)/i.test(text)) score += 10;
+  if (preference?.groupType === '혼자' && /(museum|박물관|gallery|exhibition|design|공예)/i.test(text)) score += 10;
 
   if (hasAnyTerm(requestText, ['비 오는 날', '비오', '비 오', 'rain', '우천'])) score += Number(resource.rainyDayScore || 0) * 14;
   if (hasAnyTerm(requestText, ['사진', 'photo', 'photogenic'])) score += Number(resource.photoSpotScore || 0) * 6;
   if (hasAnyTerm(requestText, ['영어', 'english'])) score += resource.englishAvailable ? 12 : -4;
   if (hasAnyTerm(requestText, ['조용', 'quiet', 'hidden'])) score += /(quiet|hidden|조용)/i.test(text) ? 10 : 0;
-  if (hasAnyTerm(requestText, ['시장', 'market', '먹거리'])) score += /(시장|market|food)/i.test(text) ? 12 : 0;
+  if (hasAnyTerm(requestText, ['쇼핑', 'brand', '브랜드', 'gift', 'buy', 'shop'])) score += /(쇼핑|shopping|brand|store|shop|gift|buy)/i.test(text) ? 12 : 0;
 
   return Math.round(score);
 }
@@ -4276,8 +4609,9 @@ function scoreRouteForPreference(route, preference = loadUserPreference()) {
   if (hasAnyTerm(requestText, ['비 오는 날', '비오', '비 오', 'rain', '우천']) && /(rain|우천|실내|museum|공연)/i.test(routeText)) score += 28 + averageRainyScore * 6;
   if (hasAnyTerm(requestText, ['사진', 'photo']) && /(사진|photo)/i.test(routeText)) score += 16;
   if (hasAnyTerm(requestText, ['영어', 'english']) && resources.some((resource) => resource.englishAvailable)) score += 10;
-  if (interests.includes('공연') && /(공연|performance|theater)/i.test(routeText)) score += 18;
-  if (interests.includes('박물관') && /(박물관|museum)/i.test(routeText)) score += 14;
+  if (interests.includes('실내 전시') && /(실내|indoor|전시|exhibition|museum|gallery)/i.test(routeText)) score += 18;
+  if (interests.includes('로컬 브랜드') && /(로컬 브랜드|brand|showroom|store|편집숍)/i.test(routeText)) score += 14;
+  if (interests.includes('쇼핑') && /(쇼핑|shopping|store|shop|gift|buy)/i.test(routeText)) score += 14;
 
   return Math.round(score);
 }
@@ -4362,12 +4696,12 @@ function estimateResourceCrowdScore(resource, options = {}) {
   const weekend = typeof options.weekend === 'boolean' ? options.weekend : isWeekendInSeoul();
   let score = Number(resource.foreignerPopularityScore || 3) * 12;
 
-  if (/궁궐|hanok|palace|village/i.test(`${resource.category || ''}`)) score += 10;
-  if (/박물관|museum|market|공연|performance/i.test(`${resource.category || ''}`)) score += 6;
+  if (/craft|공예|design|디자인|gallery|showroom|brand/i.test(`${resource.category || ''}`)) score += 10;
+  if (/박물관|museum|store|shop|전시|exhibition|performance/i.test(`${resource.category || ''}`)) score += 6;
   if (resource.englishAvailable) score += 4;
   if (period === 'day') score += 10;
-  if (period === 'evening' && /(공연|performance|market|night)/i.test(`${resource.category || ''}`)) score += 9;
-  if (period === 'night' && !/(궁궐|market|performance|night)/i.test(`${resource.category || ''}`)) score -= 6;
+  if (period === 'evening' && /(공연|performance|night|store|showroom|design)/i.test(`${resource.category || ''}`)) score += 9;
+  if (period === 'night' && !/(night|design|store|showroom|performance)/i.test(`${resource.category || ''}`)) score -= 6;
   if (weekend) score += 12;
   if (/비|rain/.test(weatherText) && isIndoorResource(resource)) score += 12;
   if (/비|rain/.test(weatherText) && isOutdoorResource(resource)) score -= 8;
@@ -4655,11 +4989,11 @@ function getRankingStatusNote(summary) {
   }
   if (summary?.source === 'sqlite') {
     return getCurrentLanguage() === 'ko'
-      ? `실행 중인 MARU 저장소의 반응 ${eventCount}건과 오늘의 클릭/추천 데이터를 반영합니다.`
-      : `Using ${eventCount} interactions from the live MARU local database.`;
+      ? `실행 중인 MARU 로컬 저장소의 반응 ${eventCount}건을 반영한 로컬 집계 기준입니다.`
+      : `Using ${eventCount} interactions from the local MARU database on this machine.`;
   }
   return getCurrentLanguage() === 'ko'
-    ? `이 브라우저에 저장된 반응 ${eventCount}건 기준으로 실시간 랭킹을 계산합니다.`
+    ? `이 브라우저에 저장된 반응 ${eventCount}건 기준으로 로컬 랭킹을 계산합니다.`
     : `Using ${eventCount} interactions stored in this browser.`;
 }
 
@@ -5791,6 +6125,7 @@ function renderHomeTimeHero(periodOverride = getTimePeriod(), imageUrlOverride =
   const config = HOME_TIME_IMAGES[period];
   const label = textFrom(config.label);
   const imageUrl = imageUrlOverride || getHomeTimeImageUrl(config);
+  const proofPoints = toArray(t('home.proofPoints', []));
 
   hero.innerHTML = `
     ${renderImageFrame({
@@ -5803,6 +6138,9 @@ function renderHomeTimeHero(periodOverride = getTimePeriod(), imageUrlOverride =
       <span>${escapeHtml(t('home.timeEyebrow'))} · ${escapeHtml(label)}</span>
       <h1>${escapeHtml(textFrom(config.title))}</h1>
       <p>${escapeHtml(textFrom(config.description))}</p>
+      <div class="home-proof-grid" aria-label="${escapeHtml(t('home.quickLabel'))}">
+        ${proofPoints.map((point) => `<span class="home-proof-chip">${escapeHtml(point)}</span>`).join('')}
+      </div>
     </div>
   `;
 }
@@ -6086,19 +6424,19 @@ function renderForeignerRanking() {
       <div class="section-heading compact">
         <div>
           <p class="eyebrow">Ranking</p>
-          <h2>${escapeHtml(getCurrentLanguage() === 'ko' ? '실시간 문화 랭킹' : 'Live Cultural Ranking')}</h2>
+          <h2>${escapeHtml(getCurrentLanguage() === 'ko' ? '브라우저 반응 기반 랭킹' : 'Browser-Based Ranking')}</h2>
           <p>${escapeHtml(getCurrentLanguage() === 'ko'
-            ? '앱 안에서 쌓이는 열람, 지도 열기, 저장, 추천 반응을 바탕으로 외국인 인기와 혼잡 흐름을 함께 봅니다.'
-            : 'This ranking blends live interactions such as opens, map launches, saves, and recommendations.')}</p>
+            ? '앱 안에 저장된 열람, 지도 열기, 저장, 추천 반응을 바탕으로 외국인 인기와 조용한 대체 코스를 함께 봅니다.'
+            : 'This ranking blends local interactions such as opens, map launches, saves, and recommendations on this device.')}</p>
         </div>
       </div>
       <p class="ranking-status-note">${escapeHtml(getRankingStatusNote(summary))}</p>
       <div class="ranking-grid ranking-grid-analytics">
         <section class="ranking-block">
           <div class="ranking-section-copy">
-            <h3>${escapeHtml(getCurrentLanguage() === 'ko' ? '외국인 관광 인기 명소 TOP 10' : 'Top 10 Foreign Visitor Spots')}</h3>
+            <h3>${escapeHtml(getCurrentLanguage() === 'ko' ? '외국인 선호 K-디자인 스팟 TOP 10' : 'Top 10 K-Design Spots')}</h3>
             <p>${escapeHtml(getCurrentLanguage() === 'ko'
-              ? '영어 안내, 포토 스팟 성향, 외국인 반응 신호를 함께 반영합니다.'
+              ? '영어 설명 가능성, 브랜드 발견성, 외국인 반응 신호를 함께 반영합니다.'
               : 'Blends English support, photo value, and foreign visitor signals.')}</p>
           </div>
           <div class="ranking-list">
@@ -6133,7 +6471,7 @@ function renderForeignerRanking() {
           <div class="ranking-section-copy">
             <h3>${escapeHtml(getCurrentLanguage() === 'ko' ? '조용한 코스 추천 TOP 10' : 'Top Quiet Route Picks')}</h3>
             <p>${escapeHtml(getCurrentLanguage() === 'ko'
-              ? `현재 등록된 ${ROUTE_DATA.length}개 코스 안에서 오늘의 혼잡 반응을 피해 추천합니다.`
+              ? `현재 등록된 ${ROUTE_DATA.length}개 코스 안에서 혼잡 추정치를 피해 추천합니다.`
               : `Calculated across the ${ROUTE_DATA.length} currently registered routes.`)}</p>
           </div>
           <div class="ranking-list">
@@ -6881,11 +7219,11 @@ function renderRouteFeedbackPanel(route) {
   panel.innerHTML = `
     <h2>${escapeHtml(getCurrentLanguage() === 'ko' ? '이 코스가 좋았다면' : 'If you liked this route')}</h2>
     <p>${escapeHtml(getCurrentLanguage() === 'ko'
-      ? '추천과 저장 반응이 외국인 인기, 숨은 명소, 오늘의 혼잡도 랭킹 계산에 반영됩니다.'
-      : 'Recommendations and saves feed the popularity, hidden-gem, and crowd rankings.')}</p>
+      ? '추천과 저장 반응이 이 기기 안의 인기, 숨은 명소, 혼잡도 시뮬레이션 계산에 반영됩니다.'
+      : 'Recommendations and saves on this device feed the popularity, hidden-gem, and crowd simulations.')}</p>
     <div class="route-feedback-actions">
       <button class="button button-secondary" type="button" data-route-action="recommend-current">${escapeHtml(getCurrentLanguage() === 'ko' ? '추천 남기기' : 'Recommend')}</button>
-      <span>${escapeHtml(getCurrentLanguage() === 'ko' ? '한 번의 추천도 실시간 데이터로 누적됩니다.' : 'Each recommendation becomes a live data signal.')}</span>
+      <span>${escapeHtml(getCurrentLanguage() === 'ko' ? '한 번의 추천도 브라우저 내 반응 데이터로 누적됩니다.' : 'Each recommendation becomes a local browser signal.')}</span>
     </div>
   `;
 }
@@ -7196,7 +7534,7 @@ function renderPublicDataSourceCard(source) {
   const useFor = source.useDescription || source.use || toArray(source.useFor).join(', ') || '공공문화데이터 활용';
   const maruApplication = source.connectedFeature || source.maruApplication || source.application || 'MARU 추천/해설 기능에 연결 예정';
   const currentStatus = source.currentStatus || source.status || '정적 JSON 샘플 데이터로 반영';
-  const futureIntegration = source.futureIntegration || source.futureExpansion || '서버 API 연동 후 실시간 동기화 예정';
+  const futureIntegration = source.futureIntegration || source.futureExpansion || '서버 또는 BaaS 연동 후 공식 데이터 동기화 예정';
 
   return `
     <article class="data-source-card public-data-card">
@@ -7470,6 +7808,7 @@ function getAriLanguageTag(language = getCurrentLanguage()) {
 }
 
 function buildAriLocalChatContext(context, message) {
+  const liveRankingSummary = analyticsSummaryCache || buildAnalyticsSummaryFromEvents(getLocalAnalyticsEvents(), 'browser-storage');
   return {
     language: context.language || getCurrentLanguage(),
     selectedRoute: findMatchingRoute(message, context.routes) || context.selectedRoute,
@@ -7494,82 +7833,82 @@ function buildAriLocalSmallTalkReply(message, context, helperContext) {
 
   const has = (...terms) => terms.some((term) => normalized.includes(normalizeSearchText(term)) || compact.includes(normalizeSearchText(term).replace(/\s+/g, '')));
 
-  if (has('??', 'hello', 'hi', 'hey', '?????', '??')) {
+  if (has('안녕', '반가워', 'hello', 'hi', 'hey', 'こんにちは', '你好')) {
     return reply({
-      ko: `?????. ????. ?? ?? ?? ${helperContext.selectedRoute.title}?? ????? ?? ??, ??? ?? ???? ? ?? ? ??? ?? ???????.`,
-      en: `Hello, I am ARI. I can start with ${helperContext.selectedRoute.title}, or jump straight into live rankings and rainy-day alternatives.`,
-      ja: `???????????????? ${helperContext.selectedRoute.title} ??????????????????????????????????????????`,
-      zh: `?????ARI???????????? ${helperContext.selectedRoute.title} ??????????????????????`
+      ko: `안녕하세요. 아리예요. 지금 보고 있는 ${helperContext.selectedRoute.title}부터 바로 설명할 수도 있고, 브랜드 추천이나 비 오는 날 대안도 자연스럽게 이어서 도와드릴게요.`,
+      en: `Hello, I am ARI. I can start with ${helperContext.selectedRoute.title}, or move straight into brand picks and rainy-day alternatives.`,
+      ja: `こんにちは、アリです。今見ている ${helperContext.selectedRoute.title} から案内してもいいですし、ブランドおすすめや雨の日の代替案にもすぐつなげられます。`,
+      zh: `你好，我是ARI。我可以先从你现在看到的 ${helperContext.selectedRoute.title} 开始，也可以马上接着推荐品牌路线或雨天替代方案。`
     });
   }
 
-  if (has('???', '??', 'thanks', 'thank you', 'arigato', '??')) {
+  if (has('고마워', '감사', 'thanks', 'thank you', 'arigato', '谢谢')) {
     return reply({
-      ko: '????. ??? ?? ??? ? ??? ??? ?? ??????.',
-      en: 'You are welcome. I can also keep going with route reasons or quieter alternatives.',
-      ja: '??????????????????????????????????????',
-      zh: '???????????????????????????'
+      ko: '천만에요. 원하면 추천 이유를 더 풀어드리거나, 조용한 코스와 실내 대안까지 이어서 정리해드릴게요.',
+      en: 'You are welcome. I can keep going with route reasons, quieter options, or indoor backups.',
+      ja: 'どういたしまして。必要なら、おすすめ理由や静かなコース、屋内代替案まで続けて整理できます。',
+      zh: '不客气。如果你愿意，我也可以继续帮你整理推荐理由、安静路线和室内备选方案。'
     });
   }
 
-  if (has('???', '??', 'hungry', '?????', '?')) {
+  if (has('배고파', '배고프', 'hungry', 'お腹すいた', '饿')) {
     return reply({
-      ko: `???? ?? ?? ?? ?? ??? ???. ??? ???? ??? ${helperContext.foodRoute.title} ??? ${helperContext.foodPlace?.displayName || '????'}?? ?? ?? ? ?? ?? ??? ???????.`,
-      en: `If you are hungry, grab something light first. If you want, I can steer you toward ${helperContext.foodRoute.title} or a food stop like ${helperContext.foodPlace?.displayName || 'Tongin Market'}.`,
-      ja: `??????????????????????????????? ${helperContext.foodRoute.title} ? ${helperContext.foodPlace?.displayName || '????'} ????????????????????`,
-      zh: `????????????????????????????? ${helperContext.foodRoute.title} ? ${helperContext.foodPlace?.displayName || '????'} ????????????`
+      ko: '배고프면 먼저 가볍게 드시고 움직이는 게 좋아요. 식사 후에는 실내 공예 코스나 선물 쇼핑 코스로 이어서 다시 맞춰드릴 수 있어요.',
+      en: 'If you are hungry, it is better to eat something light first. After that, I can rework the plan into an indoor craft route or a gift-shopping route.',
+      ja: 'お腹が空いているなら、まず軽く食べてから動くのがおすすめです。その後で屋内コースやギフト購入コースに組み直せます。',
+      zh: '如果你饿了，建议先简单吃一点再继续走。吃完后我可以再帮你改成室内工艺路线或礼物购物路线。'
     });
   }
 
-  if (has('??', '??', 'sleepy', 'tired', '??', '?')) {
+  if (has('피곤', '졸려', 'sleepy', 'tired', '疲れ', '累')) {
     return reply({
-      ko: `???? ?? ?????. ??? ?? ???? ? ?? ${helperContext.easyRoute.title} ??? ?? ??????.`,
-      en: `If you feel tired, take a short break first. I can switch you to an easier route like ${helperContext.easyRoute.title} right away.`,
-      ja: `????????????????????????? ${helperContext.easyRoute.title} ?????????????????????????????`,
-      zh: `?????????????????????????? ${helperContext.easyRoute.title} ?????????`
+      ko: `피곤하면 잠깐 쉬었다가 가는 게 좋아요. 원하면 지금 바로 ${helperContext.easyRoute.title}처럼 이동 부담이 낮은 코스로 바꿔드릴게요.`,
+      en: `If you feel tired, take a short break first. I can switch you right away to an easier route like ${helperContext.easyRoute.title}.`,
+      ja: `疲れているなら少し休んでから動くのがおすすめです。必要なら今すぐ ${helperContext.easyRoute.title} のような負担の少ないコースに切り替えられます。`,
+      zh: `如果你累了，先休息一下会更好。需要的话，我可以马上改成像 ${helperContext.easyRoute.title} 这样移动负担更低的路线。`
     });
   }
 
-  if (has('??', '? ?', '?? ?', 'wake me up', 'stay awake', '???', '??')) {
+  if (has('잠 깨', '깨는 법', 'wake me up', 'stay awake', '眠気', '提神')) {
     return reply({
-      ko: '?? ??? ? ? ? ??? ?? ??? ?????? ? ????. ??? ?? ??? ?? ??? ? ? ???.',
-      en: 'A glass of water, a short walk, and a quick stretch usually help first. Coffee or tea can also help if that works for you.',
-      ja: '?????????????????????????????????????????????????????????',
-      zh: '??????????????????????????????????????'
+      ko: '물 한 잔, 가벼운 스트레칭, 잠깐 걷기가 먼저 도움이 돼요. 괜찮다면 커피나 차를 마시는 것도 좋고, 원하면 실내 위주 코스로 더 편하게 바꿔드릴게요.',
+      en: 'A glass of water, a short walk, and a quick stretch usually help first. Coffee or tea can also help, and I can switch your plan to an easier indoor route if you want.',
+      ja: '水を飲んで、少し歩いて、軽く伸ばすだけでもかなり違います。コーヒーやお茶もよく効きますし、必要なら屋内中心の楽なコースに変えられます。',
+      zh: '先喝点水、稍微走一走、活动一下身体通常会有帮助。咖啡或茶也可以，如果你愿意，我也能把路线改成更轻松的室内方案。'
     });
   }
 
-  if (has('??', '? ?', '????', '?? ??', '?? ??', 'what time is it', 'time is it', '??', '??')) {
+  if (has('몇 시', '몇시', '현재 시간', 'what time is it', 'time is it', '何時', '几点')) {
     const now = new Date();
     const timeText = new Intl.DateTimeFormat(getAriLanguageTag(language), { hour: 'numeric', minute: '2-digit' }).format(now);
     return reply({
-      ko: `?? ??? ${timeText}??. ??? ? ???? ?? ??? ? ??? ?? ?? ??????.`,
-      en: `It is ${timeText} right now. If you want, I can suggest a route that fits this time of day.`,
-      ja: `????? ${timeText} ???????????? ?? ??? ?????????`,
-      zh: `????? ${timeText}??????????????????????????`
+      ko: `지금 시간은 ${timeText}예요. 원하면 이 시간대에 맞는 실내 코스나 쇼핑 동선도 바로 추천해드릴게요.`,
+      en: `It is ${timeText} right now. If you want, I can suggest an indoor route or a shopping flow that fits this time of day.`,
+      ja: `今は ${timeText} です。必要なら、この時間帯に合う屋内コースやショッピング動線もすぐおすすめできます。`,
+      zh: `现在时间是 ${timeText}。如果你愿意，我也可以马上推荐适合这个时间段的室内路线或购物动线。`
     });
   }
 
-  if (has('??? ??', '?? ??', '?? ??', 'live ranking', 'top ranking', '???????', '????')) {
+  if (has('실시간 인기', '지금 인기', '인기 랭킹', 'live ranking', 'top ranking', '人気ランキング', '热门排行')) {
     const topPlacesText = helperContext.liveTopPlaces.slice(0, 3).map((item, index) => `${index + 1}. ${getResourceView(item.resource).displayName}`).join(', ');
     const quietText = helperContext.quietRoutes.slice(0, 2).map((item, index) => `${index + 1}. ${getRouteView(item.route).title}`).join(', ');
     const hiddenText = helperContext.hiddenGems.slice(0, 2).map((item, index) => `${index + 1}. ${getResourceView(item.resource).displayName}`).join(', ');
     return reply({
-      ko: `?? ??? ?? ?? ??? ${topPlacesText || '?? ?? ?'}??. ??? ??? ${quietText || '?? ?? ?'}, ?? ??? ${hiddenText || '?? ?? ?'} ??? ?? ???.`,
-      en: `Right now, the top live places are ${topPlacesText || 'still being collected'}. Quiet routes are ${quietText || 'still being collected'}, and hidden gems are ${hiddenText || 'still being collected'}.`,
-      ja: `??????????????????? ${topPlacesText || '?????'} ?????????? ${quietText || '?????'}?????? ${hiddenText || '?????'} ???`,
-      zh: `???????????????? ${topPlacesText || '?????'}?????? ${quietText || '?????'}?????? ${hiddenText || '?????'}?`
+      ko: `현재 브라우저 저장 반응 기준 인기 장소는 ${topPlacesText || '아직 집계 중'}예요. 조용한 코스는 ${quietText || '아직 집계 중'}, 숨은 명소는 ${hiddenText || '아직 집계 중'}처럼 보여드릴 수 있어요.`,
+      en: `On this browser, the current popularity picks are ${topPlacesText || 'still being collected'}. Quiet routes are ${quietText || 'still being collected'}, and hidden gems are ${hiddenText || 'still being collected'}.`,
+      ja: `このブラウザに保存された反応基準では、人気スポットは ${topPlacesText || 'まだ集計中'} です。静かなコースは ${quietText || 'まだ集計中'}、隠れたおすすめは ${hiddenText || 'まだ集計中'} のように案内できます。`,
+      zh: `按照当前这个浏览器保存的反应数据，热门地点是 ${topPlacesText || '仍在汇总中'}。安静路线是 ${quietText || '仍在汇总中'}，隐藏推荐是 ${hiddenText || '仍在汇总中'}。`
     });
   }
 
-  if (has('??', '1?', 'rank', 'top place', 'top route')) {
+  if (has('1위', '1 등', 'rank', 'top place', 'top route')) {
     const topPlace = helperContext.liveTopPlaces[0];
     const quietRoute = helperContext.quietRoutes[0];
     return reply({
-      ko: `?? 1? ?? ??? ${topPlace ? getResourceView(topPlace.resource).displayName : '?? ?? ?'}??, ?? ??? ?? ??? ${quietRoute ? getRouteView(quietRoute.route).title : '?? ?? ?'}??.`,
-      en: `The current number one place is ${topPlace ? getResourceView(topPlace.resource).displayName : 'still being collected'}, and the quietest route pick is ${quietRoute ? getRouteView(quietRoute.route).title : 'still being collected'}.`,
-      ja: `??1?????? ${topPlace ? getResourceView(topPlace.resource).displayName : '?????'}???????????????? ${quietRoute ? getRouteView(quietRoute.route).title : '?????'} ???`,
-      zh: `???????????? ${topPlace ? getResourceView(topPlace.resource).displayName : '?????'}?????????? ${quietRoute ? getRouteView(quietRoute.route).title : '?????'}?`
+      ko: `현재 이 브라우저 기준 1위 장소는 ${topPlace ? getResourceView(topPlace.resource).displayName : '아직 집계 중'}이고, 조용한 코스 추천 1순위는 ${quietRoute ? getRouteView(quietRoute.route).title : '아직 집계 중'}예요.`,
+      en: `On this browser, the current number one place is ${topPlace ? getResourceView(topPlace.resource).displayName : 'still being collected'}, and the quiet-route pick is ${quietRoute ? getRouteView(quietRoute.route).title : 'still being collected'}.`,
+      ja: `このブラウザ基準の1位スポットは ${topPlace ? getResourceView(topPlace.resource).displayName : 'まだ集計中'} で、静かなコースの優先候補は ${quietRoute ? getRouteView(quietRoute.route).title : 'まだ集計中'} です。`,
+      zh: `按照当前这个浏览器的数据，第1位地点是 ${topPlace ? getResourceView(topPlace.resource).displayName : '仍在汇总中'}，安静路线优先推荐是 ${quietRoute ? getRouteView(quietRoute.route).title : '仍在汇总中'}。`
     });
   }
 
@@ -7742,27 +8081,27 @@ function fallbackAriReply(message, context) {
   const route = findMatchingRoute(message, context.routes) || findMatchingRoute(combinedMessage, context.routes) || context.selectedRoute;
   const resource = findMatchingResource(message, context.resources) || findMatchingResource(combinedMessage, context.resources);
   const rainyRoute = findRouteByHints(context.routes, ['rain', 'rainy', '우천', '비 오는 날', '비오', '실내', 'indoor', 'museum', '박물관']) || context.selectedRoute;
-  const easyRoute = findRouteByHints(context.routes, ['less walking', 'low walking', 'easy', '가볍게', '적게 걷', '많이 걷지', '한옥', 'quiet']) || context.selectedRoute;
-  const foodRoute = findRouteByHints(context.routes, ['market', '시장', 'food', '미식', 'local life']) || context.selectedRoute;
-  const foodPlace = findResourceByHints(context.resources, ['market', '시장', 'food', '미식', '한국의집', 'korea house']);
+  const easyRoute = findRouteByHints(context.routes, ['less walking', 'low walking', 'easy', '가볍게', '적게 걷', '많이 걷지', 'quiet', '실내', 'low-walking']) || context.selectedRoute;
+  const shoppingRoute = findRouteByHints(context.routes, ['shopping', 'shop', 'brand', 'store', '쇼핑', '브랜드', '로컬 브랜드', 'gift']) || context.selectedRoute;
+  const shoppingPlace = findResourceByHints(context.resources, ['shopping', 'shop', 'brand', 'store', '쇼핑', '브랜드', '편집숍', 'showroom']);
   const topRouteNames = context.ranking.topRoutes.map((item) => item.title);
   const topPlaceNames = context.ranking.topPlaces.map((item) => item.name);
   const rainyRouteTitle = rainyRoute && rainyRoute.id !== context.selectedRoute.id
     ? rainyRoute.title
     : reply({
-      ko: '비 오는 날 실내 전통문화 코스',
-      en: 'Rainy-Day Indoor Traditional Culture Course',
-      ja: '雨の日の屋内伝統文化コース',
-      zh: '雨天室内传统文化路线'
+      ko: '비 오는 날 실내 공예·디자인 코스',
+      en: 'Rainy-Day Indoor Craft and Design Course',
+      ja: '雨の日の屋内工芸・デザインコース',
+      zh: '雨天室内工艺与设计路线'
     });
   const isGeneralRecommendationQuestion =
     hasAnyTerm(message, ['추천해줘', '추천해 줘', 'recommend', 'suggest', 'where should i start', '어디부터', '처음', 'first time', 'first-time', '처음 왔', '뭐가 좋아', 'not sure'])
-    && !hasAnyTerm(message, ['비 오는 날', '비오', '우천', 'rain', '영어', 'english', '예약', 'reservation', '시장', 'food', '걷', 'walk']);
+    && !hasAnyTerm(message, ['비 오는 날', '비오', '우천', 'rain', '영어', 'english', '예약', 'reservation', '쇼핑', 'brand', 'shop', '걷', 'walk']);
 
   if (hasAnyTerm(message, ['안녕', 'hello', 'hi', 'hey', 'こんにちは', '你好'])) {
     return reply({
-      ko: `안녕하세요. 아리예요. 지금 보고 있는 ${context.selectedRoute.title}부터 설명해드릴 수도 있고, 비 오는 날 대안이나 영어 안내 가능 장소도 바로 추천해드릴게요.`,
-      en: `Hello, I am ARI. I can start with ${context.selectedRoute.title}, or jump right into rainy-day alternatives and English-friendly places.`,
+      ko: `안녕하세요. 아리예요. 지금 보고 있는 ${context.selectedRoute.title}부터 설명해드릴 수도 있고, 브랜드 발견 코스나 비 오는 날 실내 대안도 바로 추천해드릴게요.`,
+      en: `Hello, I am ARI. I can start with ${context.selectedRoute.title}, or jump right into brand-discovery routes and rainy-day indoor alternatives.`,
       ja: `こんにちは。アリです。今見ている ${context.selectedRoute.title} から案内してもいいですし、雨の日の代替案や英語案内がある場所もすぐ紹介できます。`,
       zh: `你好，我是ARI。我可以先从你现在看到的 ${context.selectedRoute.title} 开始，也可以直接推荐雨天替代路线或有英语信息的地点。`
     });
@@ -7779,19 +8118,19 @@ function fallbackAriReply(message, context) {
 
   if (hasAnyTerm(message, ['누구', '뭐 할 수', 'who are you', 'what can you do', '자기소개', '自己紹介', '你是谁'])) {
     return reply({
-      ko: '저는 마루 안에서 움직이는 전통문화 가이드 아리예요. 코스 추천 이유, 장소 의미, 비 오는 날 대체 코스, 영어 안내 가능 여부, 일정 묶기까지 앱 데이터 기준으로 자연스럽게 도와드릴 수 있어요.',
-      en: 'I am ARI, MARU’s heritage guide. I can explain route logic, place meaning, rainy-day alternatives, English-friendly options, and simple itinerary bundles using MARU data.',
-      ja: '私はMARUの中で案内する伝統文化ガイドのアリです。コース推薦の理由、場所の意味、雨の日の代替案、英語案内の有無、簡単な日程の組み立てまで、MARUのデータをもとに手伝えます。',
-      zh: '我是MARU里的传统文化向导ARI。我可以根据MARU数据，帮你说明路线推荐理由、地点意义、雨天替代方案、英语支持情况，以及简单行程组合。'
+      ko: '저는 마루 안에서 움직이는 공예·디자인 가이드 아리예요. 코스 추천 이유, 장소 의미, 비 오는 날 대체 코스, 영어 안내 가능 여부, 일정 묶기까지 앱 데이터 기준으로 자연스럽게 도와드릴 수 있어요.',
+      en: 'I am ARI, MARU’s craft and design guide. I can explain route logic, place meaning, rainy-day alternatives, English-friendly options, and simple itinerary bundles using MARU data.',
+      ja: '私はMARUの中で案内する工芸・デザインガイドのアリです。コース推薦の理由、場所の意味、雨の日の代替案、英語案内の有無、簡単な日程の組み立てまで、MARUのデータをもとに手伝えます。',
+      zh: '我是MARU里的工艺与设计向导ARI。我可以根据MARU数据，帮你说明路线推荐理由、地点意义、雨天替代方案、英语支持情况，以及简单行程组合。'
     });
   }
 
   if (hasAnyTerm(message, ['기분', '잘 지내', '뭐해', 'how are you', 'what are you doing', '元気', '怎么样'])) {
     return reply({
-      ko: '저는 여행 계획 도와드릴 준비가 잘 되어 있어요. 편하게 말 걸어주시면 분위기에 맞는 전통문화 코스를 바로 골라드릴게요.',
-      en: 'I am ready to help with your trip. If you tell me the mood you want, I can quickly point you to a fitting heritage route.',
-      ja: '旅行計画を手伝う準備はばっちりです。雰囲気や気分を教えてもらえれば、それに合う伝統文化コースをすぐ選べます。',
-      zh: '我已经准备好帮你规划旅行了。只要告诉我你想要的氛围，我就能很快帮你挑一条合适的传统文化路线。'
+      ko: '저는 여행 계획 도와드릴 준비가 잘 되어 있어요. 편하게 말 걸어주시면 분위기에 맞는 공예·디자인 코스를 바로 골라드릴게요.',
+      en: 'I am ready to help with your trip. If you tell me the mood you want, I can quickly point you to a fitting craft and design route.',
+      ja: '旅行計画を手伝う準備はばっちりです。雰囲気や気分を教えてもらえれば、それに合う工芸・デザインコースをすぐ選べます。',
+      zh: '我已经准备好帮你规划旅行了。只要告诉我你想要的氛围，我就能很快帮你挑一条合适的工艺与设计路线。'
     });
   }
 
@@ -7818,21 +8157,21 @@ function fallbackAriReply(message, context) {
     });
   }
 
-  if (hasAnyTerm(message, ['시장', '먹', 'food', 'meal', 'restaurant', '미식'])) {
+  if (hasAnyTerm(message, ['쇼핑', '브랜드', '선물', 'buy', 'shop', 'shopping', 'gift'])) {
     return reply({
-      ko: `먹거리와 생활문화 분위기를 같이 보고 싶다면 ${foodRoute.title} 쪽이 좋아요. 장소로는 ${foodPlace?.displayName || '통인시장'}이 가장 바로 연결되고, 전통시장의 생활감이 살아 있어요.`,
-      en: `If you want food plus everyday culture, ${foodRoute.title} is the strongest fit. The clearest place match is ${foodPlace?.displayName || 'Tongin Market'}, which carries a lively local-market atmosphere.`,
-      ja: `食や生活文化の雰囲気を一緒に楽しみたいなら ${foodRoute.title} が合っています。場所では ${foodPlace?.displayName || '通仁市場'} が最もつながりやすく、伝統市場ならではの生活感があります。`,
-      zh: `如果你想把吃的和生活文化一起体验，${foodRoute.title} 会比较合适。地点上最直接的是 ${foodPlace?.displayName || '通仁市场'}，传统市场的生活感会更明显。`
+      ko: `브랜드 발견과 선물 구매를 같이 보고 싶다면 ${shoppingRoute.title} 쪽이 좋아요. 장소로는 ${shoppingPlace?.displayName || 'KCDF 갤러리'}가 가장 바로 연결되고, 공예 상품성과 로컬 브랜드 감도를 함께 설명하기 좋습니다.`,
+      en: `If you want brand discovery plus gift shopping, ${shoppingRoute.title} is the strongest fit. The clearest place match is ${shoppingPlace?.displayName || 'KCDF Gallery'}, which helps explain both craft value and local-brand taste.`,
+      ja: `ブランド発見とギフト購入を一緒に見たいなら ${shoppingRoute.title} が合っています。場所では ${shoppingPlace?.displayName || 'KCDF Gallery'} が最もつながりやすく、工芸商品の価値とローカルブランドの感度を一緒に説明しやすいです。`,
+      zh: `如果你想把品牌发现和礼物购买一起安排，${shoppingRoute.title} 会更合适。地点上最直接的是 ${shoppingPlace?.displayName || 'KCDF Gallery'}，它很适合同时说明工艺商品价值和本地品牌氛围。`
     });
   }
 
   if (isGeneralRecommendationQuestion) {
     return reply({
-      ko: `처음 방문이라면 ${topRouteNames[0] || route.title}부터 시작하는 게 가장 무난해요. 왕실문화, 대표 장소, 외국인 이해도가 좋은 흐름이 잡혀 있고, 비가 오면 ${rainyRouteTitle}, 가볍게 걷고 싶으면 ${easyRoute.title}로 바꾸면 됩니다.`,
-      en: `For a first visit, ${topRouteNames[0] || route.title} is the safest place to start. It gives you strong royal-heritage context and familiar landmark flow. If it rains, switch to ${rainyRouteTitle}; if you want less walking, move to ${easyRoute.title}.`,
-      ja: `初めての訪問なら ${topRouteNames[0] || route.title} から始めるのがいちばん無難です。王室文化と代表的な場所を理解しやすく、雨なら ${rainyRouteTitle}、歩きを減らしたいなら ${easyRoute.title} に切り替えるとよいです。`,
-      zh: `如果是第一次来，先从 ${topRouteNames[0] || route.title} 开始最稳妥。它能先建立王室文化和代表性地点的整体感；下雨就换成 ${rainyRouteTitle}，想少走一点就换成 ${easyRoute.title}。`
+      ko: `처음 방문이라면 ${topRouteNames[0] || route.title}부터 시작하는 게 가장 무난해요. 공예·디자인 입문 설명, 브랜드 발견, 구매 연결 흐름이 고르게 잡혀 있고, 비가 오면 ${rainyRouteTitle}, 가볍게 걷고 싶으면 ${easyRoute.title}로 바꾸면 됩니다.`,
+      en: `For a first visit, ${topRouteNames[0] || route.title} is the safest place to start. It balances craft introduction, brand discovery, and purchase flow. If it rains, switch to ${rainyRouteTitle}; if you want less walking, move to ${easyRoute.title}.`,
+      ja: `初めての訪問なら ${topRouteNames[0] || route.title} から始めるのがいちばん無難です。工芸・デザインの入門説明、ブランド発見、購入導線のバランスが良く、雨なら ${rainyRouteTitle}、歩きを減らしたいなら ${easyRoute.title} に切り替えるとよいです。`,
+      zh: `如果是第一次来，先从 ${topRouteNames[0] || route.title} 开始最稳妥。它兼顾工艺与设计入门、品牌发现和购买动线；下雨就换成 ${rainyRouteTitle}，想少走一点就换成 ${easyRoute.title}。`
     });
   }
 
@@ -7868,19 +8207,19 @@ function fallbackAriReply(message, context) {
 
   if (hasAnyTerm(message, ['생성형 AI', '생성형ai', 'generative', 'generative ai']) || /\bai\b/.test(normalizedMessage)) {
     return reply({
-      ko: 'MARU는 생성형 AI를 활용해 공공문화데이터를 외국인용 문화 해설, 추천 이유, 코스 스토리, 코스 이미지, 조선풍 포토카드로 재구성합니다.',
-      en: 'MARU uses generative AI to turn public culture data into simple heritage explanations, recommendation reasons, route stories, route visuals, and Joseon-style photo cards.',
-      ja: 'MARUは生成AIを使って、公共文化データをわかりやすい文化解説、推薦理由、コースストーリー、コース画像、朝鮮時代風フォトカードへ再構成します。',
-      zh: 'MARU会利用生成式 AI，把公共文化数据重组为更容易理解的文化解说、推荐理由、路线故事、路线视觉和朝鲜风照片卡。'
+      ko: '현재 버전의 MARU는 별도 서버형 LLM을 전제로 하지 않고, 브라우저 내 규칙 기반 AI 가이드형 인터페이스로 공공데이터와 현장 정보를 쉬운 공예·디자인 설명으로 풀어줍니다.',
+      en: 'The current MARU build does not assume a server-scale LLM. Instead, it uses a browser-based AI-style guide interface to turn public data and field context into simple craft-and-design explanations.',
+      ja: '現在のMARUはサーバー型LLMを前提にしておらず、ブラウザ内のAIガイド型インターフェースとして公共データと現場情報をわかりやすい工芸・デザイン解説に変えます。',
+      zh: '当前版本的 MARU 并不以前置服务器型 LLM 为基础，而是用浏览器内的 AI 风格引导界面，把公共数据与现场信息转成易懂的工艺与设计说明。'
     });
   }
 
   if (hasAnyTerm(message, ['공공데이터', '공공 데이터', 'public data', 'data source', '문화데이터']) || /\bdata\b/.test(normalizedMessage)) {
     return reply({
-      ko: 'MARU는 한국관광공사 TourAPI, 서울시 문화행사 정보, 서울 실시간 도시데이터, 국가유산청 문화재 공간정보, 전통문화포털 데이터를 추천 근거로 확장할 수 있도록 설계되었습니다.',
-      en: 'MARU is designed to expand with Korea Tourism Organization TourAPI, Seoul cultural-event data, Seoul real-time city data, National Heritage spatial data, and traditional-culture portal resources.',
-      ja: 'MARUは韓国観光公社TourAPI、ソウル市文化イベント情報、ソウル実時間都市データ、国家遺産庁の空間情報、伝統文化ポータルのデータへ拡張できる設計です。',
-      zh: 'MARU的结构可以继续接入韩国旅游发展局 TourAPI、首尔文化活动信息、首尔实时城市数据、国家遗产空间信息以及传统文化门户的数据。'
+      ko: 'MARU는 한국디자인진흥원 산업디자인전문회사·우수디자인전문회사·글로벌생활명품 데이터와 대한무역투자진흥공사 해외시장뉴스·4대 소비재 수출 데이터를 핵심 근거로 활용하도록 설계되었습니다.',
+      en: 'MARU is designed around Korea Institute of Design Promotion data and KOTRA market/export data as its core public-data evidence.',
+      ja: 'MARUは韓国デザイン振興院のデータとKOTRAの市場・輸出データを中核の公共データ根拠として活用する設計です。',
+      zh: 'MARU的结构以韩国设计振兴院数据和KOTRA市场/出口数据作为核心公共数据依据。'
     });
   }
 
@@ -7904,7 +8243,7 @@ function fallbackAriReply(message, context) {
       });
     }
     return reply({
-      ko: `문화행사 데이터는 오늘 갈 수 있는 전통문화 체험을 코스에 연결하는 데 사용됩니다. ${bundle.title} 일정은 ${bundle.stops.map((stop) => `${stop.time} ${stop.label}`).join(' / ')}입니다.`,
+      ko: `문화행사 데이터는 오늘 갈 수 있는 공예·디자인 체험이나 전시를 코스에 연결하는 데 사용됩니다. ${bundle.title} 일정은 ${bundle.stops.map((stop) => `${stop.time} ${stop.label}`).join(' / ')}입니다.`,
       en: `Cultural-event data helps connect the route to something you can experience today. ${bundle.title} runs as ${bundle.stops.map((stop) => `${stop.time} ${stop.label}`).join(' / ')}.`,
       ja: `文化イベントデータは、その日に行ける伝統文化体験をコースへつなぐために使われます。${bundle.title} の流れは ${bundle.stops.map((stop) => `${stop.time} ${stop.label}`).join(' / ')} です。`,
       zh: `文化活动数据会把今天能参加的传统文化体验接到路线里。${bundle.title} 的安排是 ${bundle.stops.map((stop) => `${stop.time} ${stop.label}`).join(' / ')}。`
@@ -7913,8 +8252,8 @@ function fallbackAriReply(message, context) {
 
   if (hasAnyTerm(message, ['혼잡도', '혼잡', 'crowded', 'congestion', 'crowd'])) {
     return reply({
-      ko: `${context.selectedRoute.title}의 현재 예상 혼잡도는 ${context.crowd.selectedRouteLabel}입니다. 더 조용한 흐름을 원하면 ${easyRoute.title} 같은 가벼운 코스나 날씨 화면의 대체 추천을 같이 보세요.`,
-      en: `The current expected crowd level for ${context.selectedRoute.title} is ${context.crowd.selectedRouteLabel}. If you want something calmer, compare it with a lighter route like ${easyRoute.title} or check the weather alternatives.`,
+      ko: `${context.selectedRoute.title}의 현재 예상 혼잡도는 ${context.crowd.selectedRouteLabel}입니다. 이 값은 브라우저 안의 반응과 코스 특성 기반 시뮬레이션이며, 더 조용한 흐름을 원하면 ${easyRoute.title} 같은 가벼운 코스나 날씨 화면의 대체 추천을 같이 보세요.`,
+      en: `The current expected crowd level for ${context.selectedRoute.title} is ${context.crowd.selectedRouteLabel}. This is a local browser-based estimate, so compare it with a lighter route like ${easyRoute.title} or check the weather alternatives if you want something calmer.`,
       ja: `${context.selectedRoute.title} の現在の予想混雑度は ${context.crowd.selectedRouteLabel} です。より静かな流れを望むなら、${easyRoute.title} のような軽めのコースや天気画面の代替案も見てみてください。`,
       zh: `${context.selectedRoute.title} 当前的预计拥挤度是 ${context.crowd.selectedRouteLabel}。如果你想更安静一点，可以同时看看 ${easyRoute.title} 这类更轻松的路线，或天气页面里的替代推荐。`
     });
@@ -7922,8 +8261,8 @@ function fallbackAriReply(message, context) {
 
   if (hasAnyTerm(message, ['랭킹', '인기', 'top', 'ranking', 'popular'])) {
     return reply({
-      ko: `현재 외국인 인기 상위 코스는 ${topRouteNames.join(', ')}입니다. 장소 기준 인기 상위는 ${topPlaceNames.join(', ')}입니다.`,
-      en: `The top foreigner-friendly routes right now are ${topRouteNames.join(', ')}. For individual places, the leading picks are ${topPlaceNames.join(', ')}.`,
+      ko: `현재 브라우저 반응 기준 상위 코스는 ${topRouteNames.join(', ')}입니다. 장소 기준 상위는 ${topPlaceNames.join(', ')}입니다. 이 랭킹은 기기 공통 실시간 집계가 아니라 현재 기기에 저장된 반응 기반 시뮬레이션입니다.`,
+      en: `The top routes in this browser right now are ${topRouteNames.join(', ')}. The leading places are ${topPlaceNames.join(', ')}. This is a device-local simulation rather than a shared live ranking.`,
       ja: `現在の外国人向け人気上位コースは ${topRouteNames.join(', ')} です。場所単位の人気上位は ${topPlaceNames.join(', ')} です。`,
       zh: `目前面向外国游客的人气路线前列是 ${topRouteNames.join(', ')}。按地点来看，人气较高的是 ${topPlaceNames.join(', ')}。`
     });
@@ -7995,10 +8334,10 @@ function fallbackAriReply(message, context) {
   if (hasAnyTerm(message, ['날씨', 'weather', 'temperature'])) {
     const weatherSummary = context.weather.map((item) => `${item.day} ${item.sky} ${item.temp}`).join(' / ');
     return reply({
-      ko: `현재 앱의 날씨 데이터는 ${weatherSummary}입니다. 맑은 날은 궁궐과 한옥 산책, 비 오는 날은 ${rainyRouteTitle} 같은 실내 중심 코스를 추천합니다.`,
-      en: `The current weather data in MARU is ${weatherSummary}. Clear days work well for palace and hanok walks, while rainy conditions are better handled by indoor-heavy options like ${rainyRouteTitle}.`,
-      ja: `現在のMARU天気データは ${weatherSummary} です。晴れの日は宮殿と韓屋の散策、雨の日は ${rainyRouteTitle} のような屋内中心コースがおすすめです。`,
-      zh: `MARU 当前的天气数据是 ${weatherSummary}。晴天适合宫殿和韩屋散步，雨天则更适合像 ${rainyRouteTitle} 这样以室内为主的路线。`
+      ko: `현재 앱의 날씨 데이터는 ${weatherSummary}입니다. 맑은 날은 야외 공예·디자인 산책을, 비 오는 날은 ${rainyRouteTitle} 같은 실내 중심 코스를 추천합니다.`,
+      en: `The current weather data in MARU is ${weatherSummary}. Clear days work well for outdoor craft and design walks, while rainy conditions are better handled by indoor-heavy options like ${rainyRouteTitle}.`,
+      ja: `現在のMARU天気データは ${weatherSummary} です。晴れの日は屋外の工芸・デザイン散策、雨の日は ${rainyRouteTitle} のような屋内中心コースがおすすめです。`,
+      zh: `MARU 当前的天气数据是 ${weatherSummary}。晴天适合户外工艺与设计散步，雨天则更适合像 ${rainyRouteTitle} 这样以室内为主的路线。`
     });
   }
 
@@ -8012,8 +8351,8 @@ function fallbackAriReply(message, context) {
   }
 
   return reply({
-    ko: `앱 데이터에 없는 내용을 단정해서 말하긴 어렵지만, 대신 지금 바로 도와드릴 수 있는 건 ${route.title} 추천 이유, 비 오는 날 대체 코스, 영어 안내 가능 장소 정리예요. 편하게 하나만 물어봐 주세요.`,
-    en: `I should not state details outside MARU data as facts, but I can still help right now with the reason for ${route.title}, a rainy-day alternative, or English-friendly places. Ask whichever sounds most useful.`,
+    ko: `확정된 앱 데이터 밖의 내용을 사실처럼 단정하진 않겠지만, 대신 지금 바로 ${route.title} 추천 이유, 브랜드 설명, 비 오는 날 대체 코스, 구매 동선 정리까지는 자연스럽게 도와드릴 수 있어요. 편하게 하나만 물어봐 주세요.`,
+    en: `I should not state details outside MARU data as facts, but I can still help right now with the reason for ${route.title}, brand context, rainy-day alternatives, or purchase-flow suggestions. Ask whichever sounds most useful.`,
     ja: `MARUデータの外にある内容を断定して言うことは避けたいですが、${route.title} のおすすめ理由、雨の日の代替コース、英語案内がある場所ならすぐ案内できます。気になるものを一つ聞いてください。`,
     zh: `对于超出 MARU 数据范围的内容，我不想把它说成确定事实；不过我现在可以马上帮你说明 ${route.title} 的推荐理由、雨天替代路线，或者有英语信息的地点。你随便挑一个问我就好。`
   });
