@@ -1,3 +1,6 @@
+import base64
+from email.parser import BytesParser
+from email.policy import default as email_policy
 import json
 import os
 import sqlite3
@@ -6,6 +9,7 @@ from datetime import datetime, timedelta, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
+from urllib.request import Request, urlopen
 
 
 if getattr(sys, "frozen", False):

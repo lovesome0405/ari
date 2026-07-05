@@ -17,6 +17,7 @@ const SITE_PUBLISH_PATHS = [
   'admin.html',
   'admin.js',
   'ai-photo.html',
+  'account.html',
   'app.js',
   'culture-data.html',
   'index.html',

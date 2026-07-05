@@ -349,6 +349,8 @@ const COURSE_DATA_URL = 'data/courses.json';
 const MARU_API_BASE_STORAGE_KEY = 'maruApiBaseUrl';
 const MARU_LOCAL_API_BASE_URL = 'http://localhost:8080';
 const MARU_API_TIMEOUT_MS = 900;
+const MARU_AI_PHOTO_TIMEOUT_MS = 120000;
+const MARU_AUTH_TIMEOUT_MS = 8000;
 const MARU_API_PATHS = {
   courses: '/api/courses',
   places: '/api/places',
@@ -1144,6 +1146,13 @@ const LANGUAGE_HTML_LANG = {
   en: 'en',
   ja: 'ja',
   zh: 'zh'
+};
+
+const AUTH_LABELS = {
+  guest: { KR: '로그인', EN: 'Sign in', JP: 'ログイン', CN: '登录' },
+  member: { KR: '계정', EN: 'Account', JP: 'アカウント', CN: '账号' },
+  linked: { KR: '연결됨', EN: 'Linked', JP: '連携済み', CN: '已连接' },
+  notLinked: { KR: '미연결', EN: 'Not linked', JP: '未連携', CN: '未连接' }
 };
 
 const LANGUAGE_PILL_LABELS = {
@@ -3335,6 +3344,12 @@ let ariMessages = [];
 let timeImageIndex = 0;
 let timeImagePeriod = '';
 let timeImageTimer = null;
+let authState = {
+  token: '',
+  user: null,
+  offline: false
+};
+let authConfigState = null;
 let nearbyRecommendationState = {
   status: 'idle',
   messageKey: '',
@@ -3349,13 +3364,11 @@ let routeLeafletUserLayer = null;
 let aiPhotoDownloadUrl = '';
 let aiPhotoSelectedStyle = 'minhwa';
 let aiPhotoSegmenterPromise = null;
-const aiPhotoAssetCache = new Map();
 const memoryStorageFallback = {};
 
 const AI_PHOTO_VISION_BUNDLE_URL = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/vision_bundle.mjs';
 const AI_PHOTO_WASM_ROOT_URL = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm';
 const AI_PHOTO_SEGMENTER_MODEL_URL = 'https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_segmenter/float16/latest/selfie_segmenter.tflite';
-const AI_PHOTO_NIGHT_BACKGROUND_URL = 'assets/images/routes/course-night.webp';
 
 const GEOLOCATION_OPTIONS = {
   enableHighAccuracy: true,
@@ -3533,18 +3546,22 @@ const FEATURE_COPY = {
       },
       action: '조선풍 카드 만들기',
       download: '카드 다운로드',
-      ready: '이미지를 선택하고 스타일을 고르면 브라우저 안에서 카드가 생성됩니다.',
+      ready: '이미지를 선택하고 스타일을 고르세요. 궁궐 야경 왕실 사진풍은 AI 서버 연결이 필요합니다.',
       working: '브라우저에서 조선풍 카드 효과를 적용하고 있습니다.',
       loadingModel: '인물 분리와 화풍 변환을 준비하고 있습니다.',
+      gptWorking: '서버에서 GPT 왕실 초상 변환을 생성하고 있습니다. 발표용 고품질 변환은 잠시 걸릴 수 있습니다.',
+      gptDone: 'GPT 왕실 초상 변환이 완료되었습니다.',
+      gptFallback: 'AI 생성 서버에 연결되지 않았습니다. Python API 서버 실행과 OPENAI_API_KEY 설정을 확인해 주세요.',
       done: '조선풍 카드가 준비되었습니다. 바로 다운로드할 수 있습니다.',
       transformed: {
         minhwa: '배경을 부드러운 전통 채색 분위기로 정리하고, 사진을 민화풍 색감으로 바꿨습니다.',
         ink: '사진 전체를 저채도 수묵화 느낌과 먹선 표현으로 정리했습니다.',
-        night: '인물을 분리한 뒤 궁궐 야경 배경으로 다시 합성했습니다.'
+        night: '인물을 분리한 뒤 조선 왕실 궁궐 야경 배경을 생성해 다시 합성했습니다.'
       },
-      fallback: '네트워크 또는 모델 로드가 어려워 브라우저 기본 화풍 변환으로 처리했습니다.',
+      fallback: '네트워크 또는 모델 로드가 어려워 브라우저 기본 인물 마스크와 왕실 야경 배경으로 처리했습니다.',
       empty: '먼저 변환할 이미지를 선택하세요.',
-      privacy: '브라우저 안에서만 처리되며, 업로드 없이 바로 저장할 수 있습니다.'
+      privacy: '브라우저 안에서만 처리되며, 업로드 없이 바로 저장할 수 있습니다.',
+      serverPrivacy: '고급 변환은 로컬 서버를 통해 OpenAI 이미지 API로 전송됩니다. API 키는 서버에만 보관됩니다.'
     }
   },
   en: {
@@ -3611,18 +3628,22 @@ const FEATURE_COPY = {
       },
       action: 'Create Joseon Card',
       download: 'Download Card',
-      ready: 'Choose an image and style to generate a browser-side card.',
+      ready: 'Choose an image and style. The royal Palace Night photo transform requires the AI server.',
       working: 'Applying a Joseon-inspired card effect in the browser.',
       loadingModel: 'Preparing subject separation and painterly rendering.',
+      gptWorking: 'Generating a high-quality GPT royal portrait on the server. This can take a moment.',
+      gptDone: 'The GPT royal portrait is ready to download.',
+      gptFallback: 'The AI generation server is unavailable. Check the Python API server and OPENAI_API_KEY setting.',
       done: 'Your Joseon-style card is ready to download.',
       transformed: {
         minhwa: 'The background was softened into a traditional color-wash mood and the photo was restyled with a Minhwa palette.',
         ink: 'The whole image was remapped into a low-saturation ink-painting look with darker brush edges.',
-        night: 'The subject was separated and recomposited over a palace night background.'
+        night: 'The subject was separated and recomposited over a generated Joseon royal palace night background.'
       },
-      fallback: 'The segmentation model could not load, so MARU used the built-in browser art filter instead.',
+      fallback: 'The segmentation model could not load, so MARU used a browser-side portrait mask with the generated royal night background.',
       empty: 'Choose an image first.',
-      privacy: 'Everything stays in the browser, so you can save the result without uploading the image.'
+      privacy: 'Everything stays in the browser, so you can save the result without uploading the image.',
+      serverPrivacy: 'High-quality transforms are sent through the local server to the OpenAI Image API. The API key stays on the server.'
     }
   },
   ja: {},
@@ -3639,6 +3660,10 @@ function langPick(values, language = getCurrentLanguage(), fallback = '') {
   if (!values || typeof values !== 'object' || Array.isArray(values)) return values || fallback;
   const normalizedLanguage = normalizeLanguage(language);
   return values[normalizedLanguage] ?? values.en ?? values.ko ?? fallback;
+}
+
+function authLabel(key) {
+  return textFrom(AUTH_LABELS[key] || AUTH_LABELS.guest);
 }
 
 function convenienceText(key) {
@@ -3658,7 +3683,7 @@ function setHtml(selector, value) {
 }
 
 function applyPageMetadata(fileName = getCurrentFileName()) {
-  const metaKey = PAGE_META_KEYS[fileName] || PAGE_META_KEYS['index.html'];
+  const metaKey = PAGE_META_KEYS[fileName];
   const meta = t(`pageMeta.${metaKey}`, null);
   if (!meta || typeof meta !== 'object') return;
 
@@ -4278,6 +4303,146 @@ function makeMaruApiUrl(path) {
   return `${baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
 }
 
+function getAuthToken() {
+  return String(storageGet(STORAGE_KEYS.authToken, '') || '').trim();
+}
+
+function getCachedAuthUser() {
+  const user = storageJsonGet(STORAGE_KEYS.authUser, null);
+  return user && typeof user === 'object' ? user : null;
+}
+
+function setAuthSession(payload) {
+  const token = String(payload?.accessToken || '').trim();
+  const user = payload?.user && typeof payload.user === 'object' ? payload.user : null;
+
+  if (token) {
+    storageSet(STORAGE_KEYS.authToken, token);
+  } else {
+    storageSet(STORAGE_KEYS.authToken, '');
+  }
+
+  if (user) {
+    storageJsonSet(STORAGE_KEYS.authUser, user);
+  } else {
+    storageSet(STORAGE_KEYS.authUser, '');
+  }
+
+  authState = {
+    token,
+    user,
+    offline: false
+  };
+  renderHeaderAuthAction();
+  renderAuthPage();
+}
+
+function clearAuthSession() {
+  storageSet(STORAGE_KEYS.authToken, '');
+  storageSet(STORAGE_KEYS.authUser, '');
+  authState = {
+    token: '',
+    user: null,
+    offline: false
+  };
+  renderHeaderAuthAction();
+  renderAuthPage();
+}
+
+async function fetchMaruApiJson(path, options = {}) {
+  const url = makeMaruApiUrl(path);
+  if (!url) throw new Error('MARU API 서버 주소가 설정되지 않았습니다.');
+
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), options.timeoutMs || MARU_AUTH_TIMEOUT_MS);
+  const headers = { ...(options.headers || {}) };
+  const token = options.token || getAuthToken();
+
+  if (options.body && !headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json';
+  }
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  try {
+    const response = await fetch(url, {
+      method: options.method || 'GET',
+      cache: 'no-store',
+      headers,
+      body: options.body ? JSON.stringify(options.body) : undefined,
+      signal: controller.signal
+    });
+
+    let payload = null;
+    try {
+      payload = await response.json();
+    } catch (error) {
+      payload = null;
+    }
+
+    if (!response.ok) {
+      const error = new Error(payload?.message || `HTTP ${response.status}`);
+      error.status = response.status;
+      error.payload = payload;
+      throw error;
+    }
+
+    return payload;
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
+async function refreshAuthSession() {
+  const token = getAuthToken();
+  const cachedUser = getCachedAuthUser();
+
+  authState = {
+    token,
+    user: cachedUser,
+    offline: false
+  };
+
+  if (!token) {
+    renderHeaderAuthAction();
+    renderAuthPage();
+    return null;
+  }
+
+  try {
+    const user = await fetchMaruApiJson(MARU_API_PATHS.authMe, { token });
+    authState = {
+      token,
+      user,
+      offline: false
+    };
+    storageJsonSet(STORAGE_KEYS.authUser, user);
+    renderHeaderAuthAction();
+    renderAuthPage();
+    return user;
+  } catch (error) {
+    const message = String(error?.message || '');
+    const isConnectionFailure = error?.name === 'AbortError'
+        || error instanceof TypeError
+        || /failed to fetch|networkerror|load failed/i.test(message);
+
+    if (error?.status === 401 || error?.status === 403) {
+      clearAuthSession();
+      return null;
+    }
+
+    authState = {
+      token,
+      user: cachedUser,
+      offline: isConnectionFailure
+    };
+    renderHeaderAuthAction();
+    renderAuthPage();
+    return cachedUser;
+  }
+}
+
 async function fetchJsonFromMaruApi(path, options = {}) {
   const apiUrl = makeMaruApiUrl(path);
   if (!apiUrl || maruApiHostUnavailable || maruApiFailedPaths.has(path)) {
@@ -4285,7 +4450,8 @@ async function fetchJsonFromMaruApi(path, options = {}) {
   }
 
   const controller = new AbortController();
-  const timeout = window.setTimeout(() => controller.abort(), MARU_API_TIMEOUT_MS);
+  const timeoutMs = Number.isFinite(options.timeoutMs) ? options.timeoutMs : MARU_API_TIMEOUT_MS;
+  const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
   const fetchOptions = {
     cache: 'no-store',
     signal: controller.signal,
@@ -5437,6 +5603,7 @@ function applyStaticTranslations() {
     if (apiHeading) apiHeading.textContent = t('cultureData.futureApiTitle');
   }
 
+  renderHeaderAuthAction();
   applyAriTranslations();
 }
 
@@ -5456,6 +5623,7 @@ function renderLocalizedContent() {
   renderPassport();
   renderCultureData();
   renderSavedBundles();
+  renderAuthPage();
   renderConditionSummary();
   renderAriMessages();
   updatePlannerStep();
@@ -8532,6 +8700,295 @@ function renderAriMessages() {
   container.scrollTop = container.scrollHeight;
 }
 
+function getCompactDisplayName(user) {
+  const source = String(user?.displayName || user?.email || '').trim();
+  if (!source) return authLabel('member');
+  const firstWord = source.split(/\s+/)[0];
+  return firstWord.length > 10 ? `${firstWord.slice(0, 10)}…` : firstWord;
+}
+
+function ensureHeaderActionGroup() {
+  const header = qs('.app-header');
+  const brand = qs('.brand', header);
+  if (!header || !brand) return null;
+
+  let group = qs('.header-action-group', header);
+  if (!group) {
+    group = document.createElement('div');
+    group.className = 'header-action-group';
+
+    Array.from(header.children)
+      .filter((child) => child !== brand)
+      .forEach((child) => group.appendChild(child));
+
+    header.appendChild(group);
+  }
+
+  return group;
+}
+
+function renderHeaderAuthAction() {
+  const group = ensureHeaderActionGroup();
+  if (!group) return;
+
+  let link = qs('[data-auth-header-link]', group);
+  if (!link) {
+    link = document.createElement('a');
+    link.className = 'header-pill header-auth-pill';
+    link.href = 'account.html';
+    link.dataset.authHeaderLink = 'true';
+    group.appendChild(link);
+  }
+
+  link.textContent = authState.user ? getCompactDisplayName(authState.user) : authLabel('guest');
+  link.setAttribute('aria-label', authState.user ? authLabel('member') : authLabel('guest'));
+}
+
+function setAuthStatus(message = '', tone = 'info') {
+  const status = qs('[data-auth-status]');
+  if (!status) return;
+  status.textContent = message;
+  status.className = `auth-status${message ? ` is-${tone}` : ''}`;
+}
+
+async function renderGoogleSignInButton() {
+  const root = qs('[data-auth-page]');
+  if (!root) return;
+
+  const section = qs('[data-auth-google-section]', root);
+  const container = qs('[data-auth-google-button]', root);
+  const note = qs('[data-auth-google-note]', root);
+  if (!section || !container || !note) return;
+
+  if (authState.user?.googleLinked) {
+    section.classList.add('is-hidden');
+    container.innerHTML = '';
+    note.textContent = 'Google 계정이 이미 연결되어 있습니다.';
+    return;
+  }
+
+  section.classList.remove('is-hidden');
+
+  if (!authConfigState?.googleEnabled || !authConfigState?.googleClientId) {
+    container.innerHTML = '';
+    note.textContent = '관리자가 Google 로그인 Client ID를 설정하면 여기서 바로 로그인할 수 있습니다.';
+    return;
+  }
+
+  let attempts = 0;
+  while (!(window.google?.accounts?.id) && attempts < 60) {
+    await new Promise((resolve) => window.setTimeout(resolve, 100));
+    attempts += 1;
+  }
+
+  if (!(window.google?.accounts?.id)) {
+    container.innerHTML = '';
+    note.textContent = 'Google 로그인 스크립트를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.';
+    return;
+  }
+
+  note.textContent = authState.user
+    ? '현재 로그인된 MARU 계정과 같은 이메일의 Google 계정을 연결할 수 있습니다.'
+    : 'Google 계정으로 바로 가입하거나 로그인할 수 있습니다.';
+
+  window.google.accounts.id.initialize({
+    client_id: authConfigState.googleClientId,
+    callback: async (response) => {
+      const isLinkMode = Boolean(authState.user && !authState.user.googleLinked);
+      try {
+        const payload = await fetchMaruApiJson(
+            isLinkMode ? MARU_API_PATHS.authGoogleLink : MARU_API_PATHS.authGoogle,
+            {
+              method: 'POST',
+              body: { credential: response.credential }
+            }
+        );
+        setAuthSession(payload);
+        setAuthStatus(isLinkMode ? 'Google 계정 연결이 완료되었습니다.' : 'Google 로그인에 성공했습니다.', 'success');
+        showToast(isLinkMode ? 'Google 계정 연결 완료' : 'Google 로그인 완료');
+      } catch (error) {
+        setAuthStatus(error?.message || 'Google 로그인에 실패했습니다.', 'error');
+      }
+    }
+  });
+
+  container.innerHTML = '';
+  window.google.accounts.id.renderButton(container, {
+    theme: 'outline',
+    size: 'large',
+    shape: 'pill',
+    width: 320,
+    text: authState.user ? 'continue_with' : 'signin_with'
+  });
+}
+
+function renderAuthPage() {
+  const root = qs('[data-auth-page]');
+  if (!root) return;
+
+  const user = authState.user;
+  const sessionTitle = qs('[data-auth-session-title]', root);
+  const sessionBody = qs('[data-auth-session-body]', root);
+  const methods = qs('[data-auth-methods]', root);
+  const avatar = qs('[data-auth-avatar]', root);
+  const loginCard = qs('[data-auth-login-card]', root);
+  const registerCard = qs('[data-auth-register-card]', root);
+  const logoutButton = qs('[data-auth-logout]', root);
+  const registerTitle = qs('[data-auth-register-title]', root);
+  const registerHint = qs('[data-auth-register-hint]', root);
+  const displayNameInput = qs('[data-auth-register-display-name]', root);
+  const emailInput = qs('[data-auth-register-email]', root);
+  const passwordInput = qs('[data-auth-register-password]', root);
+  const passwordConfirmInput = qs('[data-auth-register-password-confirm]', root);
+
+  if (sessionTitle) {
+    sessionTitle.textContent = user
+      ? `${user.displayName || user.email} 님이 로그인 중입니다`
+      : 'MARU 계정으로 로그인하거나 새로 가입할 수 있습니다.';
+  }
+
+  if (sessionBody) {
+    if (user) {
+      const offlineNote = authState.offline ? ' 현재는 서버 연결을 확인하지 못해 저장된 세션 정보를 표시 중입니다.' : '';
+      sessionBody.textContent = `${user.email}${offlineNote}`;
+    } else {
+      sessionBody.textContent = '이메일/비밀번호 회원가입과 Google 로그인을 모두 지원합니다.';
+    }
+  }
+
+  if (methods) {
+    methods.innerHTML = user ? [
+      `<span class="auth-method-badge">${escapeHtml(user.localLoginEnabled ? '비밀번호 로그인 연결됨' : '비밀번호 로그인 미연결')}</span>`,
+      `<span class="auth-method-badge">${escapeHtml(user.googleLinked ? 'Google 로그인 연결됨' : 'Google 로그인 미연결')}</span>`,
+      `<span class="auth-method-badge">${escapeHtml(user.emailVerified ? '이메일 확인됨' : '이메일 확인 전')}</span>`
+    ].join('') : '';
+  }
+
+  if (avatar) {
+    if (user?.pictureUrl) {
+      avatar.innerHTML = `<img src="${escapeHtml(user.pictureUrl)}" alt="MARU account avatar">`;
+    } else if (user) {
+      avatar.textContent = (user.displayName || user.email || 'M').trim().slice(0, 1).toUpperCase();
+    } else {
+      avatar.textContent = 'M';
+    }
+  }
+
+  if (logoutButton) logoutButton.classList.toggle('is-hidden', !user);
+  if (loginCard) loginCard.classList.toggle('is-hidden', Boolean(user));
+
+  if (registerCard) {
+    const hideRegisterCard = Boolean(user && user.localLoginEnabled);
+    registerCard.classList.toggle('is-hidden', hideRegisterCard);
+
+    if (registerTitle) {
+      registerTitle.textContent = user ? 'MARU 비밀번호 로그인 추가' : 'MARU 회원가입';
+    }
+
+    if (registerHint) {
+      registerHint.textContent = user
+        ? '현재 계정에 비밀번호 로그인을 추가하려면 같은 이메일로 비밀번호를 설정하세요.'
+        : '회원가입 후 바로 로그인 상태가 유지됩니다.';
+    }
+
+    if (user && displayNameInput && !displayNameInput.value.trim()) displayNameInput.value = user.displayName || '';
+    if (user && emailInput) {
+      emailInput.value = user.email || '';
+      emailInput.readOnly = true;
+    } else if (emailInput) {
+      emailInput.readOnly = false;
+    }
+
+    if (!user && displayNameInput && displayNameInput.readOnly) displayNameInput.readOnly = false;
+    if (!user && emailInput && emailInput.readOnly) emailInput.readOnly = false;
+  }
+
+  if (!user) {
+    if (displayNameInput && displayNameInput.dataset.resetOnGuest === 'true') displayNameInput.value = '';
+    if (emailInput && emailInput.dataset.resetOnGuest === 'true') emailInput.value = '';
+  }
+
+  if (!user && passwordInput && !passwordInput.value) passwordInput.value = '';
+  if (!user && passwordConfirmInput && !passwordConfirmInput.value) passwordConfirmInput.value = '';
+
+  void renderGoogleSignInButton();
+}
+
+function bindAuthPage() {
+  const root = qs('[data-auth-page]');
+  if (!root || root.dataset.authBound === 'true') return;
+  root.dataset.authBound = 'true';
+
+  const loginForm = qs('[data-auth-login-form]', root);
+  const registerForm = qs('[data-auth-register-form]', root);
+  const logoutButton = qs('[data-auth-logout]', root);
+
+  const syncAuthConfig = async () => {
+    try {
+      authConfigState = await fetchMaruApiJson(MARU_API_PATHS.authConfig, { timeoutMs: MARU_AUTH_TIMEOUT_MS });
+    } catch (error) {
+      authConfigState = { googleEnabled: false, googleClientId: '' };
+    }
+    renderAuthPage();
+  };
+
+  loginForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const email = qs('[data-auth-login-email]', loginForm)?.value.trim() || '';
+    const password = qs('[data-auth-login-password]', loginForm)?.value || '';
+
+    try {
+      const payload = await fetchMaruApiJson(MARU_API_PATHS.authLogin, {
+        method: 'POST',
+        body: { email, password }
+      });
+      setAuthSession(payload);
+      setAuthStatus('로그인에 성공했습니다.', 'success');
+      showToast('로그인 완료');
+      loginForm.reset();
+    } catch (error) {
+      setAuthStatus(error?.message || '로그인에 실패했습니다.', 'error');
+    }
+  });
+
+  registerForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const displayName = qs('[data-auth-register-display-name]', registerForm)?.value.trim() || '';
+    const email = qs('[data-auth-register-email]', registerForm)?.value.trim() || '';
+    const password = qs('[data-auth-register-password]', registerForm)?.value || '';
+    const passwordConfirm = qs('[data-auth-register-password-confirm]', registerForm)?.value || '';
+
+    if (password !== passwordConfirm) {
+      setAuthStatus('비밀번호 확인이 일치하지 않습니다.', 'error');
+      return;
+    }
+
+    try {
+      const payload = await fetchMaruApiJson(MARU_API_PATHS.authRegister, {
+        method: 'POST',
+        body: { displayName, email, password }
+      });
+      setAuthSession(payload);
+      setAuthStatus(authState.user?.localLoginEnabled && authState.user?.googleLinked
+        ? '비밀번호 로그인이 추가되었습니다.'
+        : '회원가입과 로그인에 성공했습니다.', 'success');
+      showToast('계정 저장 완료');
+      registerForm.reset();
+    } catch (error) {
+      setAuthStatus(error?.message || '회원가입에 실패했습니다.', 'error');
+    }
+  });
+
+  logoutButton?.addEventListener('click', () => {
+    clearAuthSession();
+    setAuthStatus('로그아웃되었습니다.', 'success');
+    showToast('로그아웃 완료');
+  });
+
+  void syncAuthConfig();
+  renderAuthPage();
+}
+
 function appendChatMessage(role, message) {
   ariMessages = [...ariMessages, { role, message, createdAt: Date.now() }].slice(-14);
   storageJsonSet(STORAGE_KEYS.ariMessages, ariMessages);
@@ -8698,12 +9155,12 @@ function getAiPhotoStyleConfig(style = aiPhotoSelectedStyle) {
       tint: [190, 190, 190]
     },
     night: {
-      paper: '#e6dcc8',
+      paper: '#e8dcc6',
       border: '#0f172a',
-      accent: '#c0841a',
-      filter: 'contrast(1.12) saturate(1.06) brightness(0.96)',
-      levels: 7,
-      tint: [178, 164, 126]
+      accent: '#d59c38',
+      filter: 'contrast(1.16) saturate(1.2) brightness(1.02)',
+      levels: 8,
+      tint: [202, 180, 137]
     }
   };
 
@@ -8713,21 +9170,6 @@ function getAiPhotoStyleConfig(style = aiPhotoSelectedStyle) {
 function posterizeChannel(value, levels) {
   const step = 255 / Math.max(2, levels - 1);
   return Math.round(Math.round(value / step) * step);
-}
-
-function loadAiPhotoAsset(src) {
-  if (aiPhotoAssetCache.has(src)) return aiPhotoAssetCache.get(src);
-
-  const loader = new Promise((resolve, reject) => {
-    const image = new Image();
-    if (/^https?:/i.test(src)) image.crossOrigin = 'anonymous';
-    image.onload = () => resolve(image);
-    image.onerror = () => reject(new Error(`Failed to load image asset: ${src}`));
-    image.src = src;
-  });
-
-  aiPhotoAssetCache.set(src, loader);
-  return loader;
 }
 
 async function loadAiPhotoSegmenter() {
@@ -8955,33 +9397,267 @@ function createMaskedCanvas(sourceCanvas, maskCanvas, width, height) {
   return canvas;
 }
 
-function drawNightBackground(context, width, height, backgroundImage) {
-  context.save();
-  context.filter = 'saturate(0.95) brightness(0.82)';
-  drawCoverImage(context, backgroundImage, 0, 0, width, height);
-  context.restore();
+function createFallbackPortraitMask(width, height) {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  canvas.width = width;
+  canvas.height = height;
 
-  const overlay = context.createLinearGradient(0, 0, width, height);
-  overlay.addColorStop(0, 'rgba(8, 20, 44, 0.22)');
-  overlay.addColorStop(0.6, 'rgba(11, 18, 32, 0.16)');
-  overlay.addColorStop(1, 'rgba(2, 6, 23, 0.56)');
-  context.fillStyle = overlay;
-  context.fillRect(0, 0, width, height);
-
-  context.fillStyle = 'rgba(255, 235, 179, 0.9)';
+  const centerX = width * 0.5;
+  const centerY = height * 0.47;
+  const radiusX = width * 0.28;
+  const radiusY = height * 0.42;
+  const gradient = context.createRadialGradient(centerX, centerY, Math.min(radiusX, radiusY) * 0.52, centerX, centerY, Math.max(radiusX, radiusY));
+  gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+  gradient.addColorStop(0.72, 'rgba(255, 255, 255, 0.96)');
+  gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+  context.fillStyle = gradient;
   context.beginPath();
-  context.arc(width - 118, 98, 34, 0, Math.PI * 2);
+  context.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
   context.fill();
 
-  for (let index = 0; index < 18; index += 1) {
-    const x = 40 + ((index * 71) % Math.max(width - 80, 1));
-    const y = 26 + ((index * 37) % 128);
-    const radius = 1.2 + ((index % 3) * 0.45);
-    context.fillStyle = `rgba(255, 248, 220, ${0.32 + ((index % 4) * 0.11)})`;
+  const shoulder = context.createRadialGradient(centerX, height * 0.72, width * 0.12, centerX, height * 0.76, width * 0.5);
+  shoulder.addColorStop(0, 'rgba(255, 255, 255, 0.88)');
+  shoulder.addColorStop(0.64, 'rgba(255, 255, 255, 0.46)');
+  shoulder.addColorStop(1, 'rgba(255, 255, 255, 0)');
+  context.fillStyle = shoulder;
+  context.beginPath();
+  context.ellipse(centerX, height * 0.76, width * 0.36, height * 0.22, 0, 0, Math.PI * 2);
+  context.fill();
+
+  return canvas;
+}
+
+function drawPalaceRoof(context, x, y, width, height, options = {}) {
+  const roofHeight = Math.max(34, height * 0.36);
+  const eave = Math.max(18, width * 0.07);
+  const roofTop = y;
+  const roofBase = y + roofHeight;
+  const bodyTop = roofBase - 6;
+  const bodyHeight = height - roofHeight;
+  const accent = options.accent || '#d69a38';
+  const roof = options.roof || '#14203a';
+  const body = options.body || '#7a1f23';
+
+  context.save();
+  context.shadowColor = options.shadow || 'rgba(0, 0, 0, 0.34)';
+  context.shadowBlur = options.shadowBlur || 16;
+  context.shadowOffsetY = options.shadowOffsetY || 8;
+
+  const roofGradient = context.createLinearGradient(x, roofTop, x, roofBase);
+  roofGradient.addColorStop(0, '#273856');
+  roofGradient.addColorStop(0.46, roof);
+  roofGradient.addColorStop(1, '#071121');
+  context.fillStyle = roofGradient;
+  context.beginPath();
+  context.moveTo(x - eave, roofBase);
+  context.quadraticCurveTo(x + width * 0.18, roofTop + roofHeight * 0.08, x + width * 0.5, roofTop);
+  context.quadraticCurveTo(x + width * 0.82, roofTop + roofHeight * 0.08, x + width + eave, roofBase);
+  context.quadraticCurveTo(x + width * 0.84, roofBase + roofHeight * 0.2, x + width * 0.5, roofBase + 2);
+  context.quadraticCurveTo(x + width * 0.16, roofBase + roofHeight * 0.2, x - eave, roofBase);
+  context.closePath();
+  context.fill();
+
+  context.shadowBlur = 0;
+  context.strokeStyle = 'rgba(245, 204, 116, 0.58)';
+  context.lineWidth = Math.max(2, width * 0.006);
+  context.beginPath();
+  context.moveTo(x - eave * 0.78, roofBase - 4);
+  context.quadraticCurveTo(x + width * 0.2, roofTop + roofHeight * 0.16, x + width * 0.5, roofTop + 6);
+  context.quadraticCurveTo(x + width * 0.8, roofTop + roofHeight * 0.16, x + width + eave * 0.78, roofBase - 4);
+  context.stroke();
+
+  const bodyGradient = context.createLinearGradient(x, bodyTop, x, y + height);
+  bodyGradient.addColorStop(0, '#a73531');
+  bodyGradient.addColorStop(0.45, body);
+  bodyGradient.addColorStop(1, '#311016');
+  context.fillStyle = bodyGradient;
+  context.fillRect(x + width * 0.08, bodyTop, width * 0.84, bodyHeight);
+
+  context.fillStyle = 'rgba(251, 221, 151, 0.88)';
+  const columnCount = options.columns || 5;
+  const columnWidth = Math.max(3, width * 0.025);
+  for (let index = 0; index < columnCount; index += 1) {
+    const ratio = columnCount === 1 ? 0.5 : 0.16 + ((0.68 * index) / Math.max(columnCount - 1, 1));
+    const columnX = x + width * ratio;
+    context.fillRect(columnX, bodyTop + 8, columnWidth, bodyHeight - 8);
+  }
+
+  context.fillStyle = 'rgba(255, 205, 111, 0.72)';
+  const windowCount = Math.max(3, columnCount - 1);
+  for (let index = 0; index < windowCount; index += 1) {
+    const ratio = windowCount === 1 ? 0.5 : 0.22 + ((0.56 * index) / Math.max(windowCount - 1, 1));
+    const windowX = x + width * ratio;
+    context.fillRect(windowX, bodyTop + bodyHeight * 0.28, width * 0.08, bodyHeight * 0.22);
+  }
+
+  context.strokeStyle = accent;
+  context.lineWidth = Math.max(2, width * 0.005);
+  context.beginPath();
+  context.moveTo(x + width * 0.06, bodyTop);
+  context.lineTo(x + width * 0.94, bodyTop);
+  context.moveTo(x + width * 0.1, bodyTop + bodyHeight * 0.74);
+  context.lineTo(x + width * 0.9, bodyTop + bodyHeight * 0.74);
+  context.stroke();
+
+  context.restore();
+}
+
+function drawRoyalCloud(context, x, y, width, alpha = 0.18) {
+  context.save();
+  context.fillStyle = `rgba(255, 239, 200, ${alpha})`;
+  context.beginPath();
+  context.ellipse(x, y, width * 0.42, width * 0.09, -0.08, 0, Math.PI * 2);
+  context.ellipse(x + width * 0.22, y + 2, width * 0.34, width * 0.07, 0.08, 0, Math.PI * 2);
+  context.ellipse(x - width * 0.24, y + 4, width * 0.26, width * 0.06, 0.12, 0, Math.PI * 2);
+  context.fill();
+  context.restore();
+}
+
+function drawRoyalPalaceNightBackground(context, width, height) {
+  const sky = context.createLinearGradient(0, 0, 0, height);
+  sky.addColorStop(0, '#071329');
+  sky.addColorStop(0.38, '#14294a');
+  sky.addColorStop(0.68, '#331b37');
+  sky.addColorStop(1, '#0b1020');
+  context.fillStyle = sky;
+  context.fillRect(0, 0, width, height);
+
+  const moonGlow = context.createRadialGradient(width * 0.78, height * 0.16, 8, width * 0.78, height * 0.16, width * 0.32);
+  moonGlow.addColorStop(0, 'rgba(255, 234, 180, 0.52)');
+  moonGlow.addColorStop(0.34, 'rgba(255, 211, 122, 0.18)');
+  moonGlow.addColorStop(1, 'rgba(255, 211, 122, 0)');
+  context.fillStyle = moonGlow;
+  context.fillRect(0, 0, width, height);
+
+  context.fillStyle = 'rgba(255, 238, 190, 0.94)';
+  context.beginPath();
+  context.arc(width * 0.78, height * 0.16, Math.max(22, width * 0.045), 0, Math.PI * 2);
+  context.fill();
+
+  context.fillStyle = 'rgba(10, 23, 41, 0.34)';
+  context.beginPath();
+  context.arc(width * 0.795, height * 0.15, Math.max(19, width * 0.04), 0, Math.PI * 2);
+  context.fill();
+
+  for (let index = 0; index < 34; index += 1) {
+    const x = 24 + ((index * 83) % Math.max(width - 48, 1));
+    const y = 18 + ((index * 47) % Math.max(height * 0.32, 1));
+    const radius = 0.8 + ((index % 4) * 0.42);
+    context.fillStyle = `rgba(255, 246, 214, ${0.2 + ((index % 5) * 0.08)})`;
     context.beginPath();
     context.arc(x, y, radius, 0, Math.PI * 2);
     context.fill();
   }
+
+  drawRoyalCloud(context, width * 0.3, height * 0.15, width * 0.42, 0.14);
+  drawRoyalCloud(context, width * 0.58, height * 0.25, width * 0.34, 0.12);
+  drawRoyalCloud(context, width * 0.16, height * 0.31, width * 0.32, 0.1);
+
+  const mountain = context.createLinearGradient(0, height * 0.3, 0, height * 0.62);
+  mountain.addColorStop(0, 'rgba(39, 69, 79, 0.5)');
+  mountain.addColorStop(1, 'rgba(8, 18, 33, 0.72)');
+  context.fillStyle = mountain;
+  context.beginPath();
+  context.moveTo(0, height * 0.52);
+  context.lineTo(width * 0.18, height * 0.34);
+  context.lineTo(width * 0.34, height * 0.5);
+  context.lineTo(width * 0.52, height * 0.29);
+  context.lineTo(width * 0.74, height * 0.51);
+  context.lineTo(width, height * 0.36);
+  context.lineTo(width, height * 0.72);
+  context.lineTo(0, height * 0.72);
+  context.closePath();
+  context.fill();
+
+  const courtyard = context.createLinearGradient(0, height * 0.68, 0, height);
+  courtyard.addColorStop(0, 'rgba(59, 39, 47, 0.94)');
+  courtyard.addColorStop(0.45, 'rgba(31, 27, 38, 0.96)');
+  courtyard.addColorStop(1, 'rgba(6, 10, 22, 0.98)');
+  context.fillStyle = courtyard;
+  context.fillRect(0, height * 0.66, width, height * 0.34);
+
+  drawPalaceRoof(context, width * 0.12, height * 0.42, width * 0.76, height * 0.26, {
+    columns: 7,
+    shadowBlur: 22,
+    shadowOffsetY: 10
+  });
+  drawPalaceRoof(context, width * -0.08, height * 0.5, width * 0.34, height * 0.18, {
+    columns: 3,
+    shadowBlur: 14,
+    accent: '#bf7e2b'
+  });
+  drawPalaceRoof(context, width * 0.74, height * 0.51, width * 0.32, height * 0.17, {
+    columns: 3,
+    shadowBlur: 14,
+    accent: '#bf7e2b'
+  });
+
+  const path = context.createLinearGradient(width * 0.5, height * 0.66, width * 0.5, height);
+  path.addColorStop(0, 'rgba(168, 111, 56, 0.26)');
+  path.addColorStop(1, 'rgba(236, 197, 116, 0.05)');
+  context.fillStyle = path;
+  context.beginPath();
+  context.moveTo(width * 0.42, height * 0.67);
+  context.lineTo(width * 0.58, height * 0.67);
+  context.lineTo(width * 0.82, height);
+  context.lineTo(width * 0.18, height);
+  context.closePath();
+  context.fill();
+
+  for (let index = 0; index < 8; index += 1) {
+    const x = width * (0.18 + (index * 0.09));
+    const y = height * (0.69 + ((index % 2) * 0.035));
+    const glow = context.createRadialGradient(x, y, 2, x, y, width * 0.055);
+    glow.addColorStop(0, 'rgba(255, 202, 104, 0.72)');
+    glow.addColorStop(0.34, 'rgba(255, 163, 70, 0.2)');
+    glow.addColorStop(1, 'rgba(255, 163, 70, 0)');
+    context.fillStyle = glow;
+    context.fillRect(x - width * 0.06, y - width * 0.06, width * 0.12, width * 0.12);
+    context.fillStyle = 'rgba(255, 214, 127, 0.86)';
+    context.fillRect(x - 3, y - 7, 6, 14);
+  }
+
+  context.globalCompositeOperation = 'soft-light';
+  for (let y = 0; y < height; y += 3) {
+    context.fillStyle = `rgba(255, 244, 218, ${0.018 + ((y % 9) * 0.002)})`;
+    context.fillRect(0, y, width, 1);
+  }
+  context.globalCompositeOperation = 'source-over';
+
+  const vignette = context.createRadialGradient(width * 0.5, height * 0.48, width * 0.2, width * 0.5, height * 0.5, width * 0.74);
+  vignette.addColorStop(0, 'rgba(255, 255, 255, 0)');
+  vignette.addColorStop(0.62, 'rgba(7, 16, 33, 0.08)');
+  vignette.addColorStop(1, 'rgba(2, 6, 23, 0.5)');
+  context.fillStyle = vignette;
+  context.fillRect(0, 0, width, height);
+}
+
+function applyRoyalAnimationFinish(context, width, height) {
+  context.save();
+  context.globalCompositeOperation = 'screen';
+  const warmBloom = context.createRadialGradient(width * 0.5, height * 0.62, width * 0.04, width * 0.5, height * 0.62, width * 0.64);
+  warmBloom.addColorStop(0, 'rgba(255, 206, 125, 0.22)');
+  warmBloom.addColorStop(0.46, 'rgba(246, 176, 103, 0.08)');
+  warmBloom.addColorStop(1, 'rgba(246, 176, 103, 0)');
+  context.fillStyle = warmBloom;
+  context.fillRect(0, 0, width, height);
+  context.restore();
+
+  context.save();
+  context.globalCompositeOperation = 'multiply';
+  const contrastWash = context.createLinearGradient(0, 0, 0, height);
+  contrastWash.addColorStop(0, 'rgba(12, 22, 41, 0.04)');
+  contrastWash.addColorStop(0.56, 'rgba(62, 30, 47, 0.04)');
+  contrastWash.addColorStop(1, 'rgba(2, 6, 23, 0.18)');
+  context.fillStyle = contrastWash;
+  context.fillRect(0, 0, width, height);
+  context.restore();
+}
+
+function drawNightBackground(context, width, height) {
+  drawRoyalPalaceNightBackground(context, width, height);
+  applyRoyalAnimationFinish(context, width, height);
 }
 
 function drawForegroundShadow(context, maskCanvas, x, y, width, height) {
@@ -9057,27 +9733,24 @@ async function createJoseonPhotoCard(sourceImage, style = aiPhotoSelectedStyle) 
 
   if (style === 'night') {
     try {
-      const [nightBackground, segmentedSubject] = await Promise.all([
-        loadAiPhotoAsset(AI_PHOTO_NIGHT_BACKGROUND_URL),
-        segmentAiPhotoSubject(sourceImage, imageWidth, imageHeight)
-      ]);
+      const segmentedSubject = await segmentAiPhotoSubject(sourceImage, imageWidth, imageHeight);
       if (!segmentedSubject?.maskCanvas) throw new Error('Subject mask unavailable');
       const maskedSubject = createMaskedCanvas(painterlyCanvas, segmentedSubject.maskCanvas, imageWidth, imageHeight);
-      drawNightBackground(tempContext, imageWidth, imageHeight, nightBackground);
+      drawNightBackground(tempContext, imageWidth, imageHeight);
       drawForegroundShadow(tempContext, segmentedSubject.maskCanvas, 0, 0, imageWidth, imageHeight);
       drawNightSubjectGlow(tempContext, segmentedSubject.maskCanvas, 0, 0, imageWidth, imageHeight);
       tempContext.drawImage(maskedSubject, 0, 0);
+      applyRoyalAnimationFinish(tempContext, imageWidth, imageHeight);
     } catch (error) {
       usedFallback = true;
-      tempContext.drawImage(painterlyCanvas, 0, 0);
-      tempContext.globalCompositeOperation = 'multiply';
-      const fallbackOverlay = tempContext.createLinearGradient(0, 0, imageWidth, imageHeight);
-      fallbackOverlay.addColorStop(0, 'rgba(15, 23, 42, 0.12)');
-      fallbackOverlay.addColorStop(1, 'rgba(30, 41, 59, 0.38)');
-      tempContext.fillStyle = fallbackOverlay;
-      tempContext.fillRect(0, 0, imageWidth, imageHeight);
-      tempContext.globalCompositeOperation = 'source-over';
-      transformNote = `${transformNote} ${ft('photo.fallback', 'The segmentation model could not load, so MARU used the built-in browser art filter instead.')}`;
+      const fallbackMask = createFallbackPortraitMask(imageWidth, imageHeight);
+      const maskedSubject = createMaskedCanvas(painterlyCanvas, fallbackMask, imageWidth, imageHeight);
+      drawNightBackground(tempContext, imageWidth, imageHeight);
+      drawForegroundShadow(tempContext, fallbackMask, 0, 0, imageWidth, imageHeight);
+      drawNightSubjectGlow(tempContext, fallbackMask, 0, 0, imageWidth, imageHeight);
+      tempContext.drawImage(maskedSubject, 0, 0);
+      applyRoyalAnimationFinish(tempContext, imageWidth, imageHeight);
+      transformNote = `${transformNote} ${ft('photo.fallback', 'The segmentation model could not load, so MARU used a browser-side portrait mask with the generated royal night background.')}`;
     }
   } else {
     tempContext.drawImage(painterlyCanvas, 0, 0);
@@ -9139,6 +9812,94 @@ async function createJoseonPhotoCard(sourceImage, style = aiPhotoSelectedStyle) 
     transformNote,
     usedFallback
   };
+}
+
+async function createRoyalPortraitOnApi(file, style = aiPhotoSelectedStyle) {
+  if (!file) return null;
+  const apiUrl = makeMaruApiUrl(MARU_API_PATHS.aiPhotoTransform);
+  if (!apiUrl || maruApiHostUnavailable || maruApiFailedPaths.has(MARU_API_PATHS.aiPhotoTransform)) {
+    return null;
+  }
+
+  const formData = new FormData();
+  formData.append('image', file, file.name || 'maru-photo.png');
+  formData.append('styleId', style === 'night' ? 'cinematic-drama' : 'joseon-portrait');
+  formData.append('backgroundId', style === 'night' ? 'royal-throne-room' : 'palace-courtyard');
+  formData.append('intensity', 'bold');
+  formData.append('customPrompt', 'Create a result like a luxury Joseon royal king portrait photo: preserve the exact person and front-facing gaze, add a black-and-gold royal crown, dark navy gonryongpo with raised gold dragon embroidery, ornate gold belt, carved dragon throne, warm palace interior, hanging bead ornaments, sunset palace roofs in the background, shallow depth of field, photorealistic skin, premium editorial lighting. This must be a full AI image edit, not a card frame, filter, sticker, or simple background swap.');
+
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), MARU_AI_PHOTO_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      cache: 'no-store',
+      body: formData,
+      signal: controller.signal
+    });
+    const payload = await response.json().catch(() => null);
+    if (!response.ok) throw new Error(payload?.message || `HTTP ${response.status}`);
+    return payload?.imageDataUrl ? payload : null;
+  } catch (error) {
+    const message = String(error?.message || '');
+    const isConnectionFailure = error?.name === 'AbortError'
+      || error instanceof TypeError
+      || /failed to fetch|networkerror|load failed/i.test(message);
+    if (isConnectionFailure) {
+      maruApiHostUnavailable = true;
+    } else {
+      maruApiFailedPaths.add(MARU_API_PATHS.aiPhotoTransform);
+    }
+    return null;
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
+function renderAiPhotoImageResult(result, payload, style = aiPhotoSelectedStyle) {
+  if (!result || !payload?.imageDataUrl) return;
+  result.innerHTML = `
+    <article class="ai-photo-result-card ai-photo-canvas-card">
+      <div class="ai-photo-canvas-host">
+        <img src="${escapeHtml(payload.imageDataUrl)}" alt="${escapeHtml(ft('photo.styles.night', 'Palace Night'))}">
+      </div>
+      <div class="ai-photo-result-copy">
+        <strong>${escapeHtml(ft(`photo.styles.${style}`, style))}</strong>
+        <p>${escapeHtml(ft('photo.gptDone', 'The GPT royal portrait is ready to download.'))}</p>
+        <small>${escapeHtml(ft('photo.serverPrivacy', 'High-quality transforms are sent through the local server to the OpenAI Image API. The API key stays on the server.'))}</small>
+      </div>
+    </article>
+  `;
+}
+
+function renderAiPhotoServerRequired(result) {
+  if (!result) return;
+  result.innerHTML = `
+    <article class="ai-photo-result-card ai-photo-canvas-card">
+      <div class="ai-photo-result-copy">
+        <strong>${escapeHtml(ft('photo.styles.night', 'Palace Night'))}</strong>
+        <p>${escapeHtml(ft('photo.gptFallback', 'The AI generation server is unavailable. Check the Python API server and OPENAI_API_KEY setting.'))}</p>
+        <small>${escapeHtml(ft('photo.serverPrivacy', 'High-quality transforms are sent through the local server to the OpenAI Image API. The API key stays on the server.'))}</small>
+      </div>
+    </article>
+  `;
+}
+
+function renderAiPhotoCanvasResult(result, canvas, transformNote, style = aiPhotoSelectedStyle) {
+  if (!result) return;
+  result.innerHTML = `
+    <article class="ai-photo-result-card ai-photo-canvas-card">
+      <div class="ai-photo-canvas-host"></div>
+      <div class="ai-photo-result-copy">
+        <strong>${escapeHtml(ft(`photo.styles.${style}`, style))}</strong>
+        <p>${escapeHtml(transformNote || ft('photo.done', 'Your Joseon-style card is ready to download.'))}</p>
+        <small>${escapeHtml(ft('photo.privacy', 'Everything stays in the browser, so you can save the result without uploading the image.'))}</small>
+      </div>
+    </article>
+  `;
+  const host = qs('.ai-photo-canvas-host', result);
+  host?.appendChild(canvas);
 }
 
 function bindAiPhotoDemo() {
@@ -9210,7 +9971,8 @@ function bindAiPhotoDemo() {
   });
 
   actionButton?.addEventListener('click', () => {
-    if (!previewUrl) {
+    const file = fileInput?.files?.[0] || null;
+    if (!previewUrl || !file) {
       setStatus(ft('photo.empty', 'Choose an image first.'));
       return;
     }
@@ -9221,29 +9983,42 @@ function bindAiPhotoDemo() {
       actionButton.disabled = true;
       actionButton.textContent = ft('photo.working', 'Applying a Joseon-inspired card effect in the browser.');
       setStatus(aiPhotoSelectedStyle === 'night'
-        ? ft('photo.loadingModel', 'Preparing subject separation and painterly rendering.')
+        ? ft('photo.gptWorking', 'Generating a high-quality GPT royal portrait on the server. This can take a moment.')
         : ft('photo.working', 'Applying a Joseon-inspired card effect in the browser.'));
 
       try {
+        if (aiPhotoSelectedStyle === 'night') {
+          let apiResult = null;
+          try {
+            apiResult = await createRoyalPortraitOnApi(file, aiPhotoSelectedStyle);
+          } catch (error) {
+            apiResult = null;
+          }
+
+          if (apiResult?.imageDataUrl) {
+            renderAiPhotoImageResult(result, apiResult, aiPhotoSelectedStyle);
+            result.classList.remove('is-hidden');
+            if (toolbar) toolbar.classList.remove('is-hidden');
+            aiPhotoDownloadUrl = apiResult.imageDataUrl;
+            setStatus(ft('photo.gptDone', 'The GPT royal portrait is ready to download.'));
+            return;
+          }
+
+          renderAiPhotoServerRequired(result);
+          result.classList.remove('is-hidden');
+          if (toolbar) toolbar.classList.add('is-hidden');
+          setStatus(ft('photo.gptFallback', 'The AI generation server is unavailable. Check the Python API server and OPENAI_API_KEY setting.'));
+          return;
+        }
+
         const { canvas, transformNote, usedFallback } = await createJoseonPhotoCard(image, aiPhotoSelectedStyle);
-        result.innerHTML = `
-          <article class="ai-photo-result-card ai-photo-canvas-card">
-            <div class="ai-photo-canvas-host"></div>
-            <div class="ai-photo-result-copy">
-              <strong>${escapeHtml(ft(`photo.styles.${aiPhotoSelectedStyle}`, aiPhotoSelectedStyle))}</strong>
-              <p>${escapeHtml(transformNote || ft('photo.done', 'Your Joseon-style card is ready to download.'))}</p>
-              <small>${escapeHtml(ft('photo.privacy', 'Everything stays in the browser, so you can save the result without uploading the image.'))}</small>
-            </div>
-          </article>
-        `;
-        const host = qs('.ai-photo-canvas-host', result);
-        host?.appendChild(canvas);
+        renderAiPhotoCanvasResult(result, canvas, transformNote, aiPhotoSelectedStyle);
         result.classList.remove('is-hidden');
         if (toolbar) toolbar.classList.remove('is-hidden');
         aiPhotoDownloadUrl = canvas.toDataURL('image/png');
         setStatus(usedFallback ? transformNote : ft('photo.done', 'Your Joseon-style card is ready to download.'));
       } catch (error) {
-        setStatus(ft('photo.fallback', 'The segmentation model could not load, so MARU used the built-in browser art filter instead.'));
+        setStatus(ft('photo.fallback', 'The segmentation model could not load, so MARU used a browser-side portrait mask with the generated royal night background.'));
       } finally {
         actionButton.disabled = false;
         actionButton.textContent = ft('photo.action', 'Create Joseon Card');
@@ -9432,9 +10207,11 @@ async function initialize() {
   await loadDynamicAppData();
   await loadCultureResources();
   await loadCourseData();
+  await refreshAuthSession();
   renderLocalizedContent();
   markActiveBottomTab();
   bindMobileInteractions();
+  bindAuthPage();
   bindAiPhotoDemo();
   mountAriChat();
   registerServiceWorker();
