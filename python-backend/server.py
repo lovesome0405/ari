@@ -477,7 +477,10 @@ class MaruApiHandler(BaseHTTPRequestHandler):
         raw = self.rfile.read(length) if length else b"{}"
         if not raw:
             return {}
-        return json.loads(raw.decode("utf-8"))
+        payload = json.loads(raw.decode("utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("JSON body must be an object")
+        return payload
 
     def do_OPTIONS(self):
         self._send_json(204)
