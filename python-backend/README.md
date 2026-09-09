@@ -1,5 +1,7 @@
 # MARU Python Dynamic API
 
+> Current implementation note: this server does not implement `/api/ai-photo/transform`. Image-edit setup below is historical and is not a working Python endpoint. For the verified catalog/save demo, run `python scripts/demo.py` from the repository root.
+
 This lightweight server turns the static MARU prototype into a Maven-free local PWA demo.
 
 It reuses the existing JSON catalog files, persists saved routes in SQLite, and can call OpenAI's image edit API for the high-quality royal portrait transform when `OPENAI_API_KEY` is set.

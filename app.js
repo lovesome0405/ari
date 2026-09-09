@@ -9098,7 +9098,14 @@ function updatePlannerStep() {
   if (label) label.textContent = `${t('planner.stepLabel')} ${plannerStep} / 5`;
 
   const bar = qs('[data-progress-bar]');
-  if (bar) bar.style.width = `${plannerStep * 20}%`;
+  if (bar) {
+    bar.style.width = `${plannerStep * 20}%`;
+    bar.parentElement.setAttribute('role', 'progressbar');
+    bar.parentElement.setAttribute('aria-label', t('planner.stepLabel'));
+    bar.parentElement.setAttribute('aria-valuemin', '1');
+    bar.parentElement.setAttribute('aria-valuemax', '5');
+    bar.parentElement.setAttribute('aria-valuenow', String(plannerStep));
+  }
 
   const prev = qs('[data-planner-prev]');
   const next = qs('[data-planner-next]');
@@ -9118,6 +9125,8 @@ function markActiveBottomTab() {
   const page = document.body.dataset.page;
   qsa('[data-tab]').forEach((tab) => {
     tab.classList.toggle('is-active', tab.dataset.tab === page);
+    if (tab.dataset.tab === page) tab.setAttribute('aria-current', 'page');
+    else tab.removeAttribute('aria-current');
   });
 }
 
@@ -10169,6 +10178,7 @@ function bindMobileInteractions() {
         qsa('.choice-button', group).forEach((item) => item.classList.toggle('is-active', item === button));
       }
 
+      qsa('.choice-button', group).forEach((item) => item.setAttribute('aria-pressed', String(item.classList.contains('is-active'))));
       saveUserPreference();
       renderConditionSummary();
     });
@@ -10210,6 +10220,7 @@ async function initialize() {
   await refreshAuthSession();
   renderLocalizedContent();
   markActiveBottomTab();
+  qsa('[data-pref-group] .choice-button').forEach((item) => item.setAttribute('aria-pressed', String(item.classList.contains('is-active'))));
   bindMobileInteractions();
   bindAuthPage();
   bindAiPhotoDemo();
