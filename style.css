@@ -2258,10 +2258,21 @@ body.ari-has-bottom-cta .ari-chat {
 }
 
 .ari-chat.is-open .ari-panel {
-  display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  /* 세로 배치: 대화 목록만 늘어나고 나머지(머리말·빠른 질문·선택 장소·상태·다시 시도·입력)는 내용 높이.
+     숨긴 요소(hidden)가 있어도 대화 목록이 늘어나는 칸이 바뀌지 않게 grid 대신 flex 를 쓴다. */
+  display: flex;
+  flex-direction: column;
   max-height: min(76vh, 680px);
 }
+
+/* 패널 위쪽(닫기 버튼)이 화면 밖으로 나가지 않게: 열 때 app.js 가 실제 남은 높이를 --ari-panel-room 으로 넣는다 */
+.ari-chat.is-open .ari-panel {
+  max-height: min(76vh, 680px, var(--ari-panel-room, 76vh));
+}
+
+.ari-chat.is-open .ari-panel > * { flex: 0 0 auto; }
+.ari-chat.is-open .ari-panel > .ari-messages { flex: 1 1 auto; }
+.ari-place-chip[hidden], .ari-retry[hidden] { display: none; }
 
 .ari-header {
   display: flex;
@@ -3016,3 +3027,24 @@ body.ari-has-bottom-cta .ari-chat {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* 공통 RAG 엔진 답변(출처·상태 표시) */
+.ari-message.is-rag p { white-space: pre-wrap; }
+.ari-rag-label, .ari-local-label { font-size: 0.82rem; font-weight: 700; margin: 0 0 6px; color: #7a4b00; }
+.ari-message.is-insufficient_evidence, .ari-message.is-clarification_needed { border-left: 3px solid #c9a227; }
+.ari-message.is-local { border-left: 3px solid #9a9a9a; }
+.ari-rag-gap span { font-weight: 700; color: #9b1c1c; }
+.ari-cites { margin: 8px 0 0; padding: 0; list-style: none; font-size: 0.82rem; display: grid; gap: 6px; }
+.ari-cites li { overflow-wrap: anywhere; border-top: 1px dotted rgba(0, 0, 0, 0.18); padding-top: 6px; }
+.ari-cites a { color: inherit; text-decoration: underline; }
+.ari-cites small { display: block; opacity: 0.8; }
+.ari-cites q { display: block; margin-top: 2px; quotes: "“" "”"; }
+.ari-cite-badge { display: inline-block; margin-left: 4px; padding: 0 6px; border-radius: 99px; font-size: 0.72rem; background: #efe6d2; }
+.ari-cite-public_original { background: #dcefe0; }
+.ari-cite-synthetic { background: #f6d9d9; }
+.ari-place-chip { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 6px 12px 0; padding: 6px 10px;
+  border-radius: 12px; background: #f3ead6; font-size: 0.85rem; }
+.ari-place-chip button, .ari-retry { min-height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid rgba(0, 0, 0, 0.2); background: #fff; font: inherit; cursor: pointer; }
+.ari-retry { margin: 0 12px 6px; }
+.ari-status.is-error { color: #9b1c1c; }
+.place-ari-button { margin-top: 8px; }

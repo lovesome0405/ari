@@ -1,0 +1,4 @@
+{
+  "_comment": "MARU 아리 → 공통 RAG 엔진(/v1/public/chat). off 또는 빈 값 = 사용 안 함(기존 아리 흐름). auto = 이 페이지가 localhost 일 때만 http://127.0.0.1:8088. 배포 = https://<엔진 주소>/v1/public/chat (엔진의 RAG_PUBLIC_ORIGINS 에 이 사이트 Origin 등록 필요)",
+  "endpoint": "off"
+}

@@ -6129,6 +6129,7 @@ function renderResourceCard(resource, index = 0, options = {}) {
       <p><strong>${escapeHtml(t('places.reason'))}</strong> ${escapeHtml(resourceView.aiWhyItMatters || '')}</p>
       <p><strong>${escapeHtml(t('places.tip'))}</strong> ${escapeHtml(resourceView.aiVisitTip || '')}</p>
       <a class="button button-secondary button-block place-map-link" href="${escapeHtml(mapUrl)}" target="_blank" rel="noopener">${escapeHtml(getMapServiceLabel(selectedService))} ${escapeHtml(t('places.map'))}</a>
+      ${shouldShowAri() ? `<button class="button button-secondary button-block place-ari-button" type="button" data-ari-place="${escapeHtml(resource.id)}">${escapeHtml(ariRagText('askPlace'))}</button>` : ''}
     </article>
   `;
 }
@@ -8338,7 +8339,219 @@ function applyAriTranslations() {
   const input = qs('[data-ari-input]', root);
   if (input) input.setAttribute('placeholder', t('ari.placeholder'));
   setText('[data-ari-send]', t('ari.send'));
+  renderAriPlaceChip();
+  const retry = qs('[data-ari-retry]', root);
+  if (retry) retry.textContent = ariRagText('retry');
 }
+// ── 공통 RAG 엔진 연결 (chatbot v0.4.0 /v1/public/chat) ───────────────────────────────
+// - 설정: rag-config.json 의 endpoint. ""/"off" = 사용 안 함(기존 Ari 흐름 그대로), "auto" = 이 페이지가 localhost 일 때만
+//   로컬 엔진(127.0.0.1:8088). 공개 페이지에서는 https 주소만 받고, 공개 페이지가 127.0.0.1 로 연결하는 설정은 무시한다.
+// - 보내는 것: 지금 질문 하나 + 언어 + 화면 상태(선택한 장소 ID, 보고 있는 코스 ID, 기존 추천 순서 ID). 대화 기록·선호 프로필은 보내지 않는다.
+// - 장소 ID 는 카드의 "아리에게 이 장소 묻기" 버튼으로만 정해지고 메모리에만 둔다(페이지를 옮기거나 해제하면 사라짐).
+// - RAG 장애 시 기존 로컬 안내를 보여 주되 "로컬 안내" 표시를 붙인다. 출처 없는 원격 모델로 조용히 다시 답하지 않는다.
+const ARI_RAG_CONFIG_URL = 'rag-config.json';
+const ARI_RAG_LOCAL_DEFAULT = 'http://127.0.0.1:8088/v1/public/chat';
+const ARI_RAG_TIMEOUT_MS = 75000;
+const ARI_RAG_COURSE_PAGES = ['route-detail.html', 'map.html'];
+const ARI_RAG_TEXT = {
+  ko: {
+    askPlace: '아리에게 이 장소 묻기', selected: '선택한 장소', clear: '선택 해제', retry: '다시 시도',
+    local: '로컬 안내 · 출처 검색 답변이 아니에요', partialGap: '확인 못 한 부분',
+    answered: '', partial: '일부만 확인했어요', insufficient_evidence: '확인된 자료에서 찾지 못했어요', clarification_needed: '조금 더 알려 주세요',
+    clarifyHint: '위 질문에 답을 적어 주세요', waiting: '출처를 찾는 중이에요…', seconds: '초',
+    errNetwork: '안내 서버에 연결하지 못했어요. 아래는 로컬 안내예요.', errBusy: '질문이 많아 잠시 쉬어요. 1분 뒤 다시 시도해 주세요. 아래는 로컬 안내예요.',
+    errTimeout: '답변이 너무 오래 걸려 멈췄어요. 아래는 로컬 안내예요.', errServer: '안내 서버에 문제가 있어요. 아래는 로컬 안내예요.',
+    official: '공식 원문', app: '앱 데이터', synthetic: '합성 테스트 데이터', source: '자료'
+  },
+  en: {
+    askPlace: 'Ask Ari about this place', selected: 'Selected place', clear: 'Clear', retry: 'Try again',
+    local: 'Local guide · not a source-checked answer', partialGap: 'Not confirmed',
+    answered: '', partial: 'Partly confirmed', insufficient_evidence: "I couldn't find this in the verified sources", clarification_needed: 'Could you tell me a bit more?',
+    clarifyHint: 'Type your answer to the question above', waiting: 'Looking up sources…', seconds: 's',
+    errNetwork: "Couldn't reach the guide server. Below is the local guide.", errBusy: 'Too many questions right now. Please try again in a minute. Below is the local guide.',
+    errTimeout: 'The answer took too long. Below is the local guide.', errServer: 'The guide server had a problem. Below is the local guide.',
+    official: 'Official source', app: 'App data', synthetic: 'Synthetic test data', source: 'Source'
+  },
+  ja: {
+    askPlace: 'この場所をアリに聞く', selected: '選択した場所', clear: '解除', retry: 'もう一度',
+    local: 'ローカル案内・出典確認済みの回答ではありません', partialGap: '未確認の部分',
+    answered: '', partial: '一部のみ確認できました', insufficient_evidence: '確認済みの資料では見つかりませんでした', clarification_needed: 'もう少し教えてください',
+    clarifyHint: '上の質問への答えを入力してください', waiting: '出典を探しています…', seconds: '秒',
+    errNetwork: '案内サーバーに接続できませんでした。以下はローカル案内です。', errBusy: '質問が多いため少しお待ちください。以下はローカル案内です。',
+    errTimeout: '回答に時間がかかりすぎました。以下はローカル案内です。', errServer: '案内サーバーに問題があります。以下はローカル案内です。',
+    official: '公式原文', app: 'アプリデータ', synthetic: '合成テストデータ', source: '資料'
+  },
+  zh: {
+    askPlace: '向阿里询问这个地方', selected: '已选地点', clear: '取消选择', retry: '重试',
+    local: '本地指南·非来源核实的回答', partialGap: '未确认部分',
+    answered: '', partial: '仅部分确认', insufficient_evidence: '在已核实的资料中未找到', clarification_needed: '请再告诉我一些',
+    clarifyHint: '请输入对上面问题的回答', waiting: '正在查找来源…', seconds: '秒',
+    errNetwork: '无法连接指南服务器。以下是本地指南。', errBusy: '提问过多，请稍后再试。以下是本地指南。',
+    errTimeout: '回答耗时过长。以下是本地指南。', errServer: '指南服务器出现问题。以下是本地指南。',
+    official: '官方原文', app: '应用数据', synthetic: '合成测试数据', source: '资料'
+  }
+};
+let ariRagEndpointPromise = null;
+let ariSelectedPlaceId = '';
+let ariPendingClarify = '';
+let ariBusy = false;
+let ariLastQuestion = '';
+
+function ariRagText(key) {
+  const table = ARI_RAG_TEXT[getCurrentLanguage()] || ARI_RAG_TEXT.en;
+  return table[key] ?? ARI_RAG_TEXT.en[key] ?? '';
+}
+
+function isLocalHostName(host) {
+  return ['localhost', '127.0.0.1', '[::1]', '::1'].includes(String(host || '').toLowerCase());
+}
+
+function resolveAriRagEndpoint(raw, loc = window.location) {
+  const value = String(raw || '').trim();
+  const pageIsLocal = isLocalHostName(loc.hostname);
+  if (!value || value === 'off') return '';
+  if (value === 'auto') return pageIsLocal ? ARI_RAG_LOCAL_DEFAULT : '';
+  let url;
+  try { url = new URL(value, loc.href); } catch (error) { return ''; }
+  if (isLocalHostName(url.hostname)) return pageIsLocal ? url.href : '';
+  return url.protocol === 'https:' ? url.href : '';
+}
+
+function getAriRagEndpoint() {
+  if (!ariRagEndpointPromise) {
+    ariRagEndpointPromise = fetch(ARI_RAG_CONFIG_URL, { cache: 'no-store' })
+      .then((response) => (response.ok ? response.json() : {}))
+      .catch(() => ({}))
+      .then((config) => resolveAriRagEndpoint(config?.endpoint));
+  }
+  return ariRagEndpointPromise;
+}
+
+function buildAriRagContext() {
+  const context = {};
+  if (ARI_RAG_COURSE_PAGES.includes(getCurrentFileName())) {
+    const route = getRouteFromUrlOrStorage();
+    if (route?.id) {
+      context.course_id = route.id;
+      context.ranked_place_ids = toArray(route.resourceIds).slice(0, 10);
+    }
+  }
+  if (ariSelectedPlaceId) context.place_id = ariSelectedPlaceId;
+  try {
+    context.ranked_route_ids = getForeignerRouteRanking().map((item) => item.route.id).filter(Boolean).slice(0, 10);
+  } catch (error) {
+    context.ranked_route_ids = [];
+  }
+  return context;
+}
+
+async function askAriRag(endpoint, question) {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), ARI_RAG_TIMEOUT_MS);
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        question: String(question).slice(0, 500),
+        language: getCurrentLanguage() === 'ko' ? 'ko' : 'en',
+        context: buildAriRagContext()
+      }),
+      signal: controller.signal
+    });
+    if (response.status === 429) return { ok: false, error: 'errBusy' };
+    if (!response.ok) return { ok: false, error: 'errServer' };
+    const data = await response.json();
+    if (!data || data.status === 'unavailable' || !ARI_RAG_STATUSES.includes(data.status)) return { ok: false, error: 'errServer' };
+    return { ok: true, data };
+  } catch (error) {
+    return { ok: false, error: error?.name === 'AbortError' ? 'errTimeout' : 'errNetwork' };
+  } finally {
+    window.clearTimeout(timer);
+  }
+}
+
+const ARI_RAG_STATUSES = ['answered', 'partial', 'insufficient_evidence', 'clarification_needed', 'unavailable'];
+
+function toAriRagMessage(data) {
+  return {
+    status: data.status,
+    route: String(data.route || ''),
+    requestId: String(data.request_id || ''),
+    citations: toArray(data.citations).slice(0, 8).map((citation) => ({
+      title: String(citation?.title || ''),
+      url: /^https?:\/\//.test(String(citation?.url || '')) ? String(citation.url) : '',
+      quote: String(citation?.quote || '').slice(0, 300),
+      locator: String(citation?.locator || ''),
+      asOf: String(citation?.as_of || ''),
+      sourceType: String(citation?.source_type || ''),
+      note: String(citation?.note || '')
+    }))
+  };
+}
+
+function ariSourceLabel(sourceType) {
+  return ariRagText({ public_original: 'official', repository_data: 'app', synthetic: 'synthetic' }[sourceType] || 'source');
+}
+
+function renderAriRagBody(item) {
+  const rag = item.rag;
+  const label = ariRagText(rag.status);
+  const gapPrefix = /^\[(일부는 확인하지 못했어요|Partly unconfirmed)\]\s*/;
+  const lines = String(item.message || '').split('\n').filter(Boolean).map((line) => (gapPrefix.test(line)
+    ? `<p class="ari-rag-gap"><span>${escapeHtml(ariRagText('partialGap'))}:</span> ${escapeHtml(line.replace(gapPrefix, ''))}</p>`
+    : `<p>${escapeHtml(line)}</p>`)).join('');
+  const cites = rag.citations.map((citation, index) => {
+    const title = escapeHtml(citation.title || citation.locator || ariRagText('source'));
+    const head = citation.url
+      ? `<a href="${escapeHtml(citation.url)}" target="_blank" rel="noopener noreferrer">${title}</a>`
+      : `<span>${title}</span>`;
+    const meta = [citation.locator, citation.asOf, citation.note].filter(Boolean).map(escapeHtml).join(' · ');
+    return `
+      <li>
+        <span class="ari-cite-no">[${index + 1}]</span> ${head}
+        <span class="ari-cite-badge ari-cite-${escapeHtml(citation.sourceType || 'source')}">${escapeHtml(ariSourceLabel(citation.sourceType))}</span>
+        ${meta ? `<small>${meta}</small>` : ''}
+        ${citation.quote ? `<q>${escapeHtml(citation.quote)}</q>` : ''}
+      </li>`;
+  }).join('');
+  return `${label ? `<p class="ari-rag-label">${escapeHtml(label)}</p>` : ''}${lines}${cites ? `<ol class="ari-cites">${cites}</ol>` : ''}`;
+}
+
+function setAriPlace(resourceId) {
+  ariSelectedPlaceId = findResourceById(resourceId) ? resourceId : '';
+  ariPendingClarify = '';
+  renderAriPlaceChip();
+}
+
+function renderAriPlaceChip() {
+  const chip = qs('[data-ari-place-chip]');
+  if (!chip) return;
+  const resource = ariSelectedPlaceId ? findResourceById(ariSelectedPlaceId) : null;
+  chip.hidden = !resource;
+  if (!resource) return;
+  const view = getResourceView(resource);
+  setText('[data-ari-place-name]', `${ariRagText('selected')}: ${view.displayName || resource.nameKo}`);
+  const clearButton = qs('[data-ari-place-clear]', chip);
+  if (clearButton) {
+    clearButton.textContent = ariRagText('clear');
+    clearButton.setAttribute('aria-label', `${ariRagText('clear')}: ${view.displayName || resource.nameKo}`);
+  }
+}
+
+function setAriError(key) {
+  const status = qs('[data-ari-status]');
+  const retry = qs('[data-ari-retry]');
+  if (status) {
+    status.textContent = key ? ariRagText(key) : '';
+    status.classList.toggle('is-error', Boolean(key));
+  }
+  if (retry) {
+    retry.hidden = !key;
+    retry.textContent = ariRagText('retry');
+  }
+}
+
 function renderAriMessages() {
   const container = qs('[data-ari-messages]');
   if (!container) return;
@@ -8354,9 +8567,9 @@ function renderAriMessages() {
   }
 
   container.innerHTML = ariMessages.map((item) => `
-    <div class="ari-message ari-message-${escapeHtml(item.role)}">
+    <div class="ari-message ari-message-${escapeHtml(item.role)}${item.rag ? ` is-rag is-${escapeHtml(item.rag.status)}` : ''}${item.local ? ' is-local' : ''}">
       <strong>${escapeHtml(item.role === 'user' ? t('ari.roleUser') : t('ari.roleAssistant'))}</strong>
-      <p>${escapeHtml(item.message)}</p>
+      ${item.rag ? renderAriRagBody(item) : `${item.local ? `<p class="ari-local-label">${escapeHtml(ariRagText('local'))}</p>` : ''}<p>${escapeHtml(item.message)}</p>`}
     </div>
   `).join('');
   container.scrollTop = container.scrollHeight;
@@ -8651,8 +8864,8 @@ function bindAuthPage() {
   renderAuthPage();
 }
 
-function appendChatMessage(role, message) {
-  ariMessages = [...ariMessages, { role, message, createdAt: Date.now() }].slice(-14);
+function appendChatMessage(role, message, extra = {}) {
+  ariMessages = [...ariMessages, { role, message, createdAt: Date.now(), ...extra }].slice(-14);
   storageJsonSet(STORAGE_KEYS.ariMessages, ariMessages);
   renderAriMessages();
 }
@@ -8660,14 +8873,31 @@ function appendChatMessage(role, message) {
 function setAriBusy(isBusy) {
   const status = qs('[data-ari-status]');
   const sendButton = qs('[data-ari-send]');
-  if (status) status.textContent = isBusy ? t('ari.busy') : '';
+  ariBusy = isBusy;
+  if (status) {
+    status.textContent = isBusy ? t('ari.busy') : '';
+    status.classList.remove('is-error');
+  }
   if (sendButton) sendButton.disabled = isBusy;
+  const input = qs('[data-ari-input]');
+  if (input) input.readOnly = isBusy;
+  qsa('[data-ari-quick], [data-ari-retry]').forEach((button) => { button.disabled = isBusy; });
+  qs('[data-ari-panel]')?.setAttribute('aria-busy', isBusy ? 'true' : 'false');
+}
+
+function fitAriPanel() {
+  const root = qs('[data-ari-root]');
+  if (!root) return;
+  // 패널은 root 위로 58px 띄워 그려진다. 화면 위 12px 여백까지만 커지게 남은 높이를 계산한다.
+  const room = Math.max(220, Math.round(root.getBoundingClientRect().top - 58 - 12));
+  root.style.setProperty('--ari-panel-room', `${room}px`);
 }
 
 function openAriChat() {
   const root = qs('[data-ari-root]');
   const panel = qs('[data-ari-panel]');
   if (!root || !panel) return;
+  fitAriPanel();
   root.classList.add('is-open');
   panel.setAttribute('aria-hidden', 'false');
   window.setTimeout(() => qs('[data-ari-input]')?.focus(), 40);
@@ -8677,15 +8907,28 @@ function closeAriChat() {
   const root = qs('[data-ari-root]');
   const panel = qs('[data-ari-panel]');
   if (!root || !panel) return;
-  toggleAriSettings(false);
+  if (typeof toggleAriSettings === 'function') toggleAriSettings(false);   // 정의되지 않은 함수 호출로 닫기 버튼이 동작하지 않던 기존 오류(a3a5f0f)
   root.classList.remove('is-open');
   panel.setAttribute('aria-hidden', 'true');
 }
 
 async function sendAriMessage(messageOverride = '') {
+  if (ariBusy) return;   // 보내는 중 중복 전송 방지(엔터·빠른 질문 연타)
   const input = qs('[data-ari-input]');
   const message = String(messageOverride || input?.value || '').trim();
   if (!message) return;
+
+  ariBusy = true;       // 첫 await 전에 잠근다(설정을 읽는 사이 두 번째 엔터가 들어오지 않게)
+  let ragEndpoint = '';
+  try {
+    ragEndpoint = await getAriRagEndpoint();
+  } finally {
+    ariBusy = false;
+  }
+  if (ragEndpoint) {
+    await sendAriRagMessage(ragEndpoint, message);
+    return;
+  }
 
   appendChatMessage('user', message);
   if (input) input.value = '';
@@ -8699,6 +8942,44 @@ async function sendAriMessage(messageOverride = '') {
   } finally {
     setAriBusy(false);
   }
+}
+
+async function sendAriRagMessage(endpoint, typed) {
+  const input = qs('[data-ari-input]');
+  // 되묻기에 대한 짧은 답(예: "Gyeongbokgung", "점심")만 원래 질문과 합친다. 새 질문을 쓰면 새 질문으로 보낸다.
+  const isShortReply = !/[?？]/.test(typed) && typed.split(/\s+/).length <= 4;
+  const question = ariPendingClarify && isShortReply ? `${ariPendingClarify} ${typed}` : typed;
+  ariLastQuestion = question;
+  setAriError('');
+  appendChatMessage('user', typed);
+  if (input) input.value = '';
+  setAriBusy(true);
+  const started = Date.now();
+  const status = qs('[data-ari-status]');
+  if (status) status.textContent = ariRagText('waiting');
+  const tick = window.setInterval(() => {
+    const seconds = Math.round((Date.now() - started) / 1000);
+    if (status && seconds >= 5) status.textContent = `${ariRagText('waiting')} ${seconds}${ariRagText('seconds')}`;
+  }, 1000);
+  let result;
+  try {
+    result = await askAriRag(endpoint, question);
+  } finally {
+    window.clearInterval(tick);
+    setAriBusy(false);
+  }
+  if (result.ok) {
+    const data = result.data;
+    ariPendingClarify = data.status === 'clarification_needed' ? question : '';
+    if (input) input.placeholder = ariPendingClarify ? ariRagText('clarifyHint') : t('ari.placeholder');
+    appendChatMessage('assistant', String(data.answer || ''), { rag: toAriRagMessage(data) });
+    if (ariPendingClarify) input?.focus();
+    return;
+  }
+  // 장애: 오류 문구는 상태 줄에만(대화 기록에 넣지 않음). 입력을 되살리고, 로컬 안내는 "로컬 안내" 표시를 붙여 보여 준다.
+  setAriError(result.error);
+  if (input) input.value = typed;
+  appendChatMessage('assistant', fallbackAriReply(typed, buildAriContext()), { local: true });
 }
 
 function mountAriChat() {
@@ -8728,8 +9009,13 @@ function mountAriChat() {
         <div class="ari-quick-list">
           ${quickQuestions.map((question) => `<button type="button" data-ari-quick="${escapeHtml(question)}">${escapeHtml(question)}</button>`).join('')}
         </div>
+        <div class="ari-place-chip" data-ari-place-chip hidden>
+          <span data-ari-place-name></span>
+          <button type="button" data-ari-place-clear></button>
+        </div>
         <div class="ari-messages" data-ari-messages></div>
         <p class="ari-status" data-ari-status aria-live="polite"></p>
+        <button type="button" class="ari-retry" data-ari-retry hidden></button>
         <form class="ari-form" data-ari-form>
           <input data-ari-input type="text" placeholder="${escapeHtml(t('ari.placeholder'))}" autocomplete="off">
           <button type="submit" data-ari-send>${escapeHtml(t('ari.send'))}</button>
@@ -8749,6 +9035,15 @@ function mountAriChat() {
   qsa('[data-ari-quick]').forEach((button) => {
     button.addEventListener('click', () => sendAriMessage(button.dataset.ariQuick));
   });
+  qs('[data-ari-place-clear]')?.addEventListener('click', () => setAriPlace(''));
+  window.addEventListener('resize', fitAriPanel);
+  qs('[data-ari-retry]')?.addEventListener('click', () => {
+    const input = qs('[data-ari-input]');
+    const question = ariPendingClarify ? ariLastQuestion : (input?.value || ariLastQuestion);
+    ariPendingClarify = '';
+    sendAriMessage(question);
+  });
+  renderAriPlaceChip();
 }
 
 function updatePlannerStep() {
@@ -9753,6 +10048,12 @@ function bindMobileInteractions() {
     if (mapOpenRouteButton) {
       const route = getRouteFromUrlOrStorage();
       void trackRouteEngagement(route, 'visit_intent', { keepalive: true });
+    }
+
+    const ariPlaceButton = event.target.closest('[data-ari-place]');
+    if (ariPlaceButton) {
+      setAriPlace(ariPlaceButton.dataset.ariPlace);
+      openAriChat();
     }
 
     const placeMapLink = event.target.closest('.place-map-link');
