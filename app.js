@@ -8351,7 +8351,7 @@ function applyAriTranslations() {
 // - RAG 장애 시 기존 로컬 안내를 보여 주되 "로컬 안내" 표시를 붙인다. 출처 없는 원격 모델로 조용히 다시 답하지 않는다.
 const ARI_RAG_CONFIG_URL = 'rag-config.json';
 const ARI_RAG_LOCAL_DEFAULT = 'http://127.0.0.1:8088/v1/public/chat';
-const ARI_RAG_TIMEOUT_MS = 75000;
+const ARI_RAG_TIMEOUT_MS = 30000;   // 엔진 v0.5.0 은 생성 상한 8초라 보통 10초 안에 답한다
 const ARI_RAG_COURSE_PAGES = ['route-detail.html', 'map.html'];
 const ARI_RAG_TEXT = {
   ko: {
