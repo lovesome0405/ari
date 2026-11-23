@@ -3030,6 +3030,7 @@ body.ari-has-bottom-cta .ari-chat {
 
 /* 공통 RAG 엔진 답변(출처·상태 표시) */
 .ari-message.is-rag p { white-space: pre-wrap; }
+.ari-rag-general { font-size: 0.82rem; font-weight: 700; margin: 0 0 6px; color: #7a4b00; border-left: 3px solid #7a4b00; padding-left: 6px; }
 .ari-rag-label, .ari-local-label { font-size: 0.82rem; font-weight: 700; margin: 0 0 6px; color: #7a4b00; }
 .ari-message.is-insufficient_evidence, .ari-message.is-clarification_needed { border-left: 3px solid #c9a227; }
 .ari-message.is-local { border-left: 3px solid #9a9a9a; }

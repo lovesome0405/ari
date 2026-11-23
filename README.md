@@ -363,3 +363,9 @@ AI는 검증된 문화 사실을 대체하지 않고, DB와 서버가 제공한 
 - 장애: 연결 실패·429·시간 초과·`unavailable` 이면 오류는 상태 줄에만 쓰고 입력을 되살리며 "다시 시도" 버튼을 보인다. 기존 로컬 안내(`fallbackAriReply`)는 "로컬 안내 · 출처 검색 답변이 아니에요" 표시를 붙여 보여 준다. RAG 가 켜져 있을 때는 출처 없는 원격 모델(OpenAI 호환·Ollama)로 다시 답하지 않는다.
 - 함께 고친 기존 문제: 닫기 버튼이 정의되지 않은 `toggleAriSettings` 호출로 동작하지 않던 것, 대화가 길어지면 패널 위쪽(닫기 버튼)이 화면 밖으로 나가던 것(열 때 남은 높이를 재서 제한).
 - 검증(2026-11-19, 클라우드 Linux, 로컬 정적 서버 + 실제 엔진): Playwright Pixel 7 화면 18/18, 설정 규칙 9/9. 실기기·배포 사이트 미확인. 기록: chatbot `reports/v0.4.0/e2e/`.
+
+### 엔진 v0.6.0 대응 (2026-11-24, 브랜치 `claude/rag-v060`)
+- 엔진이 자료 밖 일반 질문에 출처 없이 답하면(`route=general`) 패널에 **"General answer — no source · not checked against MARU data"**(한·일·중 문구 포함)를 붙여 출처 있는 답과 구분한다(`app.js` `renderAriRagBody`, `style.css` `.ari-rag-general`). 인사·감사·사용법은 엔진 고정 응답(`route=smalltalk`)을 그대로 보여 준다. 서비스워커 캐시 이름 `maru-shell-v27-rag-20261124`.
+- MARU 의 일반 답변은 **엔진 기본값이 꺼짐**(`RAG_GENERAL_MARU=1`일 때만). 켤지는 공개 주소를 연 뒤 요청량을 보고 정한다(chatbot `reports/v0.6.0/REPORT.md`).
+- 공개 주소 후보: LOLYPOLY 공개 입구 Worker 의 `https://lolypoly.lolypoly.workers.dev/rag/v1/public/chat`(엔진 공개 경로만 전달). **Worker 쪽 엔진 연결·배포는 미실행(승인 필요)** — 그전까지 `rag-config.json` 은 `off` 그대로.
+- 검증(2026-11-24, 클라우드 Linux): Worker(로컬 `wrangler dev`)를 거친 화면 E2E 3건(인사·일반 답변 표시·함정 보류) 포함 전체 45/45. 기록: chatbot `reports/v0.6.0/e2e/`. 실기기·배포 사이트 미확인.
