@@ -1,4 +1,4 @@
-const CACHE_NAME = 'maru-shell-v26-rag-20261119';
+const CACHE_NAME = 'maru-shell-v27-rag-20261124';
 const APP_SHELL = [
   'index.html',
   'admin.html',

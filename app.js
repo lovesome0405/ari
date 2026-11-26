@@ -8356,7 +8356,7 @@ const ARI_RAG_COURSE_PAGES = ['route-detail.html', 'map.html'];
 const ARI_RAG_TEXT = {
   ko: {
     askPlace: '아리에게 이 장소 묻기', selected: '선택한 장소', clear: '선택 해제', retry: '다시 시도',
-    local: '로컬 안내 · 출처 검색 답변이 아니에요', partialGap: '확인 못 한 부분',
+    local: '로컬 안내 · 출처 검색 답변이 아니에요', partialGap: '확인 못 한 부분', general: '출처 없는 일반 답변 · MARU 자료로 확인한 내용이 아니에요',
     answered: '', partial: '일부만 확인했어요', insufficient_evidence: '확인된 자료에서 찾지 못했어요', clarification_needed: '조금 더 알려 주세요',
     clarifyHint: '위 질문에 답을 적어 주세요', waiting: '출처를 찾는 중이에요…', seconds: '초',
     errNetwork: '안내 서버에 연결하지 못했어요. 아래는 로컬 안내예요.', errBusy: '질문이 많아 잠시 쉬어요. 1분 뒤 다시 시도해 주세요. 아래는 로컬 안내예요.',
@@ -8365,7 +8365,7 @@ const ARI_RAG_TEXT = {
   },
   en: {
     askPlace: 'Ask Ari about this place', selected: 'Selected place', clear: 'Clear', retry: 'Try again',
-    local: 'Local guide · not a source-checked answer', partialGap: 'Not confirmed',
+    local: 'Local guide · not a source-checked answer', partialGap: 'Not confirmed', general: 'General answer — no source · not checked against MARU data',
     answered: '', partial: 'Partly confirmed', insufficient_evidence: "I couldn't find this in the verified sources", clarification_needed: 'Could you tell me a bit more?',
     clarifyHint: 'Type your answer to the question above', waiting: 'Looking up sources…', seconds: 's',
     errNetwork: "Couldn't reach the guide server. Below is the local guide.", errBusy: 'Too many questions right now. Please try again in a minute. Below is the local guide.',
@@ -8374,7 +8374,7 @@ const ARI_RAG_TEXT = {
   },
   ja: {
     askPlace: 'この場所をアリに聞く', selected: '選択した場所', clear: '解除', retry: 'もう一度',
-    local: 'ローカル案内・出典確認済みの回答ではありません', partialGap: '未確認の部分',
+    local: 'ローカル案内・出典確認済みの回答ではありません', partialGap: '未確認の部分', general: '出典のない一般的な回答・MARUのデータで確認した内容ではありません',
     answered: '', partial: '一部のみ確認できました', insufficient_evidence: '確認済みの資料では見つかりませんでした', clarification_needed: 'もう少し教えてください',
     clarifyHint: '上の質問への答えを入力してください', waiting: '出典を探しています…', seconds: '秒',
     errNetwork: '案内サーバーに接続できませんでした。以下はローカル案内です。', errBusy: '質問が多いため少しお待ちください。以下はローカル案内です。',
@@ -8383,7 +8383,7 @@ const ARI_RAG_TEXT = {
   },
   zh: {
     askPlace: '向阿里询问这个地方', selected: '已选地点', clear: '取消选择', retry: '重试',
-    local: '本地指南·非来源核实的回答', partialGap: '未确认部分',
+    local: '本地指南·非来源核实的回答', partialGap: '未确认部分', general: '无出处的一般回答·未经MARU资料核实',
     answered: '', partial: '仅部分确认', insufficient_evidence: '在已核实的资料中未找到', clarification_needed: '请再告诉我一些',
     clarifyHint: '请输入对上面问题的回答', waiting: '正在查找来源…', seconds: '秒',
     errNetwork: '无法连接指南服务器。以下是本地指南。', errBusy: '提问过多，请稍后再试。以下是本地指南。',
@@ -8515,7 +8515,9 @@ function renderAriRagBody(item) {
         ${citation.quote ? `<q>${escapeHtml(citation.quote)}</q>` : ''}
       </li>`;
   }).join('');
-  return `${label ? `<p class="ari-rag-label">${escapeHtml(label)}</p>` : ''}${lines}${cites ? `<ol class="ari-cites">${cites}</ol>` : ''}`;
+  // 엔진 v0.6.0: 자료 밖 일반 질문의 출처 없는 답(route=general)은 출처 있는 답과 구분해 표시한다
+  const general = rag.route === 'general' ? `<p class="ari-rag-general">${escapeHtml(ariRagText('general'))}</p>` : '';
+  return `${label ? `<p class="ari-rag-label">${escapeHtml(label)}</p>` : ''}${general}${lines}${cites ? `<ol class="ari-cites">${cites}</ol>` : ''}`;
 }
 
 function setAriPlace(resourceId) {
